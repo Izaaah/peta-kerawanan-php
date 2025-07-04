@@ -17,7 +17,7 @@ To run this project, you need to follow these steps:
 
 ```bash
 git clone https://github.com/Izaaah/peta-kerawanan-php.git
-cd skripsi-scheduling
+cd peta-kerawanan-php
 ```
 
 ### 2. Install Dependencies
