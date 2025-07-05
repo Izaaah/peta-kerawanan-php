@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
+    <div class="">
+        @include('../layouts/app-with-sidebar')
+        @include('../layouts/navigation')
+    </div>
+    <div class="main-content">
+        @yield('content')
+    </div>
 
+    <script></script>
 </body>
 </html>
