@@ -238,7 +238,7 @@
                                             </div>
                                             <div class="ml-4">
                                                 <h4 class="text-lg font-medium text-red-900 dark:text-red-100">Total Users</h4>
-                                                <p class="text-2xl font-bold text-red-600 dark:text-red-400">5,234</p>
+                                                <p class="text-2xl font-bold text-red-600 dark:text-red-400">{{ $totalUsers }}</p>
                                             </div>
                                         </div>
                                     </div>

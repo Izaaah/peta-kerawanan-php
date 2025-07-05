@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\SuperAdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,9 +16,7 @@ Route::get('/dashboard', function () {
 
 // Super Admin Routes
 Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('super-admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/chart-jaringan', function () {
         return view('super-admin.chart-jaringan');
