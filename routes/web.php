@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +22,11 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/chart-jaringan', function () {
         return view('super-admin.chart-jaringan');
     })->name('chart-jaringan');
+
+    // User Management Routes
+    Route::resource('user-management', UserManagementController::class)->parameters([
+        'user-management' => 'user'
+    ]);
 });
 
 // Administrator Routes
