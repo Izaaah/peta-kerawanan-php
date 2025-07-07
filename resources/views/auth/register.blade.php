@@ -1,4 +1,9 @@
-<x-guest-layout>
+@extends('layouts.guest')
+
+@section('content')
+    <div class="flex flex-col items-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_BNN.png" alt="Logo BNN" class="login-logo mb-2 mt-[-60px]">
+    </div>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -68,4 +73,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+@endsection
