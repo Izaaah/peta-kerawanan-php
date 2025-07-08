@@ -294,8 +294,12 @@
                                                     <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $user->name }}</dd>
                                                 </div>
                                                 <div>
+                                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Username</dt>
+                                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $user->username }}</dd>
+                                                </div>
+                                                <div>
                                                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Email Address</dt>
-                                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $user->email }}</dd>
+                                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $user->email ?: 'Not provided' }}</dd>
                                                 </div>
                                                 <div>
                                                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Role</dt>

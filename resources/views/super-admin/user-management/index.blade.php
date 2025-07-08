@@ -256,12 +256,56 @@
                                     </a>
                                 </div>
 
+                                <!-- Search Form -->
+                                <div class="mb-6">
+                                    <form method="GET" action="{{ route('super-admin.user-management.index') }}" class="flex gap-4">
+                                        <div class="flex-1">
+                                            <div class="relative">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <input type="text"
+                                                       name="search"
+                                                       value="{{ $search }}"
+                                                       placeholder="Search users..."
+                                                       class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Search
+                                        </button>
+                                        @if($search)
+                                            <a href="{{ route('super-admin.user-management.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                Clear
+                                            </a>
+                                        @endif
+                                    </form>
+                                </div>
+
+                                <!-- Search Results Info -->
+                                @if($search)
+                                    <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-md">
+                                        <div class="flex items-center">
+                                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                            </svg>
+                                            <span class="text-blue-700 dark:text-blue-300">
+                                                Search results for: <strong>"{{ $search }}"</strong>
+                                                ({{ $users->total() }} {{ Str::plural('user', $users->total()) }} found)
+                                            </span>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <!-- Users Table -->
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                         <thead class="bg-gray-50 dark:bg-gray-700">
                                             <tr>
                                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Username</th>
                                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
                                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
                                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Created</th>
@@ -281,25 +325,58 @@
                                                                 </div>
                                                             </div>
                                                             <div class="ml-4">
-                                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $user->name }}</div>
+                                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                                    @if($search && stripos($user->name, $search) !== false)
+                                                                        {!! str_ireplace($search, '<mark class="bg-yellow-200 dark:bg-yellow-800">' . $search . '</mark>', $user->name) !!}
+                                                                    @else
+                                                                        {{ $user->name }}
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="text-sm text-gray-900 dark:text-gray-100">{{ $user->email }}</div>
+                                                        <div class="text-sm text-gray-900 dark:text-gray-100">
+                                                            @if($search && stripos($user->username, $search) !== false)
+                                                                {!! str_ireplace($search, '<mark class="bg-yellow-200 dark:bg-yellow-800">' . $search . '</mark>', $user->username) !!}
+                                                            @else
+                                                                {{ $user->username }}
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-900 dark:text-gray-100">
+                                                            @if($search && stripos($user->email, $search) !== false)
+                                                                {!! str_ireplace($search, '<mark class="bg-yellow-200 dark:bg-yellow-800">' . $search . '</mark>', $user->email) !!}
+                                                            @else
+                                                                {{ $user->email }}
+                                                            @endif
+                                                        </div>
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
                                                         @if($user->role === 'super-admin')
                                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                                                                Super Admin
+                                                                @if($search && stripos('super-admin', $search) !== false)
+                                                                    {!! str_ireplace($search, '<mark class="bg-yellow-200 dark:bg-yellow-800">' . $search . '</mark>', 'Super Admin') !!}
+                                                                @else
+                                                                    Super Admin
+                                                                @endif
                                                             </span>
                                                         @elseif($user->role === 'administrator')
                                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                                                Administrator
+                                                                @if($search && stripos('administrator', $search) !== false)
+                                                                    {!! str_ireplace($search, '<mark class="bg-yellow-200 dark:bg-yellow-800">' . $search . '</mark>', 'Administrator') !!}
+                                                                @else
+                                                                    Administrator
+                                                                @endif
                                                             </span>
                                                         @else
                                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                                Operator
+                                                                @if($search && stripos('operator', $search) !== false)
+                                                                    {!! str_ireplace($search, '<mark class="bg-yellow-200 dark:bg-yellow-800">' . $search . '</mark>', 'Operator') !!}
+                                                                @else
+                                                                    Operator
+                                                                @endif
                                                             </span>
                                                         @endif
                                                     </td>
@@ -338,6 +415,24 @@
                                     </table>
                                 </div>
 
+                                @if($users->count() === 0)
+                                    <div class="text-center py-8">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
+                                        </svg>
+                                        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No users found</h3>
+                                        @if($search)
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                No users match your search criteria "{{ $search }}".
+                                            </p>
+                                        @else
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                Get started by creating a new user.
+                                            </p>
+                                        @endif
+                                    </div>
+                                @endif
+
                                 <!-- Pagination -->
                                 <div class="mt-6">
                                     {{ $users->links() }}
@@ -349,4 +444,28 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Auto-submit search form after user stops typing
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchForm = searchInput.closest('form');
+            let searchTimeout;
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function() {
+                    searchForm.submit();
+                }, 500); // Wait 500ms after user stops typing
+            });
+
+            // Submit on Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    searchForm.submit();
+                }
+            });
+        });
+    </script>
 </x-app-layout>

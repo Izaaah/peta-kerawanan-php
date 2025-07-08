@@ -21,23 +21,73 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h2a4 4 0 014 4v2" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7a4 4 0 018 0v4" />
                                 </svg>
-                                Peta Penyalahgunaan
+                                Peta Kerawanan
                                 <svg :class="{'rotate-90': open}" class="ml-auto h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
                             <div x-show="open" class="ml-8 space-y-1" x-cloak>
-                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-blue-600">
+                                <a href="{{ url('/peta-penyalahgunaan/domisili') }}" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-blue-600">
                                     <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
                                     </svg>
-                                    Berdasarkan domisili
+                                    Berdasarkan NIK
                                 </a>
                                 <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-blue-600">
                                     <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
                                     </svg>
                                     Berdasarkan TKP
+                                </a>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-blue-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    </svg>
+                                    Berdasarkan Jalur Masuk
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 4. Data Informan -->
+                        <a href="#" class="flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100">
+                            <svg class="mr-3 h-6 w-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.797.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Data Informan
+                        </a>
+
+                        <!-- 2. Peta Daerah Rawan Penyelundupan -->
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center w-full px-2 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none">
+                                <svg class="mr-3 h-6 w-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M10.29 3.86L1.82 18a1 1 0 00.86 1.5h18.64a1 1 0 00.86-1.5L13.71 3.86a1 1 0 00-1.72 0zM12 9v4m0 4h.01" />
+                                  </svg>
+                                  <span>Data Daerah Rawan</span>
+                                <svg :class="{'rotate-90': open}" class="ml-auto h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                            <div x-show="open" class="ml-8 space-y-1" x-cloak>
+                                <!-- Jalur Udara (Pesawat) -->
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-green-600">
+                                    <!-- Plane Icon -->
+                                    <svg class="mr-3 h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M19.428 15.341A8 8 0 118.659 4.572m10.769 10.769L4.572 4.572" />
+                                      </svg>
+                                      <span>Penyalahgunaan Narkotika</span>
+
+                                </a>
+                                <!-- Jalur Darat (Mobil) -->
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-green-600">
+                                    <!-- Car Icon -->
+                                    <svg class="mr-2 h-4 w-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="11" width="18" height="6" rx="2" />
+                                        <circle cx="7.5" cy="17.5" r="1.5" />
+                                        <circle cx="16.5" cy="17.5" r="1.5" />
+                                    </svg>
+                                    Penyelundupan
                                 </a>
                             </div>
                         </div>
@@ -48,7 +98,7 @@
                                 <svg class="mr-3 h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18" />
                                 </svg>
-                                Peta Penyelundupan
+                                Data Transportasi
                                 <svg :class="{'rotate-90': open}" class="ml-auto h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -61,7 +111,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.5 19l7-7m0 0l-7-7m7 7H3" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    Jalur Udara
+                                    Tempat Transportasi
                                 </a>
                                 <!-- Jalur Darat (Mobil) -->
                                 <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-green-600">
@@ -71,17 +121,9 @@
                                         <circle cx="7.5" cy="17.5" r="1.5" />
                                         <circle cx="16.5" cy="17.5" r="1.5" />
                                     </svg>
-                                    Jalur Darat
+                                    Jasa Transportasi
                                 </a>
-                                <!-- Jalur Laut (Kapal) -->
-                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-green-600">
-                                    <!-- Ship Icon -->
-                                    <svg class="mr-2 h-4 w-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 20s1-1 9-1 9 1 9 1M5 17l7-7 7 7M12 10V3" />
-                                    </svg>
-                                    Jalur Laut
-                                </a>
-                            </div>
+                                                        </div>
                         </div>
 
                         <!-- 3. Data Pendukung -->
@@ -100,18 +142,54 @@
                                     <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    PO, Ekspedisi, dan Data Lainnya
+                                    Data LSM Narkotika
+                                </a>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-yellow-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Data Rehabilitasi
+                                </a>
+
+                                <!-- Divider -->
+                                <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-yellow-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Data Ekspedisi
+                                </a>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-yellow-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Data Penginapan
+                                </a>
+                                <!-- Divider -->
+                                <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-yellow-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Data Perusahaan/Farmasi Prekursor
+                                </a>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-yellow-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Data Penjual Vape
+                                </a>
+                                <!-- Divider -->
+                                <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                                <a href="#" class="flex items-center px-2 py-2 text-sm text-gray-500 hover:text-yellow-600">
+                                    <svg class="mr-2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Data Akun Sosial Media
                                 </a>
                             </div>
                         </div>
 
-                        <!-- 4. Data Informan -->
-                        <a href="#" class="flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100">
-                            <svg class="mr-3 h-6 w-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.797.657 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            Data Informan
-                        </a>
 
                         <!-- 5. Data Chart -->
                         <div x-data="{ open: false }">

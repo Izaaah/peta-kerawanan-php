@@ -12,10 +12,30 @@ class UserManagementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
-        return view('super-admin.user-management.index', compact('users'));
+        $search = $request->get('search');
+        $roleFilter = $request->get('role_filter');
+        $sort = $request->get('sort', 'name');
+        $order = $request->get('order', 'asc');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('username', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('role', 'like', "%{$search}%");
+                });
+            })
+            ->when($roleFilter, function ($query, $roleFilter) {
+                $query->where('role', $roleFilter);
+            })
+            ->orderBy($sort, $order)
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('super-admin.user-management.index', compact('users', 'search', 'roleFilter', 'sort', 'order'));
     }
 
     /**
@@ -33,13 +53,15 @@ class UserManagementController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string', 'in:super-admin,administrator,operator'],
         ]);
 
         User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
@@ -76,12 +98,14 @@ class UserManagementController extends Controller
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $user->id],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'role' => ['required', 'string', 'in:super-admin,administrator,operator'],
         ]);
 
         $user->update([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'role' => $request->role,
         ]);
@@ -113,5 +137,60 @@ class UserManagementController extends Controller
 
         return redirect()->route('super-admin.user-management.index')
             ->with('success', 'User deleted successfully.');
+    }
+
+    /**
+     * Export users to CSV
+     */
+    public function export(Request $request)
+    {
+        $search = $request->get('search');
+        $roleFilter = $request->get('role_filter');
+        $sort = $request->get('sort', 'name');
+        $order = $request->get('order', 'asc');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('username', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('role', 'like', "%{$search}%");
+                });
+            })
+            ->when($roleFilter, function ($query, $roleFilter) {
+                $query->where('role', $roleFilter);
+            })
+            ->orderBy($sort, $order)
+            ->get();
+
+        $filename = 'users_' . date('Y-m-d_H-i-s') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($users) {
+            $file = fopen('php://output', 'w');
+
+            // Add CSV headers
+            fputcsv($file, ['Name', 'Username', 'Email', 'Role', 'Created At']);
+
+            // Add data rows
+            foreach ($users as $user) {
+                fputcsv($file, [
+                    $user->name,
+                    $user->username,
+                    $user->email,
+                    $user->role,
+                    $user->created_at->format('Y-m-d H:i:s')
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

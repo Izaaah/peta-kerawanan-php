@@ -258,10 +258,20 @@
                                             @enderror
                                         </div>
 
+                                        <!-- Username -->
+                                        <div>
+                                            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+                                            <input type="text" name="username" id="username" value="{{ old('username', $user->username) }}" required
+                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                            @error('username')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+
                                         <!-- Email -->
                                         <div>
-                                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                                            <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required
+                                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email (Optional)</label>
+                                            <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
                                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                                             @error('email')
                                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
