@@ -10,7 +10,7 @@
     <div class="overlay"></div>
     <div class="login-container">
         <div class="logo">
-            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNNP Jatim">
+            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo UIN" class="Image-title">
         </div>
         <h2>BNNP JATIM</h2>
         <div class="subtitle">Silakan login untuk melanjutkan</div>
