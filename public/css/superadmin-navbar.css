@@ -1,0 +1,236 @@
+.superadmin-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-radius: 0;
+    margin: 0;
+    padding: 50px 20px;
+    background: #27e4e4; /* atau warna lain */
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    height: 64px;
+    box-sizing: border-box;
+}
+.superadmin-navbar .logo-area,
+.superadmin-navbar .menu-area,
+.superadmin-navbar .right-area {
+    display: flex;
+    align-items: center;
+    height: 64px;
+}
+body {
+    padding-top: 74px;
+    margin: 0;
+}
+.superadmin-navbar .logo-circle {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    margin-right: 16px;
+    background: #5ff5fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.superadmin-navbar .logo-circle img {
+    width: 170%;
+    height: 170%;
+    object-fit: contain;
+}
+.superadmin-navbar .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+}
+.superadmin-navbar .logo-text .bnn {
+    font-weight: bold;
+    font-size: 15px;
+    color: #1e3269;
+    margin-bottom: -8;
+    letter-spacing: 1px;
+}
+.superadmin-navbar .logo-text .prov {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: -2px;
+}
+.superadmin-navbar .sijagat-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-left: 40px;
+    color: #1e3269;
+    letter-spacing: 1px;
+}
+.superadmin-navbar .menu-area {
+    display: flex;
+    gap: 18px;
+    margin-left: auto;
+}
+.superadmin-navbar .menu-btn, 
+.superadmin-navbar .menu-select {
+    border: none;
+    border-radius: 8px;
+    padding: 6px 24px;
+    font-weight: 500;
+    font-size: 17px;
+    background: transparent;
+    color: #1e3269;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+.superadmin-navbar .menu-btn:hover, 
+.superadmin-navbar .menu-select:hover {
+    background: #e8f0fe;
+    color: #174ea6;
+}
+.superadmin-navbar .menu-select select {
+    border: none;
+    background: transparent;
+    font-weight: 500;
+    font-size: 17px;
+    outline: none;
+    cursor: pointer;
+    color: inherit;
+}
+/* Pastikan right-area benar-benar sejajar vertikal dengan menu utama */
+.superadmin-navbar .right-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: 0;
+    padding-left: 32px;
+    height: 100%;
+}
+.superadmin-navbar .right-area form {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.superadmin-navbar .logout-btn {
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-weight: 500;
+    font-size: 15px;
+    background: #fff;
+    color: #0e0e0e;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.11s;
+    box-shadow: 0 1px 1px rgba(37,99,235,0.04);
+    margin: 0;
+    height: 36px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.superadmin-navbar .logout-btn:hover {
+    background: #2563eb;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.10);
+}
+.superadmin-navbar .profile-label {
+    font-weight: 500;
+    font-size: 16px;
+    margin-left: 0;
+    color: #1e3269;
+}
+.dropdown-parent {
+    position: relative;
+}
+.dropdown-parent .dropdown-arrow {
+    font-size: 13px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.dropdown-parent .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    min-width: 270px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(30,50,105,0.13);
+    padding: 12px 0;
+    z-index: 100;
+    list-style: none;
+    margin: 0;
+}
+.dropdown-parent:hover .dropdown-menu,
+.dropdown-parent:focus-within .dropdown-menu {
+    display: block;
+}
+.dropdown-parent .dropdown-menu li {
+    padding: 12px 24px 12px 24px;
+    color: #1e3269;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.16s, color 0.16s;
+    white-space: nowrap;
+}
+.dropdown-parent .dropdown-menu li:hover {
+    background: #e8f0fe;
+    color: #174ea6;
+}
+/* Panah kecil di atas dropdown */
+.dropdown-parent .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 32px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 8px rgba(30,50,105,0.08);
+    z-index: 101;
+}
+.superadmin-navbar .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+}
+.superadmin-navbar .logo-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+.superadmin-navbar .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+}
+.superadmin-navbar .logo-text .bnn,
+.superadmin-navbar .logo-text .prov {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+@media (max-width: 900px) {
+    .superadmin-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 10px 10px 10px;
+    }
+    .superadmin-navbar .menu-area {
+        margin: 10px 0;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .superadmin-navbar .right-area {
+        margin-left: 0;
+    }
+}
