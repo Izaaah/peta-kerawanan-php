@@ -3,35 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class PetaController extends Controller
 {
-    public function getPetaKerawanan()
+    public function geojson()
     {
-        $jumlahKasus = DB::table('kasus_narkoba')
-            ->select('nama_desa', DB::raw('count(*) as jumlah'))
-            ->groupBy('nama_desa')
-            ->pluck('jumlah', 'nama_desa'); // hasil: ['Desa A' => 10, ...]
+        $path = public_path('geojson/desa-jatim.geojson');
 
-        $desa = DB::table('desa_geojson')->get();
+        if (!File::exists($path)) {
+            return response()->json([
+                'error' => 'File GeoJSON tidak ditemukan',
+                'message' => 'Pastikan file desa_jatim_sederhana.geojson ada di folder public/geojson/'
+            ], 404);
+        }
 
-        $features = $desa->map(function ($item) use ($jumlahKasus) {
-            $jumlah = $jumlahKasus[strtolower($item->nama_desa)] ?? 0;
+        $content = File::get($path);
+        $data = json_decode($content, true);
 
-            return [
-                'type' => 'Feature',
-                'properties' => [
-                    'nama_desa' => $item->nama_desa,
-                    'jumlah_kasus' => $jumlah
-                ],
-                'geometry' => json_decode($item->geometry)
-            ];
-        });
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json([
+                'error' => 'File GeoJSON tidak valid',
+                'message' => 'Format JSON tidak sesuai standar'
+            ], 400);
+        }
 
-        return response()->json([
-            'type' => 'FeatureCollection',
-            'features' => $features
+        return response()->json($data, 200, [
+            'Content-Type' => 'application/json',
+            'Access-Control-Allow-Origin' => '*'
         ]);
     }
 }

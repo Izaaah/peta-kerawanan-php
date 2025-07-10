@@ -37,28 +37,28 @@ return new class extends Migration
 
         Schema::create('telepon_individu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('individu_id')->constrained('individu_rawan_narkotika')->onDelete('cascade');
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
             $table->string('nomor_telepon', 20);
             $table->timestamps();
         });
 
         Schema::create('rekening_individu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('individu_id')->constrained('individu_rawan_narkotika')->onDelete('cascade');
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
             $table->string('no_rekening', 30);
             $table->timestamps();
         });
 
         Schema::create('ewallet_individu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('individu_id')->constrained('individu_rawan_narkotika')->onDelete('cascade');
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
             $table->string('no_ewallet', 30);
             $table->timestamps();
         });
 
         Schema::create('keluarga_lain_individu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('individu_id')->constrained('individu_rawan_narkotika')->onDelete('cascade');
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
             $table->string('nama_keluarga');
             $table->string('nik', 20);
             $table->timestamps();
@@ -66,7 +66,7 @@ return new class extends Migration
 
         Schema::create('residivis_detail', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('individu_id')->constrained('individu_rawan_narkotika')->onDelete('cascade');
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
             $table->string('aph')->nullable();
             $table->text('pasal')->nullable();
             $table->text('vonis')->nullable();
@@ -76,7 +76,7 @@ return new class extends Migration
 
         Schema::create('foto_individu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('individu_id')->constrained('individu_rawan_narkotika')->onDelete('cascade');
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
             $table->text('file_foto');
             $table->text('keterangan')->nullable();
             $table->timestamps();
@@ -91,6 +91,6 @@ return new class extends Migration
         Schema::dropIfExists('ewallet_individu');
         Schema::dropIfExists('rekening_individu');
         Schema::dropIfExists('telepon_individu');
-        Schema::dropIfExists('individu_rawan_narkotika');
+        Schema::dropIfExists('data_individu_tsk');
     }
 };

@@ -4,8 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\PenyalahgunaanController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PetaController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,8 +52,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Peta Routes
 Route::get('/peta-penyalahgunaan/domisili', function () {
     return view('map');
-});
+})->name('peta-penyalahgunaan.domisili');
+
+// GeoJSON API Route
+Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.kerawanan');
 
 require __DIR__ . '/auth.php';

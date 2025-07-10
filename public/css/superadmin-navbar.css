@@ -1,236 +1,290 @@
-.superadmin-navbar {
+/* Top Banner Styles */
+.top-banner {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    margin-left: -100px;
+    z-index: 1001;
+    background: white;
+    border-bottom: 2px solid #1e3a8a;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.banner-left {
+    display: flex;
+    align-items: center;
+}
+
+.banner-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1e3a8a;
+    letter-spacing: 1px;
+    /* text-transform: uppercase; */ /* Dihapus agar tidak CAPSLOCK */
+}
+
+.banner-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: -80px;
+}
+
+.banner-right .profile-label {
+    font-size: 0.9rem;
+    color: black;
+    opacity: 0.9;
+}
+
+.banner-right .profile-label:hover {
+    font-size: 0.9rem;
+    color: gray;
+    opacity: 0.9;
+}
+.logout-btn {
+    color: black;
+    border-left: 1px solid gray;
+    padding-left: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 0.9rem;
+}
+.banner-right .logout-btn:hover {
+    font-size: 0.9rem;
+    color: gray;
+    opacity: 0.9;
+}
+
+
+/* Superadmin Navbar Styles */
+.superadmin-navbar {
+    position: fixed;
+    top: 35px; /* Sesuaikan dengan tinggi banner */
+    left: 0;
+    right: 0;
     z-index: 1000;
-    border-radius: 0;
-    margin: 0;
-    padding: 50px 20px;
-    background: #27e4e4; /* atau warna lain */
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 70px;
+}
+
+.logo-area {
     display: flex;
     align-items: center;
-    height: 64px;
-    box-sizing: border-box;
+    gap: 1rem;
 }
-.superadmin-navbar .logo-area,
-.superadmin-navbar .menu-area,
-.superadmin-navbar .right-area {
-    display: flex;
-    align-items: center;
-    height: 64px;
-}
-body {
-    padding-top: 74px;
-    margin: 0;
-}
-.superadmin-navbar .logo-circle {
+
+.logo-circle {
     width: 50px;
     height: 50px;
-    border: none;
     border-radius: 50%;
-    margin-right: 16px;
-    background: #5ff5fa;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 }
-.superadmin-navbar .logo-circle img {
-    width: 170%;
-    height: 170%;
+
+.logo-circle img {
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
-.superadmin-navbar .logo-text {
+
+.logo-text {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 8px;
 }
-.superadmin-navbar .logo-text .bnn {
+
+.logo-text .bnn {
     font-weight: bold;
-    font-size: 15px;
-    color: #1e3269;
-    margin-bottom: -8;
-    letter-spacing: 1px;
+    font-size: 1.2rem;
 }
-.superadmin-navbar .logo-text .prov {
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: -2px;
+
+.logo-text .prov {
+    font-size: 0.8rem;
+    opacity: 0.9;
 }
-.superadmin-navbar .sijagat-title {
-    font-size: 22px;
-    font-weight: 500;
-    margin-left: 40px;
-    color: #1e3269;
-    letter-spacing: 1px;
+
+.sijagat-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fbbf24;
 }
-.superadmin-navbar .menu-area {
+
+.menu-area {
     display: flex;
-    gap: 18px;
-    margin-left: auto;
+    align-items: center;
+    gap: 2rem;
 }
-.superadmin-navbar .menu-btn, 
-.superadmin-navbar .menu-select {
-    border: none;
-    border-radius: 8px;
-    padding: 6px 24px;
-    font-weight: 500;
-    font-size: 17px;
-    background: transparent;
-    color: #1e3269;
-    cursor: pointer;
-    transition: background 0.18s, color 0.18s;
-}
-.superadmin-navbar .menu-btn:hover, 
-.superadmin-navbar .menu-select:hover {
-    background: #e8f0fe;
-    color: #174ea6;
-}
-.superadmin-navbar .menu-select select {
-    border: none;
-    background: transparent;
-    font-weight: 500;
-    font-size: 17px;
+
+.menu-select select {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
     outline: none;
+}
+
+.menu-select select option {
+    background: #1e3a8a;
+    color: white;
+}
+
+.menu-btn {
+    position: relative;
     cursor: pointer;
-    color: inherit;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
 }
-/* Pastikan right-area benar-benar sejajar vertikal dengan menu utama */
-.superadmin-navbar .right-area {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-left: 0;
-    padding-left: 32px;
-    height: 100%;
+
+.menu-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: #fbbf24;
+    transition: width 0.3s ease;
+    border-radius: 2px;
 }
-.superadmin-navbar .right-area form {
-    display: flex;
-    align-items: center;
-    height: 100%;
+
+.menu-btn:hover::after {
+    width: 80%;
 }
-.superadmin-navbar .logout-btn {
-    border: 1px solid #2563eb;
-    border-radius: 8px;
-    padding: 0 10px;
-    font-weight: 500;
-    font-size: 15px;
-    background: #fff;
-    color: #0e0e0e;
-    cursor: pointer;
-    transition: background 0.18s, color 0.18s, box-shadow 0.11s;
-    box-shadow: 0 1px 1px rgba(37,99,235,0.04);
-    margin: 0;
-    height: 36px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+.menu-btn:hover {
+    color: #fbbf24;
+    transform: translateY(-2px);
 }
-.superadmin-navbar .logout-btn:hover {
-    background: #2563eb;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(37,99,235,0.10);
-}
-.superadmin-navbar .profile-label {
-    font-weight: 500;
-    font-size: 16px;
-    margin-left: 0;
-    color: #1e3269;
-}
+
 .dropdown-parent {
     position: relative;
 }
-.dropdown-parent .dropdown-arrow {
-    font-size: 13px;
-    margin-left: 6px;
-    vertical-align: middle;
+
+.dropdown-arrow {
+    margin-left: 0.5rem;
 }
-.dropdown-parent .dropdown-menu {
-    display: none;
+
+.dropdown-menu {
     position: absolute;
-    top: 110%;
+    top: 100%;
     left: 0;
-    min-width: 270px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 8px 32px rgba(30,50,105,0.13);
-    padding: 12px 0;
-    z-index: 100;
-    list-style: none;
-    margin: 0;
+    background: white;
+    color: #1e3a8a;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    min-width: 250px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s;
 }
-.dropdown-parent:hover .dropdown-menu,
-.dropdown-parent:focus-within .dropdown-menu {
-    display: block;
+
+.dropdown-parent:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
-.dropdown-parent .dropdown-menu li {
-    padding: 12px 24px 12px 24px;
-    color: #1e3269;
-    font-size: 16px;
-    font-weight: 500;
+
+.dropdown-menu li {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
     cursor: pointer;
-    transition: background 0.16s, color 0.16s;
-    white-space: nowrap;
+    transition: background-color 0.3s;
 }
-.dropdown-parent .dropdown-menu li:hover {
-    background: #e8f0fe;
-    color: #174ea6;
+
+.dropdown-menu li:hover {
+    background: #f3f4f6;
 }
-/* Panah kecil di atas dropdown */
-.dropdown-parent .dropdown-menu::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 32px;
-    width: 18px;
-    height: 18px;
-    background: #fff;
-    transform: rotate(45deg);
-    box-shadow: -2px -2px 8px rgba(30,50,105,0.08);
-    z-index: 101;
+
+.dropdown-menu li:last-child {
+    border-bottom: none;
 }
-.superadmin-navbar .logo-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-}
-.superadmin-navbar .logo-circle {
+
+.right-area {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+    gap: 1rem;
 }
-.superadmin-navbar .logo-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 8px;
+
+.profile-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
-.superadmin-navbar .logo-text .bnn,
-.superadmin-navbar .logo-text .prov {
-    text-align: center;
-    margin: 0;
-    padding: 0;
+
+.logout-btn {
+    /* background: #ef4444; */
+    color: black;
+    border-left: 1px solid gray;
+    /* padding: 0.5rem 1rem; */
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
-@media (max-width: 900px) {
+
+/* .logout-btn:hover {
+    background: #dc2626;
+} */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .top-banner {
+        height: 35px;
+    }
+
+    .banner-content {
+        padding: 0 1rem;
+    }
+
+    .banner-text {
+        font-size: 12px;
+    }
+
+    .banner-right .logout-btn {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.7rem;
+    }
+
     .superadmin-navbar {
+        top: 35px;
         flex-direction: column;
-        align-items: flex-start;
-        padding: 18px 10px 10px 10px;
+        gap: 1rem;
+        padding: 1rem;
+        height: auto;
+        min-height: 70px;
     }
-    .superadmin-navbar .menu-area {
-        margin: 10px 0;
+
+    .menu-area {
         flex-wrap: wrap;
-        gap: 10px;
+        justify-content: center;
+        gap: 1rem;
     }
-    .superadmin-navbar .right-area {
-        margin-left: 0;
+
+    .sijagat-title {
+        order: -1;
     }
 }
