@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SuperAdminDashboardController;
+use App\Http\Controllers\PenyalahgunaanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PetaController;
 
@@ -27,6 +28,7 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::resource('user-management', UserManagementController::class)->parameters([
         'user-management' => 'user'
     ]);
+
     Route::get('/user-management/export', [UserManagementController::class, 'export'])->name('user-management.export');
 });
 
@@ -54,4 +56,4 @@ Route::get('/peta-penyalahgunaan/domisili', function () {
     return view('map');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

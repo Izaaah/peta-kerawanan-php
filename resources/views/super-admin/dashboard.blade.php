@@ -5,6 +5,7 @@
     <div class="logo-area">
         <div class="logo-circle">
             <img src="{{ asset('storage/img/logo.png') }}" alt="Logo">
+
         </div>
         <div class="logo-text">
             <span class="bnn">BNN</span>
