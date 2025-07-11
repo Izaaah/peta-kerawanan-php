@@ -8,7 +8,7 @@
             <span class="banner-text">Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
         </div>
         <div class="banner-right">
-            <span class="profile-label"><a href="">Profil</a></span>
+            <span class="profile-label"><a href="{{ route('profile.edit') }}">Profil</a></span>
             <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                 @csrf
                 <button type="submit" class="logout-btn">Logout</button>
@@ -31,18 +31,18 @@
     <span class="sijagat-title">SIJAGAD</span>
     <!-- Tengah: Menu Navigasi -->
     <div class="menu-area">
-        <div class="menu-btn"><a href="">Home</a>
+        <div class="menu-btn"><a href="{{ route('super-admin.dashboard') }}">Home</a>
         </div>
         <div class="menu-btn dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>
             <ul class="dropdown-menu">
-                <li><a href="">Peta Kerawanan<br>Berdasarkan NIK</a></li>
-                <li><a href="">Peta Kerawanan<br>Berdasarkan TKP</a></li>
+                <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
+                <li><a href="{{ route('peta.kerawanan') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
                 <li><a href="">Peta Kawasan<br>Rawan Geospasial</a></li>
             </ul>
         </div>
-        <div class="menu-btn"><a href="">Data</a></div>
+        <div class="menu-btn"><a href="{{ route('super-admin.data.index') }}">Data</a></div>
         <div class="menu-btn"><a href="">Input</a></div>
-        <div class="menu-btn"><a href="">User Management</a></div>
+        <div class="menu-btn"><a href="{{ route('super-admin.user-management.index') }}">User Management</a></div>
     </div>
 </div>

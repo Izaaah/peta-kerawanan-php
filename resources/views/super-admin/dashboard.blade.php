@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Total Desa</div>
+                        <div class="text-sm font-medium text-gray-500">Total Desa/Kelurahan</div>
                         <div class="text-2xl font-bold text-gray-900">{{ number_format($totalDesa) }}</div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Kabupaten</div>
+                        <div class="text-sm font-medium text-gray-500">Kabupaten/Kota</div>
                         <div class="text-2xl font-bold text-gray-900">{{ number_format($kabupatenCount) }}</div>
                     </div>
                 </div>

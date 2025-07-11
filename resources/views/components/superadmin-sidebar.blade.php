@@ -6,25 +6,31 @@
     <nav class="sidebar-nav">
         <ul class="space-y-2">
             <li>
-                <a href="{{ route('superadmin.dashboard') }}" class="sidebar-link {{ request()->routeIs('superadmin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('super-admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('super-admin.dashboard') ? 'active' : '' }}">
                     <span class="icon">🏠</span>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('superadmin.peta') }}" class="sidebar-link {{ request()->routeIs('superadmin.peta') ? 'active' : '' }}">
+                <a href="{{ route('super-admin.chart-jaringan') }}" class="sidebar-link {{ request()->routeIs('super-admin.chart-jaringan') ? 'active' : '' }}">
+                    <span class="icon">📊</span>
+                    <span>Chart Jaringan</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('peta-penyalahgunaan.domisili') }}" class="sidebar-link {{ request()->routeIs('peta-penyalahgunaan.domisili') ? 'active' : '' }}">
                     <span class="icon">🗺️</span>
                     <span>Peta Kerawanan</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('superadmin.user-management') }}" class="sidebar-link {{ request()->routeIs('superadmin.user-management.*') ? 'active' : '' }}">
+                <a href="{{ route('super-admin.user-management.index') }}" class="sidebar-link {{ request()->routeIs('super-admin.user-management.*') ? 'active' : '' }}">
                     <span class="icon">👥</span>
                     <span>User Management</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('superadmin.data-input') }}" class="sidebar-link {{ request()->routeIs('superadmin.data-input.*') ? 'active' : '' }}">
+                <a href="#" class="sidebar-link">
                     <span class="icon">📝</span>
                     <span>Input Data</span>
                 </a>

@@ -30,6 +30,31 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     ]);
 
     Route::get('/user-management/export', [UserManagementController::class, 'export'])->name('user-management.export');
+
+    // Data Routes
+    Route::get('/data', function () {
+        return view('super-admin.data.index');
+    })->name('data.index');
+
+    Route::get('/data-individu', function () {
+        return view('super-admin.data.individu');
+    })->name('data.individu');
+
+    Route::get('/data-pendukung', function () {
+        return view('super-admin.data.pendukung');
+    })->name('data.pendukung');
+
+    Route::get('/data-lanjutan', function () {
+        return view('super-admin.data.lanjutan');
+    })->name('data.lanjutan');
+
+    Route::get('/data-kasus', function () {
+        return view('super-admin.data.kasus');
+    })->name('data.kasus');
+
+    Route::get('/data-desa', function () {
+        return view('super-admin.data.desa');
+    })->name('data.desa');
 });
 
 // Administrator Routes
