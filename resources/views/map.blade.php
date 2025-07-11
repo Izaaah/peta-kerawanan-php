@@ -163,7 +163,17 @@
 
 <script>
     // Inisialisasi peta dengan ukuran yang lebih besar
-    const map = L.map('map').setView([-7.5, 112.5], 9);
+    const bounds = L.latLngBounds(
+        L.latLng(-8.8, 110.8), // barat daya
+        L.latLng(-6.5, 114.5)  // timur laut
+    );
+
+    const map = L.map('map', {
+        minZoom: 8, // atau 9, sesuaikan dengan kebutuhan
+        maxZoom: 16,
+        maxBounds: bounds,
+        maxBoundsViscosity: 1.0
+    }).setView([-7.5, 112.5], 9);
 
     // Tambahkan tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
