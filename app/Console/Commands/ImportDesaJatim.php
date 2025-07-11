@@ -5,78 +5,115 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use App\Models\DesaGeojson;
+use Illuminate\Support\Facades\DB;
 
 class ImportDesaJatim extends Command
 {
-    protected $signature = 'import:desa-jatim';
-    protected $description = 'Import GeoJSON desa Jatim ke database';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'import:desa-jatim {--force : Force import even if data exists}';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Import data desa dari file GeoJSON ke database';
+
+    /**
+     * Execute the console command.
+     */
     public function handle()
     {
+        $this->info('Memulai import data desa Jawa Timur...');
+
         $path = public_path('geojson/desa-jatim.geojson');
 
         if (!File::exists($path)) {
-            $this->error('❌ File tidak ditemukan di: ' . $path);
-            return;
+            $this->error('File GeoJSON tidak ditemukan di: ' . $path);
+            return 1;
         }
 
-        try {
-            $content = File::get($path);
-            $data = json_decode($content, true);
+        $content = File::get($path);
+        $data = json_decode($content, true);
 
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $this->error('❌ File GeoJSON tidak valid');
-                return;
-            }
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $this->error('File GeoJSON tidak valid');
+            return 1;
+        }
 
-            if (!isset($data['features'])) {
-                $this->error('❌ File GeoJSON tidak mengandung features');
-                return;
-            }
+        // Check if data already exists
+        if (DesaGeojson::count() > 0 && !$this->option('force')) {
+            $this->warn('Data desa sudah ada di database. Gunakan --force untuk import ulang.');
+            return 0;
+        }
 
-            $count = 0;
-            foreach ($data['features'] as $feature) {
+        // Clear existing data if force option is used
+        if ($this->option('force')) {
+            $this->info('Menghapus data lama...');
+            DesaGeojson::truncate();
+        }
+
+        $features = $data['features'] ?? [];
+        $totalFeatures = count($features);
+        $this->info("Ditemukan {$totalFeatures} desa untuk diimport...");
+
+        $bar = $this->output->createProgressBar($totalFeatures);
+        $bar->start();
+
+        $imported = 0;
+        $errors = 0;
+
+        foreach ($features as $feature) {
+            try {
                 $properties = $feature['properties'] ?? [];
+                $geometry = $feature['geometry'] ?? [];
 
-                // Coba berbagai kemungkinan nama field
-                $namaDesa = $properties['nama_desa'] ??
-                           $properties['WADMKD'] ??
-                           $properties['NAMA_DESA'] ??
-                           $properties['desa'] ??
-                           'Desa Tidak Diketahui';
+                // Extract nama desa, kecamatan, kabupaten dari properties
+                $namaDesa = $properties['NAMA_DESA'] ?? $properties['nama_desa'] ?? 'Unknown';
+                $kecamatan = $properties['NAMA_KEC'] ?? $properties['nama_kec'] ?? 'Unknown';
+                $kabupaten = $properties['NAMA_KAB'] ?? $properties['nama_kab'] ?? 'Unknown';
 
-                $kecamatan = $properties['kecamatan'] ??
-                            $properties['WADMKC'] ??
-                            $properties['NAMA_KEC'] ??
-                            $properties['kec'] ??
-                            'Kecamatan Tidak Diketahui';
+                // Check if desa already exists
+                $existingDesa = DesaGeojson::where('nama_desa', $namaDesa)
+                    ->where('kecamatan', $kecamatan)
+                    ->where('kabupaten', $kabupaten)
+                    ->first();
 
-                $kabupaten = $properties['kabupaten'] ??
-                            $properties['WADMKK'] ??
-                            $properties['NAMA_KAB'] ??
-                            $properties['kab'] ??
-                            'Kabupaten Tidak Diketahui';
-
-                DesaGeojson::updateOrCreate(
-                    ['nama_desa' => $namaDesa],
-                    [
+                if (!$existingDesa) {
+                    DesaGeojson::create([
+                        'nama_desa' => $namaDesa,
                         'kecamatan' => $kecamatan,
                         'kabupaten' => $kabupaten,
-                        'geometry' => $feature['geometry']
-                    ]
-                );
-                $count++;
-
-                // Progress indicator
-                if ($count % 100 == 0) {
-                    $this->info("Processed {$count} desa...");
+                        'geometry' => $geometry
+                    ]);
+                    $imported++;
                 }
+
+            } catch (\Exception $e) {
+                $errors++;
+                $this->error("\nError importing desa: " . ($namaDesa ?? 'Unknown') . " - " . $e->getMessage());
             }
 
-            $this->info("✅ Berhasil import {$count} desa ke database");
-        } catch (\Exception $e) {
-            $this->error('❌ Error: ' . $e->getMessage());
-            $this->error('Stack trace: ' . $e->getTraceAsString());
+            $bar->advance();
         }
+
+        $bar->finish();
+        $this->newLine();
+
+        $this->info("Import selesai!");
+        $this->info("Berhasil diimport: {$imported} desa");
+        if ($errors > 0) {
+            $this->warn("Error: {$errors} desa");
+        }
+
+        // Show summary
+        $totalInDb = DesaGeojson::count();
+        $this->info("Total desa di database: {$totalInDb}");
+
+        return 0;
     }
 }

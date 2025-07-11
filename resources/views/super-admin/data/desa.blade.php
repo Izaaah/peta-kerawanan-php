@@ -1,255 +1,345 @@
 @extends('layouts.superadmin-master')
 
-@section('content')
-<div class="container-fluid px-4">
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Data Desa Geojson</h1>
-                    <p class="text-sm text-gray-600 mt-1">Kelola data geografis desa dan kelurahan</p>
-                </div>
-                <div class="flex space-x-2">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Tambah Data
-                    </button>
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                        </svg>
-                        Export Data
-                    </button>
-                </div>
-            </div>
+@section('title', 'Data Desa Geojson')
 
-            <!-- Search Section -->
-            <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
-                <div class="flex flex-col md:flex-row gap-4 items-center">
-                    <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Cari Desa</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-                            <input type="text"
-                                   id="searchDesa"
-                                   placeholder="Masukkan nama desa atau kecamatan..."
-                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+@section('content')
+@include('components.superadmin-navbar')
+
+<div class="container-fluid px-4 py-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Data Desa Geojson</h1>
+            <p class="text-muted mb-0">Kelola data desa dan tingkat kerawanan</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-primary" onclick="refreshData()">
+                <i class="fas fa-sync-alt me-2"></i>Refresh
+            </button>
+            <a href="{{ route('super-admin.api.desa.export') }}" class="btn btn-success">
+                <i class="fas fa-download me-2"></i>Export
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Desa</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_desa'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-map-marker-alt fa-2x text-gray-300"></i>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button id="searchBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            Cari
-                        </button>
-                        <button id="clearSearchBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            Reset
-                        </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Desa dengan Kasus</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['desa_dengan_kasus'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Filter Section -->
-            <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Kabupaten</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Kabupaten</option>
-                            <option value="surabaya">Surabaya</option>
-                            <option value="malang">Malang</option>
-                            <option value="sidoarjo">Sidoarjo</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Kecamatan</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Kecamatan</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Urutkan</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="nama">Nama A-Z</option>
-                            <option value="nama_desc">Nama Z-A</option>
-                            <option value="kabupaten">Kabupaten</option>
-                            <option value="kecamatan">Kecamatan</option>
-                        </select>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Kasus</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_kasus'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h3 class="font-semibold text-blue-800">Total Desa</h3>
-                    <p class="text-2xl font-bold text-blue-600">8,574</p>
-                    <p class="text-sm text-blue-600">Semua desa/kelurahan</p>
-                </div>
-                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <h3 class="font-semibold text-green-800">Aktif</h3>
-                    <p class="text-2xl font-bold text-green-600">8,234</p>
-                    <p class="text-sm text-green-600">Desa aktif</p>
-                </div>
-                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                    <h3 class="font-semibold text-yellow-800">Memiliki Data</h3>
-                    <p class="text-2xl font-bold text-yellow-600">7,891</p>
-                    <p class="text-sm text-yellow-600">Dengan data kasus</p>
-                </div>
-                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <h3 class="font-semibold text-purple-800">Kabupaten</h3>
-                    <p class="text-2xl font-bold text-purple-600">38</p>
-                    <p class="text-sm text-purple-600">Kabupaten/kota</p>
-                </div>
-            </div>
-
-            <!-- Data Table -->
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Desa
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Kecamatan
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Kabupaten
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Kasus
-                                </th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Aksi
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">Desa Kenjeran</div>
-                                            <div class="text-sm text-gray-500">Kelurahan</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">Bulak</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">Surabaya</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        Aktif
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">15 kasus</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-2">
-                                        <a href="#" class="text-blue-600 hover:text-blue-900 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                            </svg>
-                                            View
-                                        </a>
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                            Edit
-                                        </a>
-                                        <button class="text-red-600 hover:text-red-900 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- More sample data rows would go here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div class="mt-6">
-                <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-700">
-                        Menampilkan 1 sampai 10 dari 8,574 data
-                    </div>
-                    <div class="flex space-x-2">
-                        <span class="px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-md cursor-not-allowed">Previous</span>
-                        <a href="#" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">Next</a>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Kabupaten</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['kabupaten_count'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-building fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Search and Filter -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filter & Pencarian</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="searchDesa" class="form-label">Cari Desa</label>
+                    <input type="text" class="form-control" id="searchDesa" placeholder="Nama desa...">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filterKabupaten" class="form-label">Kabupaten</label>
+                    <select class="form-select" id="filterKabupaten">
+                        <option value="">Semua Kabupaten</option>
+                        @foreach($kabupatenList as $kabupaten)
+                            <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filterKerawanan" class="form-label">Tingkat Kerawanan</label>
+                    <select class="form-select" id="filterKerawanan">
+                        <option value="">Semua Level</option>
+                        <option value="Rendah">Rendah</option>
+                        <option value="Sedang">Sedang</option>
+                        <option value="Tinggi">Tinggi</option>
+                        <option value="Sangat Tinggi">Sangat Tinggi</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label class="form-label">&nbsp;</label>
+                    <button class="btn btn-primary w-100" onclick="applyFilters()">
+                        <i class="fas fa-search me-2"></i>Filter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Data Desa</h6>
+            <div class="d-flex gap-2">
+                <span class="badge bg-primary" id="totalRecords">0</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="desaTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Desa</th>
+                            <th>Kecamatan</th>
+                            <th>Kabupaten</th>
+                            <th>Jumlah Kasus</th>
+                            <th>Tingkat Kerawanan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="desaTableBody">
+                        @foreach($sampleDesa as $index => $desa)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $desa->nama_desa }}</td>
+                            <td>{{ $desa->kecamatan }}</td>
+                            <td>{{ $desa->kabupaten }}</td>
+                            <td>
+                                <span class="badge bg-{{ $desa->kasus_narkoba_count > 0 ? 'danger' : 'success' }}">
+                                    {{ $desa->kasus_narkoba_count }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $desa->kerawanan_level === 'Rendah' ? 'success' : ($desa->kerawanan_level === 'Sedang' ? 'warning' : ($desa->kerawanan_level === 'Tinggi' ? 'danger' : 'dark')) }}">
+                                    {{ $desa->kerawanan_level }}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="showDetail({{ $desa->id }})">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary" onclick="viewOnMap({{ $desa->id }})">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="text-muted">
+                    Menampilkan {{ $sampleDesa->count() }} dari {{ $stats['total_desa'] ?? 0 }} data
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                        <li class="page-item active">
+                            <span class="page-link">1</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </div>
 
-@push('scripts')
+<!-- Detail Modal -->
+<div class="modal fade" id="desaDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Desa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="desaDetailContent">
+                <!-- Detail content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Search functionality
-    const searchInput = document.getElementById('searchDesa');
-    const searchBtn = document.getElementById('searchBtn');
-    const clearSearchBtn = document.getElementById('clearSearchBtn');
+// Load data from API
+function loadData() {
+    const searchTerm = document.getElementById('searchDesa').value;
+    const kabupaten = document.getElementById('filterKabupaten').value;
+    const kerawanan = document.getElementById('filterKerawanan').value;
 
-    // Search function
-    function performSearch() {
-        const searchQuery = searchInput.value.trim();
-        if (searchQuery) {
-            // Implement search logic here
-            console.log('Searching for:', searchQuery);
-        }
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('search', searchTerm);
+    if (kabupaten) params.append('kabupaten', kabupaten);
+    if (kerawanan) params.append('kerawanan', kerawanan);
+
+    fetch(`/super-admin/api/desa-data?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            renderTable(data.data);
+            // updatePagination(data); // Disabled for now
+        })
+        .catch(error => {
+            console.error('Error loading data:', error);
+        });
+}
+
+// Render table
+function renderTable(data) {
+    const tbody = document.getElementById('desaTableBody');
+    tbody.innerHTML = '';
+
+    data.forEach((desa, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${desa.nama_desa}</td>
+            <td>${desa.kecamatan}</td>
+            <td>${desa.kabupaten}</td>
+            <td>
+                <span class="badge bg-${desa.kasus_narkoba_count > 0 ? 'danger' : 'success'}">
+                    ${desa.kasus_narkoba_count}
+                </span>
+            </td>
+            <td>
+                <span class="badge bg-${getKerawananColor(desa.kerawanan_level)}">
+                    ${desa.kerawanan_level}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-info" onclick="showDetail(${desa.id})">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-primary" onclick="viewOnMap(${desa.id})">
+                    <i class="fas fa-map-marker-alt"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    document.getElementById('totalRecords').textContent = data.length;
+}
+
+// Get kerawanan color
+function getKerawananColor(level) {
+    switch(level) {
+        case 'Rendah': return 'success';
+        case 'Sedang': return 'warning';
+        case 'Tinggi': return 'danger';
+        case 'Sangat Tinggi': return 'dark';
+        default: return 'secondary';
     }
+}
 
-    // Event listeners
-    searchBtn.addEventListener('click', performSearch);
-    clearSearchBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        // Reset search results
-    });
+// Apply filters
+function applyFilters() {
+    loadData();
+}
 
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
+// Show detail
+function showDetail(id) {
+    fetch(`/super-admin/api/desa-detail/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            const modal = new bootstrap.Modal(document.getElementById('desaDetailModal'));
+            document.getElementById('desaDetailContent').innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Informasi Desa</h6>
+                        <p><strong>Nama Desa:</strong> ${data.desa.nama_desa}</p>
+                        <p><strong>Kecamatan:</strong> ${data.desa.kecamatan}</p>
+                        <p><strong>Kabupaten:</strong> ${data.desa.kabupaten}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Statistik Kasus</h6>
+                        <p><strong>Jumlah Kasus:</strong> ${data.stats.total_kasus}</p>
+                        <p><strong>Tingkat Kerawanan:</strong>
+                            <span class="badge bg-${getKerawananColor(data.stats.kerawanan_level)}">
+                                ${data.stats.kerawanan_level}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            `;
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Error loading detail:', error);
+        });
+}
+
+// View on map
+function viewOnMap(id) {
+    window.open(`{{ route('peta-penyalahgunaan.domisili') }}?desa=${id}`, '_blank');
+}
+
+// Refresh data
+function refreshData() {
+    location.reload();
+}
 </script>
-@endpush
 @endsection

@@ -3,6 +3,8 @@
 @section('title', 'Data Management')
 
 @section('content')
+@include('components.superadmin-navbar')
+
 <style>
     .data-card {
         border-radius: 1.25rem;

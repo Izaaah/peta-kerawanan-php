@@ -1,256 +1,381 @@
 @extends('layouts.superadmin-master')
 
-@section('content')
-<div class="container-fluid px-4">
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Data Individu TSK</h1>
-                    <p class="text-sm text-gray-600 mt-1">Kelola data individu Tersangka (TSK) dalam kasus narkoba</p>
-                </div>
-                <div class="flex space-x-2">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Tambah Data
-                    </button>
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                        </svg>
-                        Export Data
-                    </button>
-                </div>
-            </div>
+@section('title', 'Data Individu TSK')
 
-            <!-- Search Section -->
-            <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
-                <div class="flex flex-col md:flex-row gap-4 items-center">
-                    <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Cari Individu</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-                            <input type="text"
-                                   id="searchIndividu"
-                                   placeholder="Masukkan nama atau NIK..."
-                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+@section('content')
+@include('components.superadmin-navbar')
+
+<div class="container-fluid px-4 py-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Data Individu TSK</h1>
+            <p class="text-muted mb-0">Kelola data individu TSK dengan korelasi kasus</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('super-admin.data.individu.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Tambah Data
+            </a>
+            <a href="{{ route('super-admin.api.individu.export') }}" class="btn btn-success">
+                <i class="fas fa-download me-2"></i>Export
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Individu</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_individu'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button id="searchBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            Cari
-                        </button>
-                        <button id="clearSearchBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            Reset
-                        </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Kasus</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_kasus'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Filter Section -->
-            <div class="bg-gray-50 p-4 rounded-lg mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="selesai">Selesai</option>
-                            <option value="proses">Dalam Proses</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Kabupaten</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Kabupaten</option>
-                            <option value="surabaya">Surabaya</option>
-                            <option value="malang">Malang</option>
-                            <option value="sidoarjo">Sidoarjo</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tahun</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Urutkan</label>
-                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="nama">Nama A-Z</option>
-                            <option value="nama_desc">Nama Z-A</option>
-                            <option value="tanggal">Tanggal Terbaru</option>
-                            <option value="tanggal_desc">Tanggal Terlama</option>
-                        </select>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Residivis</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['residivis_count'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h3 class="font-semibold text-blue-800">Total Individu</h3>
-                    <p class="text-2xl font-bold text-blue-600">1,247</p>
-                    <p class="text-sm text-blue-600">Semua data TSK</p>
-                </div>
-                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <h3 class="font-semibold text-green-800">Aktif</h3>
-                    <p class="text-2xl font-bold text-green-600">892</p>
-                    <p class="text-sm text-green-600">Kasus sedang berjalan</p>
-                </div>
-                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                    <h3 class="font-semibold text-orange-800">Selesai</h3>
-                    <p class="text-2xl font-bold text-orange-600">312</p>
-                    <p class="text-sm text-orange-600">Kasus telah selesai</p>
-                </div>
-                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <h3 class="font-semibold text-purple-800">Dalam Proses</h3>
-                    <p class="text-2xl font-bold text-purple-600">43</p>
-                    <p class="text-sm text-purple-600">Sedang diproses</p>
-                </div>
-            </div>
-
-            <!-- Data Table -->
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Individu
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    NIK
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Lokasi
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Tanggal
-                                </th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Aksi
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
-                                                <span class="text-sm font-medium text-red-600">TS</span>
-                                            </div>
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">Ahmad Susanto</div>
-                                            <div class="text-sm text-gray-500">Laki-laki, 28 tahun</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">3571234567890123</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">Surabaya</div>
-                                    <div class="text-sm text-gray-500">Jawa Timur</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        Aktif
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    15 Jan 2024
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-2">
-                                        <a href="#" class="text-blue-600 hover:text-blue-900 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                            </svg>
-                                            View
-                                        </a>
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                            Edit
-                                        </a>
-                                        <button class="text-red-600 hover:text-red-900 flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- More sample data rows would go here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div class="mt-6">
-                <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-700">
-                        Menampilkan 1 sampai 10 dari 1,247 data
-                    </div>
-                    <div class="flex space-x-2">
-                        <span class="px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-md cursor-not-allowed">Previous</span>
-                        <a href="#" class="px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">Next</a>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Non Residivis</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['non_residivis_count'] ?? 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-check fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Search and Filter -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filter & Pencarian</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="searchIndividu" class="form-label">Cari Individu</label>
+                    <input type="text" class="form-control" id="searchIndividu" placeholder="Nama atau NIK...">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="filterKabupaten" class="form-label">Kabupaten</label>
+                    <select class="form-select" id="filterKabupaten">
+                        <option value="">Semua</option>
+                        @foreach($kabupatenList as $kabupaten)
+                            <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="filterStatus" class="form-label">Status</label>
+                    <select class="form-select" id="filterStatus">
+                        <option value="">Semua</option>
+                        <option value="Napi">Napi</option>
+                        <option value="Non napi">Non napi</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="filterPeran" class="form-label">Peran</label>
+                    <select class="form-select" id="filterPeran">
+                        <option value="">Semua</option>
+                        <option value="koordinator informan">Koordinator Informan</option>
+                        <option value="informan">Informan</option>
+                        <option value="kurir">Kurir</option>
+                        <option value="gudang">Gudang</option>
+                        <option value="broker">Broker</option>
+                        <option value="bandar">Bandar</option>
+                        <option value="beking">Beking</option>
+                        <option value="tidak tahu">Tidak Tahu</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="filterResidivis" class="form-label">Residivis</label>
+                    <select class="form-select" id="filterResidivis">
+                        <option value="">Semua</option>
+                        <option value="1">Ya</option>
+                        <option value="0">Tidak</option>
+                    </select>
+                </div>
+                <div class="col-md-1 mb-3">
+                    <label class="form-label">&nbsp;</label>
+                    <button class="btn btn-primary w-100" onclick="applyFilters()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Data Individu TSK</h6>
+            <div class="d-flex gap-2">
+                <span class="badge bg-primary" id="totalRecords">{{ $sampleData->count() }}</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="individuTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>NIK</th>
+                            <th>Alamat</th>
+                            <th>Status</th>
+                            <th>Peran</th>
+                            <th>Residivis</th>
+                            <th>Kasus Terkait</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="individuTableBody">
+                        @foreach($sampleData as $index => $individu)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                <div class="fw-bold">{{ $individu->nama }}</div>
+                                <small class="text-muted">{{ $individu->nik }}</small>
+                            </td>
+                            <td>{{ $individu->nik }}</td>
+                            <td>
+                                <div>{{ $individu->kelurahan }}, {{ $individu->kecamatan }}</div>
+                                <small class="text-muted">{{ $individu->kabupaten }}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $individu->status === 'Napi' ? 'danger' : 'success' }}">
+                                    {{ $individu->status }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ $individu->peran_jaringan }}</span>
+                            </td>
+                            <td>
+                                @if($individu->residivis)
+                                    <span class="badge bg-warning">Ya</span>
+                                @else
+                                    <span class="badge bg-secondary">Tidak</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($individu->status === 'Napi')
+                                    <span class="badge bg-danger">1 Kasus</span>
+                                @else
+                                    <span class="badge bg-success">0 Kasus</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ route('super-admin.data.individu.show', $individu->id) }}"
+                                       class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger"
+                                            onclick="deleteIndividu({{ $individu->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="text-muted">
+                    Menampilkan {{ $sampleData->count() }} dari {{ $stats['total_individu'] ?? 0 }} data
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                        <li class="page-item active">
+                            <span class="page-link">1</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </div>
 
-@push('scripts')
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus data individu TSK ini?</p>
+                <p class="text-danger">Data yang dihapus tidak dapat dikembalikan!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Search functionality
-    const searchInput = document.getElementById('searchIndividu');
-    const searchBtn = document.getElementById('searchBtn');
-    const clearSearchBtn = document.getElementById('clearSearchBtn');
+// Load data from API
+function loadData() {
+    const searchTerm = document.getElementById('searchIndividu').value;
+    const kabupaten = document.getElementById('filterKabupaten').value;
+    const status = document.getElementById('filterStatus').value;
+    const peran = document.getElementById('filterPeran').value;
+    const residivis = document.getElementById('filterResidivis').value;
 
-    // Search function
-    function performSearch() {
-        const searchQuery = searchInput.value.trim();
-        if (searchQuery) {
-            // Implement search logic here
-            console.log('Searching for:', searchQuery);
-        }
-    }
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('search', searchTerm);
+    if (kabupaten) params.append('kabupaten', kabupaten);
+    if (status) params.append('status', status);
+    if (peran) params.append('peran_jaringan', peran);
+    if (residivis) params.append('residivis', residivis);
 
-    // Event listeners
-    searchBtn.addEventListener('click', performSearch);
-    clearSearchBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        // Reset search results
+    fetch(`/super-admin/api/individu-data?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            renderTable(data.data);
+        })
+        .catch(error => {
+            console.error('Error loading data:', error);
+        });
+}
+
+// Render table
+function renderTable(data) {
+    const tbody = document.getElementById('individuTableBody');
+    tbody.innerHTML = '';
+
+    data.forEach((individu, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>
+                <div class="fw-bold">${individu.nama}</div>
+                <small class="text-muted">${individu.nik}</small>
+            </td>
+            <td>${individu.nik}</td>
+            <td>
+                <div>${individu.kelurahan}, ${individu.kecamatan}</div>
+                <small class="text-muted">${individu.kabupaten}</small>
+            </td>
+            <td>
+                <span class="badge bg-${individu.status === 'Napi' ? 'danger' : 'success'}">
+                    ${individu.status}
+                </span>
+            </td>
+            <td>
+                <span class="badge bg-info">${individu.peran_jaringan}</span>
+            </td>
+            <td>
+                ${individu.residivis ?
+                    '<span class="badge bg-warning">Ya</span>' :
+                    '<span class="badge bg-secondary">Tidak</span>'
+                }
+            </td>
+            <td>
+                ${individu.status === 'Napi' ?
+                    '<span class="badge bg-danger">1 Kasus</span>' :
+                    '<span class="badge bg-success">0 Kasus</span>'
+                }
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <a href="/super-admin/data-individu/${individu.id}" class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="/super-admin/data-individu/${individu.id}/edit" class="btn btn-sm btn-warning">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button class="btn btn-sm btn-danger" onclick="deleteIndividu(${individu.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
     });
 
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
+    document.getElementById('totalRecords').textContent = data.length;
+}
+
+// Apply filters
+function applyFilters() {
+    loadData();
+}
+
+// Delete individu
+function deleteIndividu(id) {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    const form = document.getElementById('deleteForm');
+    form.action = `/super-admin/data-individu/${id}`;
+    modal.show();
+}
 </script>
-@endpush
 @endsection
