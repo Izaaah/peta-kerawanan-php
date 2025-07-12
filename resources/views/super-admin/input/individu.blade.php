@@ -5,154 +5,148 @@
 @section('content')
 @include('components.superadmin-navbar')
 
-<div class="container-fluid px-4 py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-primary text-white d-flex align-items-center">
-                    <i class="fas fa-user-plus me-2"></i>
-                    <span class="fw-bold">Form Input Data Individu TSK</span>
+@section('content')
+<div class="max-w-4xl mx-auto sm:px-6 lg:px-8 py-8">
+    <div class="bg-white overflow-hidden shadow rounded-xl p-6">
+        <div class="mb-8 flex items-center gap-2 border-b pb-3">
+            <i class="fas fa-user-plus text-blue-600 text-xl"></i>
+            <h2 class="text-xl font-bold text-gray-800">Form Input Data Individu TSK</h2>
+        </div>
+        <form method="POST" action="{{ route('super-admin.data.individu.store') }}" class="space-y-8">
+            @csrf
+            {{-- Data Pribadi --}}
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-id-card text-primary"></i>
+                    <h3 class="font-semibold text-base text-primary">Data Pribadi</h3>
                 </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('super-admin.data.individu.store') }}" class="needs-validation" novalidate>
-                        @csrf
-                        <!-- Data Pribadi -->
-                        <h5 class="mb-3 mt-2"><i class="fas fa-id-card me-2 text-primary"></i>Data Pribadi</h5>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                                <input type="text" name="nama_lengkap" class="form-control" required placeholder="Nama lengkap TSK">
-                                <div class="invalid-feedback">Nama wajib diisi.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">NIK <span class="text-danger">*</span></label>
-                                <input type="text" name="nik" class="form-control" maxlength="16" required placeholder="Nomor Induk Kependudukan">
-                                <div class="invalid-feedback">NIK wajib diisi.</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tempat Lahir</label>
-                                <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat lahir">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tanggal Lahir</label>
-                                <input type="date" name="tanggal_lahir" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" class="form-select">
-                                    <option value="">Pilih Jenis Kelamin</option>
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Agama</label>
-                                <select name="agama" class="form-select">
-                                    <option value="">Pilih Agama</option>
-                                    <option value="Islam">Islam</option>
-                                    <option value="Kristen">Kristen</option>
-                                    <option value="Katolik">Katolik</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Buddha">Buddha</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- Alamat -->
-                        <h5 class="mb-3 mt-4"><i class="fas fa-map-marker-alt me-2 text-success"></i>Alamat</h5>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label">Kabupaten/Kota</label>
-                                <select name="kabupaten" id="kabupaten" class="form-select">
-                                    <option value="">Pilih Kabupaten/Kota</option>
-                                    <option value="Surabaya">Surabaya</option>
-                                    <option value="Malang">Malang</option>
-                                    <option value="Sidoarjo">Sidoarjo</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Kecamatan</label>
-                                <select name="kecamatan" id="kecamatan" class="form-select">
-                                    <option value="">Pilih Kecamatan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Desa/Kelurahan</label>
-                                <select name="desa_id" id="desa" class="form-select">
-                                    <option value="">Pilih Desa/Kelurahan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Alamat Lengkap</label>
-                                <textarea name="alamat_lengkap" rows="2" class="form-control" placeholder="Alamat lengkap"></textarea>
-                            </div>
-                        </div>
-                        <!-- Data Kasus -->
-                        <h5 class="mb-3 mt-4"><i class="fas fa-balance-scale me-2 text-warning"></i>Data Kasus</h5>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label">Jenis Kasus</label>
-                                <select name="jenis_kasus" class="form-select">
-                                    <option value="">Pilih Jenis Kasus</option>
-                                    <option value="Narkoba">Narkoba</option>
-                                    <option value="Narkotika">Narkotika</option>
-                                    <option value="Psikotropika">Psikotropika</option>
-                                    <option value="Prekursor">Prekursor</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Status Kasus</label>
-                                <select name="status_kasus" class="form-select">
-                                    <option value="">Pilih Status</option>
-                                    <option value="Proses">Dalam Proses</option>
-                                    <option value="Selesai">Selesai</option>
-                                    <option value="Batal">Dibatalkan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tanggal Penangkapan</label>
-                                <input type="date" name="tanggal_penangkapan" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Lokasi Penangkapan</label>
-                                <input type="text" name="lokasi_penangkapan" class="form-control" placeholder="Lokasi penangkapan">
-                            </div>
-                        </div>
-                        <!-- Keterangan -->
-                        <h5 class="mb-3 mt-4"><i class="fas fa-info-circle me-2 text-info"></i>Keterangan Tambahan</h5>
-                        <div class="mb-4">
-                            <label class="form-label">Keterangan</label>
-                            <textarea name="keterangan" rows="3" class="form-control" placeholder="Masukkan keterangan tambahan jika diperlukan..."></textarea>
-                        </div>
-                        <!-- Tombol Aksi -->
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                            <a href="{{ route('super-admin.input.index') }}" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-arrow-left me-2"></i>Batal
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Simpan Data
-                            </button>
-                        </div>
-                    </form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <x-label for="nama_lengkap" value="Nama Lengkap" class="font-semibold" />
+                        <x-input id="nama_lengkap" name="nama_lengkap" type="text" required autofocus class="mt-1 w-full" placeholder="Nama lengkap TSK" />
+                    </div>
+                    <div>
+                        <x-label for="nik" value="NIK" class="font-semibold" />
+                        <x-input id="nik" name="nik" type="text" maxlength="16" required class="mt-1 w-full" placeholder="Nomor Induk Kependudukan" />
+                    </div>
+                    <div>
+                        <x-label for="tempat_lahir" value="Tempat Lahir" class="font-semibold" />
+                        <x-input id="tempat_lahir" name="tempat_lahir" type="text" class="mt-1 w-full" placeholder="Tempat lahir" />
+                    </div>
+                    <div>
+                        <x-label for="tanggal_lahir" value="Tanggal Lahir" class="font-semibold" />
+                        <x-input id="tanggal_lahir" name="tanggal_lahir" type="date" class="mt-1 w-full" />
+                    </div>
+                    <div>
+                        <x-label for="jenis_kelamin" value="Jenis Kelamin" class="font-semibold" />
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <x-label for="agama" value="Agama" class="font-semibold" />
+                        <select name="agama" id="agama" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Konghucu">Konghucu</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Sidebar Info -->
-        <div class="col-lg-4 d-none d-lg-block">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-info text-white">
-                    <i class="fas fa-info-circle me-2"></i>Petunjuk Pengisian
+            {{-- Alamat --}}
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-map-marker-alt text-green-600"></i>
+                    <h3 class="font-semibold text-base text-green-700">Alamat</h3>
                 </div>
-                <div class="card-body">
-                    <ul class="mb-0 small">
-                        <li>Isi data individu TSK dengan lengkap dan benar.</li>
-                        <li>Pastikan NIK dan nama sesuai dokumen resmi.</li>
-                        <li>Alamat dan lokasi penangkapan harus detail.</li>
-                        <li>Data ini akan digunakan untuk analisis dan peta kerawanan.</li>
-                    </ul>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <x-label for="kabupaten" value="Kabupaten/Kota" class="font-semibold" />
+                        <select id="kabupaten" name="kabupaten" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih</option>
+                            <option value="Surabaya">Surabaya</option>
+                            <option value="Malang">Malang</option>
+                            <option value="Sidoarjo">Sidoarjo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <x-label for="kecamatan" value="Kecamatan" class="font-semibold" />
+                        <select id="kecamatan" name="kecamatan" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih Kecamatan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <x-label for="desa_id" value="Desa/Kelurahan" class="font-semibold" />
+                        <select id="desa" name="desa_id" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih Desa</option>
+                        </select>
+                    </div>
+                    <div>
+                        <x-label for="alamat_lengkap" value="Alamat Lengkap" class="font-semibold" />
+                        <textarea name="alamat_lengkap" rows="2" class="mt-1 w-full border-gray-300 rounded-md shadow-sm" placeholder="Alamat lengkap"></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
+            {{-- Data Kasus --}}
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-balance-scale text-yellow-500"></i>
+                    <h3 class="font-semibold text-base text-yellow-600">Data Kasus</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <x-label for="jenis_kasus" value="Jenis Kasus" class="font-semibold" />
+                        <select name="jenis_kasus" id="jenis_kasus" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih</option>
+                            <option value="Narkoba">Narkoba</option>
+                            <option value="Narkotika">Narkotika</option>
+                            <option value="Psikotropika">Psikotropika</option>
+                            <option value="Prekursor">Prekursor</option>
+                        </select>
+                    </div>
+                    <div>
+                        <x-label for="status_kasus" value="Status Kasus" class="font-semibold" />
+                        <select name="status_kasus" id="status_kasus" class="form-select mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <option value="">Pilih</option>
+                            <option value="Proses">Proses</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Batal">Batal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <x-label for="tanggal_penangkapan" value="Tanggal Penangkapan" class="font-semibold" />
+                        <x-input type="date" name="tanggal_penangkapan" id="tanggal_penangkapan" class="mt-1 w-full" />
+                    </div>
+                    <div>
+                        <x-label for="lokasi_penangkapan" value="Lokasi Penangkapan" class="font-semibold" />
+                        <x-input name="lokasi_penangkapan" id="lokasi_penangkapan" type="text" class="mt-1 w-full" placeholder="Lokasi penangkapan" />
+                    </div>
+                </div>
+            </div>
+            {{-- Keterangan Tambahan --}}
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-info-circle text-sky-500"></i>
+                    <h3 class="font-semibold text-base text-sky-600">Keterangan Tambahan</h3>
+                </div>
+                <textarea name="keterangan" id="keterangan" rows="3" class="w-full border-gray-300 rounded-md shadow-sm" placeholder="Masukkan keterangan tambahan jika diperlukan..."></textarea>
+            </div>
+            {{-- Tombol --}}
+            <div class="flex flex-col md:flex-row justify-end gap-4 mt-8">
+                <a href="{{ route('super-admin.input.index') }}" class="inline-flex items-center px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold">
+                    <i class="fas fa-arrow-left mr-2"></i>Batal
+                </a>
+                <button type="submit" class="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow">
+                    <i class="fas fa-save mr-2"></i> Simpan Data
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 <script>
