@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Medsos;
+use Illuminate\Http\Request;
+
+class MedsosController extends Controller
+{
+    public function index()
+    {
+        $medsosList = Medsos::latest()->paginate(10);
+        return view('super-admin.data.medsos.index', compact('medsosList'));
+    }
+
+    public function create()
+    {
+        return view('super-admin.data.medsos.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama_media_sosial' => 'required|string|max:255',
+            'nama_akun' => 'required|string|max:255',
+            'link_akun' => 'nullable|string|max:255',
+        ]);
+        Medsos::create($request->all());
+        return redirect()->route('data.medsos.index')->with('success', 'Akun medsos berhasil ditambah.');
+    }
+
+    public function show($id)
+    {
+        $medsos = Medsos::findOrFail($id);
+        return view('super-admin.data.medsos.show', compact('medsos'));
+    }
+
+    public function edit($id)
+    {
+        $medsos = Medsos::findOrFail($id);
+        return view('super-admin.data.medsos.edit', compact('medsos'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_media_sosial' => 'required|string|max:255',
+            'nama_akun' => 'required|string|max:255',
+            'link_akun' => 'nullable|string|max:255',
+        ]);
+        $medsos = Medsos::findOrFail($id);
+        $medsos->update($request->all());
+        return redirect()->route('data.medsos.index')->with('success', 'Akun medsos berhasil diupdate.');
+    }
+
+    public function destroy($id)
+    {
+        $medsos = Medsos::findOrFail($id);
+        $medsos->delete();
+        return redirect()->route('data.medsos.index')->with('success', 'Akun medsos berhasil dihapus.');
+    }
+}

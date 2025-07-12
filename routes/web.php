@@ -7,6 +7,10 @@ use App\Http\Controllers\PenyalahgunaanController;
 use App\Http\Controllers\PetaController;
 use App\Http\Controllers\DataDesaController;
 use App\Http\Controllers\DataIndividuTskController;
+use App\Http\Controllers\LsmController;
+use App\Http\Controllers\MedsosController;
+use App\Http\Controllers\PenjualVapeController;
+use App\Http\Controllers\PerusahaanFarmasiPrekursorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -87,12 +91,43 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
         return view('super-admin.data.kasus');
     })->name('data.kasus');
 
+    Route::get('/lsm', [LsmController::class, 'index'])->name('data.lsm.index');
+    Route::get('/lsm/create', [LsmController::class, 'create'])->name('data.lsm.create');
+    Route::get('/lsm/{id}', [LsmController::class, 'show'])->name('data.lsm.show');
+    Route::post('/lsm/store', [LsmController::class, 'store'])->name('data.lsm.store');
+
     Route::get('/data-desa', [DataDesaController::class, 'index'])->name('data.desa');
     Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');
     Route::get('/api/desa-detail/{id}', [DataDesaController::class, 'detail'])->name('api.desa.detail');
     Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
     Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
     Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
+
+    Route::get('/medsos', [MedsosController::class, 'index'])->name('data.medsos.index');
+    Route::get('/medsos/create', [MedsosController::class, 'create'])->name('data.medsos.create');
+    Route::post('/medsos', [MedsosController::class, 'store'])->name('data.medsos.store');
+    Route::get('/medsos/{id}', [MedsosController::class, 'show'])->name('data.medsos.show');
+    Route::get('/medsos/{id}/edit', [MedsosController::class, 'edit'])->name('data.medsos.edit');
+    Route::put('/medsos/{id}', [MedsosController::class, 'update'])->name('data.medsos.update');
+    Route::delete('/medsos/{id}', [MedsosController::class, 'destroy'])->name('data.medsos.destroy');
+
+    Route::get('/vape', [PenjualVapeController::class, 'index'])->name('data.vape.index');
+    Route::get('/vape/create', [PenjualVapeController::class, 'create'])->name('data.vape.create');
+    Route::post('/vape', [PenjualVapeController::class, 'store'])->name('data.vape.store');
+    Route::get('/vape/{id}', [PenjualVapeController::class, 'show'])->name('data.vape.show');
+    Route::get('/vape/{id}/edit', [PenjualVapeController::class, 'edit'])->name('data.vape.edit');
+    Route::put('/vape/{id}', [PenjualVapeController::class, 'update'])->name('data.vape.update');
+    Route::delete('/vape/{id}', [PenjualVapeController::class, 'destroy'])->name('data.vape.destroy');
+
+    Route::get('/farmasi', [PerusahaanFarmasiPrekursorController::class, 'index'])->name('data.farmasi.index');
+    Route::get('/farmasi/create', [PerusahaanFarmasiPrekursorController::class, 'create'])->name('data.farmasi.create');
+    Route::post('/farmasi', [PerusahaanFarmasiPrekursorController::class, 'store'])->name('data.farmasi.store');
+    Route::get('/farmasi/{id}', [PerusahaanFarmasiPrekursorController::class, 'show'])->name('data.farmasi.show');
+    Route::get('/farmasi/{id}/edit', [PerusahaanFarmasiPrekursorController::class, 'edit'])->name('data.farmasi.edit');
+    Route::put('/farmasi/{id}', [PerusahaanFarmasiPrekursorController::class, 'update'])->name('data.farmasi.update');
+    Route::delete('/farmasi/{id}', [PerusahaanFarmasiPrekursorController::class, 'destroy'])->name('data.farmasi.destroy');
+
+
 });
 
 // Administrator Routes

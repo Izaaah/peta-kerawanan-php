@@ -87,6 +87,22 @@
                             <option value="lanjutan">Input Data Lanjutan Penanganan</option>
                             <option value="kasus">Input Data Kasus Narkoba</option>
                             <option value="desa">Input Data Desa Geojson</option>
+                            {{-- <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
+                            <option value="penelundupan">Input Data Daerah Penyelundupan</option>
+                            <option value="thm">Input Data THM dan Manager</option>
+                            <option value="jaringan">Input Data Jaringan di Rutan dan Lapas</option>
+                            <option value="objek">Input Data Objek Vital</option>
+                            <option value="penggiat">Input Data Jaringan Penggiat</option>
+                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option> --}}
+                            <option value="lsm">Input Data LSM Narkotika</option>
+                            <option value="rehabilitasi">Input Data Lembaga Rehabilitasi</option>
+                            <option value="ekspedisi">Input Data Ekspedisi</option>
+                            <option value="transportasi">Input Data Jasa Transportasi</option>
+                            <option value="penginapan">Input Data Penginapan (Hotel & Kost)</option>
+                            <option value="medsos">Input Data Akun Sosmed</option>
+                            <option value="transportasi">Input Data Umum Tempat Transportasi</option>
+                            <option value="farmasi">Input Data Perusahan/Farmasi Prekursor</option>
+                            <option value="vape">Input Data Penjual Vape</option>
                         </select>
                     </div>
                     <div class="d-grid gap-2">
@@ -127,7 +143,11 @@ document.addEventListener('DOMContentLoaded', function() {
             'pendukung': '{{ route('super-admin.input.pendukung') }}',
             'lanjutan': '{{ route('super-admin.input.lanjutan') }}',
             'kasus': '{{ route('super-admin.input.kasus') }}',
-            'desa': '{{ route('super-admin.input.desa') }}'
+            'desa': '{{ route('super-admin.input.desa') }}',
+            'lsm': '{{ route('super-admin.data.lsm.create') }}',
+            'medsos': '{{ route('super-admin.data.medsos.create') }}',
+            'vape': '{{ route('super-admin.data.vape.create') }}',
+            'farmasi': '{{ route('super-admin.data.farmasi.create') }}',
         };
         if (routes[selectedType]) {
             window.location.href = routes[selectedType];

@@ -54,7 +54,11 @@ class ImportDesaJatim extends Command
         // Clear existing data if force option is used
         if ($this->option('force')) {
             $this->info('Menghapus data lama...');
+
+            // Disable foreign key checks temporarily
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             DesaGeojson::truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
 
         $features = $data['features'] ?? [];
@@ -73,17 +77,12 @@ class ImportDesaJatim extends Command
                 $geometry = $feature['geometry'] ?? [];
 
                 // Extract nama desa, kecamatan, kabupaten dari properties
-                $namaDesa = $properties['NAMA_DESA'] ?? $properties['nama_desa'] ?? 'Unknown';
-                $kecamatan = $properties['NAMA_KEC'] ?? $properties['nama_kec'] ?? 'Unknown';
-                $kabupaten = $properties['NAMA_KAB'] ?? $properties['nama_kab'] ?? 'Unknown';
+                $namaDesa = isset($properties['WADMKD']) && trim($properties['WADMKD']) !== '' ? trim($properties['WADMKD']) : (isset($properties['NAMA_DESA']) && trim($properties['NAMA_DESA']) !== '' ? trim($properties['NAMA_DESA']) : 'Unknown');
+                $kecamatan = isset($properties['WADMKC']) && trim($properties['WADMKC']) !== '' ? trim($properties['WADMKC']) : (isset($properties['NAMA_KEC']) && trim($properties['NAMA_KEC']) !== '' ? trim($properties['NAMA_KEC']) : 'Unknown');
+                $kabupaten = isset($properties['WADMKK']) && trim($properties['WADMKK']) !== '' ? trim($properties['WADMKK']) : (isset($properties['NAMA_KAB']) && trim($properties['NAMA_KAB']) !== '' ? trim($properties['NAMA_KAB']) : 'Unknown');
 
-                // Check if desa already exists
-                $existingDesa = DesaGeojson::where('nama_desa', $namaDesa)
-                    ->where('kecamatan', $kecamatan)
-                    ->where('kabupaten', $kabupaten)
-                    ->first();
-
-                if (!$existingDesa) {
+                // If force option is used, import all data without checking existing
+                if ($this->option('force')) {
                     DesaGeojson::create([
                         'nama_desa' => $namaDesa,
                         'kecamatan' => $kecamatan,
@@ -91,6 +90,22 @@ class ImportDesaJatim extends Command
                         'geometry' => $geometry
                     ]);
                     $imported++;
+                } else {
+                    // Check if desa already exists only when not using force
+                    $existingDesa = DesaGeojson::where('nama_desa', $namaDesa)
+                        ->where('kecamatan', $kecamatan)
+                        ->where('kabupaten', $kabupaten)
+                        ->first();
+
+                    if (!$existingDesa) {
+                        DesaGeojson::create([
+                            'nama_desa' => $namaDesa,
+                            'kecamatan' => $kecamatan,
+                            'kabupaten' => $kabupaten,
+                            'geometry' => $geometry
+                        ]);
+                        $imported++;
+                    }
                 }
 
             } catch (\Exception $e) {

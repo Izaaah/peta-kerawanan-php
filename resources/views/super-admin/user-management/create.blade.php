@@ -3,111 +3,226 @@
 @section('content')
 @include('components.superadmin-navbar')
 
-<div class="container-fluid px-4">
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight lg:ml-[100px] lg:mt-[65px]">
-            {{ __('Create New User') }}
-        </h2>
-    </x-slot>
+<div class="px-4 py-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Tambah Data Individu TSK</h1>
+            <p class="text-sm text-gray-500">Silakan lengkapi formulir berikut dengan data yang akurat.</p>
+        </div>
+        <a href="{{ route('super-admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
+            <i class="fas fa-arrow-left mr-2"></i> Kembali
+        </a>
+    </div>
 
-    <div class="flex h-screen">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Form Input -->
+        <div class="lg:col-span-2">
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-blue-600 mb-4">Formulir Data Individu</h2>
 
-        <!-- Main content with offset for fixed sidebar -->
-        <div class="flex flex-col flex-1">
-            <div class="flex-1">
-                <div class="py-6">
-                    <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Create New User</h3>
-                                    <a href="{{ route('super-admin.user-management.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                                        </svg>
-                                        Back to Users
-                                    </a>
-                                </div>
+                @if(session('error'))
+                    <div class="bg-red-100 text-red-800 text-sm p-3 rounded mb-4">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-                                <form action="{{ route('super-admin.user-management.store') }}" method="POST">
-                                    @csrf
+                <form action="{{ route('super-admin.data.individu.store') }}" method="POST" id="individuForm">
+                    @csrf
 
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <!-- Name -->
-                                        <div>
-                                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                            @error('name')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-
-                                        <!-- Username -->
-                                        <div>
-                                            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
-                                            <input type="text" name="username" id="username" value="{{ old('username') }}" required
-                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                            @error('username')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-
-                                        <!-- Email -->
-                                        <div>
-                                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email (Optional)</label>
-                                            <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                            @error('email')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-
-                                        <!-- Password -->
-                                        <div>
-                                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                                            <input type="password" name="password" id="password" required
-                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                            @error('password')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-
-                                        <!-- Password Confirmation -->
-                                        <div>
-                                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm Password</label>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" required
-                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                        </div>
-
-                                        <!-- Role -->
-                                        <div class="md:col-span-2">
-                                            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Role</label>
-                                            <select name="role" id="role" required
-                                                class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                                                <option value="">Select Role</option>
-                                                <option value="super-admin" {{ old('role') == 'super-admin' ? 'selected' : '' }}>Super Admin</option>
-                                                <option value="administrator" {{ old('role') == 'administrator' ? 'selected' : '' }}>Administrator</option>
-                                                <option value="operator" {{ old('role') == 'operator' ? 'selected' : '' }}>Operator</option>
-                                            </select>
-                                            @error('role')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-6 flex justify-end">
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            Create User
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
+                            <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
+                            <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="nkk" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor KK</label>
+                            <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                            <select name="status" id="status" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Status</option>
+                                <option value="Napi">Napi</option>
+                                <option value="Non napi">Non napi</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="provinsi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Provinsi</label>
+                            <input type="text" name="provinsi" id="provinsi" value="Jawa Timur" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="kabupaten" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kabupaten</label>
+                            <select name="kabupaten" id="kabupaten" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Kabupaten</option>
+                                @foreach($kabupatenList as $kabupaten)
+                                    <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label for="kecamatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kecamatan</label>
+                            <select name="kecamatan" id="kecamatan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Kecamatan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="kelurahan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kelurahan/Desa</label>
+                            <select name="kelurahan" id="kelurahan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Kelurahan/Desa</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat Lengkap</label>
+                            <textarea name="alamat" id="alamat" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                        </div>
+                        <div>
+                            <label for="nama_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Ayah</label>
+                            <input type="text" name="nama_ayah" id="nama_ayah" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="nik_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK Ayah</label>
+                            <input type="text" name="nik_ayah" id="nik_ayah" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="nama_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Ibu</label>
+                            <input type="text" name="nama_ibu" id="nama_ibu" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="nik_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK Ibu</label>
+                            <input type="text" name="nik_ibu" id="nik_ibu" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="peran_jaringan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Peran dalam Jaringan</label>
+                            <select name="peran_jaringan" id="peran_jaringan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Peran</option>
+                                <option value="koordinator informan">Koordinator Informan</option>
+                                <option value="informan">Informan</option>
+                                <option value="kurir">Kurir</option>
+                                <option value="gudang">Gudang</option>
+                                <option value="broker">Broker</option>
+                                <option value="bandar">Bandar</option>
+                                <option value="beking">Beking</option>
+                                <option value="tidak tahu">Tidak Tahu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="jenis_narkotika" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Narkotika</label>
+                            <input type="text" name="jenis_narkotika" id="jenis_narkotika" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="skala_kelas" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Skala Kelas</label>
+                            <select name="skala_kelas" id="skala_kelas" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Skala</option>
+                                <option value="dibawah 10gr">Dibawah 10gr</option>
+                                <option value="dibawah1ons">Dibawah 1 ons</option>
+                                <option value="dibawah1kg">Dibawah 1kg</option>
+                                <option value="diatas1kg">Diatas 1kg</option>
+                                <option value="tidak tahu">Tidak Tahu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sumber_informasi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sumber Informasi</label>
+                            <select name="sumber_informasi" id="sumber_informasi" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Pilih Sumber</option>
+                                <option value="informan">Informan</option>
+                                <option value="analisa sosmed">Analisa Sosmed</option>
+                                <option value="analisa aliran dana">Analisa Aliran Dana</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="modus_operasi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Modus Operasi</label>
+                            <textarea name="modus_operasi" id="modus_operasi" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" name="residivis" id="residivis" value="1" class="rounded">
+                            <label for="residivis" class="text-sm text-gray-700 dark:text-gray-300">Residivis</label>
                         </div>
                     </div>
+
+                    <div class="flex justify-end gap-2 mt-6">
+                        <button type="reset" class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-md">Reset</button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md inline-flex items-center">
+                            <i class="fas fa-save mr-2"></i> Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div>
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-blue-600 mb-4">Informasi Penting</h2>
+                <div class="bg-blue-100 text-blue-800 text-sm p-3 rounded mb-4">
+                    <ul class="list-disc pl-5">
+                        <li>Data akan terhubung dengan data kasus narkoba secara otomatis.</li>
+                        <li>Pilih status "Napi" jika individu terlibat kasus.</li>
+                        <li>Desa akan dipetakan berdasarkan kecamatan dan kelurahan.</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-100 text-yellow-800 text-sm p-3 rounded">
+                    <i class="fas fa-exclamation-triangle mr-1"></i> NIK harus unik dan tidak boleh duplikat.
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('kabupaten')?.addEventListener('change', function() {
+        const kabupaten = this.value;
+        const kecamatanSelect = document.getElementById('kecamatan');
+        const kelurahanSelect = document.getElementById('kelurahan');
+
+        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+
+        if (kabupaten) {
+            fetch(`/super-admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(kecamatan => {
+                        const option = document.createElement('option');
+                        option.value = kecamatan;
+                        option.textContent = kecamatan;
+                        kecamatanSelect.appendChild(option);
+                    });
+                });
+        }
+    });
+
+    document.getElementById('kecamatan')?.addEventListener('change', function() {
+        const kecamatan = this.value;
+        const kelurahanSelect = document.getElementById('kelurahan');
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+
+        if (kecamatan) {
+            fetch(`/super-admin/api/desa-data?kecamatan=${encodeURIComponent(kecamatan)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.data) {
+                        data.data.forEach(desa => {
+                            const option = document.createElement('option');
+                            option.value = desa.nama_desa;
+                            option.textContent = desa.nama_desa;
+                            kelurahanSelect.appendChild(option);
+                        });
+                    }
+                });
+        }
+    });
+
+    ['nik', 'nkk'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 16);
+        });
+    });
+});
+</script>
 @endsection

@@ -87,6 +87,7 @@
                             <option value="lanjutan">Data Lanjutan Penanganan</option>
                             <option value="kasus">Data Kasus Narkoba</option>
                             <option value="desa">Data Desa Geojson</option>
+                            <option value="lsm">Data LSM Narkotika</option>
                         </select>
                     </div>
                     <div class="d-grid gap-2">
@@ -127,7 +128,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'pendukung': '{{ route('super-admin.data.pendukung') }}',
             'lanjutan': '{{ route('super-admin.data.lanjutan') }}',
             'kasus': '{{ route('super-admin.data.kasus') }}',
-            'desa': '{{ route('super-admin.data.desa') }}'
+            'desa': '{{ route('super-admin.data.desa') }}',
+            'lsm': '{{ route('super-admin.data.lsm.index') }}'
         };
         if (routes[selectedType]) {
             window.location.href = routes[selectedType];

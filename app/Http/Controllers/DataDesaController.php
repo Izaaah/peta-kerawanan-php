@@ -9,20 +9,33 @@ use Illuminate\Support\Facades\DB;
 
 class DataDesaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stats = DesaGeojson::getStats();
+        $kabupatenList = \App\Models\DesaGeojson::select('kabupaten')->distinct()->pluck('kabupaten');
 
-        // Get sample data for display
-        $sampleDesa = DesaGeojson::withCount('kasusNarkoba')
-            ->orderBy('kasus_narkoba_count', 'desc')
-            ->limit(10)
-            ->get();
+        $query = \App\Models\DesaGeojson::query();
+        $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+              ->where('nama_desa', 'not like', '%/%')
+              ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+              ->where('kecamatan', 'not like', '%/%')
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+              ->where('kabupaten', 'not like', '%/%');
 
-        // Get kabupaten list
-        $kabupatenList = DesaGeojson::getKabupatenList();
+        $desaList = $query->get();
 
-        return view('super-admin.data.desa', compact('stats', 'sampleDesa', 'kabupatenList'));
+        // Statistik berdasarkan hasil filter
+        $stats = [
+            'total_desa' => $desaList->count(),
+            'desa_dengan_kasus' => $desaList->filter(function($desa) { return $desa->kasusNarkoba()->count() > 0; })->count(),
+            'total_kasus' => $desaList->sum(function($desa) { return $desa->kasusNarkoba()->count(); }),
+            'kabupaten_count' => $desaList->pluck('kabupaten')->unique()->count(),
+            'kecamatan_count' => $desaList->pluck('kecamatan')->unique()->count(),
+        ];
+
+        return view('super-admin.data.desa', compact('stats', 'kabupatenList', 'desaList'));
     }
 
     public function getData(Request $request)
@@ -143,7 +156,45 @@ class DataDesaController extends Controller
 
     public function getKecamatanList(Request $request)
     {
-        $kecamatan = DesaGeojson::getKecamatanList($request->kabupaten);
-        return response()->json($kecamatan);
+        $kabupaten = $request->kabupaten;
+        $query = \App\Models\DesaGeojson::query();
+        $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+              ->where('nama_desa', 'not like', '%/%')
+              ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+              ->where('kecamatan', 'not like', '%/%')
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+              ->where('kabupaten', 'not like', '%/%');
+        if ($kabupaten) {
+            $query->where('kabupaten', $kabupaten);
+        }
+        $kecamatanList = $query->select('kecamatan')->distinct()->pluck('kecamatan');
+        return response()->json($kecamatanList);
+    }
+
+    public function getDesaList(Request $request)
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $query = \App\Models\DesaGeojson::query();
+        $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+              ->where('nama_desa', 'not like', '%/%')
+              ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+              ->where('kecamatan', 'not like', '%/%')
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+              ->where('kabupaten', 'not like', '%/%');
+        if ($kabupaten) {
+            $query->where('kabupaten', $kabupaten);
+        }
+        if ($kecamatan) {
+            $query->where('kecamatan', $kecamatan);
+        }
+        $desaList = $query->select('nama_desa')->distinct()->pluck('nama_desa');
+        return response()->json($desaList);
     }
 }
