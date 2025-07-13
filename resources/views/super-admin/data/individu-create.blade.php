@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Tambah Data Individu TSK</h1>
+            <h1 class="text-2xl font-bold text-gray-800 light:text-white">Tambah Data Individu TSK</h1>
             <p class="text-sm text-gray-500">Silakan lengkapi formulir berikut dengan data yang akurat.</p>
         </div>
         <a href="{{ route('super-admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
@@ -15,11 +15,11 @@
         </a>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-8 max-w-5xl mx-auto">
+    <div class="bg-white rounded-lg shadow p-10 max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-7 gap-6">
             <div class="lg:col-span-5">
                 <!-- Form Input -->
-                <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <div class="bg-white light:bg-gray-800 shadow rounded-lg p-6">
                     <h2 class="text-lg font-semibold text-blue-600 mb-4">Formulir Data Individu</h2>
 
                     @if(session('error'))
@@ -32,50 +32,48 @@
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="md:col-span-2">
-                                <div>
-                                    <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
-                                    <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                </div>
+                            <div class="md:col-span-2 mb-4">
+                                <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
+                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                             </div>
-                            <div>
-                                <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
-                                <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <div class="mb-4">
+                                <label for="nik" class="block text-base font-medium text-black">NIK</label>
+                                <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                             </div>
-                            <div>
-                                <label for="nkk" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor KK</label>
-                                <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <div class="mb-4">
+                                <label for="nkk" class="block text-base font-medium text-black">Nomor KK</label>
+                                <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                             </div>
                             <!-- Input Dinamis Nomor Telepon -->
-                            <div class="md:col-span-2" id="telepon-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor Telepon</label>
+                            <div class="md:col-span-2 mb-4" id="telepon-wrapper">
+                                <label class="block text-base font-medium text-black">Nomor Telepon</label>
                                 <div id="telepon-fields">
                                     <div class="flex items-center gap-2 mt-1 telepon-row">
-                                        <input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nomor Telepon">
+                                        <input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                                     </div>
                                 </div>
                             </div>
                             <!-- Input Dinamis No Rekening -->
-                            <div class="md:col-span-2" id="rekening-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Rekening</label>
+                            <div class="md:col-span-2 mb-4" id="rekening-wrapper">
+                                <label class="block text-base font-medium text-black">No. Rekening</label>
                                 <div id="rekening-fields">
                                     <div class="flex items-center gap-2 mt-1 rekening-row">
-                                        <input type="number" name="rekening[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="No. Rekening">
+                                        <input type="number" name="rekening[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                                     </div>
                                 </div>
                             </div>
                             <!-- Input Dinamis No E-Wallet -->
-                            <div class="md:col-span-2" id="ewallet-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. E-Wallet</label>
+                            <div class="md:col-span-2 mb-4" id="ewallet-wrapper">
+                                <label class="block text-base font-medium text-black">No. E-Wallet</label>
                                 <div id="ewallet-fields">
                                     <div class="flex items-center gap-2 mt-1 ewallet-row">
-                                        <input type="number" name="ewallet[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="No. E-Wallet">
+                                        <input type="number" name="ewallet[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <label for="provinsi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Provinsi</label>
+                                <label for="provinsi" class="block text-sm font-medium text-black  ">Provinsi</label>
                                 <select name="provinsi" id="provinsi" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                                     <option value="Jawa Timur" selected>Jawa Timur</option>
                                     <option value="lainnya">Lainnya</option>
@@ -83,20 +81,20 @@
                             </div>
                             <div id="wilayah-jatim">
                                 <div>
-                                    <label for="kabupaten" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kabupaten</label>
+                                    <label for="kabupaten" class="block text-sm font-medium text-black   mb-1">Kabupaten</label>
                                     <select name="kabupaten" id="kabupaten" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Pilih Kabupaten</option>
                                     </select>
                                 </div>
                                 {{-- <div class="grid md:grid-rows-1 gap-4"> --}}
                                 <div>
-                                    <label for="kecamatan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kecamatan</label>
+                                    <label for="kecamatan" class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
                                     <select name="kecamatan" id="kecamatan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Pilih Kecamatan</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="kelurahan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kelurahan/Desa</label>
+                                    <label for="kelurahan" class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa</label>
                                     <select name="kelurahan" id="kelurahan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Pilih Kelurahan/Desa</option>
                                     </select>
@@ -106,46 +104,46 @@
                             <div id="wilayah-lainnya" class="hidden">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Provinsi</label>
+                                        <label class="block text-sm font-medium text-black   mb-1">Provinsi</label>
                                         <input type="text" name="provinsi_lain" id="provinsi_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Provinsi">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kabupaten</label>
+                                        <label class="block text-sm font-medium text-black   mb-1">Kabupaten</label>
                                         <input type="text" name="kabupaten_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Kabupaten">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kecamatan</label>
+                                        <label class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
                                         <input type="text" name="kecamatan_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Kecamatan">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kelurahan/Desa</label>
+                                        <label class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa</label>
                                         <input type="text" name="kelurahan_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Kelurahan/Desa">
                                     </div>
                                 </div>
                             </div>
                             <div class="md:col-span-2">
-                                <label for="alamat" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat Lengkap (Dusun/Jalan/RT/RW)</label>
+                                <label for="alamat" class="block text-sm font-medium text-black  ">Alamat Lengkap (Dusun/Jalan/RT/RW)</label>
                                 <textarea name="alamat" id="alamat" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
                             </div>
                             <div>
-                                <label for="nama_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Ayah</label>
+                                <label for="nama_ayah" class="block text-sm font-medium text-black  ">Nama Ayah</label>
                                 <input type="text" name="nama_ayah" id="nama_ayah" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                             <div>
-                                <label for="nik_ayah" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK Ayah</label>
+                                <label for="nik_ayah" class="block text-sm font-medium text-black  ">NIK Ayah</label>
                                 <input type="text" name="nik_ayah" id="nik_ayah" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                             <div>
-                                <label for="nama_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Ibu</label>
+                                <label for="nama_ibu" class="block text-sm font-medium text-black  ">Nama Ibu</label>
                                 <input type="text" name="nama_ibu" id="nama_ibu" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                             <div>
-                                <label for="nik_ibu" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK Ibu</label>
+                                <label for="nik_ibu" class="block text-sm font-medium text-black  ">NIK Ibu</label>
                                 <input type="text" name="nik_ibu" id="nik_ibu" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             </div>
                             <!-- Input Dinamis Nama Keluarga Lain + NIK -->
                             <div class="md:col-span-2" id="keluarga-lain-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Keluarga Lain & NIK</label>
+                                <label class="block text-sm font-medium text-black  ">Nama Keluarga Lain & NIK</label>
                                 <div id="keluarga-lain-fields">
                                     <div class="flex flex-col md:flex-row gap-2 mt-1 keluarga-lain-row">
                                         <input type="text" name="nama_keluarga_lain[]" maxlength="100" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nama Keluarga Lain">
@@ -154,7 +152,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="peran_jaringan" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Peran dalam Jaringan</label>
+                                <label for="peran_jaringan" class="block text-sm font-medium text-black  ">Peran dalam Jaringan</label>
                                 <select name="peran_jaringan" id="peran_jaringan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                                     <option value="">Pilih Peran</option>
                                     <option value="koordinator informan">Koordinator Informan</option>
@@ -167,9 +165,13 @@
                                     <option value="tidak tahu">Tidak Tahu</option>
                                 </select>
                             </div>
+                            <div>
+                                <label for="modus_operasi" class="block text-sm font-medium text-black  ">Modus Operasi</label>
+                                <textarea name="modus_operasi" id="modus_operasi" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                            </div>
                             <!-- Input Dinamis Jenis Narkotika -->
                             <div class="md:col-span-2" id="jenis-narkotika-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jenis Narkotika</label>
+                                <label class="block text-sm font-medium text-black  ">Jenis Narkotika</label>
                                 <div id="jenis-narkotika-fields">
                                     <div class="flex items-center gap-2 mt-1 jenis-narkotika-row">
                                         <input type="text" name="jenis_narkotika[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Jenis Narkotika">
@@ -177,7 +179,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="skala_kelas" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Skala Kelas</label>
+                                <label for="skala_kelas" class="block text-sm font-medium text-black  ">Skala Kelas</label>
                                 <select name="skala_kelas" id="skala_kelas" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                                     <option value="">Pilih Skala</option>
                                     <option value="dibawah 10gr">Dibawah 10gr</option>
@@ -188,7 +190,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                                <label for="status" class="block text-sm font-medium text-black  ">Status</label>
                                 <select name="status" id="status" required class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm appearance-none">
                                     <option value="">Pilih Status</option>
                                     <option value="Napi">Napi</option>
@@ -197,7 +199,7 @@
                             </div>
                             <!-- Pilihan Resisivis -->
                             <div class="md:col-span-2" id="residivis-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Residivis</label>
+                                <label class="block text-sm font-medium text-black   mb-1">Residivis</label>
                                 <div class="flex items-center gap-4 mt-1">
                                     <label class="inline-flex items-center">
                                         <input type="radio" name="residivis" value="1" class="form-radio text-blue-600" id="residivis-ya">
@@ -210,7 +212,7 @@
                                 </div>
                                 <div id="residivis-detail" class="mt-4 hidden bg-gray-50 p-4 rounded-md border border-gray-200">
                                     <div class="mb-2" id="aph-m-wrapper">
-                                        <label class="block text-xs font-medium text-gray-700 mb-1">a. APH yang menangani</label>
+                                        <label class="block text-xs font-medium text-black mb-1">a. APH yang menangani</label>
                                         <div id="aph-m-fields">
                                             <div class="flex items-center gap-2 mt-1 aph-m-row">
                                                 <input type="text" name="aph_menangani[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="APH yang menangani">
@@ -218,7 +220,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-2" id="pasal-wrapper">
-                                        <label class="block text-xs font-medium text-gray-700 mb-1">b. Pasal yang disangkakan</label>
+                                        <label class="block text-xs font-medium text-black mb-1">b. Pasal yang disangkakan</label>
                                         <div id="pasal-fields">
                                             <div class="flex items-center gap-2 mt-1 pasal-row">
                                                 <input type="text" name="pasal_disangkakan[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Pasal yang disangkakan">
@@ -226,7 +228,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-2" id="tkp-wrapper">
-                                        <label class="block text-xs font-medium text-gray-700 mb-1">c. TKP</label>
+                                        <label class="block text-xs font-medium text-black mb-1">c. TKP</label>
                                         <div id="tkp-fields">
                                             <div class="tkp-row space-y-2 mt-1">
                                                 <select name="tkp_provinsi[]" class="block w-full rounded-md border-gray-300 shadow-sm tkp-provinsi">
@@ -255,7 +257,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-2" id="vonis-wrapper">
-                                        <label class="block text-xs font-medium text-gray-700 mb-1">d. Vonis</label>
+                                        <label class="block text-xs font-medium text-black mb-1">d. Vonis</label>
                                         <div id="vonis-fields">
                                             <div class="flex items-center gap-2 mt-1 vonis-row">
                                                 <input type="text" name="vonis[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Vonis">
@@ -263,7 +265,7 @@
                                         </div>
                                     </div>
                                     <div id="lapas-wrapper">
-                                        <label class="block text-xs font-medium text-gray-700 mb-1">e. Lapas akhir</label>
+                                        <label class="block text-xs font-medium text-black mb-1">e. Lapas akhir</label>
                                         <div id="lapas-fields">
                                             <div class="flex items-center gap-2 mt-1 lapas-row">
                                                 <input type="text" name="lapas_akhir[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Lapas akhir">
@@ -274,7 +276,7 @@
                             </div>
                             <!-- Input Dinamis Keterangan + Upload Foto (ikon upload saja) -->
                             <div class="md:col-span-2" id="foto-wrapper">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Keterangan & Upload Foto</label>
+                                <label class="block text-sm font-medium text-black  ">Keterangan & Upload Foto</label>
                                 <div id="foto-fields">
                                     <div class="flex items-center gap-2 mt-1 foto-row">
                                         <input type="text" name="keterangan_foto[]" maxlength="100" class="block w-40 rounded-md border-gray-300 shadow-sm" placeholder="Keterangan Foto">
@@ -303,7 +305,7 @@
 
             <!-- Sidebar Info -->
             <div class="lg:col-span-2">
-                <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-xs">
+                <div class="bg-white light:bg-gray-800 shadow rounded-lg p-4 text-xs">
                     <h2 class="text-base font-semibold text-blue-600 mb-3">Informasi Penting</h2>
                     <div class="bg-blue-50 text-blue-700 text-xs p-2 rounded mb-3">
                         <ul class="list-disc pl-4">
@@ -380,7 +382,7 @@
             if (lastInput.value.trim() !== '' && rows.length < 10) {
                 const div = document.createElement('div');
                 div.className = 'flex items-center gap-2 mt-1 telepon-row';
-                div.innerHTML = `<input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nomor Telepon">
+                div.innerHTML = `<input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 <button type="button" class="hapus-telepon bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
                 wrapper.appendChild(div);
                 div.querySelector('input').addEventListener('input', addTeleponFieldIfNeeded);
@@ -407,7 +409,7 @@
             if (lastInput.value.trim() !== '' && rows.length < 10) {
                 const div = document.createElement('div');
                 div.className = 'flex items-center gap-2 mt-1 rekening-row';
-                div.innerHTML = `<input type="number" name="rekening[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="No. Rekening">
+                div.innerHTML = `<input type="number" name="rekening[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 <button type="button" class="hapus-rekening bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
                 wrapper.appendChild(div);
                 div.querySelector('input').addEventListener('input', addRekeningFieldIfNeeded);
@@ -434,7 +436,7 @@
             if (lastInput.value.trim() !== '' && rows.length < 10) {
                 const div = document.createElement('div');
                 div.className = 'flex items-center gap-2 mt-1 ewallet-row';
-                div.innerHTML = `<input type="number" name="ewallet[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="No. E-Wallet">
+                div.innerHTML = `<input type="number" name="ewallet[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 <button type="button" class="hapus-ewallet bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
                 wrapper.appendChild(div);
                 div.querySelector('input').addEventListener('input', addEwalletFieldIfNeeded);

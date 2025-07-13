@@ -157,6 +157,29 @@ class DataIndividuTskController extends Controller
                     }
                 }
             }
+            // TKP Residivis
+            if ($request->has('tkp_provinsi')) {
+                $prov = $request->tkp_provinsi ?? [];
+                $kab = $request->tkp_kabupaten ?? [];
+                $kec = $request->tkp_kecamatan ?? [];
+                $desa = $request->tkp_desa ?? [];
+                $lokasi = $request->tkp_lokasi ?? [];
+                $max = max(count($prov), count($kab), count($kec), count($desa), count($lokasi));
+                for ($i = 0; $i < $max; $i++) {
+                    if (($prov[$i] ?? null) || ($kab[$i] ?? null) || ($kec[$i] ?? null) || ($desa[$i] ?? null) || ($lokasi[$i] ?? null)) {
+                        DB::table('tkp_residivis_individu')->insert([
+                            'individu_id' => $individu->id,
+                            'provinsi' => $prov[$i] ?? null,
+                            'kabupaten' => $kab[$i] ?? null,
+                            'kecamatan' => $kec[$i] ?? null,
+                            'desa' => $desa[$i] ?? null,
+                            'lokasi' => $lokasi[$i] ?? null,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            }
             // Foto
             if ($request->hasFile('foto')) {
                 foreach ($request->file('foto') as $i => $file) {
