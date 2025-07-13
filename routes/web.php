@@ -12,6 +12,7 @@ use App\Http\Controllers\MedsosController;
 use App\Http\Controllers\PenjualVapeController;
 use App\Http\Controllers\PerusahaanFarmasiPrekursorController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -162,5 +163,48 @@ Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.ke
 Route::get('/api/desa/stats', [PetaController::class, 'getDesaStats'])->name('api.desa.stats');
 Route::get('/api/desa/kabupaten/{kabupaten}', [PetaController::class, 'getDesaByKabupaten'])->name('api.desa.by-kabupaten');
 Route::get('/api/desa/{id}', [PetaController::class, 'getDesaDetail'])->name('api.desa.detail');
+
+Route::get('/api/kecamatan-list', function (Request $request) {
+    $kabupaten = $request->kabupaten;
+    $kecamatanList = \App\Models\DesaGeojson::query()
+        ->where('kabupaten', $kabupaten)
+        ->where('kecamatan', 'not like', '%/%')
+        ->where('kecamatan', 'not like', '%area%')
+        ->where('kecamatan', 'not like', '%unknown%')
+        ->distinct()
+        ->pluck('kecamatan')
+        ->sort()
+        ->values();
+    return response()->json($kecamatanList);
+});
+
+Route::get('/api/desa-list', function (Request $request) {
+    $kabupaten = $request->kabupaten;
+    $kecamatan = $request->kecamatan;
+    // console.log('Fetch desa-list', kabupaten, kecamatan);
+    $desaList = \App\Models\DesaGeojson::query()
+        ->where('kabupaten', $kabupaten)
+        ->where('kecamatan', $kecamatan)
+        ->where('nama_desa', 'not like', '%/%')
+        ->where('nama_desa', 'not like', '%area%')
+        ->where('nama_desa', 'not like', '%unknown%')
+        ->distinct()
+        ->pluck('nama_desa')
+        ->sort()
+        ->values();
+    return response()->json($desaList);
+});
+
+Route::get('/api/kabupaten-list', function (Request $request) {
+    $kabupatenList = \App\Models\DesaGeojson::query()
+        ->where('kabupaten', 'not like', '%/%')
+        ->where('kabupaten', 'not like', '%area%')
+        ->where('kabupaten', 'not like', '%unknown%')
+        ->distinct()
+        ->pluck('kabupaten')
+        ->sort()
+        ->values();
+    return response()->json($kabupatenList);
+});
 
 require __DIR__ . '/auth.php';
