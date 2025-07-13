@@ -24,9 +24,16 @@ class MedsosController extends Controller
             'nama_media_sosial' => 'required|string|max:255',
             'nama_akun' => 'required|string|max:255',
             'link_akun' => 'nullable|string|max:255',
+            'nama_media_sosial_lainnya' => 'required_if:nama_media_sosial,lainnya',
         ]);
-        Medsos::create($request->all());
-        return redirect()->route('data.medsos.index')->with('success', 'Akun medsos berhasil ditambah.');
+        $data = $request->all();
+        if ($data['nama_media_sosial'] === 'lainnya') {
+            $data['nama_media_sosial'] = $data['nama_media_sosial_lainnya'];
+        }
+        unset($data['nama_media_sosial_lainnya']); // pastikan field ini tidak ikut disimpan
+
+        Medsos::create($data);
+        return redirect()->route('super-admin.data.medsos.index')->with('success', 'Akun medsos berhasil ditambah.');
     }
 
     public function show($id)
@@ -50,13 +57,13 @@ class MedsosController extends Controller
         ]);
         $medsos = Medsos::findOrFail($id);
         $medsos->update($request->all());
-        return redirect()->route('data.medsos.index')->with('success', 'Akun medsos berhasil diupdate.');
+        return redirect()->route('super-admin.data.medsos.index')->with('success', 'Akun medsos berhasil diupdate.');
     }
 
     public function destroy($id)
     {
         $medsos = Medsos::findOrFail($id);
         $medsos->delete();
-        return redirect()->route('data.medsos.index')->with('success', 'Akun medsos berhasil dihapus.');
+        return redirect()->route('super-admin.data.medsos.index')->with('success', 'Akun medsos berhasil dihapus.');
     }
 }
