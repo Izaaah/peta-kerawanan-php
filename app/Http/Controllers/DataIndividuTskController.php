@@ -56,61 +56,126 @@ class DataIndividuTskController extends Controller
             'nik_ibu' => 'nullable|string|max:20',
             'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
             'modus_operasi' => 'nullable|string',
-            'jenis_narkotika' => 'nullable|string',
+            'jenis_narkotika' => 'nullable', // array/string
             'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
             'status' => 'required|in:Napi,Non napi',
-            'residivis' => 'boolean',
+            'residivis' => 'nullable|boolean',
             'sumber_informasi' => 'nullable|in:informan,analisa sosmed,analisa aliran dana',
-            'desa_geojson_id' => 'nullable|exists:desa_geojson,id'
+            // relasi
+            'telepon' => 'nullable|array',
+            'rekening' => 'nullable|array',
+            'ewallet' => 'nullable|array',
+            'nama_keluarga_lain' => 'nullable|array',
+            'nik_keluarga_lain' => 'nullable|array',
+            // residivis detail
+            'aph_menangani' => 'nullable|array',
+            'pasal_disangkakan' => 'nullable|array',
+            'vonis' => 'nullable|array',
+            'lapas_akhir' => 'nullable|array',
+            // foto
+            'keterangan_foto' => 'nullable|array',
+            'foto' => 'nullable|array',
+            'foto.*' => 'nullable|file|image|max:2048',
         ]);
 
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
+            // Simpan data utama
+            $individu = DataIndividuTsk::create([
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'nkk' => $request->nkk,
+                'provinsi' => $request->provinsi,
+                'kabupaten' => $request->kabupaten,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'alamat' => $request->alamat,
+                'nama_ayah' => $request->nama_ayah,
+                'nik_ayah' => $request->nik_ayah,
+                'nama_ibu' => $request->nama_ibu,
+                'nik_ibu' => $request->nik_ibu,
+                'peran_jaringan' => $request->peran_jaringan,
+                'modus_operasi' => $request->modus_operasi,
+                'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : $request->jenis_narkotika,
+                'skala_kelas' => $request->skala_kelas,
+                'status' => $request->status,
+                'residivis' => $request->has('residivis'),
+                'sumber_informasi' => $request->sumber_informasi,
+            ]);
 
-            $data = $request->all();
-            $data['residivis'] = $request->has('residivis');
-
-            // Find desa based on kelurahan
-            if ($request->filled('kelurahan')) {
-                $desa = DesaGeojson::where('nama_desa', 'like', '%' . $request->kelurahan . '%')
-                    ->where('kecamatan', $request->kecamatan)
-                    ->where('kabupaten', $request->kabupaten)
-                    ->first();
-
-                if ($desa) {
-                    $data['desa_geojson_id'] = $desa->id;
+            // Telepon
+            if ($request->filled('telepon')) {
+                foreach ($request->telepon as $telp) {
+                    if ($telp) {
+                        $individu->telepon()->create(['nomor_telepon' => $telp]);
+                    }
+                }
+            }
+            // Rekening
+            if ($request->filled('rekening')) {
+                foreach ($request->rekening as $rek) {
+                    if ($rek) {
+                        $individu->rekening()->create(['no_rekening' => $rek]);
+                    }
+                }
+            }
+            // Ewallet
+            if ($request->filled('ewallet')) {
+                foreach ($request->ewallet as $ew) {
+                    if ($ew) {
+                        $individu->ewallet()->create(['no_ewallet' => $ew]);
+                    }
+                }
+            }
+            // Keluarga Lain
+            if ($request->filled('nama_keluarga_lain') && $request->filled('nik_keluarga_lain')) {
+                foreach ($request->nama_keluarga_lain as $i => $nama) {
+                    $nik = $request->nik_keluarga_lain[$i] ?? null;
+                    if ($nama || $nik) {
+                        $individu->keluargaLain()->create([
+                            'nama_keluarga' => $nama,
+                            'nik' => $nik,
+                        ]);
+                    }
+                }
+            }
+            // Residivis Detail
+            if ($request->has('residivis') && $request->residivis) {
+                $aph = $request->aph_menangani ?? [];
+                $pasal = $request->pasal_disangkakan ?? [];
+                $vonis = $request->vonis ?? [];
+                $lapas = $request->lapas_akhir ?? [];
+                $max = max(count($aph), count($pasal), count($vonis), count($lapas));
+                for ($i = 0; $i < $max; $i++) {
+                    if (($aph[$i] ?? null) || ($pasal[$i] ?? null) || ($vonis[$i] ?? null) || ($lapas[$i] ?? null)) {
+                        $individu->residivisDetail()->create([
+                            'aph' => $aph[$i] ?? null,
+                            'pasal' => $pasal[$i] ?? null,
+                            'vonis' => $vonis[$i] ?? null,
+                            'lapas_akhir' => $lapas[$i] ?? null,
+                        ]);
+                    }
+                }
+            }
+            // Foto
+            if ($request->hasFile('foto')) {
+                foreach ($request->file('foto') as $i => $file) {
+                    if ($file) {
+                        $path = $file->store('foto-individu', 'public');
+                        $keterangan = $request->keterangan_foto[$i] ?? null;
+                        $individu->foto()->create([
+                            'file_foto' => $path,
+                            'keterangan' => $keterangan,
+                        ]);
+                    }
                 }
             }
 
-            $individu = DataIndividuTsk::create($data);
-
-            // Create kasus narkoba entry if status is Napi
-            if ($request->status === 'Napi') {
-                KasusNarkoba::create([
-                    'nama_desa' => $request->kelurahan,
-                    'kecamatan' => $request->kecamatan,
-                    'kabupaten' => $request->kabupaten,
-                    'nama_tsk' => $request->nama,
-                    'nik' => $request->nik,
-                    'jenis_narkotika' => $request->jenis_narkotika,
-                    'skala_kelas' => $request->skala_kelas,
-                    'status' => $request->status,
-                    'residivis' => $data['residivis'],
-                    'peran_jaringan' => $request->peran_jaringan,
-                    'modus_operasi' => $request->modus_operasi,
-                    'sumber_informasi' => $request->sumber_informasi
-                ]);
-            }
-
             DB::commit();
-
-            return redirect()->route('super-admin.data.individu')
-                ->with('success', 'Data individu TSK berhasil ditambahkan');
-
+            return redirect()->route('super-admin.data.individu')->with('success', 'Data individu TSK berhasil ditambahkan');
         } catch (\Exception $e) {
-            DB::rollback();
-            return back()->withInput()
-                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            DB::rollBack();
+            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
@@ -208,7 +273,6 @@ class DataIndividuTskController extends Controller
 
             return redirect()->route('super-admin.data.individu')
                 ->with('success', 'Data individu TSK berhasil diperbarui');
-
         } catch (\Exception $e) {
             DB::rollback();
             return back()->withInput()
@@ -224,7 +288,6 @@ class DataIndividuTskController extends Controller
 
             return redirect()->route('super-admin.data.individu')
                 ->with('success', 'Data individu TSK berhasil dihapus');
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
@@ -285,14 +348,26 @@ class DataIndividuTskController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ];
 
-        $callback = function() use ($data) {
+        $callback = function () use ($data) {
             $file = fopen('php://output', 'w');
 
             // Add headers
             fputcsv($file, [
-                'ID', 'Nama', 'NIK', 'NKK', 'Provinsi', 'Kabupaten', 'Kecamatan',
-                'Kelurahan', 'Alamat', 'Status', 'Peran Jaringan', 'Residivis',
-                'Jenis Narkotika', 'Skala Kelas', 'Sumber Informasi'
+                'ID',
+                'Nama',
+                'NIK',
+                'NKK',
+                'Provinsi',
+                'Kabupaten',
+                'Kecamatan',
+                'Kelurahan',
+                'Alamat',
+                'Status',
+                'Peran Jaringan',
+                'Residivis',
+                'Jenis Narkotika',
+                'Skala Kelas',
+                'Sumber Informasi'
             ]);
 
             // Add data

@@ -857,6 +857,16 @@
                     kabupatenSelect.appendChild(option);
                 });
             });
+
+        // Debug submit form
+        document.getElementById('individuForm').addEventListener('submit', function(e) {
+            console.log('Form submitted!');
+            // Tampilkan semua data form yang akan dikirim
+            const formData = new FormData(this);
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+        });
     });
 </script>
 @endsection
