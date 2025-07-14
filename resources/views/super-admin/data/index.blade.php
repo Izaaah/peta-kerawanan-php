@@ -82,12 +82,27 @@
                         </span>
                         <select class="form-select form-select-lg border-start-0" id="dataType" name="type" required style="border-radius:0 0.75rem 0.75rem 0;">
                             <option value="">-- Pilih Jenis Data --</option>
-                            <option value="individu">Data Individu TSK</option>
-                            <option value="pendukung">Data Pendukung Kasus</option>
-                            <option value="lanjutan">Data Lanjutan Penanganan</option>
-                            <option value="kasus">Data Kasus Narkoba</option>
-                            <option value="desa">Data Desa Geojson</option>
-                            <option value="lsm">Data LSM Narkotika</option>
+                            <option value="individu">Input Data Individu TSK</option>
+                            <option value="pendukung">Input Data Pendukung Kasus</option>
+                            <option value="lanjutan">Input Data Lanjutan Penanganan</option>
+                            <option value="kasus">Input Data Kasus Narkoba</option>
+                            <option value="desa">Input Data Desa Geojson</option>
+                            <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
+                            <option value="penelundupan">Input Data Daerah Penyelundupan</option>
+                            <option value="thm">Input Data THM dan Manager</option>
+                            <option value="jaringan">Input Data Jaringan di Rutan dan Lapas</option>
+                            <option value="objek">Input Data Objek Vital</option>
+                            <option value="penggiat">Input Data Jaringan Penggiat</option>
+                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option>
+                            <option value="lsm">Input Data LSM Narkotika</option>
+                            <option value="rehabilitasi">Input Data Lembaga Rehabilitasi</option>
+                            <option value="ekspedisi">Input Data Ekspedisi</option>
+                            <option value="transportasi">Input Data Jasa Transportasi</option>
+                            <option value="penginapan">Input Data Penginapan (Hotel & Kost)</option>
+                            <option value="medsos">Input Data Akun Sosmed</option>
+                            <option value="transportasi">Input Data Umum Tempat Transportasi</option>
+                            <option value="farmasi">Input Data Perusahan/Farmasi Prekursor</option>
+                            <option value="vape">Input Data Penjual Vape</option>
                         </select>
                     </div>
                     <div class="d-grid gap-2">
@@ -97,7 +112,7 @@
                     </div>
                 </form>
                 <div class="mt-4 pt-3 border-top text-center">
-                    <span class="text-muted small">Tersedia <span class="fw-bold text-primary">5</span> jenis data utama untuk dikelola.</span>
+                    <span class="text-muted small">Tersedia <span class="fw-bold text-primary">16</span> jenis data utama untuk dikelola.</span>
                 </div>
             </div>
             <div class="alert alert-info text-center mt-3" style="border-radius:0.75rem;">
@@ -130,6 +145,14 @@ document.addEventListener('DOMContentLoaded', function() {
             'kasus': '{{ route('super-admin.data.kasus') }}',
             'desa': '{{ route('super-admin.data.desa') }}',
             'lsm': '{{ route('super-admin.data.lsm.index') }}'
+            'medsos': '{{ route('super-admin.data.medsos.index') }}',
+            'vape': '{{ route('super-admin.data.vape.index') }}',
+            'farmasi': '{{ route('super-admin.data.farmasi.index') }}',
+            'transportasi': '{{ route('super-admin.data.transportasi.index') }}',
+            'penginapan': '{{ route('super-admin.data.penginapan.index') }}',
+            'ekspedisi': '{{ route('super-admin.data.ekspedisi.index') }}',
+            'objek': '{{ route('super-admin.data.objekvital.index') }}',
+            'rehabilitasi': '{{ route('super-admin.data.lrehab.index') }}',
         };
         if (routes[selectedType]) {
             window.location.href = routes[selectedType];

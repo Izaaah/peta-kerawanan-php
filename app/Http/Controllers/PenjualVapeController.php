@@ -29,7 +29,7 @@ class PenjualVapeController extends Controller
             'distributor' => 'nullable|string',
         ]);
         PenjualVape::create($request->all());
-        return redirect()->route('data.vape.index')->with('success', 'Data penjual vape berhasil ditambah.');
+        return redirect()->route('super-admin.data.vape.index')->with('success', 'Data penjual vape berhasil ditambah.');
     }
 
     public function show($id)
@@ -56,13 +56,13 @@ class PenjualVapeController extends Controller
         ]);
         $vape = PenjualVape::findOrFail($id);
         $vape->update($request->all());
-        return redirect()->route('data.vape.index')->with('success', 'Data penjual vape berhasil diupdate.');
+        return redirect()->route('super-admin.data.vape.index')->with('success', 'Data penjual vape berhasil diupdate.');
     }
 
     public function destroy($id)
     {
         $vape = PenjualVape::findOrFail($id);
         $vape->delete();
-        return redirect()->route('data.vape.index')->with('success', 'Data penjual vape berhasil dihapus.');
+        return redirect()->route('super-admin.data.vape.index')->with('success', 'Data penjual vape berhasil dihapus.');
     }
 }

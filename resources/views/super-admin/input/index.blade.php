@@ -87,13 +87,13 @@
                             <option value="lanjutan">Input Data Lanjutan Penanganan</option>
                             <option value="kasus">Input Data Kasus Narkoba</option>
                             <option value="desa">Input Data Desa Geojson</option>
-                            {{-- <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
+                            <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
                             <option value="penelundupan">Input Data Daerah Penyelundupan</option>
                             <option value="thm">Input Data THM dan Manager</option>
                             <option value="jaringan">Input Data Jaringan di Rutan dan Lapas</option>
                             <option value="objek">Input Data Objek Vital</option>
                             <option value="penggiat">Input Data Jaringan Penggiat</option>
-                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option> --}}
+                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option>
                             <option value="lsm">Input Data LSM Narkotika</option>
                             <option value="rehabilitasi">Input Data Lembaga Rehabilitasi</option>
                             <option value="ekspedisi">Input Data Ekspedisi</option>
@@ -148,6 +148,14 @@ document.addEventListener('DOMContentLoaded', function() {
             'medsos': '{{ route('super-admin.data.medsos.create') }}',
             'vape': '{{ route('super-admin.data.vape.create') }}',
             'farmasi': '{{ route('super-admin.data.farmasi.create') }}',
+            'transportasi': '{{ route('super-admin.data.transportasi.create') }}',
+            'penginapan': '{{ route('super-admin.data.penginapan.create') }}',
+            'ekspedisi': '{{ route('super-admin.data.ekspedisi.create') }}',
+            'objek': '{{ route('super-admin.data.objekvital.create') }}',
+            'rehabilitasi': '{{ route('super-admin.data.lrehab.create') }}',
+            'rutanlapas': '{{ route('super-admin.data.rutanlapas.create') }}',
+            'penggiat': '{{ route('super-admin.data.penggiat.create') }}',
+
         };
         if (routes[selectedType]) {
             window.location.href = routes[selectedType];
