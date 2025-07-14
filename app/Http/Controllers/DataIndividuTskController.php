@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataIndividuTsk;
 use App\Models\DesaGeojson;
 use App\Models\KasusNarkoba;
+use App\Models\TkpResidivisIndividu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,6 +29,20 @@ class DataIndividuTskController extends Controller
         $kecamatanList = DesaGeojson::getKecamatanList();
 
         return view('super-admin.data.individu', compact('stats', 'sampleData', 'kabupatenList', 'kecamatanList'));
+    }
+
+    public function getIndividuCount(Request $request)
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $desa = $request->desa;
+
+        $count = TkpResidivisIndividu::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+            ->whereRaw('LOWER(TRIM(desa)) = ?', [strtolower(trim($desa))])
+            ->count();
+
+        return response()->json(['count' => $count]);
     }
 
     public function create()

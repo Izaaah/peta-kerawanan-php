@@ -37,7 +37,7 @@
             Peta <span class="dropdown-arrow">&#9662;</span>
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
-                <li><a href="{{ route('peta.kerawanan') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
+                <li><a href="{{ route('peta-penyalahgunaan.tkp') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
                 <li><a href="">Peta Kawasan<br>Rawan Geospasial</a></li>
             </ul>
         </div>
