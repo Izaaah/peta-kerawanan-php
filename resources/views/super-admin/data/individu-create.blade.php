@@ -28,28 +28,57 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('super-admin.data.individu.store') }}" method="POST" id="individuForm">
+                    {{-- Tampilkan pesan sukses atau error dari session --}}
+@if (session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+@if (session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+{{-- Tampilkan error validasi --}}
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Terjadi kesalahan saat mengisi form:</strong>
+    <ul class="mb-0 mt-1">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+
+                    <form action="{{ route('super-admin.data.individu.store') }}" method="POST" id="individuForm" enctype="multipart/form-data">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="md:col-span-2 mb-4">
                                 <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
-                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nama') }}">
                             </div>
                             <div class="mb-4">
                                 <label for="nik" class="block text-base font-medium text-black">NIK</label>
-                                <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                                <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nik') }}">
                             </div>
                             <div class="mb-4">
                                 <label for="nkk" class="block text-base font-medium text-black">Nomor KK</label>
-                                <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                                <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nkk') }}">
                             </div>
                             <!-- Input Dinamis Nomor Telepon -->
                             <div class="md:col-span-2 mb-4" id="telepon-wrapper">
                                 <label class="block text-base font-medium text-black">Nomor Telepon</label>
                                 <div id="telepon-fields">
                                     <div class="flex items-center gap-2 mt-1 telepon-row">
-                                        <input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                                        <input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"
                                     </div>
                                 </div>
                             </div>
@@ -276,21 +305,26 @@
                             </div>
                             <!-- Input Dinamis Keterangan + Upload Foto (ikon upload saja) -->
                             <div class="md:col-span-2" id="foto-wrapper">
-                                <label class="block text-sm font-medium text-black  ">Keterangan & Upload Foto</label>
+                                <label class="block text-sm font-medium text-black">Keterangan & Upload Foto</label>
                                 <div id="foto-fields">
                                     <div class="flex items-center gap-2 mt-1 foto-row">
                                         <input type="text" name="keterangan_foto[]" maxlength="100" class="block w-40 rounded-md border-gray-300 shadow-sm" placeholder="Keterangan Foto">
+
+                                        {{-- Tombol untuk memilih file --}}
                                         <button type="button" class="upload-foto-btn flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full border border-gray-300" title="Upload Foto">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                                             </svg>
                                         </button>
+
                                         <input type="file" name="foto[]" accept="image/*" class="hidden foto-input">
                                         <img src="" alt="Preview" class="hidden w-32 h-32 object-cover rounded-md border border-gray-200 foto-preview">
+
                                         <button type="button" class="hapus-foto bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs self-center">Hapus</button>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="flex justify-end gap-2 mt-6">
@@ -871,4 +905,41 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Trigger input file saat tombol diklik
+        document.querySelectorAll('.upload-foto-btn').forEach((btn, index) => {
+            btn.addEventListener('click', function () {
+                const input = btn.parentElement.querySelector('.foto-input');
+                input.click();
+            });
+        });
+
+        // Preview gambar
+        document.querySelectorAll('.foto-input').forEach((input) => {
+            input.addEventListener('change', function () {
+                const preview = input.parentElement.querySelector('.foto-preview');
+                const file = input.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Tombol hapus
+        document.querySelectorAll('.hapus-foto').forEach((btn) => {
+            btn.addEventListener('click', function () {
+                const row = btn.closest('.foto-row');
+                row.remove();
+            });
+        });
+    });
+    </script>
+
 @endsection

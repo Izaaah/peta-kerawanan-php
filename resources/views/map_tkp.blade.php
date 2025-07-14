@@ -5,7 +5,7 @@
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6">
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-bold text-gray-900">Peta Kerawanan Narkoba</h1>
+                <h1 class="text-2xl font-bold text-gray-900">Peta Kerawanan Narkoba TKP</h1>
                 <div class="flex space-x-2">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +218,7 @@
                                     <span class="text-sm text-gray-900">${feature.properties.kabupaten || 'N/A'}</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-sm font-medium text-gray-700">Jumlah Individu:</span>
+                                    <span class="text-sm font-medium text-gray-700">Jumlah TKP:</span>
                                     <span class="text-sm font-bold" id="individu-count-${desaId}">Memuat...</span>
                                 </div>
                                 <div class="flex justify-between items-center">

@@ -155,6 +155,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/peta-penyalahgunaan/domisili', function () {
     return view('map');
 })->name('peta-penyalahgunaan.domisili');
+Route::get('/peta-penyalahgunaan/tkp', function () {
+    return view('map_tkp');
+})->name('peta-penyalahgunaan.tkp');
 
 // GeoJSON API Route
 Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.kerawanan');
@@ -163,6 +166,12 @@ Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.ke
 Route::get('/api/desa/stats', [PetaController::class, 'getDesaStats'])->name('api.desa.stats');
 Route::get('/api/desa/kabupaten/{kabupaten}', [PetaController::class, 'getDesaByKabupaten'])->name('api.desa.by-kabupaten');
 Route::get('/api/desa/{id}', [PetaController::class, 'getDesaDetail'])->name('api.desa.detail');
+
+Route::get('/peta-tkp-residivis', function () {
+    return view('map-tkp-residivis');
+})->name('peta-tkp-residivis');
+
+Route::get('/api/individu-count', [DataIndividuTskController::class, 'getIndividuCount'])->name('api.individu.count');
 
 Route::get('/api/kecamatan-list', function (Request $request) {
     $kabupaten = $request->kabupaten;

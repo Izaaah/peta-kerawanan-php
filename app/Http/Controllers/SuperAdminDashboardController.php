@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KasusNarkoba;
 use App\Models\DesaGeojson;
+use App\Models\TkpResidivisIndividu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,10 +13,23 @@ class SuperAdminDashboardController extends Controller
     public function index()
     {
         // Data untuk statistik dashboard
-        $totalKasus = KasusNarkoba::count();
-        $totalDesa = DesaGeojson::count();
-        $kabupatenCount = DesaGeojson::distinct('kabupaten')->count('kabupaten');
-        $kecamatanCount = DesaGeojson::distinct('kecamatan')->count('kecamatan');
+        $totalKasus = TkpResidivisIndividu::count();
+
+        // Filter desa data to exclude entries with "/", "area", and "unknown"
+        $filteredDesaQuery = DesaGeojson::query()
+            ->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+            ->where('nama_desa', 'not like', '%/%')
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+            ->where('kecamatan', 'not like', '%/%')
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+            ->where('kabupaten', 'not like', '%/%');
+
+        $totalDesa = $filteredDesaQuery->count();
+        $kabupatenCount = $filteredDesaQuery->distinct('kabupaten')->count('kabupaten');
+        $kecamatanCount = $filteredDesaQuery->distinct('kecamatan')->count('kecamatan');
 
         // Data untuk grafik kasus per kabupaten
         $kasusPerKabupaten = KasusNarkoba::select('kabupaten', DB::raw('count(*) as total'))
@@ -65,5 +79,19 @@ class SuperAdminDashboardController extends Controller
             'statusKasus',
             'kasusTerbaru'
         ));
+    }
+
+    public function getIndividuCount(Request $request)
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $desa = $request->desa;
+
+        $count = \App\Models\DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+            ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
+            ->count();
+
+        return response()->json(['count' => $count]);
     }
 }
