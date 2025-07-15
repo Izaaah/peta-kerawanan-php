@@ -11,8 +11,17 @@ use App\Http\Controllers\LsmController;
 use App\Http\Controllers\MedsosController;
 use App\Http\Controllers\PenjualVapeController;
 use App\Http\Controllers\PerusahaanFarmasiPrekursorController;
+use App\Http\Controllers\TransportasiController;
+use App\Http\Controllers\ObjekVitalController;
+use App\Http\Controllers\PenginapanController;
+use App\Http\Controllers\EkspedisiController;
+use App\Http\Controllers\LembagaRehabilitasiController;
+use App\Http\Controllers\JaringanRutanLapasController;
+use App\Http\Controllers\PenggiatNarkotikaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -80,6 +89,10 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
         return view('super-admin.input.desa');
     })->name('input.desa');
 
+    Route::get('/input-transportasi', function () {
+        return view('super-admin.input.transportasi');
+    })->name('input.transportasi');
+
     Route::get('/data-pendukung', function () {
         return view('super-admin.data.pendukung');
     })->name('data.pendukung');
@@ -96,6 +109,9 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/lsm/create', [LsmController::class, 'create'])->name('data.lsm.create');
     Route::get('/lsm/{id}', [LsmController::class, 'show'])->name('data.lsm.show');
     Route::post('/lsm/store', [LsmController::class, 'store'])->name('data.lsm.store');
+    Route::put('/lsm/{id}', [LsmController::class, 'update'])->name('data.lsm.update');
+    Route::delete('/lsm/{id}', [LsmController::class, 'destroy'])->name('data.lsm.destroy');
+    Route::get('/lsm/{id}/edit', [LsmController::class, 'edit'])->name('data.lsm.edit');
 
     Route::get('/data-desa', [DataDesaController::class, 'index'])->name('data.desa');
     Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');
@@ -127,6 +143,62 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/farmasi/{id}/edit', [PerusahaanFarmasiPrekursorController::class, 'edit'])->name('data.farmasi.edit');
     Route::put('/farmasi/{id}', [PerusahaanFarmasiPrekursorController::class, 'update'])->name('data.farmasi.update');
     Route::delete('/farmasi/{id}', [PerusahaanFarmasiPrekursorController::class, 'destroy'])->name('data.farmasi.destroy');
+
+    Route::get('/transportasi', [TransportasiController::class, 'index'])->name('data.transportasi.index');
+    Route::get('/transportasi/create', [TransportasiController::class, 'create'])->name('data.transportasi.create');
+    Route::post('/transportasi', [TransportasiController::class, 'store'])->name('data.transportasi.store');
+    Route::get('/transportasi/{id}', [TransportasiController::class, 'show'])->name('data.transportasi.show');
+    Route::get('/transportasi/{id}/edit', [TransportasiController::class, 'edit'])->name('data.transportasi.edit');
+    Route::put('/transportasi/{id}', [TransportasiController::class, 'update'])->name('data.transportasi.update');
+    Route::delete('/transportasi/{id}', [TransportasiController::class, 'destroy'])->name('data.transportasi.destroy');
+
+    Route::get('/penginapan', [PenginapanController::class, 'index'])->name('data.penginapan.index');
+    Route::get('/penginapan/create', [PenginapanController::class, 'create'])->name('data.penginapan.create');
+    Route::post('/penginapan', [PenginapanController::class, 'store'])->name('data.penginapan.store');
+    Route::get('/penginapan/{id}', [PenginapanController::class, 'show'])->name('data.penginapan.show');
+    Route::get('/penginapan/{id}/edit', [PenginapanController::class, 'edit'])->name('data.penginapan.edit');
+    Route::put('/penginapan/{id}', [PenginapanController::class, 'update'])->name('data.penginapan.update');
+    Route::delete('/penginapan/{id}', [PenginapanController::class, 'destroy'])->name('data.penginapan.destroy');
+
+    Route::get('/ekspedisi', [EkspedisiController::class, 'index'])->name('data.ekspedisi.index');
+    Route::get('/ekspedisi/create', [EkspedisiController::class, 'create'])->name('data.ekspedisi.create');
+    Route::post('/ekspedisi', [EkspedisiController::class, 'store'])->name('data.ekspedisi.store');
+    Route::get('/ekspedisi/{id}', [EkspedisiController::class, 'show'])->name('data.ekspedisi.show');
+    Route::get('/ekspedisi/{id}/edit', [EkspedisiController::class, 'edit'])->name('data.ekspedisi.edit');
+    Route::put('/ekspedisi/{id}', [EkspedisiController::class, 'update'])->name('data.ekspedisi.update');
+    Route::delete('/ekspedisi/{id}', [EkspedisiController::class, 'destroy'])->name('data.ekspedisi.destroy');
+
+    Route::get('/objekvital', [objekvitalController::class, 'index'])->name('data.objekvital.index');
+    Route::get('/objekvital/create', [objekvitalController::class, 'create'])->name('data.objekvital.create');
+    Route::post('/objekvital', [objekvitalController::class, 'store'])->name('data.objekvital.store');
+    Route::get('/objekvital/{id}', [objekvitalController::class, 'show'])->name('data.objekvital.show');
+    Route::get('/objekvital/{id}/edit', [objekvitalController::class, 'edit'])->name('data.objekvital.edit');
+    Route::put('/objekvital/{id}', [objekvitalController::class, 'update'])->name('data.objekvital.update');
+    Route::delete('/objekvital/{id}', [objekvitalController::class, 'destroy'])->name('data.objekvital.destroy');
+    
+    Route::get('/lrehab', [LembagaRehabilitasiController::class, 'index'])->name('data.lrehab.index');
+    Route::get('/lrehab/create', [LembagaRehabilitasiController::class, 'create'])->name('data.lrehab.create');
+    Route::post('/lrehab', [LembagaRehabilitasiController::class, 'store'])->name('data.lrehab.store');
+    Route::get('/lrehab/{id}', [LembagaRehabilitasiController::class, 'show'])->name('data.lrehab.show');
+    Route::get('/lrehab/{id}/edit', [LembagaRehabilitasiController::class, 'edit'])->name('data.lrehab.edit');
+    Route::put('/lrehab/{id}', [LembagaRehabilitasiController::class, 'update'])->name('data.lrehab.update');
+    Route::delete('/lrehab/{id}', [LembagaRehabilitasiController::class, 'destroy'])->name('data.lrehab.destroy');
+
+    Route::get('/rutanlapas', [JaringanRutanLapasController::class, 'index'])->name('data.rutanlapas.index');
+    Route::get('/rutanlapas/create', [JaringanRutanLapasController::class, 'create'])->name('data.rutanlapas.create');
+    Route::post('/rutanlapas', [JaringanRutanLapasController::class, 'store'])->name('data.rutanlapas.store');
+    Route::get('/rutanlapas/{id}', [JaringanRutanLapasController::class, 'show'])->name('data.rutanlapas.show');
+    Route::get('/rutanlapas/{id}/edit', [JaringanRutanLapasController::class, 'edit'])->name('data.rutanlapas.edit');
+    Route::put('/rutanlapas/{id}', [JaringanRutanLapasController::class, 'update'])->name('data.rutanlapas.update');
+    Route::delete('/rutanlapas/{id}', [JaringanRutanLapasController::class, 'destroy'])->name('data.rutanlapas.destroy');
+
+    Route::get('penggiat/', [PenggiatNarkotikaController::class, 'index'])->name('data.penggiat.index');
+    Route::get('penggiat/create', [PenggiatNarkotikaController::class, 'create'])->name('data.penggiat.create');
+    Route::post('penggiat/', [PenggiatNarkotikaController::class, 'store'])->name('data.penggiat.store');
+    Route::get('penggiat/{id}', [PenggiatNarkotikaController::class, 'show'])->name('data.penggiat.show');
+    Route::get('penggiat/{id}/edit', [PenggiatNarkotikaController::class, 'edit'])->name('data.penggiat.edit');
+    Route::put('penggiat/{id}', [PenggiatNarkotikaController::class, 'update'])->name('data.penggiat.update');
+    Route::delete('/penggiat/{id}', [PenggiatNarkotikaController::class, 'destroy'])->name('data.penggiat.destroy');
 
 
 });

@@ -7,135 +7,52 @@
 
 <!-- Main Content: Card List Pilihan -->
 <div class="container-fluid px-2 px-md-4 py-5">
-    <div class="max-w-2xl mx-auto">
-        <div class="grid grid-cols-1 gap-4">
-            <!-- Individu TSK -->
-            <a href="{{ route('super-admin.input.individu') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-green-500 mr-2"></span>
-                        <span class="text-sm font-semibold text-green-600">Active</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 text-2xl mr-6">
-                        <i class="fas fa-user-friends"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-green-700">Individu TSK</div>
-                        <div class="text-sm text-gray-500 truncate">Input Data Individu</div>
-                    </div>
-                    <span class="ml-6 text-gray-400 group-hover:text-green-600 text-xl">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                </div>
-            </a>
-            <!-- Pendukung -->
-            <a href="{{ route('super-admin.input.pendukung') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-gray-300 mr-2"></span>
-                        <span class="text-sm font-semibold text-gray-400">Inactive</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 text-yellow-600 text-2xl mr-6">
-                        <i class="fas fa-archive"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-yellow-700">Pendukung</div>
-                        <div class="text-sm text-gray-500 truncate">Data Pendukung Kasus</div>
-                    </div>
-                    <span class="ml-6 text-gray-400 group-hover:text-yellow-600 text-xl">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                </div>
-            </a>
-            <!-- Lanjutan -->
-            <a href="{{ route('super-admin.input.lanjutan') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-green-500 mr-2"></span>
-                        <span class="text-sm font-semibold text-green-600">Active</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600 text-2xl mr-6">
-                        <i class="fas fa-forward"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-green-700">Lanjutan</div>
-                        <div class="text-sm text-gray-500 truncate">Data Lanjutan Penanganan</div>
-                    </div>
-                    <span class="ml-6 text-gray-400 group-hover:text-green-600 text-xl">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                </div>
-            </a>
-            <!-- Kasus Narkoba -->
-            <a href="{{ route('super-admin.input.kasus') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-pink-500 mr-2"></span>
-                        <span class="text-sm font-semibold text-pink-600">Active</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-pink-100 text-pink-600 text-2xl mr-6">
-                        <i class="fas fa-biohazard"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-pink-700">Kasus Narkoba</div>
-                        <div class="text-sm text-gray-500 truncate">Input Data Kasus</div>
-                    </div>
-                    <span class="ml-6 text-gray-400 group-hover:text-pink-600 text-xl">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                </div>
-            </a>
-            <!-- Desa Geojson -->
-            <a href="{{ route('super-admin.input.desa') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-blue-500 mr-2"></span>
-                        <span class="text-sm font-semibold text-blue-600">Active</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 text-2xl mr-6">
-                        <i class="fas fa-map-marked-alt"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-blue-700">Desa Geojson</div>
-                        <div class="text-sm text-gray-500 truncate">Input Data Desa</div>
-                    </div>
-                    <span class="ml-6 text-gray-400 group-hover:text-blue-600 text-xl">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                </div>
-            </a>
-            <!-- LSM Narkotika -->
-            <a href="{{ route('super-admin.data.lsm.create') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-purple-500 mr-2"></span>
-                        <span class="text-sm font-semibold text-purple-600">Active</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-purple-100 text-purple-600 text-2xl mr-6">
-                        <i class="fas fa-users"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-purple-700">LSM Narkotika</div>
-                        <div class="text-sm text-gray-500 truncate">Input Data LSM</div>
-                    </div>
-                    <span class="ml-6 text-gray-400 group-hover:text-purple-600 text-xl">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                </div>
-            </a>
-            <!-- Akun Sosmed -->
-            <a href="{{ route('super-admin.data.medsos.create') }}" class="block group">
-                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
-                    <span class="flex items-center mr-6">
-                        <span class="h-3 w-3 rounded-full bg-teal-500 mr-2"></span>
-                        <span class="text-sm font-semibold text-teal-600">Active</span>
-                    </span>
-                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-teal-100 text-teal-600 text-2xl mr-6">
-                        <i class="fab fa-instagram"></i>
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold text-gray-800 group-hover:text-teal-700">Akun Sosmed</div>
-                        <div class="text-sm text-gray-500 truncate">Input Data Medsos</div>
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <div class="input-header-icon mb-3">
+            <i class="fas fa-plus-circle"></i>
+        </div>
+        <h1 class="fw-bold mb-1" style="color:#059669; letter-spacing:1px;">Input Management</h1>
+        <div class="text-muted mb-2">Tambah data baru ke dalam sistem SIJAGAD</div>
+        <div class="small text-secondary">Pilih jenis data yang ingin Anda input di bawah ini</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-xl-6">
+            <div class="card input-card p-4 p-md-5 mb-4">
+                <form id="inputTypeForm" method="GET" autocomplete="off">
+                    <label for="inputType" class="input-label">
+                        <i class="fas fa-list me-2"></i>Jenis Input
+                    </label>
+                    <div class="input-group mb-4">
+                        <span class="input-group-text bg-white border-end-0" style="border-radius:0.75rem 0 0 0.75rem;">
+                            <i class="fas fa-layer-group text-success"></i>
+                        </span>
+                        <select class="form-select form-select-lg border-start-0" id="inputType" name="type" required style="border-radius:0 0.75rem 0.75rem 0;">
+                            <option value="">-- Pilih Jenis Input --</option>
+                            <option value="individu">Input Data Individu TSK</option>
+                            <option value="pendukung">Input Data Pendukung Kasus</option>
+                            <option value="lanjutan">Input Data Lanjutan Penanganan</option>
+                            <option value="kasus">Input Data Kasus Narkoba</option>
+                            <option value="desa">Input Data Desa Geojson</option>
+                            {{-- <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
+                            <option value="penelundupan">Input Data Daerah Penyelundupan</option>
+                            <option value="thm">Input Data THM dan Manager</option>
+                            <option value="jaringan">Input Data Jaringan di Rutan dan Lapas</option>
+                            <option value="objek">Input Data Objek Vital</option>
+                            <option value="penggiat">Input Data Jaringan Penggiat</option>
+                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option> --}}
+                            <option value="lsm">Input Data LSM Narkotika</option>
+                            <option value="rehabilitasi">Input Data Lembaga Rehabilitasi</option>
+                            <option value="ekspedisi">Input Data Ekspedisi</option>
+                            <option value="transportasi">Input Data Jasa Transportasi</option>
+                            <option value="penginapan">Input Data Penginapan (Hotel & Kost)</option>
+                            <option value="medsos">Input Data Akun Sosmed</option>
+                            <option value="transportasi">Input Data Umum Tempat Transportasi</option>
+                            <option value="farmasi">Input Data Perusahan/Farmasi Prekursor</option>
+                            <option value="vape">Input Data Penjual Vape</option>
+                        </select>
                     </div>
                     <span class="ml-6 text-gray-400 group-hover:text-teal-600 text-xl">
                         <i class="fas fa-chevron-down"></i>
@@ -187,4 +104,44 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputTypeSelect = document.getElementById('inputType');
+    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('inputTypeForm');
+
+    // Enable/disable submit button based on selection
+    inputTypeSelect.addEventListener('change', function() {
+        submitBtn.disabled = !this.value;
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const selectedType = inputTypeSelect.value;
+        if (!selectedType) return;
+        const routes = {
+            'individu': '{{ route('super-admin.input.individu') }}',
+            'pendukung': '{{ route('super-admin.input.pendukung') }}',
+            'lanjutan': '{{ route('super-admin.input.lanjutan') }}',
+            'kasus': '{{ route('super-admin.input.kasus') }}',
+            'desa': '{{ route('super-admin.input.desa') }}',
+            'lsm': '{{ route('super-admin.data.lsm.create') }}',
+            'medsos': '{{ route('super-admin.data.medsos.create') }}',
+            'vape': '{{ route('super-admin.data.vape.create') }}',
+            'farmasi': '{{ route('super-admin.data.farmasi.create') }}',
+        };
+        if (routes[selectedType]) {
+            window.location.href = routes[selectedType];
+        }
+    });
+    // Set initial state based on URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+    if (typeParam && inputTypeSelect.querySelector(`option[value="${typeParam}"]`)) {
+        inputTypeSelect.value = typeParam;
+        submitBtn.disabled = false;
+    }
+});
+</script>
 @endsection

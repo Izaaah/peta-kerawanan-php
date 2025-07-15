@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Transportasi;
+use Illuminate\Http\Request;
+
+class TransportasiController extends Controller
+{
+    public function index()
+    {
+        $transportasiList = Transportasi::latest()->paginate(10);
+        return view('super-admin.data.transportasi.index', compact('transportasiList'));
+    }
+
+    public function create()
+    {
+        $jenisTransportasiOptions = Transportasi::getJenisTransportasiOptions();
+        return view('super-admin.data.transportasi.create', compact('jenisTransportasiOptions'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
+            'nama_pihak' => 'required|string|max:255',
+            'posisi' => 'nullable|string|max:255',
+            'lokasi' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+        ]);
+
+        try {
+            Transportasi::create($request->all());
+            return redirect()->route('super-admin.data.transportasi.index')
+                ->with('success', 'Data transportasi berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function show($id)
+    {
+        $transportasi = Transportasi::findOrFail($id);
+        return view('super-admin.data.transportasi.show', compact('transportasi'));
+    }
+
+    public function edit($id)
+    {
+        $transportasi = Transportasi::findOrFail($id);
+        $jenisTransportasiOptions = Transportasi::getJenisTransportasiOptions();
+        return view('super-admin.data.transportasi.edit', compact('transportasi', 'jenisTransportasiOptions'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
+            'nama_pihak' => 'required|string|max:255',
+            'posisi' => 'nullable|string|max:255',
+            'lokasi' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+        ]);
+
+        try {
+            $transportasi = Transportasi::findOrFail($id);
+            $transportasi->update($request->all());
+
+            return redirect()->route('super-admin.data.transportasi.index')
+                ->with('success', 'Data transportasi berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $transportasi = Transportasi::findOrFail($id);
+            $transportasi->delete();
+
+            return redirect()->route('super-admin.data.transportasi.index')
+                ->with('success', 'Data transportasi berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
+        }
+    }
+}

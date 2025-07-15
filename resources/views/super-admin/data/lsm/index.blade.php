@@ -21,6 +21,7 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama LSM</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ketua</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP Ketua</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
@@ -30,6 +31,7 @@
                     <td class="px-4 py-2">{{ $lsm->nama_lsm }}</td>
                     <td class="px-4 py-2">{{ $lsm->ketua_lsm }}</td>
                     <td class="px-4 py-2">{{ $lsm->no_hp_ketua }}</td>
+                    <td class="px-4 py-2">{{ $lsm->alamat }}</td>
                     <td class="px-4 py-2 flex gap-2">
                         <a href="{{ route('super-admin.data.lsm.show', $lsm->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                         <a href="{{ route('super-admin.data.lsm.edit', $lsm->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>

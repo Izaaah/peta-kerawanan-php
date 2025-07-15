@@ -14,43 +14,36 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-9xl mx-auto">
+        <div class="order-2 lg:order-1 lg:col-span-2">
             @if(session('error'))
                 <div class="p-4 text-red-700 bg-red-100 rounded">{{ session('error') }}</div>
             @endif
-
             <form action="{{ route('super-admin.data.lsm.store') }}" method="POST" class="space-y-6">
                 @csrf
-
                 <div class="bg-white shadow rounded p-6 space-y-4">
                     <h6 class="text-lg font-semibold text-primary"><i class="fas fa-building mr-2"></i>Data LSM</h6>
-
                     <div>
                         <label for="nama_lsm" class="block text-sm font-medium text-gray-700">Nama LSM <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_lsm" name="nama_lsm" value="{{ old('nama_lsm') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         @error('nama_lsm')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
-
                     <div>
                         <label for="ketua_lsm" class="block text-sm font-medium text-gray-700">Ketua LSM <span class="text-red-500">*</span></label>
                         <input type="text" id="ketua_lsm" name="ketua_lsm" value="{{ old('ketua_lsm') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         @error('ketua_lsm')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
-
                     <div>
                         <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat <span class="text-red-500">*</span></label>
                         <textarea id="alamat" name="alamat" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">{{ old('alamat') }}</textarea>
                         @error('alamat')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
-
                     <div>
                         <label for="no_hp_ketua" class="block text-sm font-medium text-gray-700">No. HP Ketua <span class="text-red-500">*</span></label>
                         <input type="text" id="no_hp_ketua" name="no_hp_ketua" value="{{ old('no_hp_ketua') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         @error('no_hp_ketua')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
                 </div>
-
                 <div class="flex space-x-4">
                     <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
                         <i class="fas fa-save mr-2"></i>Simpan
@@ -61,8 +54,7 @@
                 </div>
             </form>
         </div>
-
-        <div>
+        <div class="order-1 lg:order-2">
             <div class="bg-white shadow rounded p-4 space-y-4">
                 <div class="bg-blue-50 p-3 rounded border-l-4 border-blue-400">
                     <h6 class="font-semibold text-blue-700 mb-2"><i class="fas fa-info-circle mr-2"></i>Informasi</h6>

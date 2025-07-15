@@ -59,13 +59,13 @@ class LsmController extends Controller
         ]);
         $lsm = LsmNarkotika::findOrFail($id);
         $lsm->update($request->all());
-        return redirect()->route('data.lsm.index')->with('success', 'Data LSM berhasil diupdate.');
+        return redirect()->route('super-admin.data.lsm.index')->with('success', 'Data LSM berhasil diupdate.');
     }
 
     public function destroy($id)
     {
         $lsm = LsmNarkotika::findOrFail($id);
         $lsm->delete();
-        return redirect()->route('data.lsm.index')->with('success', 'Data LSM berhasil dihapus.');
+        return redirect()->route('super-admin.data.lsm.index')->with('success', 'Data LSM berhasil dihapus.');
     }
 }
