@@ -237,7 +237,7 @@ class DataIndividuTskController extends Controller
         $kecamatanList = DesaGeojson::getKecamatanList();
         $desaList = DesaGeojson::all();
 
-        return view('super-admin.data.individu-edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList'));
+        return view('super-admin.data.individu.edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList'));
     }
 
     public function update(Request $request, $id)

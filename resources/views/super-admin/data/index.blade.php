@@ -5,166 +5,240 @@
 @section('content')
 @include('components.superadmin-navbar')
 
-<style>
-    .data-card {
-        border-radius: 1.25rem;
-        box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08), 0 1.5px 4px 0 rgba(0,0,0,0.03);
-        border: none;
-        background: #fff;
-        transition: box-shadow 0.2s;
-    }
-    .data-card:hover {
-        box-shadow: 0 8px 40px 0 rgba(0,0,0,0.12), 0 2px 8px 0 rgba(0,0,0,0.04);
-    }
-    .data-header-icon {
-        background: linear-gradient(135deg, #2563eb 0%, #38bdf8 100%);
-        color: #fff;
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.5rem;
-        margin: 0 auto 1rem auto;
-        box-shadow: 0 2px 12px 0 rgba(56,189,248,0.15);
-    }
-    .data-label {
-        font-weight: 600;
-        color: #2563eb;
-        margin-bottom: 0.5rem;
-    }
-    .form-select-lg {
-        font-size: 1.15rem;
-        padding: 0.75rem 1.5rem 0.75rem 2.5rem;
-        border-radius: 0.75rem;
-        background-position: 1rem center;
-    }
-    .btn-lg {
-        font-size: 1.1rem;
-        padding: 0.75rem 2.5rem;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        box-shadow: 0 2px 8px 0 rgba(37,99,235,0.08);
-        transition: background 0.2s, box-shadow 0.2s;
-    }
-    .btn-lg:active, .btn-lg:focus {
-        background: #1d4ed8;
-        box-shadow: 0 4px 16px 0 rgba(37,99,235,0.12);
-    }
-    @media (max-width: 600px) {
-        .data-card { padding: 1.5rem !important; }
-        .data-header-icon { width: 54px; height: 54px; font-size: 1.7rem; }
-    }
-</style>
-<div class="container-fluid px-2 px-md-4 py-5">
-    <!-- Header -->
-    <div class="text-center mb-5">
-        <div class="data-header-icon mb-3">
-            <i class="fas fa-database"></i>
+<div class="container mx-auto py-8 px-2">
+    <!-- Search Input -->
+    <div class="flex justify-center mb-6">
+        <div class="relative w-full max-w-md">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                <i class="fas fa-search text-gray-400"></i>
+            </span>
+            <input type="text" id="dataSearch" placeholder="Cari jenis data..." class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:ring-blue-400 focus:border-blue-400 focus:outline-none shadow-sm" />
         </div>
-        <h1 class="fw-bold mb-1" style="color:#2563eb; letter-spacing:1px;">Data Management</h1>
-        <div class="text-muted mb-2">Kelola berbagai jenis data dalam sistem SIJAGAD</div>
-        <div class="small text-secondary">Pilih jenis data yang ingin Anda kelola di bawah ini</div>
     </div>
-
-    <!-- Main Content -->
-    <div class="row justify-content-center">
-        <div class="col-lg-7 col-xl-6">
-            <div class="card data-card p-4 p-md-5 mb-4">
-                <form id="dataTypeForm" method="GET" autocomplete="off">
-                    <label for="dataType" class="data-label">
-                        <i class="fas fa-list me-2"></i>Jenis Data
-                    </label>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text bg-white border-end-0" style="border-radius:0.75rem 0 0 0.75rem;">
-                            <i class="fas fa-layer-group text-primary"></i>
-                        </span>
-                        <select class="form-select form-select-lg border-start-0" id="dataType" name="type" required style="border-radius:0 0.75rem 0.75rem 0;">
-                            <option value="">-- Pilih Jenis Data --</option>
-                            <option value="individu">Input Data Individu TSK</option>
-                            <option value="pendukung">Input Data Pendukung Kasus</option>
-                            <option value="lanjutan">Input Data Lanjutan Penanganan</option>
-                            <option value="kasus">Input Data Kasus Narkoba</option>
-                            <option value="desa">Input Data Desa Geojson</option>
-                            <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
-                            <option value="penelundupan">Input Data Daerah Penyelundupan</option>
-                            <option value="thm">Input Data THM dan Manager</option>
-                            <option value="jaringan">Input Data Jaringan di Rutan dan Lapas</option>
-                            <option value="objek">Input Data Objek Vital</option>
-                            <option value="penggiat">Input Data Jaringan Penggiat</option>
-                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option>
-                            <option value="lsm">Input Data LSM Narkotika</option>
-                            <option value="rehabilitasi">Input Data Lembaga Rehabilitasi</option>
-                            <option value="ekspedisi">Input Data Ekspedisi</option>
-                            <option value="transportasi">Input Data Jasa Transportasi</option>
-                            <option value="penginapan">Input Data Penginapan (Hotel & Kost)</option>
-                            <option value="medsos">Input Data Akun Sosmed</option>
-                            <option value="transportasi">Input Data Umum Tempat Transportasi</option>
-                            <option value="farmasi">Input Data Perusahan/Farmasi Prekursor</option>
-                            <option value="vape">Input Data Penjual Vape</option>
-                        </select>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" disabled>
-                            <i class="fas fa-arrow-right me-2"></i>Lanjutkan
-                        </button>
-                    </div>
-                </form>
-                <div class="mt-4 pt-3 border-top text-center">
-                    <span class="text-muted small">Tersedia <span class="fw-bold text-primary">16</span> jenis data utama untuk dikelola.</span>
+    <!-- Card Grid -->
+    <div id="dataCardGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+        <!-- Card: Data Individu TSK -->
+        <a href="{{ route('super-admin.data.individu') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 mb-3 shadow mx-auto">
+                    <i class="fas fa-user-tie text-white text-2xl"></i>
                 </div>
+                <div class="font-semibold text-blue-700 mb-1">Data Individu TSK</div>
+                <div class="text-xs text-gray-500">Kelola data tersangka individu</div>
             </div>
-            <div class="alert alert-info text-center mt-3" style="border-radius:0.75rem;">
-                <i class="fas fa-info-circle me-2"></i>
-                Anda dapat mengelola data sesuai kebutuhan dengan memilih jenis data di atas.
+        </a>
+        <!-- Card: Data Pendukung Kasus -->
+        <a href="{{ route('super-admin.data.pendukung') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-user-friends text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-cyan-700 mb-1">Data Pendukung</div>
+                <div class="text-xs text-gray-500">Kelola data pendukung kasus</div>
             </div>
-        </div>
+        </a>
+        <!-- Card: Data Lanjutan Penanganan -->
+        <a href="{{ route('super-admin.data.lanjutan') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 to-yellow-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-forward text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-yellow-700 mb-1">Data Lanjutan</div>
+                <div class="text-xs text-gray-500">Kelola data lanjutan penanganan</div>
+            </div>
+        </a>
+        <!-- Card: Data Kasus Narkoba -->
+        <a href="{{ route('super-admin.data.kasus') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-red-400 to-pink-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-biohazard text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-red-700 mb-1">Data Kasus Narkoba</div>
+                <div class="text-xs text-gray-500">Kelola data kasus narkoba</div>
+            </div>
+        </a>
+        <!-- Card: Data Desa Geojson -->
+        <a href="{{ route('super-admin.data.desa') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-400 to-blue-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-map-marked-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-blue-700 mb-1">Data Desa Geojson</div>
+                <div class="text-xs text-gray-500">Kelola data desa/kelurahan</div>
+            </div>
+        </a>
+        <!-- Card: Data LSM Narkotika -->
+        <a href="{{ route('super-admin.data.lsm.index') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-purple-400 to-purple-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-users text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-purple-700 mb-1">Data LSM Narkotika</div>
+                <div class="text-xs text-gray-500">Kelola data LSM narkotika</div>
+            </div>
+        </a>
+        <!-- Card: Data Akun Sosmed -->
+        <a href="{{ route('super-admin.data.medsos.index') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-400 to-pink-500 mb-3 shadow mx-auto">
+                    <i class="fab fa-instagram text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-pink-700 mb-1">Data Akun Sosmed</div>
+                <div class="text-xs text-gray-500">Kelola data akun media sosial</div>
+            </div>
+        </a>
+        <!-- Card: Data Penjual Vape -->
+        <a href="{{ route('super-admin.data.vape.index') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-gray-400 to-gray-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-smoking text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-gray-700 mb-1">Data Penjual Vape</div>
+                <div class="text-xs text-gray-500">Kelola data penjual vape</div>
+            </div>
+        </a>
+        <!-- Card: Data Farmasi Prekursor -->
+        <a href="{{ route('super-admin.data.farmasi.index') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-indigo-400 to-indigo-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-flask text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-indigo-700 mb-1">Data Farmasi Prekursor</div>
+                <div class="text-xs text-gray-500">Kelola data perusahaan/farmasi prekursor</div>
+            </div>
+        </a>
+        <!-- Card: Data Objek Vital -->
+        <a href="{{ route('super-admin.data.objekvital.index') }}" class="block group opacity-50" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-gray-700 to-gray-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-landmark text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-gray-800 mb-1">Data Objek Vital</div>
+                <div class="text-xs text-gray-500">Kelola data objek vital</div>
+            </div>
+        </a>
+        <!-- Card: Data Jaringan Penggiat -->
+        <a href="{{ route('super-admin.data.penggiat.index') }}" class="block group opacity-50" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-lime-400 to-lime-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-people-carry text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-lime-700 mb-1">Data Jaringan Penggiat</div>
+                <div class="text-xs text-gray-500">Kelola data jaringan penggiat</div>
+            </div>
+        </a>
+        <!-- Card: Data Lembaga Rehabilitasi -->
+        <a href="{{ route('super-admin.data.lrehab.index') }}" class="block group opacity-50" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-green-700 to-green-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-hospital-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-green-800 mb-1">Data Lembaga Rehabilitasi</div>
+                <div class="text-xs text-gray-500">Kelola data lembaga rehabilitasi</div>
+            </div>
+        </a>
+        <!-- Card: Data Ekspedisi -->
+        <a href="{{ route('super-admin.data.ekspedisi.index') }}" class="block group opacity-50" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-700 to-yellow-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-shipping-fast text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-yellow-800 mb-1">Data Ekspedisi</div>
+                <div class="text-xs text-gray-500">Kelola data ekspedisi</div>
+            </div>
+        </a>
+        <!-- Card: Data Jasa Transportasi -->
+        <a href="{{ route('super-admin.data.transportasi.index') }}" class="block group opacity-50" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-bus-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-blue-800 mb-1">Data Jasa Transportasi</div>
+                <div class="text-xs text-gray-500">Kelola data jasa transportasi</div>
+            </div>
+        </a>
+        <!-- Card: Data Penginapan (Hotel & Kost) -->
+        <a href="{{ route('super-admin.data.penginapan.index') }}" class="block group opacity-50" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-700 to-pink-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-hotel text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-pink-800 mb-1">Data Penginapan</div>
+                <div class="text-xs text-gray-500">Kelola data penginapan</div>
+            </div>
+        </a>
+        <!-- Card: Data Daerah Penyalahguna -->
+        <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-orange-400 to-orange-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-user-injured text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-orange-700 mb-1">Data Daerah Penyalahguna</div>
+                <div class="text-xs text-gray-500">(Belum tersedia)</div>
+            </div>
+        </a>
+        <!-- Card: Data Daerah Penyelundupan -->
+        <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-amber-400 to-amber-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-truck-loading text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-amber-700 mb-1">Data Daerah Penyelundupan</div>
+                <div class="text-xs text-gray-500">(Belum tersedia)</div>
+            </div>
+        </a>
+        <!-- Card: Data THM dan Manager -->
+        <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-fuchsia-700 mb-1">Data THM & Manager</div>
+                <div class="text-xs text-gray-500">(Belum tersedia)</div>
+            </div>
+        </a>
+        <!-- Card: Data Jaringan Informasi (Orang) -->
+        <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-sky-400 to-sky-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-user-secret text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-sky-700 mb-1">Data Jaringan Informasi</div>
+                <div class="text-xs text-gray-500">(Belum tersedia)</div>
+            </div>
+        </a>
+    </div>
+    <div id="noResultMsg" class="hidden text-center text-gray-400 text-sm py-8">Tidak ada jenis data yang ditemukan.</div>
+    <div class="alert alert-info text-center mt-6 rounded-xl">
+        <i class="fas fa-info-circle me-2"></i>
+        Anda dapat mengelola data sesuai kebutuhan dengan memilih jenis data di atas.
     </div>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const dataTypeSelect = document.getElementById('dataType');
-    const submitBtn = document.getElementById('submitBtn');
-    const form = document.getElementById('dataTypeForm');
+    const searchInput = document.getElementById('dataSearch');
+    const cardGrid = document.getElementById('dataCardGrid');
+    const cards = Array.from(cardGrid.children);
+    const noResultMsg = document.getElementById('noResultMsg');
 
-    // Enable/disable submit button based on selection
-    dataTypeSelect.addEventListener('change', function() {
-        submitBtn.disabled = !this.value;
-    });
-
-    // Handle form submission
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const selectedType = dataTypeSelect.value;
-        if (!selectedType) return;
-        const routes = {
-            'individu': '{{ route('super-admin.data.individu') }}',
-            'pendukung': '{{ route('super-admin.data.pendukung') }}',
-            'lanjutan': '{{ route('super-admin.data.lanjutan') }}',
-            'kasus': '{{ route('super-admin.data.kasus') }}',
-            'desa': '{{ route('super-admin.data.desa') }}',
-            'lsm': '{{ route('super-admin.data.lsm.index') }}',
-            'medsos': '{{ route('super-admin.data.medsos.index') }}',
-            'vape': '{{ route('super-admin.data.vape.index') }}',
-            'farmasi': '{{ route('super-admin.data.farmasi.index') }}',
-            'transportasi': '{{ route('super-admin.data.transportasi.index') }}',
-            'penginapan': '{{ route('super-admin.data.penginapan.index') }}',
-            'ekspedisi': '{{ route('super-admin.data.ekspedisi.index') }}',
-            'objek': '{{ route('super-admin.data.objekvital.index') }}',
-            'rehabilitasi': '{{ route('super-admin.data.lrehab.index') }}'
-        };
-        if (routes[selectedType]) {
-            window.location.href = routes[selectedType];
+    searchInput.addEventListener('input', function() {
+        const q = this.value.trim().toLowerCase();
+        let visibleCount = 0;
+        cards.forEach(card => {
+            const label = card.querySelector('div.font-semibold')?.textContent.toLowerCase() || '';
+            if (label.includes(q)) {
+                card.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+        if (visibleCount === 0) {
+            noResultMsg.classList.remove('hidden');
+        } else {
+            noResultMsg.classList.add('hidden');
         }
     });
-    // Set initial state based on URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const typeParam = urlParams.get('type');
-    if (typeParam && dataTypeSelect.querySelector(`option[value="${typeParam}"]`)) {
-        dataTypeSelect.value = typeParam;
-        submitBtn.disabled = false;
-    }
 });
 </script>
 @endsection

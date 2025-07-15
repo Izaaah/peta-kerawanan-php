@@ -229,7 +229,9 @@
                             <div class="mt-3 pt-3 border-t border-gray-200">
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs text-gray-500">Tingkat Kerawanan:</span>
-                                    <span class="text-xs font-medium ${getKerawananColor(feature.properties.jumlah_kasus || 0)}">${getKerawananLevel(feature.properties.jumlah_kasus || 0)}</span>
+                                    <span class="text-xs font-medium ${getKerawananColor(feature.properties.jumlah_kasus || 0)} kerawanan-text">
+                                        ${getKerawananLevel(feature.properties.jumlah_kasus || 0)}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -242,6 +244,19 @@
                             .then(res => res.json())
                             .then(data => {
                                 document.getElementById(`individu-count-${desaId}`).innerHTML = data.count;
+                                // Update tingkat kerawanan di popup
+                                const kerawananText = document.querySelector(`#individu-count-${desaId}`).closest('.leaflet-popup-content').querySelector('.kerawanan-text');
+                                const kerawananLevel = getKerawananLevel(data.count);
+                                const kerawananColor = getKerawananColor(data.count);
+                                if (kerawananText) {
+                                    kerawananText.textContent = kerawananLevel;
+                                    kerawananText.className = `text-xs font-medium ${kerawananColor} kerawanan-text`;
+                                }
+                                // --- Tambahan: update warna poligon di peta ---
+                                feature.properties.jumlah_kasus = data.count;
+                                layer.setStyle({
+                                    fillColor: getColor(data.count)
+                                });
                             })
                             .catch(() => {
                                 document.getElementById(`individu-count-${desaId}`).innerHTML = 'Gagal memuat';
@@ -357,7 +372,6 @@
             resultItem.innerHTML = `
                 <div class="font-medium text-gray-900">${desa.properties.nama_desa}</div>
                 <div class="text-sm text-gray-600">${desa.properties.kecamatan}, ${desa.properties.kabupaten}</div>
-                <div class="text-xs text-gray-500">Kasus: ${desa.properties.jumlah_kasus || 0}</div>
             `;
 
             resultItem.addEventListener('click', () => {

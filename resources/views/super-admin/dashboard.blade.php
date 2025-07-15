@@ -109,11 +109,19 @@
             </div>
         </div>
 
-        <!-- Status Kasus -->
+        <!-- Status & Residivis Pie Charts -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Status Kasus</h3>
-                <canvas id="chartStatus" width="400" height="200"></canvas>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <h3 class="text-md font-semibold text-gray-900 mb-2">Status</h3>
+                        <canvas id="chartStatusPie" width="180" height="180"></canvas>
+                    </div>
+                    <div>
+                        <h3 class="text-md font-semibold text-gray-900 mb-2">Residivis</h3>
+                        <canvas id="chartResidivisPie" width="180" height="180"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -161,7 +169,8 @@
 const kasusPerKabupaten = @json($kasusPerKabupaten);
 const kasusPerKecamatan = @json($kasusPerKecamatan);
 const trendBulanan = @json($trendBulanan);
-const statusKasus = @json($statusKasus);
+const statusPie = @json($statusPie);
+const residivisPie = @json($residivisPie);
 
 // Grafik Kasus per Kabupaten
 const ctxKabupaten = document.getElementById('chartKabupaten').getContext('2d');
@@ -242,23 +251,50 @@ new Chart(ctxTrend, {
     }
 });
 
-// Grafik Status Kasus
-const ctxStatus = document.getElementById('chartStatus').getContext('2d');
-new Chart(ctxStatus, {
+// Pie Chart Status Individu
+const ctxStatusPie = document.getElementById('chartStatusPie').getContext('2d');
+new Chart(ctxStatusPie, {
     type: 'doughnut',
     data: {
-        labels: Object.keys(statusKasus),
+        labels: Object.keys(statusPie),
         datasets: [{
-            data: Object.values(statusKasus),
+            data: Object.values(statusPie),
             backgroundColor: [
-                'rgba(239, 68, 68, 0.8)',
-                'rgba(34, 197, 94, 0.8)',
-                'rgba(59, 130, 246, 0.8)'
+                'rgba(59, 130, 246, 0.8)', // Napi
+                'rgba(16, 185, 129, 0.8)'  // Non napi
+            ],
+            borderColor: [
+                'rgba(59, 130, 246, 1)',
+                'rgba(16, 185, 129, 1)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Pie Chart Residivis Individu
+const ctxResidivisPie = document.getElementById('chartResidivisPie').getContext('2d');
+new Chart(ctxResidivisPie, {
+    type: 'doughnut',
+    data: {
+        labels: Object.keys(residivisPie),
+        datasets: [{
+            data: Object.values(residivisPie),
+            backgroundColor: [
+                'rgba(239, 68, 68, 0.8)', // Residivis
+                'rgba(245, 158, 11, 0.8)' // Non Residivis
             ],
             borderColor: [
                 'rgba(239, 68, 68, 1)',
-                'rgba(34, 197, 94, 1)',
-                'rgba(59, 130, 246, 1)'
+                'rgba(245, 158, 11, 1)'
             ],
             borderWidth: 2
         }]

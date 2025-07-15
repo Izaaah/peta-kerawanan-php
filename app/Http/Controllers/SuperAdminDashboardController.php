@@ -55,11 +55,16 @@ class SuperAdminDashboardController extends Controller
             ->orderBy('bulan')
             ->get();
 
-        // Data untuk pie chart status kasus (contoh)
-        $statusKasus = [
-            'Aktif' => KasusNarkoba::where('keterangan', 'like', '%aktif%')->count(),
-            'Selesai' => KasusNarkoba::where('keterangan', 'like', '%selesai%')->count(),
-            'Dalam Proses' => KasusNarkoba::where('keterangan', 'like', '%proses%')->count(),
+        // Data untuk pie chart status individu (Napi/Non napi)
+        $statusPie = [
+            'Napi' => \App\Models\DataIndividuTsk::where('status', 'Napi')->count(),
+            'Non napi' => \App\Models\DataIndividuTsk::where('status', 'Non napi')->count(),
+        ];
+
+        // Data untuk pie chart residivis (Residivis/Non Residivis)
+        $residivisPie = [
+            'Residivis' => \App\Models\DataIndividuTsk::where('residivis', true)->count(),
+            'Non Residivis' => \App\Models\DataIndividuTsk::where('residivis', false)->count(),
         ];
 
         // Data terbaru
@@ -76,8 +81,9 @@ class SuperAdminDashboardController extends Controller
             'kasusPerKabupaten',
             'kasusPerKecamatan',
             'trendBulanan',
-            'statusKasus',
-            'kasusTerbaru'
+            'kasusTerbaru',
+            'statusPie',
+            'residivisPie'
         ));
     }
 
