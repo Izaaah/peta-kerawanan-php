@@ -1,26 +1,31 @@
 @extends('layouts.superadmin-master')
 
 @section('content')
-<div class="container">
-    <h1 class="mb-4">Edit Lembaga Rehabilitasi</h1>
-    <form action="{{ route('super-admin.data.lrehab.update', $lrehab->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <div class="mb-3">
-            <label for="nama" class="form-label">Nama</label>
-            <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama', $lrehab->nama) }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="jenis" class="form-label">Jenis</label>
-            <select class="form-control" id="jenis" name="jenis" required>
-                <option value="">-- Pilih Jenis --</option>
-                @foreach($jenisOptions as $jenis)
-                    <option value="{{ $jenis }}" {{ (old('jenis', $lrehab->jenis) == $jenis) ? 'selected' : '' }}>{{ $jenis }}</option>
-                @endforeach
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{{ route('super-admin.data.lrehab.index') }}" class="btn btn-secondary">Batal</a>
-    </form>
+<div class="max-w-2xl mx-auto py-8">
+    <div class="bg-white rounded shadow p-6">
+        <h2 class="text-xl font-bold mb-4">Edit Data Lembaga Rehabilitasi</h2>
+        <form action="{{ route('super-admin.data.lrehab.update', $lrehab->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="mb-4">
+                <label class="block font-semibold mb-1">Nama</label>
+                <input type="text" name="nama" value="{{ old('nama', $lrehab->nama) }}" class="w-full border-gray-300 rounded px-3 py-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block font-semibold mb-1">Jenis</label>
+                <select name="jenis" class="w-full border-gray-300 rounded px-3 py-2" required>
+                    <option value="">-- Pilih Jenis --</option>
+                    @foreach($jenisOptions as $jenis)
+                        <option value="{{ $jenis }}" {{ (old('jenis', $lrehab->jenis) == $jenis) ? 'selected' : '' }}>{{ $jenis }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex gap-2 mt-6">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>
+                <a href="{{ route('super-admin.data.lrehab.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</a>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection 
