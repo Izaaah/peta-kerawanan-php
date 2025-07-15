@@ -5,58 +5,7 @@
 @section('content')
 @include('components.superadmin-navbar')
 
-<style>
-    .input-card {
-        border-radius: 1.25rem;
-        box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08), 0 1.5px 4px 0 rgba(0,0,0,0.03);
-        border: none;
-        background: #fff;
-        transition: box-shadow 0.2s;
-    }
-    .input-card:hover {
-        box-shadow: 0 8px 40px 0 rgba(0,0,0,0.12), 0 2px 8px 0 rgba(0,0,0,0.04);
-    }
-    .input-header-icon {
-        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-        color: #fff;
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.5rem;
-        margin: 0 auto 1rem auto;
-        box-shadow: 0 2px 12px 0 rgba(16,185,129,0.15);
-    }
-    .input-label {
-        font-weight: 600;
-        color: #059669;
-        margin-bottom: 0.5rem;
-    }
-    .form-select-lg {
-        font-size: 1.15rem;
-        padding: 0.75rem 1.5rem 0.75rem 2.5rem;
-        border-radius: 0.75rem;
-        background-position: 1rem center;
-    }
-    .btn-lg {
-        font-size: 1.1rem;
-        padding: 0.75rem 2.5rem;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        box-shadow: 0 2px 8px 0 rgba(5,150,105,0.08);
-        transition: background 0.2s, box-shadow 0.2s;
-    }
-    .btn-lg:active, .btn-lg:focus {
-        background: #047857;
-        box-shadow: 0 4px 16px 0 rgba(5,150,105,0.12);
-    }
-    @media (max-width: 600px) {
-        .input-card { padding: 1.5rem !important; }
-        .input-header-icon { width: 54px; height: 54px; font-size: 1.7rem; }
-    }
-</style>
+<!-- Main Content: Card List Pilihan -->
 <div class="container-fluid px-2 px-md-4 py-5">
     <!-- Header -->
     <div class="text-center mb-5">
@@ -87,13 +36,13 @@
                             <option value="lanjutan">Input Data Lanjutan Penanganan</option>
                             <option value="kasus">Input Data Kasus Narkoba</option>
                             <option value="desa">Input Data Desa Geojson</option>
-                            <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
+                            {{-- <option value="penyalahguna">Input Data Daerah Penyalahguna</option>
                             <option value="penelundupan">Input Data Daerah Penyelundupan</option>
                             <option value="thm">Input Data THM dan Manager</option>
                             <option value="jaringan">Input Data Jaringan di Rutan dan Lapas</option>
                             <option value="objek">Input Data Objek Vital</option>
                             <option value="penggiat">Input Data Jaringan Penggiat</option>
-                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option>
+                            <option value="informasi">Input Data Jaringan Informasi (Orang)</option> --}}
                             <option value="lsm">Input Data LSM Narkotika</option>
                             <option value="rehabilitasi">Input Data Lembaga Rehabilitasi</option>
                             <option value="ekspedisi">Input Data Ekspedisi</option>
@@ -105,20 +54,53 @@
                             <option value="vape">Input Data Penjual Vape</option>
                         </select>
                     </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-success btn-lg" id="submitBtn" disabled>
-                            <i class="fas fa-arrow-right me-2"></i>Lanjutkan
-                        </button>
-                    </div>
-                </form>
-                <div class="mt-4 pt-3 border-top text-center">
-                    <span class="text-muted small">Tersedia <span class="fw-bold text-success">5</span> jenis input data utama.</span>
+                    <span class="ml-6 text-gray-400 group-hover:text-teal-600 text-xl">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
                 </div>
-            </div>
-            <div class="alert alert-success text-center mt-3" style="border-radius:0.75rem;">
-                <i class="fas fa-info-circle me-2"></i>
-                Anda dapat menambahkan data baru sesuai kebutuhan dengan memilih jenis input di atas.
-            </div>
+            </a>
+            <!-- Penjual Vape -->
+            <a href="{{ route('super-admin.data.vape.create') }}" class="block group">
+                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
+                    <span class="flex items-center mr-6">
+                        <span class="h-3 w-3 rounded-full bg-yellow-500 mr-2"></span>
+                        <span class="text-sm font-semibold text-yellow-600">Active</span>
+                    </span>
+                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 text-yellow-600 text-2xl mr-6">
+                        <i class="fas fa-smoking"></i>
+                    </span>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-gray-800 group-hover:text-yellow-700">Penjual Vape</div>
+                        <div class="text-sm text-gray-500 truncate">Input Data Vape</div>
+                    </div>
+                    <span class="ml-6 text-gray-400 group-hover:text-yellow-600 text-xl">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
+            </a>
+            <!-- Farmasi/Prekursor -->
+            <a href="{{ route('super-admin.data.farmasi.create') }}" class="block group">
+                <div class="flex items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition">
+                    <span class="flex items-center mr-6">
+                        <span class="h-3 w-3 rounded-full bg-rose-500 mr-2"></span>
+                        <span class="text-sm font-semibold text-rose-600">Active</span>
+                    </span>
+                    <span class="flex items-center justify-center h-12 w-12 rounded-full bg-rose-100 text-rose-600 text-2xl mr-6">
+                        <i class="fas fa-pills"></i>
+                    </span>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-gray-800 group-hover:text-rose-700">Farmasi/Prekursor</div>
+                        <div class="text-sm text-gray-500 truncate">Input Data Farmasi</div>
+                    </div>
+                    <span class="ml-6 text-gray-400 group-hover:text-rose-600 text-xl">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
+            </a>
+        </div>
+        <div class="bg-green-50 border border-green-100 text-green-700 text-center mt-8 rounded-lg py-3 px-4 flex items-center justify-center gap-2">
+            <i class="fas fa-info-circle"></i>
+            <span>Anda dapat menambahkan data baru sesuai kebutuhan dengan memilih jenis input di atas.</span>
         </div>
     </div>
 </div>
@@ -148,14 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
             'medsos': '{{ route('super-admin.data.medsos.create') }}',
             'vape': '{{ route('super-admin.data.vape.create') }}',
             'farmasi': '{{ route('super-admin.data.farmasi.create') }}',
-            'transportasi': '{{ route('super-admin.data.transportasi.create') }}',
-            'penginapan': '{{ route('super-admin.data.penginapan.create') }}',
-            'ekspedisi': '{{ route('super-admin.data.ekspedisi.create') }}',
-            'objek': '{{ route('super-admin.data.objekvital.create') }}',
-            'rehabilitasi': '{{ route('super-admin.data.lrehab.create') }}',
-            'rutanlapas': '{{ route('super-admin.data.rutanlapas.create') }}',
-            'penggiat': '{{ route('super-admin.data.penggiat.create') }}',
-
         };
         if (routes[selectedType]) {
             window.location.href = routes[selectedType];
