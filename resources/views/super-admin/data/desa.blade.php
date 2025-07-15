@@ -95,22 +95,66 @@
                     </tr>
                 </thead>
                 <tbody id="desaTableBody" class="bg-white divide-y divide-gray-200">
-                    @foreach($desaList as $index => $desa)
-                        <tr>
-                            <td class="px-4 py-2">{{ $index + 1 }}</td>
-                            <td class="px-4 py-2">{{ $desa->nama_desa }}</td>
-                            <td class="px-4 py-2">{{ $desa->kecamatan }}</td>
-                            <td class="px-4 py-2">{{ $desa->kabupaten }}</td>
-                            <td class="px-4 py-2">
-                                <span class="px-2 py-1 rounded text-white text-xs bg-{{ $desa->kasusNarkoba()->count() > 0 ? 'red-600' : 'green-600' }}">
-                                    {{ $desa->kasusNarkoba()->count() }}
-                                </span>
-                            </td>
-                        </tr>
-                    @endforeach
+                    <!-- Tabel akan diisi oleh JS -->
                 </tbody>
             </table>
         </div>
+        <div class="flex justify-end mt-4 gap-2">
+            <button id="prevPageBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300" disabled>Previous</button>
+            <button id="nextPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+        </div>
     </div>
 </div>
+
+<script>
+const desaList = @json($desaList);
+const perPage = 20;
+let currentPage = 1;
+
+function renderDesaTable() {
+    const tbody = document.getElementById('desaTableBody');
+    tbody.innerHTML = '';
+    const start = (currentPage - 1) * perPage;
+    const end = start + perPage;
+    const pageData = desaList.slice(start, end);
+    pageData.forEach((desa, index) => {
+        const kasusCount = desa.kasus_narkoba_count ?? 0;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="px-4 py-2">${start + index + 1}</td>
+            <td class="px-4 py-2">${desa.nama_desa}</td>
+            <td class="px-4 py-2">${desa.kecamatan}</td>
+            <td class="px-4 py-2">${desa.kabupaten}</td>
+            <td class="px-4 py-2">
+                <span class="px-2 py-1 rounded text-white text-xs bg-${kasusCount > 0 ? 'red-600' : 'green-600'}">
+                    ${kasusCount}
+                </span>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    document.getElementById('prevPageBtn').disabled = currentPage === 1;
+    document.getElementById('nextPageBtn').disabled = end >= desaList.length;
+}
+
+document.getElementById('prevPageBtn').addEventListener('click', function() {
+    if (currentPage > 1) {
+        currentPage--;
+        renderDesaTable();
+    }
+});
+document.getElementById('nextPageBtn').addEventListener('click', function() {
+    if ((currentPage * perPage) < desaList.length) {
+        currentPage++;
+        renderDesaTable();
+    }
+});
+
+// Preprocess kasus count (karena $desa->kasusNarkoba()->count() tidak bisa diakses di JS)
+desaList.forEach(desa => {
+    desa.kasus_narkoba_count = desa.kasus_narkoba_count ?? (desa.kasus_narkoba_count = desa.kasusNarkoba_count || 0);
+});
+
+renderDesaTable();
+</script>
 @endsection

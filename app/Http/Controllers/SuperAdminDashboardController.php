@@ -32,17 +32,17 @@ class SuperAdminDashboardController extends Controller
         $kecamatanCount = $filteredDesaQuery->distinct('kecamatan')->count('kecamatan');
 
         // Data untuk grafik kasus per kabupaten
-        $kasusPerKabupaten = KasusNarkoba::select('kabupaten', DB::raw('count(*) as total'))
+        $kasusPerKabupaten = TkpResidivisIndividu::select('kabupaten', DB::raw('count(*) as total'))
             ->groupBy('kabupaten')
             ->orderBy('total', 'desc')
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         // Data untuk grafik kasus per kecamatan
-        $kasusPerKecamatan = KasusNarkoba::select('kecamatan', DB::raw('count(*) as total'))
+        $kasusPerKecamatan = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
             ->groupBy('kecamatan')
             ->orderBy('total', 'desc')
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         // Data untuk grafik trend bulanan
