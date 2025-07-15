@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'lanjutan': '{{ route('super-admin.data.lanjutan') }}',
             'kasus': '{{ route('super-admin.data.kasus') }}',
             'desa': '{{ route('super-admin.data.desa') }}',
-            'lsm': '{{ route('super-admin.data.lsm.index') }}'
+            'lsm': '{{ route('super-admin.data.lsm.index') }}',
             'medsos': '{{ route('super-admin.data.medsos.index') }}',
             'vape': '{{ route('super-admin.data.vape.index') }}',
             'farmasi': '{{ route('super-admin.data.farmasi.index') }}',
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'penginapan': '{{ route('super-admin.data.penginapan.index') }}',
             'ekspedisi': '{{ route('super-admin.data.ekspedisi.index') }}',
             'objek': '{{ route('super-admin.data.objekvital.index') }}',
-            'rehabilitasi': '{{ route('super-admin.data.lrehab.index') }}',
+            'rehabilitasi': '{{ route('super-admin.data.lrehab.index') }}'
         };
         if (routes[selectedType]) {
             window.location.href = routes[selectedType];
