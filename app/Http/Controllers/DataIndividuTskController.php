@@ -32,18 +32,18 @@ class DataIndividuTskController extends Controller
     }
 
     public function getIndividuCount(Request $request)
-    {
-        $kabupaten = $request->kabupaten;
-        $kecamatan = $request->kecamatan;
-        $desa = $request->desa;
+{
+    $kabupaten = $request->kabupaten;
+    $kecamatan = $request->kecamatan;
+    $desa = $request->desa;
 
-        $count = TkpResidivisIndividu::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
-            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
-            ->whereRaw('LOWER(TRIM(desa)) = ?', [strtolower(trim($desa))])
-            ->count();
+    $count = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+        ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+        ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
+        ->count();
 
-        return response()->json(['count' => $count]);
-    }
+    return response()->json(['count' => $count]);
+}
 
     public function create()
     {

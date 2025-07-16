@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\DesaGeojson;
 use App\Models\KasusNarkoba;
+use App\Models\DataIndividuTsk;
 use Illuminate\Support\Facades\DB;
 
 class PetaController extends Controller

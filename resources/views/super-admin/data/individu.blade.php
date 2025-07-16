@@ -176,9 +176,9 @@
             </div>
             <nav aria-label="Page navigation">
                 <ul class="inline-flex -space-x-px">
-                    <li><span class="px-3 py-1 rounded-l bg-gray-200 text-gray-500 cursor-not-allowed">Previous</span></li>
+                    <li><span class="px-3 py-1 rounded-l bg-gray-200 text-gray-500">Previous</span></li>
                     <li><span class="px-3 py-1 bg-blue-600 text-white">1</span></li>
-                    <li><span class="px-3 py-1 rounded-r bg-gray-200 text-gray-500 cursor-not-allowed">Next</span></li>
+                    <li><span class="px-3 py-1 rounded-r bg-gray-200 text-gray-500">Next</span></li>
                 </ul>
             </nav>
         </div>
