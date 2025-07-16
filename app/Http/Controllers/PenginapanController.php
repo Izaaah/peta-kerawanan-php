@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 
 class PenginapanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $penginapanList = Penginapan::latest()->paginate(10);
+        $query = Penginapan::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama', 'like', "%$q%")
+                    ->orWhere('jenis', 'like', "%$q%")
+                    ->orWhere('nama_pengelola', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%");
+            });
+        }
+        $penginapanList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.penginapan.index', compact('penginapanList'));
     }
 

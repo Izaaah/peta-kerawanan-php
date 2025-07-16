@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 
 class JaringanRutanLapasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $rutanlapasList = JaringanRutanLapas::latest()->paginate(10);
+        $query = JaringanRutanLapas::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_napi', 'like', "%$q%")
+                    ->orWhere('jenis_napi', 'like', "%$q%")
+                    ->orWhere('lapas', 'like', "%$q%")
+                    ->orWhere('status_proses', 'like', "%$q%");
+            });
+        }
+        $rutanlapasList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.rutanlapas.index', compact('rutanlapasList'));
     }
 

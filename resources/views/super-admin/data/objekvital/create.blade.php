@@ -46,7 +46,7 @@
                 </div>
             </form>
         </div>
-        <div class="order-1 lg:order-2">
+        <div class="mt-6 order-1 lg:order-2">
             <div class="bg-white shadow rounded p-4 space-y-4">
                 <div class="bg-blue-50 p-3 rounded border-l-4 border-blue-400">
                     <h6 class="font-semibold text-blue-700 mb-2"><i class="fas fa-info-circle mr-2"></i>Informasi</h6>

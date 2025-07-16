@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class PenggiatNarkotikaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $penggiatList = PenggiatNarkotika::latest()->paginate(10);
+        $query = PenggiatNarkotika::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama', 'like', "%$q%")
+                    ->orWhere('alamat', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%");
+            });
+        }
+        $penggiatList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.penggiat.index', compact('penggiatList'));
     }
 

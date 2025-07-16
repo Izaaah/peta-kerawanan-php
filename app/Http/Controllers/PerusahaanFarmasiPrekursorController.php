@@ -7,9 +7,22 @@ use Illuminate\Http\Request;
 
 class PerusahaanFarmasiPrekursorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $farmasiList = PerusahaanFarmasiPrekursor::latest()->paginate(10);
+        $query = PerusahaanFarmasiPrekursor::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('jenis', 'like', "%$q%")
+                    ->orWhere('nama', 'like', "%$q%")
+                    ->orWhere('manager', 'like', "%$q%")
+                    ->orWhere('lokasi', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%")
+                    ->orWhere('prekusor', 'like', "%$q%")
+                    ->orWhere('tujuan', 'like', "%$q%");
+            });
+        }
+        $farmasiList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.farmasi.index', compact('farmasiList'));
     }
 

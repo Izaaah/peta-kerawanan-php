@@ -7,9 +7,20 @@ use Illuminate\Http\Request;
 
 class TransportasiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $transportasiList = Transportasi::latest()->paginate(10);
+        $query = Transportasi::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('jenis_transportasi', 'like', "%$q%")
+                    ->orWhere('nama_pihak', 'like', "%$q%")
+                    ->orWhere('posisi', 'like', "%$q%")
+                    ->orWhere('lokasi', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%");
+            });
+        }
+        $transportasiList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.transportasi.index', compact('transportasiList'));
     }
 

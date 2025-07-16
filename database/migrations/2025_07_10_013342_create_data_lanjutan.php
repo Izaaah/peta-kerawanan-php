@@ -7,12 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        // --- Tabel 20: lsm_narkotika ---
-        Schema::create('lsm_narkotika', function (Blueprint $table) {
+        // --- Tabel 20: thm_narkotika ---
+        Schema::create('thm', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_lsm');
-            $table->string('ketua_lsm');
-            $table->text('alamat');
+            $table->string('nama_thm');
+            $table->string('ketua_thm');
             $table->string('no_hp_ketua');
             $table->timestamps();
         });

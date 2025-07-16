@@ -8,6 +8,10 @@
         <h2 class="text-xl font-bold">Daftar Penjual Vape</h2>
         <a href="{{ route('super-admin.data.vape.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penjual Vape</a>
     </div>
+    <form method="GET" action="{{ route('super-admin.data.vape.index') }}" class="mb-4 flex gap-2">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama toko, pemilik..." class="border rounded px-3 py-2 w-full" />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+    </form>
     <div class="bg-white rounded shadow p-6">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">

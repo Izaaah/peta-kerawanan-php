@@ -7,9 +7,21 @@ use Illuminate\Http\Request;
 
 class ObjekVitalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $objekVitalList = ObjekVital::latest()->paginate(10);
+        $query = \App\Models\ObjekVital::query();
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_objek', 'like', "%$q%")
+                    ->orWhere('nama_manager', 'like', "%$q%")
+                    ->orWhere('lokasi', 'like', "%$q%");
+            });
+        }
+
+        $objekVitalList = $query->paginate(10)->withQueryString();
+
         return view('super-admin.data.objekvital.index', compact('objekVitalList'));
     }
 

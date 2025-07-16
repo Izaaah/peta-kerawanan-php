@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 
 class LembagaRehabilitasiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $lrehabList = LembagaRehabilitasi::latest()->paginate(10);
+        $query = LembagaRehabilitasi::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama', 'like', "%$q%")
+                    ->orWhere('jenis', 'like', "%$q%");
+            });
+        }
+        $lrehabList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.lrehab.index', compact('lrehabList'));
     }
 
