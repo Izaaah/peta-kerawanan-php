@@ -3,10 +3,15 @@
 @section('title', 'Data Tempat Transportasi')
 
 @section('content')
-<div class="max-w-6xl mx-auto py-8">
+<div class="container mx-auto px-4 py-6">
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold">Daftar Tempat Transportasi</h2>
-        <a href="{{ route('super-admin.data.transportasi.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Transportasi</a>
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">Daftar Tempat Transportasi</h1>
+            <p class="text-sm text-gray-500">Informasi lengkap mengenai Tempat Transportasi</p>
+        </div>
+        <a href="{{ route('super-admin.data.transportasi.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Tambah Transportasi
+        </a>
     </div>
 
     @if(session('success'))
@@ -21,10 +26,16 @@
     </div>
     @endif
 
+    <form method="GET" action="{{ route('super-admin.data.transportasi.index') }}" class="mb-4 flex gap-2">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari jenis, nama pihak, posisi..." class="border rounded px-3 py-2 w-full" />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+    </form>
+
     <div class="bg-white rounded shadow p-6">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis Transportasi</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Pihak</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Posisi</th>
@@ -33,8 +44,9 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($transportasiList as $transportasi)
+                @forelse($transportasiList as $i => $transportasi)
                 <tr>
+                    <td class="px-4 py-2">{{ $transportasiList->firstItem() + $i }}</td>
                     <td class="px-4 py-2">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
                             @if($transportasi->jenis_transportasi == 'Darat') bg-blue-100 text-blue-800
@@ -59,7 +71,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-4 py-2 text-center text-gray-500">Belum ada data transportasi.</td>
+                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">Belum ada data transportasi.</td>
                 </tr>
                 @endforelse
             </tbody>

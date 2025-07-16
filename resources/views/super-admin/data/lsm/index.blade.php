@@ -14,6 +14,11 @@
         </a>
     </div>
 
+    <form method="GET" action="{{ route('super-admin.data.lsm.index') }}" class="mb-4 flex gap-2">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama LSM, ketua, alamat..." class="border rounded px-3 py-2 w-full" />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+    </form>
+
     <div class="bg-white shadow rounded p-6">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">

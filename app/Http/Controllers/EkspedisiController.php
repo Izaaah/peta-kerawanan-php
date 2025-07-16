@@ -7,9 +7,20 @@ use Illuminate\Http\Request;
 
 class EkspedisiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ekspedisiList = Ekspedisi::latest()->paginate(10);
+        $query = Ekspedisi::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama', 'like', "%$q%")
+                    ->orWhere('manager', 'like', "%$q%")
+                    ->orWhere('alamat', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%")
+                    ->orWhere('jenis', 'like', "%$q%");
+            });
+        }
+        $ekspedisiList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.ekspedisi.index', compact('ekspedisiList'));
     }
 

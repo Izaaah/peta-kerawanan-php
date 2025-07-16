@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 
 class PenjualVapeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $vapeList = PenjualVape::latest()->paginate(10);
+        $query = PenjualVape::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_toko', 'like', "%$q%")
+                    ->orWhere('pemilik', 'like', "%$q%")
+                    ->orWhere('lokasi', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%");
+            });
+        }
+        $vapeList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.vape.index', compact('vapeList'));
     }
 

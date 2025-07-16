@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class MedsosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $medsosList = Medsos::latest()->paginate(10);
+        $query = Medsos::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_media_sosial', 'like', "%$q%")
+                    ->orWhere('nama_akun', 'like', "%$q%")
+                    ->orWhere('link_akun', 'like', "%$q%");
+            });
+        }
+        $medsosList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.medsos.index', compact('medsosList'));
     }
 

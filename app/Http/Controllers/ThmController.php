@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class ThmController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $thmList = Thm::latest()->paginate(10);
+        $query = Thm::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_thm', 'like', "%$q%")
+                    ->orWhere('ketua_thm', 'like', "%$q%")
+                    ->orWhere('no_hp_ketua', 'like', "%$q%");
+            });
+        }
+        $thmList = $query->latest()->paginate(10)->withQueryString();
         return view('super-admin.data.thm.index', compact('thmList'));
     }
 
