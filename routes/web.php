@@ -18,6 +18,7 @@ use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\LembagaRehabilitasiController;
 use App\Http\Controllers\JaringanRutanLapasController;
 use App\Http\Controllers\PenggiatNarkotikaController;
+use App\Http\Controllers\ThmController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -199,6 +200,14 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('penggiat/{id}/edit', [PenggiatNarkotikaController::class, 'edit'])->name('data.penggiat.edit');
     Route::put('penggiat/{id}', [PenggiatNarkotikaController::class, 'update'])->name('data.penggiat.update');
     Route::delete('/penggiat/{id}', [PenggiatNarkotikaController::class, 'destroy'])->name('data.penggiat.destroy');
+
+    Route::get('thm/', [ThmController::class, 'index'])->name('data.thm.index');
+    Route::get('thm/create', [ThmController::class, 'create'])->name('data.thm.create');
+    Route::post('thm/', [ThmController::class, 'store'])->name('data.thm.store');
+    Route::get('thm/{id}', [ThmController::class, 'show'])->name('data.thm.show');
+    Route::get('thm/{id}/edit', [ThmController::class, 'edit'])->name('data.thm.edit');
+    Route::put('thm/{id}', [ThmController::class, 'update'])->name('data.thm.update');
+    Route::delete('/thm/{id}', [ThmController::class, 'destroy'])->name('data.thm.destroy');
 
 
 });
