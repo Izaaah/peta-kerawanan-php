@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col items-center">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Logo_BNN.png" alt="Logo BNN" class="login-logo mb-2 mt-[-60px]">
+        <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN" class="login-logo mb-2 mt-[-60px] h-40">
     </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />

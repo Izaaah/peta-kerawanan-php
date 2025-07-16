@@ -27,46 +27,6 @@
                 <div class="text-xs text-gray-500">Input data tersangka individu</div>
             </div>
         </a>
-        <!-- Card: Data Pendukung Kasus -->
-        <a href="{{ route('super-admin.input.pendukung') }}" class="block group">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-emerald-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-green-400 to-green-500 mb-3 shadow">
-                    <i class="fas fa-user-friends text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-green-700 mb-1">Input Data Pendukung</div>
-                <div class="text-xs text-gray-500">Input data pendukung kasus</div>
-            </div>
-        </a>
-        <!-- Card: Data Lanjutan Penanganan -->
-        <a href="{{ route('super-admin.input.lanjutan') }}" class="block group">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-emerald-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 to-yellow-500 mb-3 shadow">
-                    <i class="fas fa-forward text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-yellow-700 mb-1">Input Data Lanjutan</div>
-                <div class="text-xs text-gray-500">Input data lanjutan penanganan</div>
-            </div>
-        </a>
-        <!-- Card: Data Kasus Narkoba -->
-        <a href="{{ route('super-admin.input.kasus') }}" class="block group">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-emerald-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-red-400 to-pink-500 mb-3 shadow">
-                    <i class="fas fa-biohazard text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-red-700 mb-1">Input Data Kasus Narkoba</div>
-                <div class="text-xs text-gray-500">Input data kasus narkoba</div>
-            </div>
-        </a>
-        <!-- Card: Data Desa Geojson -->
-        <a href="{{ route('super-admin.input.desa') }}" class="block group">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-emerald-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-400 to-blue-500 mb-3 shadow">
-                    <i class="fas fa-map-marked-alt text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-blue-700 mb-1">Input Data Desa Geojson</div>
-                <div class="text-xs text-gray-500">Input data desa/kelurahan</div>
-            </div>
-        </a>
         <!-- Card: Data LSM Narkotika -->
         <a href="{{ route('super-admin.data.lsm.create') }}" class="block group">
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-emerald-400">

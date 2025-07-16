@@ -244,7 +244,7 @@
                             .then(res => res.json())
                             .then(data => {
                                 document.getElementById(`individu-count-${desaId}`).innerHTML = data.count;
-                                // Update tingkat kerawanan dan warnanya
+                                // Update tingkat kerawanan di popup
                                 const kerawananText = document.querySelector(`#individu-count-${desaId}`).closest('.leaflet-popup-content').querySelector('.kerawanan-text');
                                 const kerawananLevel = getKerawananLevel(data.count);
                                 const kerawananColor = getKerawananColor(data.count);
@@ -252,6 +252,11 @@
                                     kerawananText.textContent = kerawananLevel;
                                     kerawananText.className = `text-xs font-medium ${kerawananColor} kerawanan-text`;
                                 }
+                                // --- Tambahan: update warna poligon di peta ---
+                                feature.properties.jumlah_kasus = data.count;
+                                layer.setStyle({
+                                    fillColor: getColor(data.count)
+                                });
                             })
                             .catch(() => {
                                 document.getElementById(`individu-count-${desaId}`).innerHTML = 'Gagal memuat';
