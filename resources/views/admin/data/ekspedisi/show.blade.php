@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Detail Ekspedisi')
 
@@ -7,8 +7,8 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Detail Data Ekspedisi</h2>
         <div class="flex gap-2">
-            <a href="{{ route('super-admin.data.ekspedisi.edit', $ekspedisi->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
-            <a href="{{ route('super-admin.data.ekspedisi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
+            <a href="{{ route('admin.data.ekspedisi.edit', $ekspedisi->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
+            <a href="{{ route('admin.data.ekspedisi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
         </div>
     </div>
     <div class="bg-white rounded shadow p-6">
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="mt-8 flex justify-end">
-            <form action="{{ route('super-admin.data.ekspedisi.destroy', $ekspedisi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
+            <form action="{{ route('admin.data.ekspedisi.destroy', $ekspedisi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Hapus Data</button>
@@ -63,4 +63,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

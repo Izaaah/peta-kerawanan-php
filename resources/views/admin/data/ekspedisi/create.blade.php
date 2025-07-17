@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Tambah Data Ekspedisi')
 
@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Data Ekspedisi</h1>
             <p class="text-sm text-gray-500">Form untuk input data ekspedisi</p>
         </div>
-        <a href="{{ route('super-admin.data.ekspedisi.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+        <a href="{{ route('admin.data.ekspedisi.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>Kembali
         </a>
     </div>
@@ -19,7 +19,7 @@
             @if(session('error'))
                 <div class="p-4 text-red-700 bg-red-100 rounded">{{ session('error') }}</div>
             @endif
-            <form action="{{ route('super-admin.data.ekspedisi.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.data.ekspedisi.store') }}" method="POST" class="space-y-6">
                 @csrf
                 <div class="bg-white shadow rounded p-6 space-y-4">
                     <h6 class="text-lg font-semibold text-primary"><i class="fas fa-truck mr-2"></i>Data Ekspedisi</h6>
@@ -78,4 +78,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

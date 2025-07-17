@@ -94,6 +94,20 @@
                                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                             @enderror
                                         </div>
+
+                                        <!-- Kabupaten -->
+                                        <div class="md:col-span-2">
+                                            <label for="kabupaten" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kabupaten/Kota</label>
+                                            <select name="kabupaten" id="kabupaten" class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                                                <option value="">-- Pilih Kabupaten/Kota --</option>
+                                                @foreach($kabupatenList as $kabupaten)
+                                                    <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('kabupaten')
+                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     </div>
 
                                     <div class="mt-6 flex justify-end">

@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Edit Penginapan')
 
@@ -6,7 +6,7 @@
 <div class="max-w-4xl mx-auto py-8">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Edit Data Penginapan</h2>
-        <a href="{{ route('super-admin.data.penginapan.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
+        <a href="{{ route('admin.data.penginapan.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
     </div>
     @if(session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -14,7 +14,7 @@
         </div>
     @endif
     <div class="bg-white rounded shadow p-6">
-        <form action="{{ route('super-admin.data.penginapan.update', $penginapan->id) }}" method="POST">
+        <form action="{{ route('admin.data.penginapan.update', $penginapan->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -60,10 +60,10 @@
                 </div>
             </div>
             <div class="flex justify-end gap-4 mt-6">
-                <a href="{{ route('super-admin.data.penginapan.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</a>
+                <a href="{{ route('admin.data.penginapan.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</a>
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
             </div>
         </form>
     </div>
 </div>
-@endsection 
+@endsection

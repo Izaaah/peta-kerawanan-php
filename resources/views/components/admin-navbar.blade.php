@@ -34,7 +34,7 @@
     {{-- <span class="sijagat-title">SIJAGAD</span> --}}
     <!-- Tengah: Menu Navigasi -->
     <div class="menu-area">
-        <div class="menu-btn"><a href="{{ route('super-admin.dashboard') }}">Home</a>
+        <div class="menu-btn"><a href="{{ route('admin.dashboard') }}">Home</a>
         </div>
         <div class="menu-btn dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>
@@ -44,8 +44,8 @@
                 <li><a href="">Peta Kawasan<br>Rawan Geospasial</a></li>
             </ul>
         </div>
-        <div class="menu-btn"><a href="{{ route('super-admin.data.index') }}">Data</a></div>
-        <div class="menu-btn"><a href="{{ route('super-admin.input.index') }}">Input</a></div>
-        <div class="menu-btn"><a href="{{ route('super-admin.chart-jaringan') }}">Chart</a></div>
+        <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data</a></div>
+        <div class="menu-btn"><a href="{{ route('admin.input.index') }}">Input</a></div>
+        <div class="menu-btn"><a href="{{ route('admin.chart-jaringan') }}">Chart</a></div>
     </div>
 </div>

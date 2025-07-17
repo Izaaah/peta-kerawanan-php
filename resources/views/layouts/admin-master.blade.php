@@ -21,13 +21,13 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Additional Styles -->
-    <link rel="stylesheet" href="{{ asset('css/superadmin-components.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin-components.css') }}">
     @stack('styles')
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 flex flex-col" style="padding-top: 110px;">
         <!-- Include Superadmin Navbar -->
-        @include('components.superadmin-navbar')
+        @include('components.admin-navbar')
 
         <!-- Main Content Area -->
         <div class="flex flex-1">

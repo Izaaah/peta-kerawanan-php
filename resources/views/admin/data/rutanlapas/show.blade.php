@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('content')
 <div class="container">
@@ -31,7 +31,7 @@
         <label class="form-label">Keterangan</label>
         <div class="form-control">{{ $rutanlapas->keterangan }}</div>
     </div>
-    <a href="{{ route('super-admin.data.rutanlapas.index') }}" class="btn btn-secondary">Kembali</a>
-    <a href="{{ route('super-admin.data.rutanlapas.edit', $rutanlapas->id) }}" class="btn btn-warning">Edit</a>
+    <a href="{{ route('admin.data.rutanlapas.index') }}" class="btn btn-secondary">Kembali</a>
+    <a href="{{ route('admin.data.rutanlapas.edit', $rutanlapas->id) }}" class="btn btn-warning">Edit</a>
 </div>
-@endsection 
+@endsection

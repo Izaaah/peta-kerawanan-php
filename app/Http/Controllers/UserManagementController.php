@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\DesaGeojson;
 
 class UserManagementController extends Controller
 {
@@ -43,7 +44,16 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        return view('super-admin.user-management.create');
+        $kabupatenList = DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('super-admin.user-management.create', compact('kabupatenList'));
     }
 
     /**

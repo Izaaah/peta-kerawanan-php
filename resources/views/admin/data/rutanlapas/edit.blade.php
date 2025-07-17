@@ -1,9 +1,9 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('content')
 <div class="container">
     <h1 class="mb-4">Edit Jaringan Rutan/Lapas</h1>
-    <form action="{{ route('super-admin.data.rutanlapas.update', $rutanlapas->id) }}" method="POST">
+    <form action="{{ route('admin.data.rutanlapas.update', $rutanlapas->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -45,7 +45,7 @@
             <textarea class="form-control" id="keterangan" name="keterangan">{{ old('keterangan', $rutanlapas->keterangan) }}</textarea>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{{ route('super-admin.data.rutanlapas.index') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('admin.data.rutanlapas.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
-@endsection 
+@endsection

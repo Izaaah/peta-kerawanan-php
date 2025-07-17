@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Edit THM')
 
@@ -6,7 +6,7 @@
 <div class="max-w-2xl mx-auto py-8">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Edit Data Tempat Hiburan Malam (THM)</h2>
-        <form action="{{ route('super-admin.data.thm.update', $thm->id) }}" method="POST">
+        <form action="{{ route('admin.data.thm.update', $thm->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -27,9 +27,9 @@
             </div>
             <div class="flex gap-2 mt-6">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>
-                <a href="{{ route('super-admin.data.thm.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</a>
+                <a href="{{ route('admin.data.thm.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</a>
             </div>
         </form>
     </div>
 </div>
-@endsection 
+@endsection

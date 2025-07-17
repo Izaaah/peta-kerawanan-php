@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Edit Data Individu TSK')
 
@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-bold text-gray-800 light:text-white">Edit Data Individu TSK</h1>
             <p class="text-sm text-gray-500">Perbarui data individu di bawah ini.</p>
         </div>
-        <a href="{{ route('super-admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
+        <a href="{{ route('admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
             <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
     </div>
@@ -46,7 +46,7 @@
                     </div>
                     @endif
 
-                    @include('super-admin.data.individu.form', ['mode' => 'edit', 'individu' => $individu, 'kabupatenList' => $kabupatenList])
+                    @include('admin.data.individu.form', ['mode' => 'edit', 'individu' => $individu, 'kabupatenList' => $kabupatenList])
                 </div>
             </div>
             <!-- Sidebar Info -->

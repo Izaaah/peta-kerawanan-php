@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Tambah Data Individu TSK')
 
@@ -10,7 +10,7 @@
             <h1 class="text-2xl font-bold text-gray-800 light:text-white">Tambah Data Individu TSK</h1>
             <p class="text-sm text-gray-500">Silakan lengkapi formulir berikut dengan data yang akurat.</p>
         </div>
-        <a href="{{ route('super-admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
+        <a href="{{ route('admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
             <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
     </div>
@@ -57,7 +57,7 @@
 @endif
 
 
-                    <form action="{{ route('super-admin.data.individu.store') }}" method="POST" id="individuForm" enctype="multipart/form-data">
+                    <form action="{{ route('admin.data.individu.store') }}" method="POST" id="individuForm" enctype="multipart/form-data">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

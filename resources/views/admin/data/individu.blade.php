@@ -1,9 +1,9 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Data Individu TSK')
 
 @section('content')
-@include('components.superadmin-navbar')
+@include('components.admin-navbar')
 
 <div class="container-fluid px-4 py-5">
     <!-- Header Section -->
@@ -11,10 +11,10 @@
         <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu TSK</h1>
         <p class="text-sm text-gray-500 mb-4">Kelola data individu TSK dengan korelasi kasus narkotika</p>
         <div class="flex flex-col md:flex-row gap-2 md:gap-3 items-start md:items-center">
-            <a href="{{ route('super-admin.data.individu.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+            <a href="{{ route('admin.data.individu.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                 <i class="fas fa-plus mr-2"></i>Tambah Data
             </a>
-            <a href="{{ route('super-admin.api.individu.export') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700">
+            <a href="{{ route('admin.api.individu.export') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700">
                 <i class="fas fa-download mr-2"></i>Export
             </a>
         </div>
@@ -153,10 +153,10 @@
                         </td>
                         <td class="px-4 py-2 text-center">
                             <div class="flex gap-1 justify-center">
-                                <a href="{{ route('super-admin.data.individu.show', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
+                                <a href="{{ route('admin.data.individu.show', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50" title="Edit">
+                                <a href="{{ route('admin.data.individu.edit', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button class="inline-flex items-center px-2 py-1 text-xs text-red-600 border border-red-600 rounded hover:bg-red-50" onclick="deleteIndividu({{ $individu->id }})" title="Hapus">
@@ -269,10 +269,10 @@ function renderTable(data) {
             </td>
             <td class="px-4 py-2 text-center">
                 <div class="flex gap-1 justify-center">
-                    <a href="/super-admin/data-individu/${individu.id}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
+                    <a href="/admin/data-individu/${individu.id}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
                         <i class="fas fa-eye"></i>
                     </a>
-                    <a href="/super-admin/data-individu/${individu.id}/edit" class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50" title="Edit">
+                    <a href="/admin/data-individu/${individu.id}/edit" class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50" title="Edit">
                         <i class="fas fa-edit"></i>
                     </a>
                     <button class="inline-flex items-center px-2 py-1 text-xs text-red-600 border border-red-600 rounded hover:bg-red-50" onclick="deleteIndividu(${individu.id})" title="Hapus">
@@ -326,7 +326,7 @@ function loadData() {
     if (peran) params.append('peran_jaringan', peran);
     if (residivis) params.append('residivis', residivis);
 
-    fetch(`/super-admin/api/individu-data?${params}`)
+    fetch(`/admin/api/individu-data?${params}`)
         .then(response => response.json())
         .then(data => {
             renderTable(data.data);
@@ -345,7 +345,7 @@ function applyFilters() {
 function deleteIndividu(id) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     const form = document.getElementById('deleteForm');
-    form.action = `/super-admin/data-individu/${id}`;
+    form.action = `/admin/data-individu/${id}`;
     modal.show();
 }
 </script>

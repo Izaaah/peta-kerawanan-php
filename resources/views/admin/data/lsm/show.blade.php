@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('content')
 <div class="max-w-2xl mx-auto py-8">
@@ -21,8 +21,8 @@
             <div class="text-gray-700">{{ $lsm->alamat }}</div>
         </div>
         <div class="flex gap-2 mt-6">
-            <a href="{{ route('super-admin.data.lsm.edit', $lsm->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
-            <a href="{{ route('super-admin.data.lsm.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>
+            <a href="{{ route('admin.data.lsm.edit', $lsm->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
+            <a href="{{ route('admin.data.lsm.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>
         </div>
     </div>
 </div>

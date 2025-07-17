@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Data Akun Media Sosial')
 
@@ -6,9 +6,9 @@
 <div class="max-w-4xl mx-auto py-8">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Daftar Akun Media Sosial Transaksi Narkotika</h2>
-        <a href="{{ route('super-admin.data.medsos.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Akun</a>
+        <a href="{{ route('admin.data.medsos.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Akun</a>
     </div>
-    <form method="GET" action="{{ route('super-admin.data.medsos.index') }}" class="mb-4 flex gap-2">
+    <form method="GET" action="{{ route('admin.data.medsos.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari media sosial, nama akun..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
     </form>
@@ -29,9 +29,9 @@
                     <td class="px-4 py-2">{{ $medsos->nama_akun }}</td>
                     <td class="px-4 py-2"><a href="{{ $medsos->link_akun }}" class="text-blue-600 underline" target="_blank">{{ $medsos->link_akun }}</a></td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.medsos.show', $medsos->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
-                        <a href="{{ route('super-admin.data.medsos.edit', $medsos->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
-                        <form action="{{ route('super-admin.data.medsos.destroy', $medsos->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
+                        <a href="{{ route('admin.data.medsos.show', $medsos->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+                        <a href="{{ route('admin.data.medsos.edit', $medsos->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
+                        <form action="{{ route('admin.data.medsos.destroy', $medsos->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>

@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends($layout ?? 'layouts.app')
 
 @section('content')
 <div class="container-fluid px-4">

@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Data Ekspedisi')
 
@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-semibold text-gray-800">Daftar Ekspedisi</h1>
             <p class="text-sm text-gray-500">Informasi lengkap mengenai Ekspedisi</p>
         </div>
-        <a href="{{ route('super-admin.data.ekspedisi.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+        <a href="{{ route('admin.data.ekspedisi.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
             <i class="fas fa-plus mr-2"></i>Tambah Ekspedisi
         </a>
     </div>
@@ -20,7 +20,7 @@
         </div>
     @endif
 
-    <form method="GET" action="{{ route('super-admin.data.ekspedisi.index') }}" class="mb-4 flex gap-2">
+    <form method="GET" action="{{ route('admin.data.ekspedisi.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, manager, alamat..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
     </form>
@@ -48,9 +48,9 @@
                     <td class="px-4 py-2">{{ $ekspedisi->no_hp }}</td>
                     <td class="px-4 py-2">{{ $ekspedisi->jenis }}</td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.ekspedisi.show', $ekspedisi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
-                        <a href="{{ route('super-admin.data.ekspedisi.edit', $ekspedisi->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
-                        <form action="{{ route('super-admin.data.ekspedisi.destroy', $ekspedisi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
+                        <a href="{{ route('admin.data.ekspedisi.show', $ekspedisi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+                        <a href="{{ route('admin.data.ekspedisi.edit', $ekspedisi->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
+                        <form action="{{ route('admin.data.ekspedisi.destroy', $ekspedisi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>
@@ -69,4 +69,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

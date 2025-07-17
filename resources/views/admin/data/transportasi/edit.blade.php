@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Edit Data Transportasi')
 
@@ -6,7 +6,7 @@
 <div class="max-w-4xl mx-auto py-8">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Edit Data Transportasi</h2>
-        <a href="{{ route('super-admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
+        <a href="{{ route('admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
     </div>
 
     @if(session('error'))
@@ -16,7 +16,7 @@
     @endif
 
     <div class="bg-white rounded shadow p-6">
-        <form action="{{ route('super-admin.data.transportasi.update', $transportasi->id) }}" method="POST">
+        <form action="{{ route('admin.data.transportasi.update', $transportasi->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -74,7 +74,7 @@
             </div>
 
             <div class="flex justify-end gap-4 mt-6">
-                <a href="{{ route('super-admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</a>
+                <a href="{{ route('admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</a>
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
             </div>
         </form>
