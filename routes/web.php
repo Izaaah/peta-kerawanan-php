@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SuperAdminDashboardController;
+use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\PenyalahgunaanController;
 use App\Http\Controllers\PetaController;
 use App\Http\Controllers\DataDesaController;
@@ -176,7 +177,7 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/objekvital/{id}/edit', [objekvitalController::class, 'edit'])->name('data.objekvital.edit');
     Route::put('/objekvital/{id}', [objekvitalController::class, 'update'])->name('data.objekvital.update');
     Route::delete('/objekvital/{id}', [objekvitalController::class, 'destroy'])->name('data.objekvital.destroy');
-    
+
     Route::get('/lrehab', [LembagaRehabilitasiController::class, 'index'])->name('data.lrehab.index');
     Route::get('/lrehab/create', [LembagaRehabilitasiController::class, 'create'])->name('data.lrehab.create');
     Route::post('/lrehab', [LembagaRehabilitasiController::class, 'store'])->name('data.lrehab.store');
@@ -212,11 +213,72 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
 
 });
 
-// Administrator Routes
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/chart-jaringan', function () {
+        return view('admin.chart-jaringan');
+    })->name('chart-jaringan');
+
+    Route::get('/peta', function () {
+        return view('admin.peta');
+    })->name('peta');
+
+    // User Management Routes
+    Route::resource('user-management', UserManagementController::class)->parameters([
+        'user-management' => 'user'
+    ]);
+
+    // Data Routes
+    Route::get('/data', function () {
+        return view('admin.data.index');
+    })->name('data.index');
+
+    Route::get('/data-individu', [DataIndividuTskController::class, 'index'])->name('data.individu');
+    Route::get('/data-individu/create', [DataIndividuTskController::class, 'create'])->name('data.individu.create');
+    Route::post('/data-individu', [DataIndividuTskController::class, 'store'])->name('data.individu.store');
+    Route::get('/data-individu/{id}', [DataIndividuTskController::class, 'show'])->name('data.individu.show');
+    Route::get('/data-individu/{id}/edit', [DataIndividuTskController::class, 'edit'])->name('data.individu.edit');
+    Route::put('/data-individu/{id}', [DataIndividuTskController::class, 'update'])->name('data.individu.update');
+    Route::delete('/data-individu/{id}', [DataIndividuTskController::class, 'destroy'])->name('data.individu.destroy');
+    Route::get('/api/individu-data', [DataIndividuTskController::class, 'getData'])->name('api.individu.data');
+    Route::get('/api/individu-export', [DataIndividuTskController::class, 'export'])->name('api.individu.export');
+
+    Route::get('/data-desa', [DataDesaController::class, 'index'])->name('data.desa');
+    Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');
+    Route::get('/api/desa-detail/{id}', [DataDesaController::class, 'detail'])->name('api.desa.detail');
+    Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
+    Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
+    Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
+
+    Route::get('/data-pendukung', function () {
+        return view('admin.data.pendukung');
+    })->name('data.pendukung');
+    Route::get('/data-lanjutan', function () {
+        return view('admin.data.lanjutan');
+    })->name('data.lanjutan');
+    Route::get('/data-kasus', function () {
+        return view('admin.data.kasus');
+    })->name('data.kasus');
+
+    // Input Routes
+    Route::get('/input', function () {
+        return view('admin.input.index');
+    })->name('input.index');
+    Route::get('/input-individu', [DataIndividuTskController::class, 'create'])->name('input.individu');
+    Route::get('/input-pendukung', function () {
+        return view('admin.input.pendukung');
+    })->name('input.pendukung');
+    Route::get('/input-lanjutan', function () {
+        return view('admin.input.lanjutan');
+    })->name('input.lanjutan');
+    Route::get('/input-kasus', function () {
+        return view('admin.input.kasus');
+    })->name('input.kasus');
+    Route::get('/input-desa', function () {
+        return view('admin.input.desa');
+    })->name('input.desa');
+    // Tambahkan route lain sesuai kebutuhan admin
 });
 
 // Operator Routes

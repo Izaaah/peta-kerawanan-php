@@ -68,7 +68,7 @@
             </div>
         </a>
         <!-- Card: Data Jaringan di Rutan dan Lapas -->
-        <a href="{{ route('super-admin.data.rutanlapas.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.rutanlapas.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-500 mb-3 shadow">
                     <i class="fas fa-network-wired text-white text-2xl"></i>
@@ -78,7 +78,7 @@
             </div>
         </a>
         <!-- Card: Data Objek Vital -->
-        <a href="{{ route('super-admin.data.objekvital.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.objekvital.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-gray-700 to-gray-900 mb-3 shadow">
                     <i class="fas fa-landmark text-white text-2xl"></i>
@@ -88,7 +88,7 @@
             </div>
         </a>
         <!-- Card: Data Jaringan Penggiat -->
-        <a href="{{ route('super-admin.data.penggiat.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.penggiat.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-lime-400 to-lime-500 mb-3 shadow">
                     <i class="fas fa-people-carry text-white text-2xl"></i>
@@ -98,7 +98,7 @@
             </div>
         </a>
         <!-- Card: Data Lembaga Rehabilitasi -->
-        <a href="{{ route('super-admin.data.lrehab.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.lrehab.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-green-700 to-green-900 mb-3 shadow">
                     <i class="fas fa-hospital-alt text-white text-2xl"></i>
@@ -108,7 +108,7 @@
             </div>
         </a>
         <!-- Card: Data Ekspedisi -->
-        <a href="{{ route('super-admin.data.ekspedisi.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.ekspedisi.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-700 to-yellow-900 mb-3 shadow">
                     <i class="fas fa-shipping-fast text-white text-2xl"></i>
@@ -118,7 +118,7 @@
             </div>
         </a>
         <!-- Card: Data Jasa Transportasi -->
-        <a href="{{ route('super-admin.data.transportasi.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.transportasi.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow">
                     <i class="fas fa-bus-alt text-white text-2xl"></i>
@@ -128,23 +128,13 @@
             </div>
         </a>
         <!-- Card: Data Penginapan (Hotel & Kost) -->
-        <a href="{{ route('super-admin.data.penginapan.create') }}" class="block group" tabindex="-1">
+        <a href="{{ route('super-admin.data.penginapan.create') }}" class="block group opacity-50" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-700 to-pink-900 mb-3 shadow">
                     <i class="fas fa-hotel text-white text-2xl"></i>
                 </div>
                 <div class="font-semibold text-pink-800 mb-1">Input Data Penginapan</div>
                 <div class="text-xs text-gray-500">Input data penginapan</div>
-            </div>
-        </a>
-        <!-- Card: Data THM dan Manager -->
-        <a href="{{ route('super-admin.data.thm.create') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow">
-                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-fuchsia-700 mb-1">Input Data THM & Manager</div>
-                <div class="text-xs text-gray-500">Input data THM dan manager</div>
             </div>
         </a>
         <!-- Card: Data Daerah Penyalahguna -->
@@ -164,6 +154,16 @@
                     <i class="fas fa-truck-loading text-white text-2xl"></i>
                 </div>
                 <div class="font-semibold text-amber-700 mb-1">Input Data Daerah Penyelundupan</div>
+                <div class="text-xs text-gray-500">(Belum tersedia)</div>
+            </div>
+        </a>
+        <!-- Card: Data THM dan Manager -->
+        <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow">
+                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-fuchsia-700 mb-1">Input Data THM & Manager</div>
                 <div class="text-xs text-gray-500">(Belum tersedia)</div>
             </div>
         </a>

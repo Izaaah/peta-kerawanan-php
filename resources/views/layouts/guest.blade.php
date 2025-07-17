@@ -25,7 +25,7 @@
                 box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
-                padding: 3rem 2.2rem 2.2rem 2.2rem;
+                padding: 2rem 1.2rem 1.5rem 1.2rem;
                 max-width: 400px;
                 width: 100%;
                 transition: box-shadow 0.3s, border 0.3s;
@@ -34,6 +34,24 @@
                 overflow: hidden;
                 opacity: 0;
                 transform: translateY(-60px);
+            }
+            @media (max-width: 480px) {
+                .login-card {
+                    max-width: 98vw;
+                    padding: 1.2rem 0.5rem 1rem 0.5rem;
+                    border-radius: 18px;
+                }
+                .login-title {
+                    font-size: 1.05rem;
+                }
+                .login-logo {
+                    width: 72px;
+                    height: 72px;
+                }
+                .login-btn {
+                    font-size: 0.98rem;
+                    padding: 0.7rem 0;
+                }
             }
             .login-card.animated-in {
                 opacity: 1;
@@ -77,6 +95,7 @@
             .login-input {
                 transition: box-shadow 0.2s, border-color 0.2s;
                 background: rgba(255,255,255,0.85);
+                font-size: 1rem;
             }
             .login-input:focus {
                 border-color: #39e639;
