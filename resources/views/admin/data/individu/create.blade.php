@@ -1,9 +1,9 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Tambah Data Individu TSK')
 
 @section('content')
-@include('components.superadmin-navbar')
+@include('components.admin-navbar')
 
 <div class="container-fluid px-4">
 // ... existing code ...

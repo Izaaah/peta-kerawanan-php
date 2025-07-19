@@ -67,6 +67,16 @@
                 <div class="text-xs text-gray-500">Kelola data perusahaan/farmasi prekursor</div>
             </div>
         </a>
+        <!-- Card: Data Jaringan di Rutan dan Lapas -->
+        <a href="{{ route('admin.data.rutanlapas.index') }}" class="block group" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-500 mb-3 shadow">
+                    <i class="fas fa-network-wired text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-cyan-700 mb-1">Data Jaringan Rutan/Lapas</div>
+                <div class="text-xs text-gray-500">Kelola data jaringan rutan/lapas</div>
+            </div>
+        </a>
         <!-- Card: Data Objek Vital -->
         <a href="{{ route('admin.data.objekvital.index') }}" class="block group" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">

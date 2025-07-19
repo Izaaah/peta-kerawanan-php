@@ -1,9 +1,9 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('title', 'Input Data Individu TSK')
 
 @section('content')
-@include('components.superadmin-navbar')
+@include('components.admin-navbar')
 
 @section('content')
 <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 py-8">
@@ -12,7 +12,7 @@
             <i class="fas fa-user-plus text-blue-600 text-xl"></i>
             <h2 class="text-xl font-bold text-gray-800">Form Input Data Individu TSK</h2>
         </div>
-        <form method="POST" action="{{ route('super-admin.data.individu.store') }}" class="space-y-8">
+        <form method="POST" action="{{ route('admin.data.individu.store') }}" class="space-y-8">
             @csrf
             {{-- Data Pribadi --}}
             <div>
@@ -139,7 +139,7 @@
             </div>
             {{-- Tombol --}}
             <div class="flex flex-col md:flex-row justify-end gap-4 mt-8">
-                <a href="{{ route('super-admin.input.index') }}" class="inline-flex items-center px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold">
+                <a href="{{ route('admin.input.index') }}" class="inline-flex items-center px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold">
                     <i class="fas fa-arrow-left mr-2"></i>Batal
                 </a>
                 <button type="submit" class="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow">

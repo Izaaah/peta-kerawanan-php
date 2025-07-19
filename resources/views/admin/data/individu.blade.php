@@ -343,10 +343,15 @@ function applyFilters() {
 
 // Delete individu
 function deleteIndividu(id) {
-    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    console.log('deleteIndividu called', id);
+    const modalEl = document.getElementById('deleteModal');
+    if (!modalEl) { alert('Modal not found!'); return; }
+    const modal = new bootstrap.Modal(modalEl);
     const form = document.getElementById('deleteForm');
-    form.action = `/admin/data-individu/${id}`;
+    form.action = "{{ route('admin.data.individu.destroy', ':id') }}".replace(':id', id);
     modal.show();
+    $('#deleteModal').modal('show');
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

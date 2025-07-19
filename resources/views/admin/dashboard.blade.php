@@ -80,12 +80,12 @@
     <!-- Grafik Trend dan Status -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Trend Bulanan -->
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Trend Kasus Bulanan</h3>
                 <canvas id="chartTrend" width="400" height="200"></canvas>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Status & Residivis Pie Charts -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -120,19 +120,17 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($kasusTerbaru as $kasus)
-                        <tr>
+                        {{-- <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $kasus->nama_desa }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->kecamatan }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->kabupaten }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->keterangan ?? '-' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->created_at->format('d/m/Y') }}</td>
-                        </tr>
-                        @empty
+                        </tr> --}}
+                        {{-- @empty --}}
                         <tr>
                             <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data kasus</td>
                         </tr>
-                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -146,33 +144,32 @@
 // Data dari controller
 const kasusPerKabupaten = @json($kasusPerKabupaten);
 const kasusPerKecamatan = @json($kasusPerKecamatan);
-const trendBulanan = @json($trendBulanan);
 const statusPie = @json($statusPie);
 const residivisPie = @json($residivisPie);
 
 // Grafik Kasus per Kabupaten
-const ctxKabupaten = document.getElementById('chartKabupaten').getContext('2d');
-new Chart(ctxKabupaten, {
-    type: 'bar',
-    data: {
-        labels: kasusPerKabupaten.map(item => item.kabupaten),
-        datasets: [{
-            label: 'Jumlah Kasus',
-            data: kasusPerKabupaten.map(item => item.total),
-            backgroundColor: 'rgba(59, 130, 246, 0.8)',
-            borderColor: 'rgba(59, 130, 246, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
+// const ctxKabupaten = document.getElementById('chartKabupaten').getContext('2d');
+// new Chart(ctxKabupaten, {
+//     type: 'bar',
+//     data: {
+//         labels: kasusPerKabupaten.map(item => item.kabupaten),
+//         datasets: [{
+//             label: 'Jumlah Kasus',
+//             data: kasusPerKabupaten.map(item => item.total),
+//             backgroundColor: 'rgba(59, 130, 246, 0.8)',
+//             borderColor: 'rgba(59, 130, 246, 1)',
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         responsive: true,
+//         scales: {
+//             y: {
+//                 beginAtZero: true
+//             }
+//         }
+//     }
+// });
 
 // Grafik Kasus per Kecamatan
 const ctxKecamatan = document.getElementById('chartKecamatan').getContext('2d');
@@ -199,35 +196,35 @@ new Chart(ctxKecamatan, {
 });
 
 // Grafik Trend Bulanan
-const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
-const trendData = new Array(12).fill(0);
-trendBulanan.forEach(item => {
-    trendData[item.bulan - 1] = item.total;
-});
+// const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+// const trendData = new Array(12).fill(0);
+// trendBulanan.forEach(item => {
+//     trendData[item.bulan - 1] = item.total;
+// });
 
-const ctxTrend = document.getElementById('chartTrend').getContext('2d');
-new Chart(ctxTrend, {
-    type: 'line',
-    data: {
-        labels: bulanNames,
-        datasets: [{
-            label: 'Kasus per Bulan',
-            data: trendData,
-            borderColor: 'rgba(245, 158, 11, 1)',
-            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-            tension: 0.4,
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
+// const ctxTrend = document.getElementById('chartTrend').getContext('2d');
+// new Chart(ctxTrend, {
+//     type: 'line',
+//     data: {
+//         labels: bulanNames,
+//         datasets: [{
+//             label: 'Kasus per Bulan',
+//             data: trendData,
+//             borderColor: 'rgba(245, 158, 11, 1)',
+//             backgroundColor: 'rgba(245, 158, 11, 0.1)',
+//             tension: 0.4,
+//             fill: true
+//         }]
+//     },
+//     options: {
+//         responsive: true,
+//         scales: {
+//             y: {
+//                 beginAtZero: true
+//             }
+//         }
+//     }
+// });
 
 // Pie Chart Status Individu
 const ctxStatusPie = document.getElementById('chartStatusPie').getContext('2d');

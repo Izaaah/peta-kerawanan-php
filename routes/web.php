@@ -199,13 +199,13 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::put('/lrehab/{id}', [LembagaRehabilitasiController::class, 'update'])->name('data.lrehab.update');
     Route::delete('/lrehab/{id}', [LembagaRehabilitasiController::class, 'destroy'])->name('data.lrehab.destroy');
 
-    Route::get('/rutanlapas', [JaringanRutanLapasAdminController::class, 'index'])->name('data.rutanlapas.index');
-    Route::get('/rutanlapas/create', [JaringanRutanLapasAdminController::class, 'create'])->name('data.rutanlapas.create');
-    Route::post('/rutanlapas', [JaringanRutanLapasAdminController::class, 'store'])->name('data.rutanlapas.store');
-    Route::get('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'show'])->name('data.rutanlapas.show');
-    Route::get('/rutanlapas/{id}/edit', [JaringanRutanLapasAdminController::class, 'edit'])->name('data.rutanlapas.edit');
-    Route::put('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'update'])->name('data.rutanlapas.update');
-    Route::delete('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'destroy'])->name('data.rutanlapas.destroy');
+    Route::get('/rutanlapas', [JaringanRutanLapasController::class, 'index'])->name('data.rutanlapas.index');
+    Route::get('/rutanlapas/create', [JaringanRutanLapasController::class, 'create'])->name('data.rutanlapas.create');
+    Route::post('/rutanlapas', [JaringanRutanLapasController::class, 'store'])->name('data.rutanlapas.store');
+    Route::get('/rutanlapas/{id}', [JaringanRutanLapasController::class, 'show'])->name('data.rutanlapas.show');
+    Route::get('/rutanlapas/{id}/edit', [JaringanRutanLapasController::class, 'edit'])->name('data.rutanlapas.edit');
+    Route::put('/rutanlapas/{id}', [JaringanRutanLapasController::class, 'update'])->name('data.rutanlapas.update');
+    Route::delete('/rutanlapas/{id}', [JaringanRutanLapasController::class, 'destroy'])->name('data.rutanlapas.destroy');
 
     Route::get('penggiat/', [PenggiatNarkotikaController::class, 'index'])->name('data.penggiat.index');
     Route::get('penggiat/create', [PenggiatNarkotikaController::class, 'create'])->name('data.penggiat.create');
@@ -343,6 +343,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/penginapan/{id}/edit', [PenginapanAdminController::class, 'edit'])->name('data.penginapan.edit');
     Route::put('/penginapan/{id}', [PenginapanAdminController::class, 'update'])->name('data.penginapan.update');
     Route::delete('/penginapan/{id}', [PenginapanAdminController::class, 'destroy'])->name('data.penginapan.destroy');
+
+    Route::get('/rutanlapas', [JaringanRutanLapasAdminController::class, 'index'])->name('data.rutanlapas.index');
+    Route::get('/rutanlapas/create', [JaringanRutanLapasAdminController::class, 'create'])->name('data.rutanlapas.create');
+    Route::post('/rutanlapas', [JaringanRutanLapasAdminController::class, 'store'])->name('data.rutanlapas.store');
+    Route::get('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'show'])->name('data.rutanlapas.show');
+    Route::get('/rutanlapas/{id}/edit', [JaringanRutanLapasAdminController::class, 'edit'])->name('data.rutanlapas.edit');
+    Route::put('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'update'])->name('data.rutanlapas.update');
+    Route::delete('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'destroy'])->name('data.rutanlapas.destroy');
 
     // Data Pendukung Routes
     Route::get('/data-pendukung', function () {

@@ -1,6 +1,7 @@
 @extends('layouts.admin-master')
 
 @section('title', 'Tambah Data Individu TSK')
+@include('components.admin-navbar')
 
 @section('content')
 <div class="px-4 pt-2 pb-6">
@@ -368,7 +369,7 @@
             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
             if (kabupaten) {
-                fetch(`/super-admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
+                fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(kecamatan => {
@@ -721,7 +722,7 @@
             kecamatanSelect.innerHTML = '<option value="">Kecamatan</option>';
             desaSelect.innerHTML = '<option value="">Desa/Kelurahan</option>';
             if (kabupaten) {
-                fetch(`/super-admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
+                fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(kecamatan => {
