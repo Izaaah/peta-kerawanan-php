@@ -10,7 +10,11 @@ class MedsosAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = Medsos::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -37,13 +41,14 @@ class MedsosAdminController extends Controller
             'nama_media_sosial_lainnya' => 'required_if:nama_media_sosial,lainnya',
         ]);
         $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         if ($data['nama_media_sosial'] === 'lainnya') {
             $data['nama_media_sosial'] = $data['nama_media_sosial_lainnya'];
         }
         unset($data['nama_media_sosial_lainnya']); // pastikan field ini tidak ikut disimpan
 
         Medsos::create($data);
-        return redirect()->route('admin.data.medsos.index')->with('success', 'Akun medsos berhasil ditambah.');
+        return redirect()->route('admin.data.medsos.index')->with('success', 'Data medsos berhasil disimpan.');
     }
 
     public function show($id)

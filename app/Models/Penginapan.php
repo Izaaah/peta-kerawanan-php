@@ -17,6 +17,7 @@ class Penginapan extends Model
         'nama_pengelola',
         'lokasi',
         'no_hp',
+        'created_by',
     ];
 
     public static function getJenisOptions()
@@ -29,4 +30,9 @@ class Penginapan extends Model
             'Kost' => 'Kost',
         ];
     }
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

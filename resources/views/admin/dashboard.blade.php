@@ -60,11 +60,11 @@
 
     <!-- Grafik Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <!-- Grafik Kasus per Kabupaten -->
+        <!-- Grafik Kasus per Desa (Top 10) -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Kasus per Kabupaten</h3>
-                <canvas id="chartKabupaten" width="400" height="200"></canvas>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Kasus per Desa (Top 10)</h3>
+                <canvas id="chartDesa" width="400" height="200"></canvas>
             </div>
         </div>
 
@@ -80,12 +80,12 @@
     <!-- Grafik Trend dan Status -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Trend Bulanan -->
-        {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Trend Kasus Bulanan</h3>
                 <canvas id="chartTrend" width="400" height="200"></canvas>
             </div>
-        </div> --}}
+        </div>
 
         <!-- Status & Residivis Pie Charts -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -115,22 +115,24 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Desa</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kecamatan</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kabupaten</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keterangan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lokasi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        {{-- <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $kasus->nama_desa }}</td>
+                        @forelse($kasusTerbaru as $kasus)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $kasus->desa }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->kecamatan }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->kabupaten }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->keterangan ?? '-' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->created_at->format('d/m/Y') }}</td>
-                        </tr> --}}
-                        {{-- @empty --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->lokasi ?? '-' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $kasus->created_at ? $kasus->created_at->format('d/m/Y') : '-' }}</td>
+                        </tr>
+                        @empty
                         <tr>
                             <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data kasus</td>
                         </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -142,34 +144,48 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // Data dari controller
-const kasusPerKabupaten = @json($kasusPerKabupaten);
+const kasusPerDesa = @json($kasusPerDesa);
 const kasusPerKecamatan = @json($kasusPerKecamatan);
 const statusPie = @json($statusPie);
 const residivisPie = @json($residivisPie);
+const trendBulanan = @json($trendBulanan);
 
-// Grafik Kasus per Kabupaten
-// const ctxKabupaten = document.getElementById('chartKabupaten').getContext('2d');
-// new Chart(ctxKabupaten, {
-//     type: 'bar',
-//     data: {
-//         labels: kasusPerKabupaten.map(item => item.kabupaten),
-//         datasets: [{
-//             label: 'Jumlah Kasus',
-//             data: kasusPerKabupaten.map(item => item.total),
-//             backgroundColor: 'rgba(59, 130, 246, 0.8)',
-//             borderColor: 'rgba(59, 130, 246, 1)',
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         responsive: true,
-//         scales: {
-//             y: {
-//                 beginAtZero: true
-//             }
-//         }
-//     }
-// });
+// Grafik Kasus per Desa (Top 10)
+const ctxDesa = document.getElementById('chartDesa').getContext('2d');
+new Chart(ctxDesa, {
+    type: 'bar',
+    data: {
+        labels: kasusPerDesa.map(item => item.desa),
+        datasets: [{
+            label: 'Jumlah Kasus',
+            data: kasusPerDesa.map(item => item.total),
+            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: function(context) {
+                        const idx = context[0].dataIndex;
+                        const desa = kasusPerDesa[idx].desa;
+                        const kecamatan = kasusPerDesa[idx].kecamatan;
+                        return desa + ' (Kec. ' + kecamatan + ')';
+                    }
+                }
+            },
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
 // Grafik Kasus per Kecamatan
 const ctxKecamatan = document.getElementById('chartKecamatan').getContext('2d');
@@ -196,35 +212,35 @@ new Chart(ctxKecamatan, {
 });
 
 // Grafik Trend Bulanan
-// const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
-// const trendData = new Array(12).fill(0);
-// trendBulanan.forEach(item => {
-//     trendData[item.bulan - 1] = item.total;
-// });
+const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+const trendData = new Array(12).fill(0);
+trendBulanan.forEach(item => {
+    trendData[item.bulan - 1] = item.total;
+});
 
-// const ctxTrend = document.getElementById('chartTrend').getContext('2d');
-// new Chart(ctxTrend, {
-//     type: 'line',
-//     data: {
-//         labels: bulanNames,
-//         datasets: [{
-//             label: 'Kasus per Bulan',
-//             data: trendData,
-//             borderColor: 'rgba(245, 158, 11, 1)',
-//             backgroundColor: 'rgba(245, 158, 11, 0.1)',
-//             tension: 0.4,
-//             fill: true
-//         }]
-//     },
-//     options: {
-//         responsive: true,
-//         scales: {
-//             y: {
-//                 beginAtZero: true
-//             }
-//         }
-//     }
-// });
+const ctxTrend = document.getElementById('chartTrend').getContext('2d');
+new Chart(ctxTrend, {
+    type: 'line',
+    data: {
+        labels: bulanNames,
+        datasets: [{
+            label: 'Kasus per Bulan',
+            data: trendData,
+            borderColor: 'rgba(245, 158, 11, 1)',
+            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
 // Pie Chart Status Individu
 const ctxStatusPie = document.getElementById('chartStatusPie').getContext('2d');

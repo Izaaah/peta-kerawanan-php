@@ -10,13 +10,10 @@ class LembagaRehabilitasiAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = LembagaRehabilitasi::query();
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function($sub) use ($q) {
-                $sub->where('nama', 'like', "%$q%")
-                    ->orWhere('jenis', 'like', "%$q%");
-            });
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
         }
         $lrehabList = $query->latest()->paginate(10)->withQueryString();
         return view('admin.data.lrehab.index', compact('lrehabList'));
@@ -30,12 +27,14 @@ class LembagaRehabilitasiAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama' => 'required|string|max:255',
             'jenis' => 'required|in:IPWL,Rawat Inap,Non Rawat Inap,SNI Nasional,SNI Reguler',
         ]);
-        LembagaRehabilitasi::create($request->all());
-        return redirect()->route('admin.data.lrehab.index')->with('success', 'Data lembaga rehabilitasi berhasil ditambah.');
+        LembagaRehabilitasi::create($data);
+        return redirect()->route('admin.data.lrehab.index')->with('success', 'Data lembaga rehabilitasi berhasil disimpan.');
     }
 
     public function show($id)

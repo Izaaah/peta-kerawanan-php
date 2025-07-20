@@ -18,7 +18,14 @@ class AdminDashboardController extends Controller
         $userId = $user->id;
 
         // Data untuk statistik dashboard (hanya data yang diinput user ini)
-        $totalKasus = TkpResidivisIndividu::where('created_by', $userId)->count();
+        // Filter berdasarkan created_by jika ada, atau berdasarkan kabupaten jika tidak ada created_by
+        $totalKasus = TkpResidivisIndividu::where(function($query) use ($userId, $userKabupaten) {
+            $query->where('created_by', $userId)
+                  ->orWhere(function($q) use ($userKabupaten) {
+                      $q->whereNull('created_by')
+                        ->where('kabupaten', $userKabupaten);
+                  });
+        })->count();
 
         // Filter desa data hanya untuk kabupaten user
         $filteredDesaQuery = DesaGeojson::query()
@@ -39,7 +46,13 @@ class AdminDashboardController extends Controller
 
         // Data untuk grafik kasus per kabupaten (hanya kabupaten user, hanya data user ini)
         $kasusPerKabupaten = TkpResidivisIndividu::select('kabupaten', DB::raw('count(*) as total'))
-            ->where('created_by', $userId)
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })
             ->where('kabupaten', $userKabupaten)
             ->groupBy('kabupaten')
             ->orderBy('total', 'desc')
@@ -47,7 +60,13 @@ class AdminDashboardController extends Controller
 
         // Data untuk grafik kasus per kecamatan (hanya kabupaten user, hanya data user ini)
         $kasusPerKecamatan = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
-            ->where('created_by', $userId)
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })
             ->where('kabupaten', $userKabupaten)
             ->groupBy('kecamatan')
             ->orderBy('total', 'desc')
@@ -55,22 +74,87 @@ class AdminDashboardController extends Controller
 
         // Data untuk pie chart status individu (hanya data user ini)
         $statusPie = [
-            'Napi' => \App\Models\DataIndividuTsk::where('status', 'Napi')->where('created_by', $userId)->count(),
-            'Non napi' => \App\Models\DataIndividuTsk::where('status', 'Non napi')->where('created_by', $userId)->count(),
+            'Napi' => \App\Models\DataIndividuTsk::where('status', 'Napi')
+                ->where(function($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                          ->orWhere(function($q) use ($userKabupaten) {
+                              $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                          });
+                })->count(),
+            'Non napi' => \App\Models\DataIndividuTsk::where('status', 'Non napi')
+                ->where(function($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                          ->orWhere(function($q) use ($userKabupaten) {
+                              $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                          });
+                })->count(),
         ];
 
         // Data untuk pie chart residivis (hanya data user ini)
         $residivisPie = [
-            'Residivis' => \App\Models\DataIndividuTsk::where('residivis', true)->where('created_by', $userId)->count(),
-            'Non Residivis' => \App\Models\DataIndividuTsk::where('residivis', false)->where('created_by', $userId)->count(),
+            'Residivis' => \App\Models\DataIndividuTsk::where('residivis', true)
+                ->where(function($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                          ->orWhere(function($q) use ($userKabupaten) {
+                              $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                          });
+                })->count(),
+            'Non Residivis' => \App\Models\DataIndividuTsk::where('residivis', false)
+                ->where(function($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                          ->orWhere(function($q) use ($userKabupaten) {
+                              $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                          });
+                })->count(),
         ];
 
+        // Data untuk grafik kasus per desa (top 10, hanya kabupaten user, hanya data user ini)
+        $kasusPerDesa = TkpResidivisIndividu::select('desa', 'kecamatan', DB::raw('count(*) as total'))
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })
+            ->where('kabupaten', $userKabupaten)
+            ->groupBy('desa', 'kecamatan')
+            ->orderBy('total', 'desc')
+            ->limit(10)
+            ->get();
+
         // Data terbaru (hanya data user ini)
-        // $kasusTerbaru = KasusNarkoba::with('desa')
-        //     ->where('created_by', $userId)
-        //     ->orderBy('created_at', 'desc')
-        //     ->limit(5)
-        //     ->get();
+        $kasusTerbaru = TkpResidivisIndividu::where(function($query) use ($userId, $userKabupaten) {
+            $query->where('created_by', $userId)
+                  ->orWhere(function($q) use ($userKabupaten) {
+                      $q->whereNull('created_by')
+                        ->where('kabupaten', $userKabupaten);
+                  });
+        })
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+
+        // Data untuk grafik trend bulanan (hanya data user ini)
+        $trendBulanan = TkpResidivisIndividu::select(
+            DB::raw('MONTH(created_at) as bulan'),
+            DB::raw('count(*) as total')
+        )
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
 
         return view('admin.dashboard', compact(
             'totalKasus',
@@ -79,9 +163,11 @@ class AdminDashboardController extends Controller
             'kecamatanCount',
             'kasusPerKabupaten',
             'kasusPerKecamatan',
-            // 'kasusTerbaru',
+            'kasusTerbaru',
             'statusPie',
-            'residivisPie'
+            'residivisPie',
+            'kasusPerDesa',
+            'trendBulanan'
         ));
     }
 

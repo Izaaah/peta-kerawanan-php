@@ -16,5 +16,11 @@ class ObjekVital extends Model
         'nama_manager',
         'lokasi',
         'no_hp',
+        'created_by',
     ];
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

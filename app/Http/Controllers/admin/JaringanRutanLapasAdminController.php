@@ -10,7 +10,11 @@ class JaringanRutanLapasAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = JaringanRutanLapas::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -33,6 +37,8 @@ class JaringanRutanLapasAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama_napi' => 'required|string|max:255',
             'jenis_napi' => 'required|in:Napi Narkotika,Napi Non Narkotika',
@@ -42,8 +48,8 @@ class JaringanRutanLapasAdminController extends Controller
             'status_proses' => 'required|in:Ditahan,Bebas,Dalam proses,Tidak diketahui',
             'keterangan' => 'nullable|string',
         ]);
-        JaringanRutanLapas::create($request->all());
-        return redirect()->route('admin.data.rutanlapas.index')->with('success', 'Data jaringan rutan/lapas berhasil ditambah.');
+        JaringanRutanLapas::create($data);
+        return redirect()->route('admin.data.rutanlapas.index')->with('success', 'Data jaringan rutan/lapas berhasil disimpan.');
     }
 
     public function show($id)

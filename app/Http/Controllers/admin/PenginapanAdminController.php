@@ -10,7 +10,11 @@ class PenginapanAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = Penginapan::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -32,6 +36,8 @@ class PenginapanAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama' => 'required|string|max:255',
             'jenis' => 'required|in:Hotel,Apartemen,Losmen,Kontrakan,Kost',
@@ -39,8 +45,8 @@ class PenginapanAdminController extends Controller
             'lokasi' => 'required|string',
             'no_hp' => 'required|string|max:20',
         ]);
-        Penginapan::create($request->all());
-        return redirect()->route('admin.data.penginapan.index')->with('success', 'Data penginapan berhasil ditambah.');
+        Penginapan::create($data);
+        return redirect()->route('admin.data.penginapan.index')->with('success', 'Data penginapan berhasil disimpan.');
     }
 
     public function show($id)

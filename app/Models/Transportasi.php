@@ -16,7 +16,8 @@ class Transportasi extends Model
         'nama_pihak',
         'posisi',
         'lokasi',
-        'no_hp'
+        'no_hp',
+        'created_by',
     ];
 
     protected $casts = [
@@ -34,5 +35,10 @@ class Transportasi extends Model
             'Laut' => 'Laut',
             'Udara' => 'Udara'
         ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
     }
 }

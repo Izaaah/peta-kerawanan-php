@@ -17,6 +17,7 @@ class Ekspedisi extends Model
         'alamat',
         'no_hp',
         'jenis',
+        'created_by',
     ];
 
     public static function getJenisOptions()
@@ -26,4 +27,9 @@ class Ekspedisi extends Model
             'Non Asperindo' => 'Non Asperindo',
         ];
     }
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

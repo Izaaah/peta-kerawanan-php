@@ -10,7 +10,11 @@ class TransportasiAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = Transportasi::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -33,6 +37,8 @@ class TransportasiAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
             'nama_pihak' => 'required|string|max:255',
@@ -42,7 +48,7 @@ class TransportasiAdminController extends Controller
         ]);
 
         try {
-            Transportasi::create($request->all());
+            Transportasi::create($data);
             return redirect()->route('admin.data.transportasi.index')
                 ->with('success', 'Data transportasi berhasil ditambahkan.');
         } catch (\Exception $e) {

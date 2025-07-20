@@ -14,10 +14,16 @@ class LembagaRehabilitasi extends Model
     protected $fillable = [
         'nama',
         'jenis',
+        'created_by',
     ];
 
     public static function getJenisOptions()
     {
         return ['IPWL', 'Rawat Inap', 'Non Rawat Inap', 'SNI Nasional', 'SNI Reguler'];
     }
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

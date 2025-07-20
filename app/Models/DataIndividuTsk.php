@@ -31,7 +31,8 @@ class DataIndividuTsk extends Model
         'status',
         'residivis',
         'sumber_informasi',
-        'desa_geojson_id'
+        'desa_geojson_id',
+        'created_by'
     ];
 
     protected $casts = [

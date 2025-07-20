@@ -13,5 +13,11 @@ class Thm extends Model
         'nama_thm',
         'ketua_thm',
         'no_hp_ketua',
+        'created_by',
     ];
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

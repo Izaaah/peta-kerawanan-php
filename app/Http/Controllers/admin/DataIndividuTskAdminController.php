@@ -14,14 +14,51 @@ class DataIndividuTskAdminController extends Controller
 {
     public function index()
     {
+        $user = request()->user();
+        $userKabupaten = $user->name; // diasumsikan nama user = kabupaten/kota
+        $userId = $user->id;
+
         $stats = [
-            'total_individu' => DataIndividuTsk::count(),
-            'total_kasus' => KasusNarkoba::count(),
-            'residivis_count' => DataIndividuTsk::where('residivis', true)->count(),
-            'non_residivis_count' => DataIndividuTsk::where('residivis', false)->count(),
+            'total_individu' => DataIndividuTsk::where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })->count(),
+            'total_kasus' => KasusNarkoba::where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })->count(),
+            'residivis_count' => DataIndividuTsk::where('residivis', true)
+                ->where(function($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                          ->orWhere(function($q) use ($userKabupaten) {
+                              $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                          });
+                })->count(),
+            'non_residivis_count' => DataIndividuTsk::where('residivis', false)
+                ->where(function($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                          ->orWhere(function($q) use ($userKabupaten) {
+                              $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                          });
+                })->count(),
         ];
 
         $sampleData = DataIndividuTsk::with('desaGeojson')
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            })
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
@@ -117,6 +154,7 @@ class DataIndividuTskAdminController extends Controller
                 'status' => $request->status,
                 'residivis' => $request->has('residivis'),
                 'sumber_informasi' => $request->sumber_informasi,
+                'created_by' => request()->user()->id,
             ]);
 
             // Telepon
@@ -190,6 +228,7 @@ class DataIndividuTskAdminController extends Controller
                             'kecamatan' => $kec[$i] ?? null,
                             'desa' => $desa[$i] ?? null,
                             'lokasi' => $lokasi[$i] ?? null,
+                            'created_by' => request()->user()->id,
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
@@ -334,12 +373,25 @@ class DataIndividuTskAdminController extends Controller
 
     public function getData(Request $request)
     {
-        $query = DataIndividuTsk::with('desaGeojson');
+        $user = request()->user();
+        $userKabupaten = $user->name; // diasumsikan nama user = kabupaten/kota
+        $userId = $user->id;
+
+        $query = DataIndividuTsk::with('desaGeojson')
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            });
 
         // Apply filters
         if ($request->filled('search')) {
-            $query->where('nama', 'like', '%' . $request->search . '%')
-                ->orWhere('nik', 'like', '%' . $request->search . '%');
+            $query->where(function($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('nik', 'like', '%' . $request->search . '%');
+            });
         }
 
         if ($request->filled('kabupaten')) {
@@ -366,12 +418,25 @@ class DataIndividuTskAdminController extends Controller
 
     public function export(Request $request)
     {
-        $query = DataIndividuTsk::with('desaGeojson');
+        $user = request()->user();
+        $userKabupaten = $user->name; // diasumsikan nama user = kabupaten/kota
+        $userId = $user->id;
+
+        $query = DataIndividuTsk::with('desaGeojson')
+            ->where(function($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                      ->orWhere(function($q) use ($userKabupaten) {
+                          $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                      });
+            });
 
         // Apply same filters as getData
         if ($request->filled('search')) {
-            $query->where('nama', 'like', '%' . $request->search . '%')
-                ->orWhere('nik', 'like', '%' . $request->search . '%');
+            $query->where(function($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('nik', 'like', '%' . $request->search . '%');
+            });
         }
 
         if ($request->filled('kabupaten')) {

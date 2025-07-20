@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LsmNarkotika;
+use Illuminate\Support\Facades\Log;
 
 class LsmController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = LsmNarkotika::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -39,7 +44,10 @@ class LsmController extends Controller
         ]);
 
         try {
-            LsmNarkotika::create($request->all());
+            Log::info('User saat create LSM:', ['user_id' => optional($request->user())->id, 'user' => $request->user()]);
+            $data = $request->all();
+            $data['created_by'] = $request->user()->id;
+            LsmNarkotika::create($data);
 
             return redirect()->route('super-admin.data.lsm.index')->with('success', 'Data LSM berhasil disimpan.');
         } catch (\Exception $e) {

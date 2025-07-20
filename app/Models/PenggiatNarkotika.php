@@ -13,5 +13,11 @@ class PenggiatNarkotika extends Model
         'nama',
         'alamat',
         'no_hp',
+        'created_by',
     ];
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

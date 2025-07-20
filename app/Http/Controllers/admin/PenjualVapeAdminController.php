@@ -10,7 +10,11 @@ class PenjualVapeAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = PenjualVape::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -31,6 +35,8 @@ class PenjualVapeAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama_toko' => 'required|string|max:255',
             'pemilik' => 'required|string|max:255',
@@ -39,8 +45,8 @@ class PenjualVapeAdminController extends Controller
             'liquid_dicurigai' => 'nullable|string',
             'distributor' => 'nullable|string',
         ]);
-        PenjualVape::create($request->all());
-        return redirect()->route('admin.data.vape.index')->with('success', 'Data penjual vape berhasil ditambah.');
+        PenjualVape::create($data);
+        return redirect()->route('admin.data.vape.index')->with('success', 'Data penjual vape berhasil disimpan.');
     }
 
     public function show($id)

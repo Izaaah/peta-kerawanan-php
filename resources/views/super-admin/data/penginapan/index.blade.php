@@ -24,7 +24,9 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Pengelola</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Lokasi</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created By</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
@@ -34,7 +36,9 @@
                     <td class="px-4 py-2">{{ $penginapan->nama }}</td>
                     <td class="px-4 py-2">{{ $penginapan->jenis }}</td>
                     <td class="px-4 py-2">{{ $penginapan->nama_pengelola }}</td>
+                    <td class="px-4 py-2">{{ $penginapan->lokasi }}</td>
                     <td class="px-4 py-2">{{ $penginapan->no_hp }}</td>
+                    <td class="px-4 py-2">{{ $penginapan->user->name ?? '-' }}</td>
                     <td class="px-4 py-2 flex gap-2">
                         <a href="{{ route('super-admin.data.penginapan.show', $penginapan->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                         <a href="{{ route('super-admin.data.penginapan.edit', $penginapan->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
@@ -57,4 +61,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

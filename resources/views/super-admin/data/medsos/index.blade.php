@@ -19,6 +19,7 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Media Sosial</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Akun</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Link Akun</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created By</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                     <td class="px-4 py-2">{{ $medsos->nama_media_sosial }}</td>
                     <td class="px-4 py-2">{{ $medsos->nama_akun }}</td>
                     <td class="px-4 py-2"><a href="{{ $medsos->link_akun }}" class="text-blue-600 underline" target="_blank">{{ $medsos->link_akun }}</a></td>
+                    <td class="px-4 py-2">{{ $medsos->user->name ?? '-' }}</td>
                     <td class="px-4 py-2 flex gap-2">
                         <a href="{{ route('super-admin.data.medsos.show', $medsos->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                         <a href="{{ route('super-admin.data.medsos.edit', $medsos->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>

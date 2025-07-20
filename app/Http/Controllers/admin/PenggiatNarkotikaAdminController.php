@@ -10,7 +10,11 @@ class PenggiatNarkotikaAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = PenggiatNarkotika::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -30,12 +34,14 @@ class PenggiatNarkotikaAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string',
             'no_hp' => 'required|string|max:20',
         ]);
-        PenggiatNarkotika::create($request->all());
+        PenggiatNarkotika::create($data);
         return redirect()->route('admin.data.penggiat.index')->with('success', 'Data penggiat narkotika berhasil ditambah.');
     }
 

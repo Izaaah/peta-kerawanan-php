@@ -10,19 +10,12 @@ class ObjekVitalAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = \App\Models\ObjekVital::query();
-
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function($sub) use ($q) {
-                $sub->where('nama_objek', 'like', "%$q%")
-                    ->orWhere('nama_manager', 'like', "%$q%")
-                    ->orWhere('lokasi', 'like', "%$q%");
-            });
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
         }
-
-        $objekVitalList = $query->paginate(10)->withQueryString();
-
+        $objekVitalList = $query->latest()->paginate(10)->withQueryString();
         return view('admin.data.objekvital.index', compact('objekVitalList'));
     }
 
@@ -33,14 +26,10 @@ class ObjekVitalAdminController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_objek' => 'required|string|max:255',
-            'nama_manager' => 'required|string|max:255',
-            'lokasi' => 'required|string',
-            'no_hp' => 'required|string|max:20',
-        ]);
-        ObjekVital::create($request->all());
-        return redirect()->route('admin.data.objekvital.index')->with('success', 'Data objek vital berhasil ditambah.');
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
+        \App\Models\ObjekVital::create($data);
+        return redirect()->route('admin.data.objekvital.index')->with('success', 'Data objek vital berhasil disimpan.');
     }
 
     public function show($id)

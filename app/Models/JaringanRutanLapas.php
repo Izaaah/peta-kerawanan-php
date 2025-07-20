@@ -19,6 +19,7 @@ class JaringanRutanLapas extends Model
         'peran_dalam_jaringan',
         'status_proses',
         'keterangan',
+        'created_by',
     ];
 
     public static function getJenisNapiOptions()
@@ -29,4 +30,9 @@ class JaringanRutanLapas extends Model
     {
         return ['Ditahan', 'Bebas', 'Dalam proses', 'Tidak diketahui'];
     }
-} 
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+}

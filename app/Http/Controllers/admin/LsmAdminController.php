@@ -10,7 +10,11 @@ class LsmAdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
         $query = LsmNarkotika::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -31,6 +35,8 @@ class LsmAdminController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama_lsm' => 'required|string|max:255',
             'ketua_lsm' => 'required|string|max:255',
@@ -39,7 +45,7 @@ class LsmAdminController extends Controller
         ]);
 
         try {
-            LsmNarkotika::create($request->all());
+            LsmNarkotika::create($data);
 
         return redirect()->route('admin.data.lsm.index')->with('success', 'Data LSM berhasil disimpan.');
         } catch (\Exception $e) {
