@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\SuperAdminDashboardController;
 use App\Http\Controllers\admin\AdminDashboardController;
+use App\Http\Controllers\operator\OperatorDashboardController;
 use App\Http\Controllers\PenyalahgunaanController;
 use App\Http\Controllers\PetaController;
 use App\Http\Controllers\DataDesaController;
@@ -35,11 +36,36 @@ use App\Http\Controllers\ThmController;
 use App\Http\Controllers\admin\ThmAdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// routes/web.php
+
+Route::get('/', function (Request $request) {
+    DB::table('page_views')->insert([
+        'ip_address' => $request->ip(),
+        'user_agent' => $request->userAgent(),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+    return response()->file(resource_path('views/loginpage/index.html'));
+});
+
+Route::get('/tentang', function () {
+    return response()->file(resource_path('views/loginpage/tentang.html'));
+});
+
+Route::get('/peta', function () {
+    return response()->file(resource_path('views/loginpage/peta.html'));
+});
+
+Route::get('/statistik', function () {
+    return response()->file(resource_path('views/loginpage/statistik.html'));
 });
 
 // Default dashboard route - will redirect based on role
@@ -385,9 +411,22 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
 // Operator Routes
 Route::middleware(['auth', 'verified'])->prefix('operator')->name('operator.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('operator.dashboard');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('operator.dashboard');
+    // })->name('dashboard');
+    Route::get('/dashboard', [OperatorDashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/data-individu', [DataIndividuTskController::class, 'index'])->name('data.individu');
+    // Route::get('/data-individu', [DataIndividuTskController::class, 'index'])->name('data.individu');
+    // Route::get('/lsm', [LsmController::class, 'index'])->name('data.lsm.index');
+    // Route::get('/medsos', [MedsosController::class, 'index'])->name('data.medsos.index');
+    // Route::get('/vape', [PenjualVapeController::class, 'index'])->name('data.vape.index');
+    // Route::get('/farmasi', [PerusahaanFarmasiPrekursorController::class, 'index'])->name('data.farmasi.index');
+    // Route::get('/objekvital', [objekvitalController::class, 'index'])->name('data.objekvital.index');
+    // Route::get('/penggiat', [PenggiatNarkotikaController::class, 'index'])->name('data.penggiat.index');
+    // Route::get('/lrehab', [LembagaRehabilitasiController::class, 'index'])->name('data.lrehab.index');
+    // Route::get('/ekspedisi', [EkspedisiController::class, 'index'])->name('data.ekspedisi.index');
+    // Route::get('/transportasi', [TransportasiController::class, 'index'])->name('data.transportasi.index');
+    // Route::get('/penginapan', [PenginapanController::class, 'index'])->name('data.penginapan.index');
 });
 
 Route::middleware('auth')->group(function () {

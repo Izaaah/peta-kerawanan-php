@@ -44,9 +44,7 @@
                 <li><a href="">Peta Kawasan<br>Rawan Geospasial</a></li>
             </ul>
         </div>
-        <div class="menu-btn"><a href="{{ route('super-admin.data.index') }}">Data</a></div>
-        {{-- <div class="menu-btn"><a href="{{ route('super-admin.input.index') }}">Input</a></div> --}}
-        <div class="menu-btn"><a href="{{ route('super-admin.chart-jaringan') }}">Chart</a></div>
-        <div class="menu-btn"><a href="{{ route('super-admin.user-management.index') }}">User Management</a></div>
+        <div class="menu-btn"><a href="{{ route('operator.data.index') }}">Data</a></div>
+        <div class="menu-btn"><a href="{{ route('operator.chart-jaringan') }}">Chart</a></div>
     </div>
 </div>
