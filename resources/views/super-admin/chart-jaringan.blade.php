@@ -123,7 +123,7 @@
                         <h2 class="text-md font-semibold mb-3 text-gray-700 light:text-gray-200">Preview Visualisasi Jaringan</h2>
                         <div class="bg-white light:bg-gray-800 p-4 rounded-lg border min-h-[300px]">
                             <template x-if="nodes.length > 0">
-                                <pre x-ref="mermaidEl" class="mermaid" x-text="mermaidCode"></pre>
+                                <div x-ref="mermaidEl" class="mermaid"></div>
                             </template>
                             <div x-show="nodes.length === 0" class="text-center py-12 text-gray-500 light:text-gray-400">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,6 +131,11 @@
                                 </svg>
                                 <p class="mt-2">Visualisasi akan muncul setelah menambahkan node</p>
                             </div>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button @click="downloadSvg" class="bg-gray-700 text-white px-4 py-2 rounded">Download SVG</button>
+                            <button @click="downloadPng" class="bg-blue-500 text-white px-4 py-2 rounded">Download PNG</button>
+                            <button @click="downloadPdf" class="bg-red-500 text-white px-4 py-2 rounded">Download PDF</button>
                         </div>
                     </section>
 
@@ -151,6 +156,14 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvg@3.0.9/lib/umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+if (window.mermaid) {
+    window.mermaid.initialize({ startOnLoad: false });
+}
+</script>
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('chartJaringan', () => ({
@@ -209,7 +222,9 @@
                 this.mermaidCode = code;
                 this.$nextTick(() => {
                     if (window.mermaid && this.$refs.mermaidEl) {
-                        window.mermaid.run({nodes: [this.$refs.mermaidEl]});
+                        window.mermaid.render('theGraph', code).then(({svg}) => {
+                            this.$refs.mermaidEl.innerHTML = svg;
+                        });
                     }
                 });
             },
@@ -223,14 +238,88 @@
             },
             init() {
                 this.updateMermaid();
+            },
+            downloadSvg() {
+                console.log('Download SVG clicked');
+                const svg = this.$refs.mermaidEl.querySelector('svg');
+                if (svg) {
+                    let width = svg.getAttribute('width') || 800;
+                    let height = svg.getAttribute('height') || 400;
+                    svg.setAttribute('width', width);
+                    svg.setAttribute('height', height);
+                    const blob = new Blob([svg.outerHTML], {type: 'image/svg+xml'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'jaringan.svg';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                } else {
+                    alert('Diagram tidak ditemukan. Pastikan sudah ada visualisasi jaringan.');
+                }
+            },
+            downloadPng() {
+                console.log('Download PNG clicked');
+                const svg = this.$refs.mermaidEl.querySelector('svg');
+                if (svg) {
+                    console.log('SVG ditemukan', svg);
+                    let width = svg.getAttribute('width') || 800;
+                    let height = svg.getAttribute('height') || 400;
+                    const scale = 2;
+                    svg.setAttribute('width', width * scale);
+                    svg.setAttribute('height', height * scale);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width * scale;
+                    canvas.height = height * scale;
+                    canvg.Canvg.fromString(canvas.getContext('2d'), svg.outerHTML).render().then(() => {
+                        console.log('canvg render selesai');
+                        const tmpCanvas = document.createElement('canvas');
+                        tmpCanvas.width = width;
+                        tmpCanvas.height = height;
+                        const ctx = tmpCanvas.getContext('2d');
+                        ctx.drawImage(canvas, 0, 0, width, height);
+                        const link = document.createElement('a');
+                        link.download = 'jaringan.png';
+                        link.href = tmpCanvas.toDataURL();
+                        link.click();
+                        console.log('Download PNG triggered');
+                    }).catch(e => {
+                        console.error('canvg error', e);
+                    });
+                    svg.setAttribute('width', width);
+                    svg.setAttribute('height', height);
+                } else {
+                    alert('Diagram tidak ditemukan. Pastikan sudah ada visualisasi jaringan.');
+                    console.error('SVG not found');
+                }
+            },
+            downloadPdf() {
+                console.log('Download PDF clicked');
+                const svg = this.$refs.mermaidEl.querySelector('svg');
+                if (svg) {
+                    let width = svg.getAttribute('width') || 800;
+                    let height = svg.getAttribute('height') || 400;
+                    svg.setAttribute('width', width);
+                    svg.setAttribute('height', height);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    canvg.Canvg.fromString(canvas.getContext('2d'), svg.outerHTML).render().then(() => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const pdf = new window.jspdf.jsPDF({
+                            orientation: 'landscape',
+                            unit: 'pt',
+                            format: [canvas.width, canvas.height]
+                        });
+                        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                        pdf.save('jaringan.pdf');
+                    });
+                } else {
+                    alert('Diagram tidak ditemukan. Pastikan sudah ada visualisasi jaringan.');
+                }
             }
         }));
     });
 </script>
-
-<script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
-  </script>
 
 @endpush
