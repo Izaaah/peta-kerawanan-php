@@ -45,7 +45,7 @@
             </ul>
         </div>
         <div class="menu-btn"><a href="{{ route('super-admin.data.index') }}">Data</a></div>
-        {{-- <div class="menu-btn"><a href="{{ route('super-admin.input.index') }}">Input</a></div> --}}
+        <div class="menu-btn"><a href="{{ route('super-admin.verification.index') }}">Verification</a></div>
         <div class="menu-btn"><a href="{{ route('super-admin.chart-jaringan') }}">Chart</a></div>
         <div class="menu-btn"><a href="{{ route('super-admin.user-management.index') }}">User Management</a></div>
     </div>

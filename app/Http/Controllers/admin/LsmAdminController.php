@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LsmNarkotika;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class LsmAdminController extends Controller
 {
@@ -67,15 +68,21 @@ class LsmAdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_lsm' => 'required|string|max:255',
-            'ketua_lsm' => 'required|string|max:255',
-            'alamat' => 'required|string',
-            'no_hp_ketua' => 'required|string|max:20',
-        ]);
         $lsm = LsmNarkotika::findOrFail($id);
-        $lsm->update($request->all());
-        return redirect()->route('admin.data.lsm.index')->with('success', 'Data LSM berhasil diupdate.');
+        $oldData = $lsm->toArray();
+        $newData = $request->only(['nama_lsm', 'ketua_lsm', 'alamat', 'no_hp_ketua']);
+
+        // Simpan ke tabel data_verifications
+        \App\Models\DataVerification::create([
+            'table_name' => 'lsm_narkotika',
+            'data_id' => $lsm->id,
+            'old_data' => json_encode($oldData),
+            'new_data' => json_encode($newData),
+            'status' => 'pending',
+            'admin_id' => auth()->id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Perubahan menunggu verifikasi admin.');
     }
 
     public function destroy($id)
@@ -84,4 +91,24 @@ class LsmAdminController extends Controller
         $lsm->delete();
         return redirect()->route('admin.data.lsm.index')->with('success', 'Data LSM berhasil dihapus.');
     }
+
+    public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,csv'
+    ]);
+
+    $rows = SimpleExcelReader::create($request->file('file'))->getRows();
+
+    foreach ($rows as $row) {
+        LsmNarkotika::create([
+            'nama_lsm' => $row['nama_lsm'],
+            'ketua_lsm' => $row['ketua_lsm'],
+            'alamat' => $row['alamat'],
+            'no_hp_ketua' => $row['no_hp_ketua'],
+        ]);
+    }
+
+    return back()->with('success', 'Data berhasil diimport!');
+}
 }
