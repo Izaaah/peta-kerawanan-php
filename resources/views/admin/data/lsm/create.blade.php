@@ -53,6 +53,29 @@
                     </button>
                 </div>
             </form>
+
+            <!-- Container Import Excel -->
+            <div class="mt-6">
+                <div class="bg-white shadow rounded p-6">
+                    <h6 class="text-lg font-semibold text-green-700 mb-4 flex items-center">
+                        <i class="fas fa-file-excel mr-2"></i>Import Data LSM dari Excel
+                    </h6>
+                    <form action="{{ route('admin.data.lsm.import') }}" method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                        @csrf
+                        <input type="file" name="file" accept=".xlsx,.xls" required class="block w-full text-sm text-gray-500">
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 flex items-center">
+                            <i class="fas fa-file-excel mr-2"></i>Input Data Excel
+                        </button>
+                    </form>
+                    @error('file')<p class="text-sm text-red-600 mt-2">{{ $message }}</p>@enderror
+                    @if(session('success'))
+                        <div class="mt-2 p-2 bg-green-100 text-green-700 rounded">{{ session('success') }}</div>
+                    @endif
+                    @if(session('error'))
+                        <div class="mt-2 p-2 bg-red-100 text-red-700 rounded">{{ session('error') }}</div>
+                    @endif
+                </div>
+            </div>
         </div>
         <div class="mt-6 order-1 lg:order-2">
             <div class="bg-white shadow rounded p-4 space-y-4">

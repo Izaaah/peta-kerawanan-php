@@ -33,6 +33,7 @@ use App\Http\Controllers\PenggiatNarkotikaController;
 use App\Http\Controllers\admin\PenggiatNarkotikaAdminController;
 use App\Http\Controllers\ThmController;
 use App\Http\Controllers\admin\ThmAdminController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -223,6 +224,10 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::put('thm/{id}', [ThmController::class, 'update'])->name('data.thm.update');
     Route::delete('/thm/{id}', [ThmController::class, 'destroy'])->name('data.thm.destroy');
 
+    // Route untuk verifikasi perubahan data
+    Route::get('/verification', [VerificationController::class, 'index'])->name('verification.index');
+    Route::post('/verification/{id}/approve', [VerificationController::class, 'approve'])->name('verification.approve');
+    Route::post('/verification/{id}/reject', [VerificationController::class, 'reject'])->name('verification.reject');
 
 });
 
@@ -271,6 +276,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::put('/lsm/{id}', [LsmAdminController::class, 'update'])->name('data.lsm.update');
     Route::delete('/lsm/{id}', [LsmAdminController::class, 'destroy'])->name('data.lsm.destroy');
     Route::get('/lsm/{id}/edit', [LsmAdminController::class, 'edit'])->name('data.lsm.edit');
+    Route::post('/lsm/import', [LsmAdminController::class, 'import'])->name('data.lsm.import');
 
     Route::get('/medsos', [MedsosAdminController::class, 'index'])->name('data.medsos.index');
     Route::get('/medsos/create', [MedsosAdminController::class, 'create'])->name('data.medsos.create');
@@ -460,5 +466,10 @@ Route::get('/api/kabupaten-list', function (Request $request) {
         ->values();
     return response()->json($kabupatenList);
 });
+
+// Route untuk menampilkan halaman learning_pm
+Route::get('/learning_pm', function () {
+    return view('learning_pm.index');
+})->name('learning_pm.index');
 
 require __DIR__ . '/auth.php';

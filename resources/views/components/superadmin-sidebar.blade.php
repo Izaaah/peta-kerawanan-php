@@ -32,7 +32,7 @@
             <li>
                 <a href="#" class="sidebar-link">
                     <span class="icon">📝</span>
-                    <span>Input Data</span>
+                    <span>Verification</span>
                 </a>
             </li>
         </ul>
