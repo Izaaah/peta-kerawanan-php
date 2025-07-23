@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.operator')
 @section('title', 'Detail Perusahaan Farmasi/Prekursor')
 @section('content')
 <div class="max-w-xl mx-auto py-8">

@@ -1,4 +1,4 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.operator')
 
 @section('content')
 @include('components.operator-navbar')

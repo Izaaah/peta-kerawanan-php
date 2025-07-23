@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Http\Controllers\operator;
+
+use App\Models\PenggiatNarkotika;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+
+class PenggiatNarkotikaOperatorController extends Controller
+{
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $query = PenggiatNarkotika::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
+        $query = PenggiatNarkotika::query();
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama', 'like', "%$q%")
+                    ->orWhere('alamat', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%");
+            });
+        }
+        $penggiatList = $query->latest()->paginate(10)->withQueryString();
+        return view('operator.data.penggiat.index', compact('penggiatList'));
+    }
+
+    public function create()
+    {
+        return view('operator.data.penggiat.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+        ]);
+        PenggiatNarkotika::create($data);
+        return redirect()->route('operator.data.penggiat.index')->with('success', 'Data penggiat narkotika berhasil ditambah.');
+    }
+
+    public function show($id)
+    {
+        $penggiat = PenggiatNarkotika::findOrFail($id);
+        return view('operator.data.penggiat.show', compact('penggiat'));
+    }
+
+    public function edit($id)
+    {
+        $penggiat = PenggiatNarkotika::findOrFail($id);
+        return view('operator.data.penggiat.edit', compact('penggiat'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+        ]);
+        $penggiat = PenggiatNarkotika::findOrFail($id);
+        $penggiat->update($request->all());
+        return redirect()->route('operator.data.penggiat.index')->with('success', 'Data penggiat narkotika berhasil diupdate.');
+    }
+}

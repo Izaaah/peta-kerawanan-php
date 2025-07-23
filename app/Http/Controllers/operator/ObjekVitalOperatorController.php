@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers\operator;
+
+use App\Models\ObjekVital;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+
+class ObjekVitalOperatorController extends Controller
+{
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $query = \App\Models\ObjekVital::query();
+        if (!$user->isSuperAdmin()) {
+            $query->where('created_by', $user->id);
+        }
+        $objekVitalList = $query->latest()->paginate(10)->withQueryString();
+        return view('operator.data.objekvital.index', compact('objekVitalList'));
+    }
+
+    public function create()
+    {
+        return view('operator.data.objekvital.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
+        \App\Models\ObjekVital::create($data);
+        return redirect()->route('operator.data.objekvital.index')->with('success', 'Data objek vital berhasil disimpan.');
+    }
+
+    public function show($id)
+    {
+        $objekVital = ObjekVital::findOrFail($id);
+        return view('operator.data.objekvital.show', compact('objekVital'));
+    }
+
+    public function edit($id)
+    {
+        $objekVital = ObjekVital::findOrFail($id);
+        return view('operator.data.objekvital.edit', compact('objekVital'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_objek' => 'required|string|max:255',
+            'nama_manager' => 'required|string|max:255',
+            'lokasi' => 'required|string',
+            'no_hp' => 'required|string|max:20',
+        ]);
+        $objekVital = ObjekVital::findOrFail($id);
+        $objekVital->update($request->all());
+        return redirect()->route('operator.data.objekvital.index')->with('success', 'Data objek vital berhasil diupdate.');
+    }
+
+    public function destroy($id)
+    {
+        $objekVital = ObjekVital::findOrFail($id);
+        $objekVital->delete();
+        return redirect()->route('operator.data.objekvital.index')->with('success', 'Data objek vital berhasil dihapus.');
+    }
+}

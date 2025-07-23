@@ -16,6 +16,7 @@ class LsmOperatorController extends Controller
         if (!$user->isSuperAdmin()) {
             $query->where('created_by', $user->id);
         }
+        $query = LsmNarkotika::query();
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function($sub) use ($q) {
@@ -26,12 +27,12 @@ class LsmOperatorController extends Controller
             });
         }
         $lsmList = $query->latest()->paginate(10)->withQueryString();
-        return view('super-admin.data.lsm.index', compact('lsmList'));
+        return view('operator.data.lsm.index', compact('lsmList'));
     }
 
     public function create()
     {
-        return view('super-admin.data.lsm.create');
+        return view('operator.data.lsm.create');
     }
 
     public function store(Request $request)
@@ -49,7 +50,7 @@ class LsmOperatorController extends Controller
             $data['created_by'] = $request->user()->id;
             LsmNarkotika::create($data);
 
-            return redirect()->route('super-admin.data.lsm.index')->with('success', 'Data LSM berhasil disimpan.');
+            return redirect()->route('operator.data.lsm.index')->with('success', 'Data LSM berhasil disimpan.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data.')->withInput();
         }
@@ -58,13 +59,13 @@ class LsmOperatorController extends Controller
     public function show($id)
     {
         $lsm = LsmNarkotika::findOrFail($id);
-        return view('super-admin.data.lsm.show', compact('lsm'));
+        return view('operator.data.lsm.show', compact('lsm'));
     }
 
     public function edit($id)
     {
         $lsm = LsmNarkotika::findOrFail($id);
-        return view('super-admin.data.lsm.edit', compact('lsm'));
+        return view('operator.data.lsm.edit', compact('lsm'));
     }
 
     public function update(Request $request, $id)
@@ -77,13 +78,13 @@ class LsmOperatorController extends Controller
         ]);
         $lsm = LsmNarkotika::findOrFail($id);
         $lsm->update($request->all());
-        return redirect()->route('super-admin.data.lsm.index')->with('success', 'Data LSM berhasil diupdate.');
+        return redirect()->route('operator.data.lsm.index')->with('success', 'Data LSM berhasil diupdate.');
     }
 
     public function destroy($id)
     {
         $lsm = LsmNarkotika::findOrFail($id);
         $lsm->delete();
-        return redirect()->route('super-admin.data.lsm.index')->with('success', 'Data LSM berhasil dihapus.');
+        return redirect()->route('operator.data.lsm.index')->with('success', 'Data LSM berhasil dihapus.');
     }
 }

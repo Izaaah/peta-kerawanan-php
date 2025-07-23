@@ -41,6 +41,7 @@
                                                 @foreach($kabupatenList as $kabupaten)
                                                     <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
                                                 @endforeach
+                                                <option value="lainnya">Lainnya</option>
                                             </select>
                                             @error('kabupaten')
                                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -114,4 +115,28 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const kabupatenSelect = document.getElementById('name');
+        const roleSelect = document.getElementById('role');
+
+        function handleKabupatenChange() {
+            if (kabupatenSelect.value === 'lainnya') {
+                roleSelect.value = 'operator';
+                roleSelect.setAttribute('readonly', true);
+                roleSelect.setAttribute('disabled', true);
+            } else {
+                roleSelect.removeAttribute('readonly');
+                roleSelect.removeAttribute('disabled');
+            }
+        }
+
+        kabupatenSelect.addEventListener('change', handleKabupatenChange);
+        // Inisialisasi saat load
+        handleKabupatenChange();
+    });
+</script>
 @endsection
