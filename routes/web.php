@@ -67,7 +67,7 @@ Route::get('/', function (Request $request) {
         'created_at' => now(),
         'updated_at' => now(),
     ]);
-    return response()->file(resource_path('views/loginpage/index.html'));
+    return response()->file(resource_path('views/loginpage/index.blade.php'));
 });
 
 Route::get('/tentang', function () {
@@ -396,6 +396,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/rutanlapas/{id}/edit', [JaringanRutanLapasAdminController::class, 'edit'])->name('data.rutanlapas.edit');
     Route::put('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'update'])->name('data.rutanlapas.update');
     Route::delete('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'destroy'])->name('data.rutanlapas.destroy');
+
+    Route::get('thm/', [ThmAdminController::class, 'index'])->name('data.thm.index');
+    Route::get('thm/create', [ThmAdminController::class, 'create'])->name('data.thm.create');
+    Route::post('thm/', [ThmAdminController::class, 'store'])->name('data.thm.store');
+    Route::get('thm/{id}', [ThmAdminController::class, 'show'])->name('data.thm.show');
+    Route::get('thm/{id}/edit', [ThmAdminController::class, 'edit'])->name('data.thm.edit');
+    Route::put('thm/{id}', [ThmAdminController::class, 'update'])->name('data.thm.update');
+    Route::delete('/thm/{id}', [ThmAdminController::class, 'destroy'])->name('data.thm.destroy');
 
     // Data Pendukung Routes
     Route::get('/data-pendukung', function () {

@@ -34,7 +34,7 @@
     {{-- <span class="sijagat-title">SIJAGAD</span> --}}
     <!-- Tengah: Menu Navigasi -->
     <div class="menu-area">
-        <div class="menu-btn"><a href="{{ route('super-admin.dashboard') }}">Home</a>
+        <div class="menu-btn"><a href="{{ route('operator.dashboard') }}">Home</a>
         </div>
         <div class="menu-btn dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>

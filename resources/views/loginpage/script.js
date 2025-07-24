@@ -11,11 +11,11 @@ async function loadComponent(id, file, callback) {
 }
 
 // Load komponen
-loadComponent("header", "header.html");
-loadComponent("hero", "hero.html");
-loadComponent("statistik", "statistik.html");
-loadComponent("tentang", "tentang.html");
-loadComponent("footer", "footer.html");
+loadComponent("header", "header.blade.php");
+loadComponent("hero", "hero.blade.php");
+loadComponent("statistik", "statistik.blade.php");
+loadComponent("tentang", "tentang.blade.php");
+loadComponent("footer", "footer.blade.php");
 
 // Peta - pakai callback agar dijalankan setelah div dimuat
 loadComponent("peta", "peta.html", initMap);
