@@ -47,7 +47,7 @@
                     <td class="px-4 py-2">{{ $ekspedisi->jenis }}</td>
                     <td class="px-4 py-2">{{ $ekspedisi->user->name ?? '-' }}</td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.ekspedisi.show', $ekspedisi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+                        <a href="{{ route('operator.data.ekspedisi.show', $ekspedisi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                         
                     </td>
                 </tr>

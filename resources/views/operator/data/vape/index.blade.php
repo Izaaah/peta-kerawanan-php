@@ -6,7 +6,6 @@
 <div class="max-w-4xl mx-auto py-8">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Daftar Penjual Vape</h2>
-        <a href="{{ route('super-admin.data.vape.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penjual Vape</a>
     </div>
     <form method="GET" action="{{ route('super-admin.data.vape.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama toko, pemilik..." class="border rounded px-3 py-2 w-full" />
@@ -29,13 +28,7 @@
                     <td class="px-4 py-2">{{ $vape->pemilik }}</td>
                     <td class="px-4 py-2">{{ $vape->no_hp }}</td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.vape.show', $vape->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
-                        <a href="{{ route('super-admin.data.vape.edit', $vape->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
-                        <form action="{{ route('super-admin.data.vape.destroy', $vape->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>
-                        </form>
+                        <a href="{{ route('operator.data.vape.show', $vape->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                     </td>
                 </tr>
                 @empty
