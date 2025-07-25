@@ -286,10 +286,10 @@
         });
 
     function getColor(jumlah) {
-        return jumlah > 100 ? '#dc2626' :  // Merah - Tinggi
-               jumlah > 50  ? '#ea580c' :   // Orange - Sedang
-               jumlah > 20  ? '#eab308' :   // Kuning - Rendah
-               jumlah > 5   ? '#22c55e' :   // Hijau - Sangat Rendah
+        return jumlah > 5 ? '#dc2626' :  // Merah - Tinggi
+               jumlah > 3  ? '#ea580c' :   // Orange - Sedang
+               jumlah > 2 ? '#eab308' :   // Kuning - Rendah
+               jumlah > 1   ? '#22c55e' :   // Hijau - Sangat Rendah
                jumlah > 0   ? '#3b82f6' :   // Biru - Minimal
                               '#d1d5db';    // Abu-abu - Tidak ada kasus
     }

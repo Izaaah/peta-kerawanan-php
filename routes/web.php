@@ -450,12 +450,7 @@ Route::middleware(['auth', 'verified'])->prefix('operator')->name('operator.')->
     })->name('chart-jaringan');
 
     Route::get('/data-individu', [DataIndividuTskOperatorController::class, 'index'])->name('data.individu');
-<<<<<<< HEAD
     Route::get('/data-individu', [DataIndividuTskOperatorController::class, 'index'])->name('data.individu');
-=======
-    Route::get('/data-individu/{id}', [DataIndividuTskOperatorController::class, 'show'])->name('data.individu.show');
-
->>>>>>> 20a8640e7362ff0668ee415d4109947857f5756e
     Route::get('/lsm', [LsmOperatorController::class, 'index'])->name('data.lsm.index');
     Route::get('/lsm/{id}', [LsmOperatorController::class, 'show'])->name('data.lsm.show');
 
@@ -464,47 +459,25 @@ Route::middleware(['auth', 'verified'])->prefix('operator')->name('operator.')->
 
     Route::get('/vape', [PenjualVapeOperatorController::class, 'index'])->name('data.vape.index');
     Route::get('/vape/{id}', [PenjualVapeOperatorController::class, 'show'])->name('data.vape.show');
-<<<<<<< HEAD
-=======
-
->>>>>>> 20a8640e7362ff0668ee415d4109947857f5756e
     Route::get('/farmasi', [PerusahaanFarmasiPrekursorOperatorController::class, 'index'])->name('data.farmasi.index');
     Route::get('/farmasi/{id}', [PerusahaanFarmasiPrekursorOperatorController::class, 'show'])->name('data.farmasi.show');
 
     Route::get('/objekvital', [ObjekVitalOperatorController::class, 'index'])->name('data.objekvital.index');
     Route::get('/objekvital/{id}', [ObjekVitalOperatorController::class, 'show'])->name('data.objekvital.show');
-<<<<<<< HEAD
     Route::get('/penggiat', [PenggiatNarkotikaOperatorController::class, 'index'])->name('data.penggiat.index');
     Route::get('/penggiat/{id}', [PenggiatNarkotikaOperatorController::class, 'show'])->name('data.penggiat.show');
     Route::get('/lrehab', [LembagaRehabilitasiOperatorController::class, 'index'])->name('data.lrehab.index');
     Route::get('/lrehab/{id}', [LembagaRehabilitasiOperatorController::class, 'show'])->name('data.lrehab.show');
-=======
-
-    Route::get('/penggiat', [PenggiatNarkotikaOperatorController::class, 'index'])->name('data.penggiat.index');
-    Route::get('/penggiat/{id}', [PenggiatNarkotikaOperatorController::class, 'show'])->name('data.penggiat.show');
-
-    Route::get('/lrehab', [LembagaRehabilitasiOperatorController::class, 'index'])->name('data.lrehab.index');
-    Route::get('/lrehab/{id}', [LembagaRehabilitasiOperatorController::class, 'show'])->name('data.lrehab.show');
-
->>>>>>> 20a8640e7362ff0668ee415d4109947857f5756e
     Route::get('/ekspedisi', [EkspedisiOperatorController::class, 'index'])->name('data.ekspedisi.index');
     Route::get('/ekspedisi/{id}', [EkspedisiOperatorController::class, 'show'])->name('data.ekspedisi.show');
 
     Route::get('/transportasi', [TransportasiOperatorController::class, 'index'])->name('data.transportasi.index');
     Route::get('/transportasi/{id}', [TransportasiOperatorController::class, 'show'])->name('data.transportasi.show');
-<<<<<<< HEAD
-=======
-
->>>>>>> 20a8640e7362ff0668ee415d4109947857f5756e
     Route::get('/penginapan', [PenginapanOperatorController::class, 'index'])->name('data.penginapan.index');
     Route::get('/penginapan/{id}', [PenginapanOperatorController::class, 'show'])->name('data.penginapan.show');
 
     Route::get('/rutanlapas', [JaringanRutanLapasOperatorController::class, 'index'])->name('data.rutanlapas.index');
     Route::get('/rutanlapas/{id}', [JaringanRutanLapasOperatorController::class, 'show'])->name('data.rutanlapas.show');
-<<<<<<< HEAD
-=======
-
->>>>>>> 20a8640e7362ff0668ee415d4109947857f5756e
     Route::get('/thm', [ThmOperatorController::class, 'index'])->name('data.thm.index');
     Route::get('/thm/{id}', [ThmOperatorController::class, 'show'])->name('data.thm.show');
 });
