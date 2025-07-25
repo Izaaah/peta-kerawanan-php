@@ -7,7 +7,6 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Detail Data Transportasi</h2>
         <div class="flex gap-2">
-            <a href="{{ route('super-admin.data.transportasi.edit', $transportasi->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
             <a href="{{ route('super-admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
         </div>
     </div>
@@ -70,13 +69,6 @@
             </div>
         </div>
 
-        <div class="mt-8 flex justify-end">
-            <form action="{{ route('super-admin.data.transportasi.destroy', $transportasi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Hapus Data</button>
-            </form>
-        </div>
     </div>
 </div>
 @endsection

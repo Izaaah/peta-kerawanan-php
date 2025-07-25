@@ -13,9 +13,8 @@
             <div class="text-gray-700">{{ $lrehab->jenis }}</div>
         </div>
         <div class="flex gap-2 mt-6">
-            <a href="{{ route('super-admin.data.lrehab.edit', $lrehab->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
-            <a href="{{ route('super-admin.data.lrehab.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>
+            <a href="{{ route('operator.data.lrehab.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>
         </div>
     </div>
 </div>
-@endsection 
+@endsection

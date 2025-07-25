@@ -450,17 +450,24 @@ Route::middleware(['auth', 'verified'])->prefix('operator')->name('operator.')->
     })->name('chart-jaringan');
 
     Route::get('/data-individu', [DataIndividuTskOperatorController::class, 'index'])->name('data.individu');
+    Route::get('/data-individu', [DataIndividuTskOperatorController::class, 'index'])->name('data.individu');
     Route::get('/lsm', [LsmOperatorController::class, 'index'])->name('data.lsm.index');
     Route::get('/medsos', [MedsosOperatorController::class, 'index'])->name('data.medsos.index');
     Route::get('/vape', [PenjualVapeOperatorController::class, 'index'])->name('data.vape.index');
+    Route::get('/vape/{id}', [PenjualVapeOperatorController::class, 'show'])->name('data.vape.show');
     Route::get('/farmasi', [PerusahaanFarmasiPrekursorOperatorController::class, 'index'])->name('data.farmasi.index');
     Route::get('/objekvital', [ObjekVitalOperatorController::class, 'index'])->name('data.objekvital.index');
+    Route::get('/objekvital/{id}', [ObjekVitalOperatorController::class, 'show'])->name('data.objekvital.show');
     Route::get('/penggiat', [PenggiatNarkotikaOperatorController::class, 'index'])->name('data.penggiat.index');
+    Route::get('/penggiat/{id}', [PenggiatNarkotikaOperatorController::class, 'show'])->name('data.penggiat.show');
     Route::get('/lrehab', [LembagaRehabilitasiOperatorController::class, 'index'])->name('data.lrehab.index');
+    Route::get('/lrehab/{id}', [LembagaRehabilitasiOperatorController::class, 'show'])->name('data.lrehab.show');
     Route::get('/ekspedisi', [EkspedisiOperatorController::class, 'index'])->name('data.ekspedisi.index');
     Route::get('/transportasi', [TransportasiOperatorController::class, 'index'])->name('data.transportasi.index');
+    Route::get('/transportasi/{id}', [TransportasiOperatorController::class, 'show'])->name('data.transportasi.show');
     Route::get('/penginapan', [PenginapanOperatorController::class, 'index'])->name('data.penginapan.index');
     Route::get('/rutanlapas', [JaringanRutanLapasOperatorController::class, 'index'])->name('data.rutanlapas.index');
+    Route::get('/rutanlapas/{id}', [JaringanRutanLapasOperatorController::class, 'show'])->name('data.rutanlapas.show');
     Route::get('/thm', [ThmOperatorController::class, 'index'])->name('data.thm.index');
 });
 

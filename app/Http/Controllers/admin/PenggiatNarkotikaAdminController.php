@@ -68,4 +68,11 @@ class PenggiatNarkotikaAdminController extends Controller
         $penggiat->update($request->all());
         return redirect()->route('admin.data.penggiat.index')->with('success', 'Data penggiat narkotika berhasil diupdate.');
     }
+
+    public function destroy($id)
+    {
+        $penggiat = PenggiatNarkotika::findOrFail($id);
+        $penggiat->delete();
+        return redirect()->route('admin.data.penggiat.index')->with('success', 'Data penggiat narkotika berhasil dihapus.');
+    }
 }

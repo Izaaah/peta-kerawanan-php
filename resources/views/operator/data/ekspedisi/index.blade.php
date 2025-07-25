@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <form method="GET" action="{{ route('super-admin.data.ekspedisi.index') }}" class="mb-4 flex gap-2">
+    <form method="GET" action="{{ route('operator.data.ekspedisi.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, manager, alamat..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
     </form>
@@ -47,8 +47,8 @@
                     <td class="px-4 py-2">{{ $ekspedisi->jenis }}</td>
                     <td class="px-4 py-2">{{ $ekspedisi->user->name ?? '-' }}</td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.ekspedisi.show', $ekspedisi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
-                        
+                        <a href="{{ route('operator.data.ekspedisi.show', $ekspedisi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+
                     </td>
                 </tr>
                 @empty

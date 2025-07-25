@@ -13,7 +13,7 @@ class LembagaRehabilitasiOperatorController extends Controller
     {
         $user = $request->user();
         $query = LembagaRehabilitasi::query();
-        if (!$user->isSuperAdmin()) {
+        if (!$user->isOperator()) {
             $query->where('created_by', $user->id);
         }
         $lrehabList = $query->latest()->paginate(10)->withQueryString();

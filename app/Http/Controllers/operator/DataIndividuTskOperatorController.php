@@ -29,7 +29,7 @@ class DataIndividuTskOperatorController extends Controller
         $kabupatenList = DesaGeojson::getKabupatenList();
         $kecamatanList = DesaGeojson::getKecamatanList();
 
-        return view('super-admin.data.individu', compact('stats', 'sampleData', 'kabupatenList', 'kecamatanList'));
+        return view('operator.data.individu', compact('stats', 'sampleData', 'kabupatenList', 'kecamatanList'));
     }
 
     public function getIndividuCount(Request $request)
@@ -52,7 +52,7 @@ class DataIndividuTskOperatorController extends Controller
         $kecamatanList = DesaGeojson::getKecamatanList();
         $desaList = DesaGeojson::all();
 
-        return view('super-admin.data.individu-create', compact('kabupatenList', 'kecamatanList', 'desaList'));
+        return view('operator.data.individu-create', compact('kabupatenList', 'kecamatanList', 'desaList'));
     }
 
     public function store(Request $request)

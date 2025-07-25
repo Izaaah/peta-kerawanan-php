@@ -3,7 +3,7 @@
 @section('title', 'Detail Penjual Vape')
 
 @section('content')
-<div class="max-w-xl mx-auto py-8">
+<div class="max-w-3xl mx-auto py-8">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Detail Penjual Vape</h2>
         <div class="mb-4">
@@ -31,8 +31,7 @@
             <div class="text-gray-700">{{ $vape->distributor }}</div>
         </div>
         <div class="flex gap-2 mt-6">
-            <a href="{{ route('super-admin.data.vape.edit', $vape->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</a>
-            <a href="{{ route('super-admin.data.vape.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>
+            <a href="{{ route('operator.data.vape.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Kembali</a>
         </div>
     </div>
 </div>

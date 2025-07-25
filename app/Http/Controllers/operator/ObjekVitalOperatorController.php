@@ -13,7 +13,7 @@ class ObjekVitalOperatorController extends Controller
     {
         $user = $request->user();
         $query = \App\Models\ObjekVital::query();
-        if (!$user->isSuperAdmin()) {
+        if (!$user->isOperator()) {
             $query->where('created_by', $user->id);
         }
         $objekVitalList = $query->latest()->paginate(10)->withQueryString();

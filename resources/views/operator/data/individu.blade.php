@@ -3,21 +3,13 @@
 @section('title', 'Data Individu TSK')
 
 @section('content')
-@include('components.superadmin-navbar')
+@include('components.operator-navbar')
 
 <div class="container-fluid px-4 py-5">
     <!-- Header Section -->
     <div class="mb-5">
         <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu TSK</h1>
         <p class="text-sm text-gray-500 mb-4">Kelola data individu TSK dengan korelasi kasus narkotika</p>
-        <div class="flex flex-col md:flex-row gap-2 md:gap-3 items-start md:items-center">
-            <a href="{{ route('super-admin.data.individu.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                <i class="fas fa-plus mr-2"></i>Tambah Data
-            </a>
-            <a href="{{ route('super-admin.api.individu.export') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700">
-                <i class="fas fa-download mr-2"></i>Export
-            </a>
-        </div>
     </div>
 
     <!-- Statistics Cards -->
@@ -153,15 +145,9 @@
                         </td>
                         <td class="px-4 py-2 text-center">
                             <div class="flex gap-1 justify-center">
-                                <a href="{{ route('super-admin.data.individu.show', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
+                                {{-- <a href="{{ route('operator.data.individu.show', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
                                     <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button class="inline-flex items-center px-2 py-1 text-xs text-red-600 border border-red-600 rounded hover:bg-red-50" onclick="deleteIndividu({{ $individu->id }})" title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                </a> --}}
                             </div>
                         </td>
                     </tr>
@@ -185,41 +171,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0 bg-danger text-white">
-                <h5 class="modal-title fw-bold">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Konfirmasi Hapus
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4">
-                <div class="text-center mb-3">
-                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                        <i class="fas fa-trash fa-2x text-danger"></i>
-                    </div>
-                    <h6 class="fw-bold text-gray-800">Hapus Data Individu TSK?</h6>
-                    <p class="text-muted mb-0">Data yang dihapus tidak dapat dikembalikan!</p>
-                </div>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>Batal
-                </button>
-                <form id="deleteForm" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash me-2"></i>Hapus
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
 // Data individu dari server

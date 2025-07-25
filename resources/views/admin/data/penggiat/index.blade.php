@@ -44,6 +44,11 @@
                     <td class="px-4 py-2 flex gap-2">
                         <a href="{{ route('admin.data.penggiat.show', $penggiat->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                         <a href="{{ route('admin.data.penggiat.edit', $penggiat->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
+                        <form action="{{ route('admin.data.penggiat.destroy', $penggiat->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>
+                        </form>
                     </td>
                 </tr>
                 @empty

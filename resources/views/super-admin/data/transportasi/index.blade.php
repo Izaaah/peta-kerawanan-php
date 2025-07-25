@@ -75,7 +75,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">Belum ada data transportasi.</td>
+                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data transportasi.</td>
                 </tr>
                 @endforelse
             </tbody>
