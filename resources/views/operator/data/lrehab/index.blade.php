@@ -44,7 +44,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">Belum ada data Lembaga Rehabilitasi.</td>
+                    <td colspan="5" class="px-4 py-2 text-center text-gray-500">Belum ada data Lembaga Rehabilitasi.</td>
                 </tr>
                 @endforelse
             </tbody>

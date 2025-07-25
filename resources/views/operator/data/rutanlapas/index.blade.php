@@ -52,7 +52,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">Belum ada data Jaringan Rutan/Lapas.</td>
+                    <td colspan="10" class="px-4 py-2 text-center text-gray-500">Belum ada data Jaringan Rutan/Lapas.</td>
                 </tr>
                 @endforelse
             </tbody>
