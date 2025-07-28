@@ -8,6 +8,13 @@
         <h2 class="text-xl font-bold">Daftar Penjual Vape</h2>
         <a href="{{ route('admin.data.vape.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penjual Vape</a>
     </div>
+
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+    
     <div class="bg-white rounded shadow p-6">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">

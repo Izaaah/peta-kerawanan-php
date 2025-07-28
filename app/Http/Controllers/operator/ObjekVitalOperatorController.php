@@ -16,6 +16,15 @@ class ObjekVitalOperatorController extends Controller
         if (!$user->isOperator()) {
             $query->where('created_by', $user->id);
         }
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama_objek', 'like', "%$q%")
+                    ->orWhere('nama_manager', 'like', "%$q%")
+                    ->orWhere('lokasi', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%");
+            });
+        }
         $objekVitalList = $query->latest()->paginate(10)->withQueryString();
         return view('operator.data.objekvital.index', compact('objekVitalList'));
     }

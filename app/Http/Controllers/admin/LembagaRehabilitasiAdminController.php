@@ -15,6 +15,13 @@ class LembagaRehabilitasiAdminController extends Controller
         if (!$user->isSuperAdmin()) {
             $query->where('created_by', $user->id);
         }
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('nama', 'like', "%$q%")
+                    ->orWhere('jenis', 'like', "%$q%");
+            });
+        }
         $lrehabList = $query->latest()->paginate(10)->withQueryString();
         return view('admin.data.lrehab.index', compact('lrehabList'));
     }
