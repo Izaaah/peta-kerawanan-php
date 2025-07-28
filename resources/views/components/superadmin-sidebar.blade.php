@@ -30,7 +30,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="sidebar-link">
+                <a href="{{ route('super-admin.verification.index') }}" class="sidebar-link {{ request()->routeIs('super-admin.verification.*') ? 'active' : '' }}">
                     <span class="icon">📝</span>
                     <span>Verification</span>
                 </a>

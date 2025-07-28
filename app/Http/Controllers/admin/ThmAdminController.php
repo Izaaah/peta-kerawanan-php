@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Thm;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\DuplicateDetectionService;
 
 class ThmAdminController extends Controller
 {
@@ -34,13 +35,28 @@ class ThmAdminController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['created_by'] = $request->user()->id;
         $request->validate([
             'nama_thm' => 'required|string|max:255',
             'ketua_thm' => 'required|string|max:255',
             'no_hp_ketua' => 'required|string|max:20',
         ]);
+        
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
+
+        // Check for duplicates
+        $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+            'thm',
+            $data,
+            $request->user()->id
+        );
+
+        if ($isDuplicate) {
+            return redirect()->back()
+                ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
+                ->withInput();
+        }
+
         Thm::create($data);
         return redirect()->route('admin.data.thm.index')->with('success', 'Data THM berhasil disimpan.');
     }
@@ -59,13 +75,39 @@ class ThmAdminController extends Controller
 
     public function update(Request $request, $id)
     {
+        $thm = Thm::findOrFail($id);
+        
         $request->validate([
             'nama_thm' => 'required|string|max:255',
             'ketua_thm' => 'required|string|max:255',
             'no_hp_ketua' => 'required|string|max:20',
         ]);
+        
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
+
+        // Check for duplicates
+        $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+            'thm',
+            $data,
+            $request->user()->id,
+            $id
+        );
+
+        if ($isDuplicate) {
+            return redirect()->back()
+                ->with('warning', 'Data terdeteksi duplikat. Perubahan akan diverifikasi oleh Super Admin terlebih dahulu.')
+                ->withInput();
+        }
+
+        $thm->update($data);
+        return redirect()->route('admin.data.thm.index')->with('success', 'Data THM berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
         $thm = Thm::findOrFail($id);
-        $thm->update($request->all());
-        return redirect()->route('admin.data.thm.index')->with('success', 'Data THM berhasil diupdate.');
+        $thm->delete();
+        return redirect()->route('admin.data.thm.index')->with('success', 'Data THM berhasil dihapus.');
     }
 }

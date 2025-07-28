@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Medsos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\DuplicateDetectionService;
 
 class MedsosAdminController extends Controller
 {
@@ -40,12 +41,27 @@ class MedsosAdminController extends Controller
             'link_akun' => 'nullable|string|max:255',
             'nama_media_sosial_lainnya' => 'required_if:nama_media_sosial,lainnya',
         ]);
+        
         $data = $request->all();
         $data['created_by'] = $request->user()->id;
+        
         if ($data['nama_media_sosial'] === 'lainnya') {
             $data['nama_media_sosial'] = $data['nama_media_sosial_lainnya'];
         }
-        unset($data['nama_media_sosial_lainnya']); // pastikan field ini tidak ikut disimpan
+        unset($data['nama_media_sosial_lainnya']);
+
+        // Check for duplicates
+        $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+            'medsos',
+            $data,
+            $request->user()->id
+        );
+
+        if ($isDuplicate) {
+            return redirect()->back()
+                ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
+                ->withInput();
+        }
 
         Medsos::create($data);
         return redirect()->route('admin.data.medsos.index')->with('success', 'Data medsos berhasil disimpan.');
@@ -65,20 +81,45 @@ class MedsosAdminController extends Controller
 
     public function update(Request $request, $id)
     {
+        $medsos = Medsos::findOrFail($id);
+        
         $request->validate([
             'nama_media_sosial' => 'required|string|max:255',
             'nama_akun' => 'required|string|max:255',
             'link_akun' => 'nullable|string|max:255',
+            'nama_media_sosial_lainnya' => 'required_if:nama_media_sosial,lainnya',
         ]);
-        $medsos = Medsos::findOrFail($id);
-        $medsos->update($request->all());
-        return redirect()->route('admin.data.medsos.index')->with('success', 'Akun medsos berhasil diupdate.');
+        
+        $data = $request->all();
+        $data['created_by'] = $request->user()->id;
+        
+        if ($data['nama_media_sosial'] === 'lainnya') {
+            $data['nama_media_sosial'] = $data['nama_media_sosial_lainnya'];
+        }
+        unset($data['nama_media_sosial_lainnya']);
+
+        // Check for duplicates
+        $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+            'medsos',
+            $data,
+            $request->user()->id,
+            $id
+        );
+
+        if ($isDuplicate) {
+            return redirect()->back()
+                ->with('warning', 'Data terdeteksi duplikat. Perubahan akan diverifikasi oleh Super Admin terlebih dahulu.')
+                ->withInput();
+        }
+
+        $medsos->update($data);
+        return redirect()->route('admin.data.medsos.index')->with('success', 'Data medsos berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $medsos = Medsos::findOrFail($id);
         $medsos->delete();
-        return redirect()->route('admin.data.medsos.index')->with('success', 'Akun medsos berhasil dihapus.');
+        return redirect()->route('admin.data.medsos.index')->with('success', 'Data medsos berhasil dihapus.');
     }
 }

@@ -265,6 +265,7 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
 
     // Route untuk verifikasi perubahan data
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification.index');
+    Route::get('/verification/{id}', [VerificationController::class, 'show'])->name('verification.show');
     Route::post('/verification/{id}/approve', [VerificationController::class, 'approve'])->name('verification.approve');
     Route::post('/verification/{id}/reject', [VerificationController::class, 'reject'])->name('verification.reject');
 

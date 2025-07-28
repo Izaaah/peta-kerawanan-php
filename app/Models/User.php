@@ -13,11 +13,6 @@ class User extends Authenticatable
 
     protected $hidden = ['password'];
 
-    public function getAuthIdentifierName()
-    {
-        return 'username';
-    }
-
     // Role checking methods
     public function isSuperAdmin(): bool
     {

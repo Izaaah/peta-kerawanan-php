@@ -96,7 +96,7 @@ class DataIndividuTskAdminController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'nik' => 'required|string|max:20|unique:data_individu_tsk,nik',
+            'nik' => 'required|string|max:20',
             'nkk' => 'required|string|max:20',
             'provinsi' => 'required|string|max:100',
             'kabupaten' => 'required|string|max:100',
@@ -131,31 +131,47 @@ class DataIndividuTskAdminController extends Controller
             'foto.*' => 'nullable|file|image|max:2048',
         ]);
 
+        // Prepare data for duplicate check
+        $data = [
+            'nama' => $request->nama,
+            'nik' => $request->nik,
+            'nkk' => $request->nkk,
+            'provinsi' => $request->provinsi,
+            'kabupaten' => $request->kabupaten,
+            'kecamatan' => $request->kecamatan,
+            'kelurahan' => $request->kelurahan,
+            'alamat' => $request->alamat,
+            'nama_ayah' => $request->nama_ayah,
+            'nik_ayah' => $request->nik_ayah,
+            'nama_ibu' => $request->nama_ibu,
+            'nik_ibu' => $request->nik_ibu,
+            'peran_jaringan' => $request->peran_jaringan,
+            'modus_operasi' => $request->modus_operasi,
+            'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : $request->jenis_narkotika,
+            'skala_kelas' => $request->skala_kelas,
+            'status' => $request->status,
+            'residivis' => $request->has('residivis'),
+            'sumber_informasi' => $request->sumber_informasi,
+            'created_by' => request()->user()->id,
+        ];
+
+        // Check for duplicates
+        $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
+            'data_individu_tsk',
+            $data,
+            request()->user()->id
+        );
+
+        if ($isDuplicate) {
+            return redirect()->back()
+                ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
+                ->withInput();
+        }
+
         DB::beginTransaction();
         try {
             // Simpan data utama
-            $individu = DataIndividuTsk::create([
-                'nama' => $request->nama,
-                'nik' => $request->nik,
-                'nkk' => $request->nkk,
-                'provinsi' => $request->provinsi,
-                'kabupaten' => $request->kabupaten,
-                'kecamatan' => $request->kecamatan,
-                'kelurahan' => $request->kelurahan,
-                'alamat' => $request->alamat,
-                'nama_ayah' => $request->nama_ayah,
-                'nik_ayah' => $request->nik_ayah,
-                'nama_ibu' => $request->nama_ibu,
-                'nik_ibu' => $request->nik_ibu,
-                'peran_jaringan' => $request->peran_jaringan,
-                'modus_operasi' => $request->modus_operasi,
-                'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : $request->jenis_narkotika,
-                'skala_kelas' => $request->skala_kelas,
-                'status' => $request->status,
-                'residivis' => $request->has('residivis'),
-                'sumber_informasi' => $request->sumber_informasi,
-                'created_by' => request()->user()->id,
-            ]);
+            $individu = DataIndividuTsk::create($data);
 
             // Telepon
             if ($request->filled('telepon')) {
@@ -187,62 +203,36 @@ class DataIndividuTskAdminController extends Controller
                     $nik = $request->nik_keluarga_lain[$i] ?? null;
                     if ($nama || $nik) {
                         $individu->keluargaLain()->create([
-                            'nama_keluarga' => $nama,
+                            'nama' => $nama,
                             'nik' => $nik,
                         ]);
                     }
                 }
             }
             // Residivis Detail
-            if ($request->has('residivis') && $request->residivis) {
-                $aph = $request->aph_menangani ?? [];
-                $pasal = $request->pasal_disangkakan ?? [];
-                $vonis = $request->vonis ?? [];
-                $lapas = $request->lapas_akhir ?? [];
-                $max = max(count($aph), count($pasal), count($vonis), count($lapas));
-                for ($i = 0; $i < $max; $i++) {
-                    if (($aph[$i] ?? null) || ($pasal[$i] ?? null) || ($vonis[$i] ?? null) || ($lapas[$i] ?? null)) {
+            if ($request->filled('aph_menangani') && $request->filled('pasal_disangkakan') && $request->filled('vonis') && $request->filled('lapas_akhir')) {
+                foreach ($request->aph_menangani as $i => $aph) {
+                    $pasal = $request->pasal_disangkakan[$i] ?? null;
+                    $vonis = $request->vonis[$i] ?? null;
+                    $lapas = $request->lapas_akhir[$i] ?? null;
+                    if ($aph || $pasal || $vonis || $lapas) {
                         $individu->residivisDetail()->create([
-                            'aph' => $aph[$i] ?? null,
-                            'pasal' => $pasal[$i] ?? null,
-                            'vonis' => $vonis[$i] ?? null,
-                            'lapas_akhir' => $lapas[$i] ?? null,
-                        ]);
-                    }
-                }
-            }
-            // TKP Residivis
-            if ($request->has('tkp_provinsi')) {
-                $prov = $request->tkp_provinsi ?? [];
-                $kab = $request->tkp_kabupaten ?? [];
-                $kec = $request->tkp_kecamatan ?? [];
-                $desa = $request->tkp_desa ?? [];
-                $lokasi = $request->tkp_lokasi ?? [];
-                $max = max(count($prov), count($kab), count($kec), count($desa), count($lokasi));
-                for ($i = 0; $i < $max; $i++) {
-                    if (($prov[$i] ?? null) || ($kab[$i] ?? null) || ($kec[$i] ?? null) || ($desa[$i] ?? null) || ($lokasi[$i] ?? null)) {
-                        DB::table('tkp_residivis_individu')->insert([
-                            'individu_id' => $individu->id,
-                            'provinsi' => $prov[$i] ?? null,
-                            'kabupaten' => $kab[$i] ?? null,
-                            'kecamatan' => $kec[$i] ?? null,
-                            'desa' => $desa[$i] ?? null,
-                            'lokasi' => $lokasi[$i] ?? null,
-                            'created_by' => request()->user()->id,
-                            'created_at' => now(),
-                            'updated_at' => now(),
+                            'aph_menangani' => $aph,
+                            'pasal_disangkakan' => $pasal,
+                            'vonis' => $vonis,
+                            'lapas_akhir' => $lapas,
                         ]);
                     }
                 }
             }
             // Foto
-            if ($request->hasFile('foto')) {
-                foreach ($request->file('foto') as $i => $file) {
-                    if ($file) {
-                        $path = $file->store('foto-individu', 'public');
+            if ($request->filled('foto')) {
+                foreach ($request->file('foto') as $i => $foto) {
+                    if ($foto && $foto->isValid()) {
                         $keterangan = $request->keterangan_foto[$i] ?? null;
+                        $path = $foto->store('foto-individu', 'public');
                         $individu->foto()->create([
-                            'file_foto' => $path,
+                            'path' => $path,
                             'keterangan' => $keterangan,
                         ]);
                     }
@@ -250,10 +240,11 @@ class DataIndividuTskAdminController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('admin.data.individu')->with('success', 'Data individu TSK berhasil ditambahkan');
+            return redirect()->route('admin.data.individu')->with('success', 'Data individu berhasil disimpan.');
+
         } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            DB::rollback();
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())->withInput();
         }
     }
 

@@ -1,63 +1,129 @@
 @extends('layouts.superadmin-master')
-@section('title', 'Verifikasi Perubahan Data')
+@section('title', 'Verifikasi Data Duplikat')
 @section('content')
 <div class="container mx-auto px-4 py-6">
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-2xl font-semibold text-gray-800">Verifikasi Perubahan Data</h1>
-            <p class="text-sm text-gray-500">Daftar perubahan data yang perlu diverifikasi</p>
+            <h1 class="text-2xl font-semibold text-gray-800">Verifikasi Data Duplikat</h1>
+            <p class="text-sm text-gray-500">Daftar data yang terdeteksi duplikat dan memerlukan verifikasi</p>
         </div>
     </div>
+    
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">{{ session('success') }}</div>
     @endif
+    
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{{ session('error') }}</div>
+    @endif
+
     <div class="bg-white shadow rounded p-6">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Tabel</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID Data</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis Data</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Data Lama</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Data Baru</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Admin Pengaju</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($verifications as $verification)
-                    <tr>
-                        <td class="px-4 py-2">{{ $verification->id }}</td>
-                        <td class="px-4 py-2"><span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{{ $verification->table_name }}</span></td>
-                        <td class="px-4 py-2">{{ $verification->data_id }}</td>
-                        <td class="px-4 py-2 max-w-xs overflow-x-auto"><pre class="bg-gray-100 rounded p-2 text-xs whitespace-pre-wrap">{{ json_encode($verification->old_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre></td>
-                        <td class="px-4 py-2 max-w-xs overflow-x-auto"><pre class="bg-green-50 rounded p-2 text-xs whitespace-pre-wrap">{{ json_encode($verification->new_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre></td>
-                        <td class="px-4 py-2"><span class="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">{{ $verification->admin_id }}</span></td>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2 text-sm">{{ $verification->id }}</td>
                         <td class="px-4 py-2">
-                            @if($verification->status == 'pending')
-                                <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Pending</span>
-                            @elseif($verification->status == 'approved')
-                                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Approved</span>
-                            @else
-                                <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Rejected</span>
-                            @endif
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                                {{ $verification->table_display_name }}
+                            </span>
                         </td>
-                        <td class="px-4 py-2 text-center flex gap-2 justify-center">
-                            <form action="{{ route('super-admin.verification.approve', $verification->id) }}" method="POST" onsubmit="return confirm('Yakin approve perubahan ini?')">
-                                @csrf
-                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded text-xs font-semibold">Approve</button>
-                            </form>
-                            <form action="{{ route('super-admin.verification.reject', $verification->id) }}" method="POST" onsubmit="return confirm('Yakin reject perubahan ini?')">
-                                @csrf
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded text-xs font-semibold">Reject</button>
-                            </form>
+                        <td class="px-4 py-2 max-w-xs">
+                            <div class="bg-gray-100 rounded p-2 text-xs">
+                                @if($verification->data_id == 0)
+                                    <span class="text-gray-500">Data Baru</span>
+                                @else
+                                    @php
+                                        $oldData = $verification->old_data_array;
+                                    @endphp
+                                    @if(is_array($oldData))
+                                        @foreach($oldData as $key => $value)
+                                            @if(in_array($key, ['nama', 'nama_lsm', 'nama_thm', 'nama_toko', 'nama_objek', 'nama_akun', 'ketua_lsm', 'ketua_thm', 'pemilik', 'manager', 'nama_pengelola', 'nama_pihak', 'nik', 'nkk']))
+                                                <div><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ $value }}</div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <span class="text-gray-500">Data tidak tersedia</span>
+                                    @endif
+                                @endif
+                            </div>
+                        </td>
+                        <td class="px-4 py-2 max-w-xs">
+                            <div class="bg-green-50 rounded p-2 text-xs">
+                                @php
+                                    $newData = $verification->new_data_array;
+                                @endphp
+                                @if(is_array($newData))
+                                    @foreach($newData as $key => $value)
+                                        @if(in_array($key, ['nama', 'nama_lsm', 'nama_thm', 'nama_toko', 'nama_objek', 'nama_akun', 'ketua_lsm', 'ketua_thm', 'pemilik', 'manager', 'nama_pengelola', 'nama_pihak', 'nik', 'nkk']))
+                                            <div><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ $value }}</div>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <span class="text-gray-500">Data tidak tersedia</span>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="px-4 py-2">
+                            <span class="inline-block bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">
+                                {{ $verification->admin->name ?? 'Unknown' }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2 text-sm text-gray-500">
+                            {{ $verification->created_at->format('d/m/Y H:i') }}
+                        </td>
+                        <td class="px-4 py-2 text-center">
+                            <div class="flex gap-2 justify-center">
+                                <a href="{{ route('super-admin.verification.show', $verification->id) }}" 
+                                   class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" 
+                                   title="Lihat Detail">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <form action="{{ route('super-admin.verification.approve', $verification->id) }}" 
+                                      method="POST" 
+                                      onsubmit="return confirm('Yakin approve data ini?')" 
+                                      class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="inline-flex items-center px-2 py-1 text-xs text-green-600 border border-green-600 rounded hover:bg-green-50" 
+                                            title="Approve">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                                <form action="{{ route('super-admin.verification.reject', $verification->id) }}" 
+                                      method="POST" 
+                                      onsubmit="return confirm('Yakin reject data ini?')" 
+                                      class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="inline-flex items-center px-2 py-1 text-xs text-red-600 border border-red-600 rounded hover:bg-red-50" 
+                                            title="Reject">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-2 text-center text-gray-500">Tidak ada data verifikasi.</td>
+                        <td colspan="7" class="px-4 py-8 text-center text-gray-500">
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-check-circle text-4xl text-green-300 mb-2"></i>
+                                <p>Tidak ada data yang memerlukan verifikasi</p>
+                            </div>
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>
