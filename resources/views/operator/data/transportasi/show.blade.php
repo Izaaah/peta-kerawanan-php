@@ -7,11 +7,7 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Detail Data Transportasi</h2>
         <div class="flex gap-2">
-<<<<<<< HEAD
-            <a href="{{ route('super-admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
-=======
             <a href="{{ route('operator.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>
->>>>>>> 20a8640e7362ff0668ee415d4109947857f5756e
         </div>
     </div>
 

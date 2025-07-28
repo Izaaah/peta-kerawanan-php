@@ -13,7 +13,7 @@
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">{{ session('success') }}</div>
     @endif
 
-    <form method="GET" action="{{ route('super-admin.data.farmasi.index') }}" class="mb-4 flex gap-2">
+    <form method="GET" action="{{ route('operator.data.farmasi.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, manager, jenis..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
     </form>
@@ -39,7 +39,7 @@
                     <td class="px-4 py-2">{{ $farmasi->manager }}</td>
                     <td class="px-4 py-2">{{ $farmasi->no_hp }}</td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.farmasi.show', $farmasi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+                        <a href="{{ route('operator.data.farmasi.show', $farmasi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                     </td>
                 </tr>
                 @empty
