@@ -41,11 +41,16 @@ class VerificationController extends Controller
                 $model->save();
             } else {
                 // This is an update to existing record
-                $model = $modelClass::find($verification->data_id);
-                if (!$model) {
-                    return redirect()->back()->with('error', 'Data lama tidak ditemukan.');
+                // First, find and delete the old record
+                $oldModel = $modelClass::find($verification->data_id);
+                if ($oldModel) {
+                    $oldModel->delete();
                 }
-                $model->update($newData);
+                
+                // Then create the new record with the same ID or let it auto-increment
+                $model = new $modelClass();
+                $model->fill($newData);
+                $model->save();
             }
 
             // Update verification status
@@ -56,7 +61,7 @@ class VerificationController extends Controller
             DB::commit();
 
             return redirect()->route('super-admin.verification.index')
-                ->with('success', 'Data berhasil disetujui dan disimpan.');
+                ->with('success', 'Data berhasil disetujui. Data lama telah dihapus dan data baru telah disimpan.');
 
         } catch (\Exception $e) {
             DB::rollback();

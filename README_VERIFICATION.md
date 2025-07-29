@@ -99,8 +99,9 @@ LsmNarkotika::create($data);
 - Klik "Approve" untuk menyetujui atau "Reject" untuk menolak
 
 ### 3. Proses Approve/Reject
+
+#### Approve - Data Lama Dihapus, Data Baru Disimpan
 ```php
-// Approve - data akan disimpan ke tabel utama
 public function approve($id)
 {
     $verification = DataVerification::findOrFail($id);
@@ -111,16 +112,24 @@ public function approve($id)
         $model->fill($newData);
         $model->save();
     } else {
-        // Update existing record
-        $model = $modelClass::find($verification->data_id);
-        $model->update($newData);
+        // Update existing record - DELETE OLD, INSERT NEW
+        $oldModel = $modelClass::find($verification->data_id);
+        if ($oldModel) {
+            $oldModel->delete(); // Hapus data lama
+        }
+        
+        $model = new $modelClass();
+        $model->fill($newData);
+        $model->save(); // Simpan data baru
     }
     
     $verification->status = 'approved';
     $verification->save();
 }
+```
 
-// Reject - hanya update status
+#### Reject - Hanya Update Status
+```php
 public function reject($id)
 {
     $verification = DataVerification::findOrFail($id);
@@ -128,6 +137,20 @@ public function reject($id)
     $verification->save();
 }
 ```
+
+## Perilaku Sistem
+
+### Ketika Data Diapprove:
+1. **Data Baru (data_id = 0)**: Data langsung disimpan ke tabel utama
+2. **Data Update (data_id > 0)**: 
+   - Data lama dihapus dari tabel utama
+   - Data baru disimpan sebagai penggantinya
+   - Proses ini tidak dapat dibatalkan
+
+### Ketika Data Direject:
+- Data tidak disimpan ke tabel utama
+- Status verifikasi diubah menjadi 'rejected'
+- Data lama tetap ada di sistem
 
 ## Struktur Database
 
@@ -215,10 +238,19 @@ public function update(Request $request, $id)
 3. **Audit Trail**: Semua proses verifikasi tercatat dengan baik
 4. **User Friendly**: Interface yang mudah digunakan untuk verifikasi
 5. **Fleksibel**: Mudah menambahkan field duplikasi baru
+6. **Data Integrity**: Data lama dihapus dan diganti dengan data baru yang valid
 
 ## Catatan Penting
 
-1. Pastikan semua controller admin mengimplementasikan sistem ini
-2. Field duplikasi dapat disesuaikan di `DuplicateDetectionService`
-3. Super admin harus aktif memeriksa menu verification
-4. Data yang sudah diapprove/reject tidak akan muncul lagi di daftar verification 
+1. **PERHATIAN**: Ketika approve data update, data lama akan dihapus permanen
+2. Pastikan semua controller admin mengimplementasikan sistem ini
+3. Field duplikasi dapat disesuaikan di `DuplicateDetectionService`
+4. Super admin harus aktif memeriksa menu verification
+5. Data yang sudah diapprove/reject tidak akan muncul lagi di daftar verification
+6. Proses approve tidak dapat dibatalkan, pastikan data yang diapprove sudah benar
+
+## Pesan Konfirmasi
+
+Sistem akan menampilkan pesan konfirmasi yang berbeda:
+- **Data Baru**: "Yakin approve data baru ini?"
+- **Data Update**: "PERHATIAN! Data lama akan dihapus dan diganti dengan data baru. Yakin ingin melanjutkan?" 
