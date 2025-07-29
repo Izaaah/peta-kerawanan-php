@@ -124,4 +124,80 @@ class PetaController extends Controller
 
         return response()->json($desa);
     }
+
+            /**
+     * Get kerawanan statistics
+     */
+    public function getKerawananStats()
+    {
+        // Debug: Cek apakah ada data desa
+        $totalDesa = DesaGeojson::count();
+
+        // Debug: Cek apakah ada data individu (seperti di peta)
+        $totalIndividu = DataIndividuTsk::count();
+
+        // Debug: Cek relasi
+        $desaDenganIndividu = DesaGeojson::has('dataIndividuTsk')->count();
+
+        // Debug: Cek sample data individu
+        $sampleIndividu = DataIndividuTsk::take(3)->get(['kabupaten', 'kecamatan', 'desa']);
+
+        // Debug: Cek apakah nama desa dari individu ada di desa_geojson
+        $individuDesaNames = DataIndividuTsk::distinct('desa')->pluck('desa')->toArray();
+        $desaNames = DesaGeojson::distinct('nama_desa')->pluck('nama_desa')->toArray();
+
+        // Cek overlap
+        $matchingDesa = array_intersect($individuDesaNames, $desaNames);
+        $nonMatchingIndividu = array_diff($individuDesaNames, $desaNames);
+
+        $desaData = DesaGeojson::withCount('dataIndividuTsk')->get();
+
+        $tinggiCount = 0;
+        $sedangCount = 0;
+        $rendahCount = 0;
+        $totalCount = 0;
+
+        // Hitung berdasarkan data individu (seperti di peta)
+        $individuData = DataIndividuTsk::selectRaw('desa, COUNT(*) as individu_count')
+            ->groupBy('desa')
+            ->get();
+
+        foreach ($individuData as $individu) {
+            $individuCount = $individu->individu_count;
+            $totalCount += $individuCount;
+
+            // Sesuaikan dengan logika JavaScript yang menggunakan >5, >3, >2, >1, >0
+            if ($individuCount > 5) {
+                $tinggiCount++;
+            } elseif ($individuCount > 3) {
+                $sedangCount++;
+            } elseif ($individuCount > 2) {
+                $rendahCount++;
+            }
+        }
+
+        return response()->json([
+            'tinggi' => $tinggiCount,
+            'sedang' => $sedangCount,
+            'rendah' => $rendahCount,
+            'total_desa' => $desaData->count(),
+            'debug' => [
+                'total_desa' => $totalDesa,
+                'total_individu' => $totalIndividu,
+                'desa_dengan_individu' => $desaDenganIndividu,
+                'total_individu_counted' => $totalCount,
+                'sample_individu' => $sampleIndividu->toArray(),
+                'individu_desa_names' => $individuDesaNames,
+                'matching_desa' => array_values($matchingDesa),
+                'non_matching_individu' => array_values($nonMatchingIndividu),
+                'sample_desa' => $desaData->take(3)->map(function($desa) {
+                    return [
+                        'nama' => $desa->nama_desa,
+                        'individu_count' => $desa->data_individu_tsk_count,
+                        'has_relation' => $desa->dataIndividuTsk()->exists()
+                    ];
+                })->toArray()
+            ]
+        ]);
+    }
 }

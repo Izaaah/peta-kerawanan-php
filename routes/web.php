@@ -67,7 +67,7 @@ Route::get('/', function (Request $request) {
         'created_at' => now(),
         'updated_at' => now(),
     ]);
-    return response()->file(resource_path('views/loginpage/index.blade.php'));
+    return response()->file(resource_path('views/index.blade.php'));
 });
 
 Route::get('/tentang', function () {
@@ -504,6 +504,7 @@ Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.ke
 Route::get('/api/desa/stats', [PetaController::class, 'getDesaStats'])->name('api.desa.stats');
 Route::get('/api/desa/kabupaten/{kabupaten}', [PetaController::class, 'getDesaByKabupaten'])->name('api.desa.by-kabupaten');
 Route::get('/api/desa/{id}', [PetaController::class, 'getDesaDetail'])->name('api.desa.detail');
+Route::get('/api/kerawanan-stats', [PetaController::class, 'getKerawananStats'])->name('api.kerawanan.stats');
 
 Route::get('/peta-tkp-residivis', function () {
     return view('map-tkp-residivis');

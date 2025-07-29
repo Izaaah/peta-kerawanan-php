@@ -109,23 +109,23 @@
                     <div class="space-y-2">
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-red-600 rounded mr-2"></div>
-                            <span class="text-sm text-gray-700">Tinggi (>100 kasus)</span>
+                            <span class="text-sm text-gray-700">Tinggi (>5 kasus)</span>
                         </div>
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-orange-500 rounded mr-2"></div>
-                            <span class="text-sm text-gray-700">Sedang (50-100 kasus)</span>
+                            <span class="text-sm text-gray-700">Sedang (>3 kasus)</span>
                         </div>
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-yellow-400 rounded mr-2"></div>
-                            <span class="text-sm text-gray-700">Rendah (20-50 kasus)</span>
+                            <span class="text-sm text-gray-700">Rendah (>2 kasus)</span>
                         </div>
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-green-400 rounded mr-2"></div>
-                            <span class="text-sm text-gray-700">Sangat Rendah (5-20 kasus)</span>
+                            <span class="text-sm text-gray-700">Sangat Rendah (>1 kasus)</span>
                         </div>
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-blue-300 rounded mr-2"></div>
-                            <span class="text-sm text-gray-700">Minimal (1-5 kasus)</span>
+                            <span class="text-sm text-gray-700">Minimal (1 kasus)</span>
                         </div>
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-gray-200 rounded mr-2"></div>
@@ -139,18 +139,18 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                 <div class="bg-red-50 p-4 rounded-lg border border-red-200">
                     <h3 class="font-semibold text-red-800">Daerah Rawan Tinggi</h3>
-                    <p class="text-2xl font-bold text-red-600">12 Desa</p>
-                    <p class="text-sm text-red-600">>100 kasus per desa</p>
+                    <p class="text-2xl font-bold text-red-600" id="tinggi-count">0</p>
+                    <p class="text-sm text-red-600">>5 kasus per desa</p>
                 </div>
                 <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
                     <h3 class="font-semibold text-orange-800">Daerah Rawan Sedang</h3>
-                    <p class="text-2xl font-bold text-orange-600">28 Desa</p>
-                    <p class="text-sm text-orange-600">50-100 kasus per desa</p>
+                    <p class="text-2xl font-bold text-orange-600" id="sedang-count">0</p>
+                    <p class="text-sm text-orange-600">>3 kasus per desa</p>
                 </div>
                 <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                     <h3 class="font-semibold text-yellow-800">Daerah Rawan Rendah</h3>
-                    <p class="text-2xl font-bold text-yellow-600">45 Desa</p>
-                    <p class="text-sm text-yellow-600">20-50 kasus per desa</p>
+                    <p class="text-2xl font-bold text-yellow-600" id="rendah-count">0</p>
+                    <p class="text-sm text-yellow-600">>2 kasus per desa</p>
                 </div>
             </div>
         </div>
@@ -257,6 +257,14 @@
                                 layer.setStyle({
                                     fillColor: getColor(data.count)
                                 });
+
+                                // Update statistik setelah data berubah
+                                calculateKerawananStats();
+
+                                // Juga update dari API untuk data yang lebih akurat
+                                setTimeout(() => {
+                                    fetchKerawananStats();
+                                }, 500);
                             })
                             .catch(() => {
                                 document.getElementById(`individu-count-${desaId}`).innerHTML = 'Gagal memuat';
@@ -264,6 +272,9 @@
                     });
                 }
             }).addTo(map);
+
+            // Update statistik setelah map dimuat
+            updateStatsAfterMapLoad();
         })
         .catch(error => {
             console.error('Error loading map data:', error);
@@ -438,6 +449,82 @@
         metric: true,
         imperial: false
     }).addTo(map);
+
+            // Fungsi untuk menghitung statistik kerawanan
+    function calculateKerawananStats() {
+        if (!desaData || desaData.length === 0) return;
+
+        let tinggiCount = 0;
+        let sedangCount = 0;
+        let rendahCount = 0;
+
+        desaData.forEach(desa => {
+            const individuCount = desa.properties.jumlah_kasus || 0; // jumlah_kasus di peta sebenarnya adalah jumlah individu
+
+            // Sesuaikan dengan logika getColor yang menggunakan >5, >3, >2, >1, >0
+            if (individuCount > 5) {
+                tinggiCount++;
+            } else if (individuCount > 3) {
+                sedangCount++;
+            } else if (individuCount > 2) {
+                rendahCount++;
+            }
+        });
+
+        // Update kartu statistik
+        document.getElementById('tinggi-count').textContent = `${tinggiCount} Desa`;
+        document.getElementById('sedang-count').textContent = `${sedangCount} Desa`;
+        document.getElementById('rendah-count').textContent = `${rendahCount} Desa`;
+
+        console.log('Statistik kerawanan:', { tinggi: tinggiCount, sedang: sedangCount, rendah: rendahCount });
+        console.log('Sample data:', desaData.slice(0, 3).map(d => ({ nama: d.properties.nama_desa, individu: d.properties.jumlah_kasus })));
+    }
+
+    // Panggil fungsi statistik setelah data map dimuat
+    function updateStatsAfterMapLoad() {
+        // Tunggu sebentar untuk memastikan data sudah diproses
+        setTimeout(() => {
+            calculateKerawananStats();
+        }, 1000);
+    }
+
+    // Fungsi untuk mengambil statistik dari API
+    function fetchKerawananStats() {
+        console.log('Fetching kerawanan stats...');
+        fetch('/api/kerawanan-stats')
+            .then(res => {
+                console.log('Response status:', res.status);
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('tinggi-count').textContent = `${data.tinggi} Desa`;
+                document.getElementById('sedang-count').textContent = `${data.sedang} Desa`;
+                document.getElementById('rendah-count').textContent = `${data.rendah} Desa`;
+                console.log('Statistik dari API:', data);
+
+                // Debug info
+                if (data.debug) {
+                    console.log('=== DEBUG INFO ===');
+                    console.log('Total Desa:', data.debug.total_desa);
+                    console.log('Total Individu:', data.debug.total_individu);
+                    console.log('Desa dengan Individu:', data.debug.desa_dengan_individu);
+                    console.log('Total Individu Counted:', data.debug.total_individu_counted);
+                    console.log('Sample Desa:', data.debug.sample_desa);
+                    console.log('Individu Desa Names:', data.debug.individu_desa_names);
+                    console.log('Matching Desa:', data.debug.matching_desa);
+                    console.log('Non Matching Individu:', data.debug.non_matching_individu);
+                    console.log('==================');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching kerawanan stats:', error);
+                // Fallback ke perhitungan lokal
+                calculateKerawananStats();
+            });
+    }
+
+    // Panggil statistik dari API saat halaman dimuat
+    fetchKerawananStats();
 </script>
 @endpush
 @endsection
