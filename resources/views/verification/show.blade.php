@@ -21,12 +21,41 @@
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{{ session('error') }}</div>
     @endif
 
+    <!-- Warning Box -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">
+                    Perhatian
+                </h3>
+                <div class="mt-2 text-sm text-yellow-700">
+                    <p>
+                        @if($verification->data_id == 0)
+                            Data ini akan ditambahkan sebagai data baru ke sistem.
+                        @else
+                            <strong>Ketika Anda approve data ini:</strong><br>
+                            • Data lama akan <strong>dihapus</strong> dari sistem<br>
+                            • Data baru akan <strong>disimpan</strong> sebagai penggantinya<br>
+                            • Proses ini tidak dapat dibatalkan
+                        @endif
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Data Lama -->
         <div class="bg-white shadow rounded p-6">
             <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-database text-blue-500 mr-2"></i>
                 Data Lama
+                @if($verification->data_id != 0)
+                    <span class="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Akan Dihapus</span>
+                @endif
             </h2>
             
             @if($verification->data_id == 0)
@@ -66,6 +95,7 @@
             <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-plus text-green-500 mr-2"></i>
                 Data Baru
+                <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Akan Disimpan</span>
             </h2>
             
             <div class="space-y-3">
@@ -127,13 +157,17 @@
         <div class="flex gap-4">
             <form action="{{ route('super-admin.verification.approve', $verification->id) }}" 
                   method="POST" 
-                  onsubmit="return confirm('Yakin approve data ini?')" 
+                  onsubmit="return confirm('{{ $verification->data_id == 0 ? 'Yakin approve data baru ini?' : 'PERHATIAN! Data lama akan dihapus dan diganti dengan data baru. Yakin ingin melanjutkan?' }}')" 
                   class="flex-1">
                 @csrf
                 <button type="submit" 
                         class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded font-semibold flex items-center justify-center">
                     <i class="fas fa-check mr-2"></i>
-                    Approve Data
+                    @if($verification->data_id == 0)
+                        Approve Data Baru
+                    @else
+                        Approve & Ganti Data
+                    @endif
                 </button>
             </form>
             
