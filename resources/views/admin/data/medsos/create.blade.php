@@ -3,13 +3,13 @@
 @section('title', 'Tambah Akun Media Sosial')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="flex justify-between items-center mb-6">
+<div class="container mx-auto pt-1 pb-2 max-w-7xl px-1">
+    <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Akun Media Sosial</h1>
             <p class="text-sm text-gray-500">Form untuk input data akun media sosial</p>
         </div>
-        <a href="{{ route('admin.input.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+        <a href="{{ route('admin.data.medsos.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>Kembali
         </a>
     </div>
@@ -23,11 +23,11 @@
                         <label class="block text-sm font-medium text-gray-700">Nama Media Sosial <span class="text-red-500">*</span></label>
                         <select id="nama_media_sosial" name="nama_media_sosial" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
                             <option value="" disabled selected>Pilih Media Sosial</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="tiktok">Tiktok</option>
-                            <option value="telegram">Telegram</option>
-                            <option value="lainnya">Lainnya</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Tiktok">Tiktok</option>
+                            <option value="Telegram">Telegram</option>
+                            <option value="Lainnya">Lainnya</option>
                         </select>
                         <input
                             type="text"
@@ -43,7 +43,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Link Akun</label>
-                        <input type="url" name="link_akun" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <input type="url" name="link_akun" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400" placeholder="contoh=https://www....com/nama_akun">
                     </div>
                 </div>
                 <div class="flex space-x-4">

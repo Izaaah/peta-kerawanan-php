@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LsmNarkotika;
 use App\Services\DuplicateDetectionService;
-use Spatie\SimpleExcel\SimpleExcelReader;
 
 class LsmAdminController extends Controller
 {
@@ -116,35 +115,95 @@ class LsmAdminController extends Controller
         return redirect()->route('admin.data.lsm.index')->with('success', 'Data LSM berhasil dihapus.');
     }
 
+    public function template()
+    {
+        // Create CSV template content
+        $csvContent = "nama_lsm,ketua_lsm,alamat,no_hp_ketua\n";
+
+        // Set headers for download
+        $filename = 'import_lsm_narkotika' . '.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        // Output CSV content
+        echo $csvContent;
+        exit;
+    }
+
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,csv'
+            'file' => 'required|mimes:csv,txt'
         ]);
 
-        $rows = SimpleExcelReader::create($request->file('file'))->getRows();
+        try {
+            $file = $request->file('file');
+            $handle = fopen($file->getPathname(), 'r');
 
-        foreach ($rows as $row) {
-            $data = [
-                'nama_lsm' => $row['nama_lsm'],
-                'ketua_lsm' => $row['ketua_lsm'],
-                'alamat' => $row['alamat'],
-                'no_hp_ketua' => $row['no_hp_ketua'],
-                'created_by' => $request->user()->id,
-            ];
-
-            // Check for duplicates
-            $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
-                'lsm_narkotika',
-                $data,
-                $request->user()->id
-            );
-
-            if (!$isDuplicate) {
-                LsmNarkotika::create($data);
+            if (!$handle) {
+                throw new \Exception('Tidak dapat membaca file');
             }
-        }
 
-        return back()->with('success', 'Data berhasil diimport! Data duplikat akan diverifikasi.');
+            $importedCount = 0;
+            $duplicateCount = 0;
+            $rowNumber = 0;
+
+            while (($data = fgetcsv($handle)) !== false) {
+                $rowNumber++;
+
+                // Skip header row (row 1) and empty rows
+                if ($rowNumber == 1 || empty(array_filter($data))) {
+                    continue;
+                }
+
+                // Validate data structure
+                if (count($data) < 4) {
+                    continue;
+                }
+
+                $lsmData = [
+                    'nama_lsm' => trim($data[0] ?? ''),
+                    'ketua_lsm' => trim($data[1] ?? ''),
+                    'alamat' => trim($data[2] ?? ''),
+                    'no_hp_ketua' => trim($data[3] ?? ''),
+                    'created_by' => $request->user()->id,
+                ];
+
+                // Validate required fields
+                if (empty($lsmData['nama_lsm']) || empty($lsmData['ketua_lsm']) ||
+                    empty($lsmData['alamat']) || empty($lsmData['no_hp_ketua'])) {
+                    continue;
+                }
+
+                // Check for duplicates
+                $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+                    'lsm_narkotika',
+                    $lsmData,
+                    $request->user()->id
+                );
+
+                if (!$isDuplicate) {
+                    LsmNarkotika::create($lsmData);
+                    $importedCount++;
+                } else {
+                    $duplicateCount++;
+                }
+            }
+
+            fclose($handle);
+
+            $message = "Berhasil mengimport {$importedCount} data LSM.";
+            if ($duplicateCount > 0) {
+                $message .= " {$duplicateCount} data duplikat akan diverifikasi.";
+            }
+
+            return back()->with('success', $message);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
+        }
     }
 }

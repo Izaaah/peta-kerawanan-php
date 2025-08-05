@@ -1,7 +1,7 @@
 @extends('layouts.admin-master')
 @section('title', 'Edit Perusahaan Farmasi/Prekursor')
 @section('content')
-<div class="max-w-xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Edit Perusahaan Farmasi/Prekursor</h2>
         <form action="{{ route('admin.data.farmasi.update', $farmasi->id) }}" method="POST">

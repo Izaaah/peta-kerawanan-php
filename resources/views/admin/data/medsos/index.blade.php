@@ -3,10 +3,15 @@
 @section('title', 'Data Akun Media Sosial')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8">
+<div class="max-w-7xl mx-auto pt-1 pb-2 px-1">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Daftar Akun Media Sosial Transaksi Narkotika</h2>
-        <a href="{{ route('admin.data.medsos.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Akun</a>
+        <div class="flex gap-2">
+            <a href="{{ route('admin.data.medsos.create') }}" class="bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700">+ Tambah Akun</a>
+            <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                <i class="fas fa-arrow-left mr-1"></i>Kembali
+            </a>
+        </div>
     </div>
 
     @if(session('success'))
@@ -14,7 +19,7 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     <form method="GET" action="{{ route('admin.data.medsos.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari media sosial, nama akun..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
@@ -23,6 +28,7 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Media Sosial</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Akun</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Link Akun</th>
@@ -30,8 +36,9 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($medsosList as $medsos)
+                @forelse($medsosList as $index => $medsos)
                 <tr>
+                    <td class="px-4 py-2 text-center">{{ ($medsosList->currentPage() - 1) * $medsosList->perPage() + $index + 1 }}</td>
                     <td class="px-4 py-2">{{ $medsos->nama_media_sosial }}</td>
                     <td class="px-4 py-2">{{ $medsos->nama_akun }}</td>
                     <td class="px-4 py-2"><a href="{{ $medsos->link_akun }}" class="text-blue-600 underline" target="_blank">{{ $medsos->link_akun }}</a></td>

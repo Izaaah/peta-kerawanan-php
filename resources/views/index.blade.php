@@ -20,7 +20,7 @@
           <a href="#kontak" class="hover:text-blue-200 transition-colors duration-200 font-medium">Kontak</a>
         </nav>
       </header>
-      <div class="relative text-white text-center pb-16 pt-20 px-4 rounded-b-xl overflow-hidden " style="background-image: url('{{ asset('storage/img/hero.jpg') }}'); background-size: cover; background-position: center;">
+      <div class="relative text-white text-center pb-16 pt-20 px-4 rounded-b-xl overflow-hidden " style="background-image: url('{{ asset('storage/img/bg-page.png') }}'); background-size: cover; background-position: center;">
         <div class="absolute inset-0 bg-black bg-opacity-50"></div>
         <div class="relative z-10">
           <h1 class="text-4xl font-bold mb-2">SIJAGAD</h1>

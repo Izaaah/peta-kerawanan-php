@@ -311,6 +311,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/lsm', [LsmAdminController::class, 'index'])->name('data.lsm.index');
     Route::get('/lsm/create', [LsmAdminController::class, 'create'])->name('data.lsm.create');
+    Route::get('/lsm/template', [LsmAdminController::class, 'template'])->name('data.lsm.template');
     Route::get('/lsm/{id}', [LsmAdminController::class, 'show'])->name('data.lsm.show');
     Route::post('/lsm/store', [LsmAdminController::class, 'store'])->name('data.lsm.store');
     Route::put('/lsm/{id}', [LsmAdminController::class, 'update'])->name('data.lsm.update');
