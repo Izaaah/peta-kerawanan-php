@@ -29,16 +29,19 @@
     border-radius: 0.5rem;
     transition: all 0.3s;
     margin-bottom: 0.25rem;
+    border: 1px solid transparent; /* Tambah border transparan */
 }
 
 .sidebar-link:hover {
-    background: #f3f4f6;
-    color: #1f2937;
+    background: #FFF8DC; /* Background krem muda dengan aksen emas */
+    color: #8B0000; /* Merah gelap elegan */
+    border-color: #FFD700; /* Border emas */
 }
 
 .sidebar-link.active {
-    background: #3b82f6;
+    background: #8B0000; /* Merah gelap elegan */
     color: white;
+    border-color: #FFD700; /* Border emas */
 }
 
 .sidebar-link .icon {

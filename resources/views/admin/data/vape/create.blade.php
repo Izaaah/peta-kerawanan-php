@@ -3,13 +3,13 @@
 @section('title', 'Tambah Penjual Vape')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="flex justify-between items-center mb-6">
+<div class="container mx-auto px-1 pb-2 pt-1 max-w-7xl">
+    <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Penjual Vape</h1>
             <p class="text-sm text-gray-500">Form untuk input data penjual vape</p>
         </div>
-        <a href="{{ route('admin.input.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+        <a href="{{ route('admin.data.vape.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>Kembali
         </a>
     </div>

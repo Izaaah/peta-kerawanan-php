@@ -4,13 +4,13 @@ body {
     background: #fff;
 }
 .header {
-    background: #1de9eb;
+    background: linear-gradient(135deg, #8B0000 0%, #B22222 50%, #DC143C 100%); /* Gradien merah elegan */
     display: flex;
     align-items: center;
     padding: 24px 48px;
     min-height: 90px;
     box-shadow: 0 2px 8px 0 #0001;
-  
+
 }
 .logo-col {
     display: flex;
@@ -33,17 +33,17 @@ body {
 .logo-texts .bnn {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #1a2a36;
+    color: white; /* Ubah ke putih */
     line-height: 1.1;
 }
 .logo-texts .prov {
     font-size: 0.85rem;
-    color: #1a2a36;
+    color: white; /* Ubah ke putih */
 }
 .sijagat {
     font-size: 2.2rem;
     font-weight: 800;
-    color: #1a2a36;
+    color: #FFD700; /* Warna emas untuk Sijagad */
     letter-spacing: 1px;
     margin-left: 12px;
     text-shadow: 0 2px 4px #0001;
@@ -55,26 +55,30 @@ body {
     gap: 32px;
 }
 .menu a {
-    color: #1a2a36;
+    color: white; /* Ubah ke putih */
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: none;
-    padding: 6px 14px;
+    padding: 8px 16px; /* Tambah padding */
     border-radius: 6px;
     transition: background 0.2s, color 0.2s;
+    border: 2px solid rgba(255,215,0,0.4); /* Border emas transparan */
+    background: rgba(255,255,255,0.1); /* Tambah background transparan */
 }
 .menu a:hover {
-    background: #fff6;
-    color: #007b8a;
-    text-decoration: underline;
+    background: rgba(255,255,255,0.2); /* Background lebih terang saat hover */
+    color: #FFD700; /* Warna emas saat hover */
+    text-decoration: none; /* Hapus underline */
+    border-color: rgba(255,215,0,0.8); /* Border emas lebih terang */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Tambah shadow */
 }
 .logout-btn {
     margin-left: 18px;
-    padding: 6px 18px;
-    border: 1.5px solid #bdbdbd;
+    padding: 8px 18px; /* Tambah padding */
+    border: 2px solid rgba(255,215,0,0.4); /* Border emas transparan */
     border-radius: 8px;
-    background: #fff;
-    color: #1a2a36;
+    background: rgba(255,255,255,0.1); /* Ubah background */
+    color: white; /* Ubah ke putih */
     font-weight: 600;
     font-size: 1.1rem;
     box-shadow: 0 2px 8px #0001;
@@ -82,29 +86,33 @@ body {
     transition: background 0.2s, color 0.2s;
 }
 .logout-btn:hover {
-    background: #e0f7fa;
-    color: #007b8a;
+    background: rgba(255,255,255,0.2); /* Background lebih terang */
+    color: #FFD700; /* Warna emas */
+    border-color: rgba(255,215,0,0.8); /* Border emas lebih terang */
 }
 .dropdown {
     position: relative;
     display: inline-block;
 }
 .dropdown-toggle {
-    color: #1a2a36;
+    color: white; /* Ubah ke putih */
     font-size: 1.1rem;
     font-weight: 600;
     text-decoration: none;
-    padding: 6px 14px;
+    padding: 8px 16px; /* Tambah padding */
     border-radius: 6px;
     transition: background 0.2s, color 0.2s;
     cursor: pointer;
-    display: inline-block;
+    border: 2px solid rgba(255,215,0,0.4); /* Border emas transparan */
+    background: rgba(255,255,255,0.1); /* Tambah background */
 }
 .dropdown-toggle:hover,
 .dropdown:hover > .dropdown-toggle {
-    background: #fff6;
-    color: #007b8a;
-    text-decoration: underline;
+    background: rgba(255,255,255,0.2); /* Background lebih terang */
+    color: #FFD700; /* Warna emas */
+    text-decoration: none; /* Hapus underline */
+    border-color: rgba(255,215,0,0.8); /* Border emas lebih terang */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Tambah shadow */
 }
 .dropdown-menu {
     display: none;
@@ -119,6 +127,7 @@ body {
     z-index: 100;
     max-height: 60vh;
     overflow-y: auto;
+    border: 2px solid #8B0000; /* Border merah gelap elegan */
 }
 .dropdown:hover .dropdown-menu,
 .dropdown:focus-within .dropdown-menu {
@@ -129,7 +138,7 @@ body {
 }
 .dropdown-menu a {
     display: block;
-    color: #1a2a36;
+    color: #8B0000; /* Merah gelap elegan */
     font-size: 1rem;
     font-weight: 500;
     padding: 8px 24px;
@@ -138,8 +147,8 @@ body {
     transition: background 0.2s, color 0.2s;
 }
 .dropdown-menu a:hover {
-    background: #e0f7fa;
-    color: #007b8a;
+    background: #FFF8DC; /* Background krem muda dengan aksen emas */
+    color: #8B0000; /* Merah gelap elegan */
 }
 .logo-stack {
     display: flex;
@@ -172,16 +181,16 @@ body {
     font-weight: bold;
     font-size: 1.1rem;
     letter-spacing: 2px;
-    color: #007b8a;
+    color: #8B0000; /* Merah gelap elegan */
     margin-top: 2px;
 }
 .bnn-subtitle {
     font-size: 0.95rem;
-    color: #5bc0c9;
+    color: #B22222; /* Merah medium elegan */
     margin-top: -2px;
 }
 @media (max-width: 900px) {
     .header { flex-direction: column; align-items: flex-start; padding: 18px 12px;}
     .menu { margin-left: 0; gap: 18px; flex-wrap: wrap;}
     .sijagat { margin-left: 0; margin-top: 8px;}
-} 
+}
