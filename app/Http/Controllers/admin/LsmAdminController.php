@@ -122,9 +122,21 @@ class LsmAdminController extends Controller
             'file' => 'required|mimes:xlsx,csv'
         ]);
 
-        $rows = SimpleExcelReader::create($request->file('file'))->getRows();
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $filename = uniqid() . '.' . $extension;
+        $path = $file->storeAs('temp', $filename); // storage/app/temp/xxx.xlsx
+        $fullPath = \Storage::path($path); // Dapatkan path absolut yang benar
+
+        $rows = SimpleExcelReader::create($fullPath)->getRows();
+        // $firstRow = $rows->first();
+        // dd($firstRow); // Untuk melihat struktur array hasil baca
 
         foreach ($rows as $row) {
+            if (!isset($row['nama_lsm'], $row['ketua_lsm'], $row['alamat'], $row['no_hp_ketua'])) {
+                // Bisa log atau skip baris yang tidak valid
+                continue;
+            }
             $data = [
                 'nama_lsm' => $row['nama_lsm'],
                 'ketua_lsm' => $row['ketua_lsm'],
@@ -144,6 +156,9 @@ class LsmAdminController extends Controller
                 LsmNarkotika::create($data);
             }
         }
+
+        // Hapus file temp setelah selesai
+        \Storage::delete($path);
 
         return back()->with('success', 'Data berhasil diimport! Data duplikat akan diverifikasi.');
     }

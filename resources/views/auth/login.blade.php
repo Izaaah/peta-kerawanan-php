@@ -4,7 +4,7 @@
     <div class="flex flex-col items-center">
         <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN" class="login-logo mb-2 mt-[-60px] h-40">
     </div>
-    <div class="login-title mb-2">Selamat Datang di Sistem Peta Kerawanan</div>
+    <div class="login-title mb-2">Selamat Datang di <br>Sistem Peta Kerawanan</div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
