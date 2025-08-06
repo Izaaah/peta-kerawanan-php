@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\PerusahaanFarmasiPrekursor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\DuplicateDetectionService;
 
 class PerusahaanFarmasiPrekursorAdminController extends Controller
 {
@@ -84,5 +85,110 @@ class PerusahaanFarmasiPrekursorAdminController extends Controller
         $farmasi = PerusahaanFarmasiPrekursor::findOrFail($id);
         $farmasi->delete();
         return redirect()->route('admin.data.farmasi.index')->with('success', 'Data perusahaan farmasi berhasil dihapus.');
+    }
+
+    public function template()
+    {
+        // Create CSV template content
+        $csvContent = "jenis,nama,manager,lokasi,no_hp,prekusor,ijin_penerbit,jumlah,tujuan\n";
+
+        // Set headers for download
+        $filename = 'import_farmasi.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        // Output CSV content
+        echo $csvContent;
+        exit;
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $handle = fopen($file->getPathname(), 'r');
+
+            if (!$handle) {
+                throw new \Exception('Tidak dapat membaca file');
+            }
+
+            $importedCount = 0;
+            $duplicateCount = 0;
+            $rowNumber = 0;
+
+            while (($data = fgetcsv($handle)) !== false) {
+                $rowNumber++;
+
+                // Skip header row (row 1) and empty rows
+                if ($rowNumber == 1 || empty(array_filter($data))) {
+                    continue;
+                }
+
+                // Validate data structure
+                if (count($data) < 9) {
+                    continue;
+                }
+
+                $farmasiData = [
+                    'jenis' => trim($data[0] ?? ''),
+                    'nama' => trim($data[1] ?? ''),
+                    'manager' => trim($data[2] ?? ''),
+                    'lokasi' => trim($data[3] ?? ''),
+                    'no_hp' => trim($data[4] ?? ''),
+                    'prekusor' => trim($data[5] ?? ''),
+                    'ijin_penerbit' => trim($data[6] ?? ''),
+                    'jumlah' => trim($data[7] ?? ''),
+                    'tujuan' => trim($data[8] ?? ''),
+                    'created_by' => $request->user()->id,
+                ];
+
+                // Validate required fields
+                if (empty($farmasiData['jenis']) || empty($farmasiData['nama']) ||
+                    empty($farmasiData['manager']) || empty($farmasiData['lokasi']) ||
+                    empty($farmasiData['no_hp']) || empty($farmasiData['prekusor']) ||
+                    empty($farmasiData['ijin_penerbit']) || empty($farmasiData['jumlah']) ||
+                    empty($farmasiData['tujuan'])) {
+                    continue;
+                }
+
+                // Validate jenis field
+                if (!in_array($farmasiData['jenis'], ['Perusahaan', 'Farmasi'])) {
+                    continue;
+                }
+
+                // Check for duplicates
+                $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+                    'perusahaan_farmasi_prekursor',
+                    $farmasiData,
+                    $request->user()->id
+                );
+
+                if (!$isDuplicate) {
+                    PerusahaanFarmasiPrekursor::create($farmasiData);
+                    $importedCount++;
+                } else {
+                    $duplicateCount++;
+                }
+            }
+
+            fclose($handle);
+
+            $message = "Berhasil mengimport {$importedCount} data perusahaan farmasi.";
+            if ($duplicateCount > 0) {
+                $message .= " {$duplicateCount} data duplikat akan diverifikasi.";
+            }
+
+            return back()->with('success', $message);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
+        }
     }
 }

@@ -3,10 +3,15 @@
 @section('title', 'Data Penginapan')
 
 @section('content')
-<div class="max-w-6xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Daftar Penginapan</h2>
-        <a href="{{ route('admin.data.penginapan.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penginapan</a>
+        <div class="flex gap-2">
+            <a href="{{ route('admin.data.penginapan.create') }}" class="bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700">+ Tambah Data</a>
+            <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                <i class="fas fa-arrow-left mr-1"></i>Kembali
+            </a>
+        </div>
     </div>
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -21,6 +26,7 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Pengelola</th>
@@ -30,8 +36,9 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($penginapanList as $penginapan)
+                @forelse($penginapanList as $index => $penginapan)
                 <tr>
+                    <td class="px-4 py-2 text-center">{{ ($penginapanList->currentPage() - 1) * $penginapanList->perPage() + $loop->iteration }}</td>
                     <td class="px-4 py-2">{{ $penginapan->nama }}</td>
                     <td class="px-4 py-2">{{ $penginapan->jenis }}</td>
                     <td class="px-4 py-2">{{ $penginapan->nama_pengelola }}</td>
@@ -49,7 +56,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-4 py-2 text-center text-gray-500">Belum ada data penginapan.</td>
+                    <td colspan="7" class="px-4 py-2 text-center text-gray-500">Belum ada data penginapan.</td>
                 </tr>
                 @endforelse
             </tbody>

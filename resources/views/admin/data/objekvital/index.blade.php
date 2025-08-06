@@ -3,15 +3,20 @@
 @section('title', 'Data Objek Vital')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
+<div class="container mx-auto px-1 pt-1 pb-2 max-w-7xl">
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Daftar Objek Vital</h1>
             <p class="text-sm text-gray-500">Informasi lengkap mengenai Objek Vital</p>
         </div>
-        <a href="{{ route('admin.data.objekvital.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-            <i class="fas fa-plus mr-2"></i>Tambah Objek Vital
-        </a>
+        <div class="flex gap-2">
+            <a href="{{ route('admin.data.objekvital.create') }}" class="inline-flex items-center px-8 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+                <i class="fas fa-plus mr-2"></i>Tambah Data
+            </a>
+            <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                <i class="fas fa-arrow-left mr-1"></i>Kembali
+            </a>
+        </div>
     </div>
 
     @if(session('success'))

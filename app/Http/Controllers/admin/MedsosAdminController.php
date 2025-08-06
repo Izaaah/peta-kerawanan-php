@@ -122,4 +122,94 @@ class MedsosAdminController extends Controller
         $medsos->delete();
         return redirect()->route('admin.data.medsos.index')->with('success', 'Data medsos berhasil dihapus.');
     }
+
+    public function template()
+    {
+        // Create CSV template content
+        $csvContent = "nama_media_sosial,nama_akun,link_akun\n";
+
+        // Set headers for download
+        $filename = 'import_medsos.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        // Output CSV content
+        echo $csvContent;
+        exit;
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $handle = fopen($file->getPathname(), 'r');
+
+            if (!$handle) {
+                throw new \Exception('Tidak dapat membaca file');
+            }
+
+            $importedCount = 0;
+            $duplicateCount = 0;
+            $rowNumber = 0;
+
+            while (($data = fgetcsv($handle)) !== false) {
+                $rowNumber++;
+
+                // Skip header row (row 1) and empty rows
+                if ($rowNumber == 1 || empty(array_filter($data))) {
+                    continue;
+                }
+
+                // Validate data structure
+                if (count($data) < 3) {
+                    continue;
+                }
+
+                $medsosData = [
+                    'nama_media_sosial' => trim($data[0] ?? ''),
+                    'nama_akun' => trim($data[1] ?? ''),
+                    'link_akun' => trim($data[2] ?? ''),
+                    'created_by' => $request->user()->id,
+                ];
+
+                // Validate required fields
+                if (empty($medsosData['nama_media_sosial']) || empty($medsosData['nama_akun'])) {
+                    continue;
+                }
+
+                // Check for duplicates
+                $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+                    'medsos',
+                    $medsosData,
+                    $request->user()->id
+                );
+
+                if (!$isDuplicate) {
+                    Medsos::create($medsosData);
+                    $importedCount++;
+                } else {
+                    $duplicateCount++;
+                }
+            }
+
+            fclose($handle);
+
+            $message = "Berhasil mengimport {$importedCount} data medsos.";
+            if ($duplicateCount > 0) {
+                $message .= " {$duplicateCount} data duplikat akan diverifikasi.";
+            }
+
+            return back()->with('success', $message);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
+        }
+    }
 }

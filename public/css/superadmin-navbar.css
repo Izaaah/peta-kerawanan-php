@@ -127,12 +127,13 @@
 .menu-btn {
     position: relative;
     cursor: pointer;
-    padding: 0.75rem 1.25rem; /* Tambah padding untuk border */
-    border-radius: 0.5rem;
+    padding: 0.6rem 1.2rem; /* Lebih kecil agar tidak terlalu kotak */
+    border-radius: 2rem; /* Lebih bulat */
     transition: all 0.3s;
-    border: 2px solid rgba(255,215,0,0.4); /* Border emas transparan */
-    background: rgba(255,255,255,0.1); /* Tambah background transparan */
-    margin: 0 0.25rem; /* Tambah margin untuk spacing */
+    border: 1px solid rgba(255,255,255,0.3); /* Border tipis dan soft */
+    background: rgba(255,255,255,0.08); /* Lebih soft */
+    margin: 0 0.35rem;
+    box-shadow: 0 2px 8px rgba(139,0,0,0.08); /* Shadow halus */
 }
 
 .menu-btn a {
@@ -159,11 +160,11 @@
 }
 
 .menu-btn:hover {
-    color: #FFD700; /* Warna emas saat hover */
-    transform: translateY(-2px);
-    border-color: rgba(255,215,0,0.8); /* Border emas lebih terang saat hover */
-    background: rgba(255,255,255,0.2); /* Background lebih terang saat hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Tambah shadow saat hover */
+    color: #FFD700;
+    transform: translateY(-2px) scale(1.04);
+    background: rgba(255,255,255,0.18); /* Lebih terang saat hover */
+    box-shadow: 0 4px 16px rgba(139,0,0,0.15); /* Shadow lebih jelas saat hover */
+    border: 1.5px solid #FFD700; /* Border emas tipis saat hover */
 }
 
 .dropdown-parent {

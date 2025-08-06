@@ -3,13 +3,13 @@
 @section('title', 'Tambah Data Transportasi')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="flex justify-between items-center mb-6">
+<div class="container mx-auto px-1 pt-1 pb-2 max-w-7xl">
+    <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Data Transportasi</h1>
             <p class="text-sm text-gray-500">Form untuk input data tempat transportasi</p>
         </div>
-        <a href="{{ route('admin.input.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+        <a href="{{ route('admin.data.transportasi.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>Kembali
         </a>
     </div>
@@ -88,6 +88,43 @@
                         <li>Nama pihak dan nomor HP harus valid</li>
                         <li>Data digunakan untuk keperluan verifikasi dan pelaporan</li>
                     </ul>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="bg-white shadow rounded p-6">
+                    <h6 class="text-lg font-semibold text-green-700 mb-4 flex items-center">
+                        <i class="fas fa-file-excel mr-2"></i>Import Data
+                    </h6>
+
+                    <!-- Download Template CSV -->
+                    <div class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-download text-blue-600 mr-2"></i>
+                                <span class="text-sm text-blue-800">Download template untuk format yang benar</span>
+                            </div>
+                            <a href="{{ route('admin.data.transportasi.template') }}" class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-file-csv mr-1"></i>
+                                Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('admin.data.transportasi.import') }}" method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row items-center sm:space-x-4 space-y-4 sm:space-y-0">
+                        @csrf
+                        <input type="file" name="file" accept=".csv,.txt" required class="block w-full text-sm text-gray-500">
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 flex items-center">
+                            <i class="fas fa-file-csv mr-2"></i>Input
+                        </button>
+                    </form>
+
+                    @error('file')<p class="text-sm text-red-600 mt-2">{{ $message }}</p>@enderror
+                    @if(session('success'))
+                        <div class="mt-2 p-2 bg-green-100 text-green-700 rounded">{{ session('success') }}</div>
+                    @endif
+                    @if(session('error'))
+                        <div class="mt-2 p-2 bg-red-100 text-red-700 rounded">{{ session('error') }}</div>
+                    @endif
                 </div>
             </div>
         </div>

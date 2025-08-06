@@ -321,6 +321,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/medsos', [MedsosAdminController::class, 'index'])->name('data.medsos.index');
     Route::get('/medsos/create', [MedsosAdminController::class, 'create'])->name('data.medsos.create');
+    Route::get('/medsos/template', [MedsosAdminController::class, 'template'])->name('data.medsos.template');
+    Route::post('/medsos/import', [MedsosAdminController::class, 'import'])->name('data.medsos.import');
     Route::post('/medsos', [MedsosAdminController::class, 'store'])->name('data.medsos.store');
     Route::get('/medsos/{id}', [MedsosAdminController::class, 'show'])->name('data.medsos.show');
     Route::get('/medsos/{id}/edit', [MedsosAdminController::class, 'edit'])->name('data.medsos.edit');
@@ -329,6 +331,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/vape', [PenjualVapeAdminController::class, 'index'])->name('data.vape.index');
     Route::get('/vape/create', [PenjualVapeAdminController::class, 'create'])->name('data.vape.create');
+    Route::get('/vape/template', [PenjualVapeAdminController::class, 'template'])->name('data.vape.template');
+    Route::post('/vape/import', [PenjualVapeAdminController::class, 'import'])->name('data.vape.import');
     Route::post('/vape', [PenjualVapeAdminController::class, 'store'])->name('data.vape.store');
     Route::get('/vape/{id}', [PenjualVapeAdminController::class, 'show'])->name('data.vape.show');
     Route::get('/vape/{id}/edit', [PenjualVapeAdminController::class, 'edit'])->name('data.vape.edit');
@@ -337,6 +341,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/farmasi', [PerusahaanFarmasiPrekursorAdminController::class, 'index'])->name('data.farmasi.index');
     Route::get('/farmasi/create', [PerusahaanFarmasiPrekursorAdminController::class, 'create'])->name('data.farmasi.create');
+    Route::get('/farmasi/template', [PerusahaanFarmasiPrekursorAdminController::class, 'template'])->name('data.farmasi.template');
+    Route::post('/farmasi/import', [PerusahaanFarmasiPrekursorAdminController::class, 'import'])->name('data.farmasi.import');
     Route::post('/farmasi', [PerusahaanFarmasiPrekursorAdminController::class, 'store'])->name('data.farmasi.store');
     Route::get('/farmasi/{id}', [PerusahaanFarmasiPrekursorAdminController::class, 'show'])->name('data.farmasi.show');
     Route::get('/farmasi/{id}/edit', [PerusahaanFarmasiPrekursorAdminController::class, 'edit'])->name('data.farmasi.edit');
@@ -345,6 +351,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/objekvital', [objekvitalAdminController::class, 'index'])->name('data.objekvital.index');
     Route::get('/objekvital/create', [objekvitalAdminController::class, 'create'])->name('data.objekvital.create');
+    Route::get('/objekvital/template', [objekvitalAdminController::class, 'template'])->name('data.objekvital.template');
+    Route::post('/objekvital/import', [objekvitalAdminController::class, 'import'])->name('data.objekvital.import');
     Route::post('/objekvital', [objekvitalAdminController::class, 'store'])->name('data.objekvital.store');
     Route::get('/objekvital/{id}', [objekvitalAdminController::class, 'show'])->name('data.objekvital.show');
     Route::get('/objekvital/{id}/edit', [objekvitalAdminController::class, 'edit'])->name('data.objekvital.edit');
@@ -353,6 +361,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('penggiat/', [PenggiatNarkotikaAdminController::class, 'index'])->name('data.penggiat.index');
     Route::get('penggiat/create', [PenggiatNarkotikaAdminController::class, 'create'])->name('data.penggiat.create');
+    Route::get('penggiat/template', [PenggiatNarkotikaAdminController::class, 'template'])->name('data.penggiat.template');
+    Route::post('penggiat/import', [PenggiatNarkotikaAdminController::class, 'import'])->name('data.penggiat.import');
     Route::post('penggiat/', [PenggiatNarkotikaAdminController::class, 'store'])->name('data.penggiat.store');
     Route::get('penggiat/{id}', [PenggiatNarkotikaAdminController::class, 'show'])->name('data.penggiat.show');
     Route::get('penggiat/{id}/edit', [PenggiatNarkotikaAdminController::class, 'edit'])->name('data.penggiat.edit');
@@ -361,6 +371,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/lrehab', [LembagaRehabilitasiAdminController::class, 'index'])->name('data.lrehab.index');
     Route::get('/lrehab/create', [LembagaRehabilitasiAdminController::class, 'create'])->name('data.lrehab.create');
+    Route::get('/lrehab/template', [LembagaRehabilitasiAdminController::class, 'template'])->name('data.lrehab.template');
+    Route::post('/lrehab/import', [LembagaRehabilitasiAdminController::class, 'import'])->name('data.lrehab.import');
     Route::post('/lrehab', [LembagaRehabilitasiAdminController::class, 'store'])->name('data.lrehab.store');
     Route::get('/lrehab/{id}', [LembagaRehabilitasiAdminController::class, 'show'])->name('data.lrehab.show');
     Route::get('/lrehab/{id}/edit', [LembagaRehabilitasiAdminController::class, 'edit'])->name('data.lrehab.edit');
@@ -369,6 +381,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/ekspedisi', [EkspedisiAdminController::class, 'index'])->name('data.ekspedisi.index');
     Route::get('/ekspedisi/create', [EkspedisiAdminController::class, 'create'])->name('data.ekspedisi.create');
+    Route::get('/ekspedisi/template', [EkspedisiAdminController::class, 'template'])->name('data.ekspedisi.template');
+    Route::post('/ekspedisi/import', [EkspedisiAdminController::class, 'import'])->name('data.ekspedisi.import');
     Route::post('/ekspedisi', [EkspedisiAdminController::class, 'store'])->name('data.ekspedisi.store');
     Route::get('/ekspedisi/{id}', [EkspedisiAdminController::class, 'show'])->name('data.ekspedisi.show');
     Route::get('/ekspedisi/{id}/edit', [EkspedisiAdminController::class, 'edit'])->name('data.ekspedisi.edit');
@@ -377,6 +391,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/transportasi', [TransportasiAdminController::class, 'index'])->name('data.transportasi.index');
     Route::get('/transportasi/create', [TransportasiAdminController::class, 'create'])->name('data.transportasi.create');
+    Route::get('/transportasi/template', [TransportasiAdminController::class, 'template'])->name('data.transportasi.template');
+    Route::post('/transportasi/import', [TransportasiAdminController::class, 'import'])->name('data.transportasi.import');
     Route::post('/transportasi', [TransportasiAdminController::class, 'store'])->name('data.transportasi.store');
     Route::get('/transportasi/{id}', [TransportasiAdminController::class, 'show'])->name('data.transportasi.show');
     Route::get('/transportasi/{id}/edit', [TransportasiAdminController::class, 'edit'])->name('data.transportasi.edit');
@@ -385,6 +401,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/penginapan', [PenginapanAdminController::class, 'index'])->name('data.penginapan.index');
     Route::get('/penginapan/create', [PenginapanAdminController::class, 'create'])->name('data.penginapan.create');
+    Route::get('/penginapan/template', [PenginapanAdminController::class, 'template'])->name('data.penginapan.template');
+    Route::post('/penginapan/import', [PenginapanAdminController::class, 'import'])->name('data.penginapan.import');
     Route::post('/penginapan', [PenginapanAdminController::class, 'store'])->name('data.penginapan.store');
     Route::get('/penginapan/{id}', [PenginapanAdminController::class, 'show'])->name('data.penginapan.show');
     Route::get('/penginapan/{id}/edit', [PenginapanAdminController::class, 'edit'])->name('data.penginapan.edit');
@@ -393,6 +411,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/rutanlapas', [JaringanRutanLapasAdminController::class, 'index'])->name('data.rutanlapas.index');
     Route::get('/rutanlapas/create', [JaringanRutanLapasAdminController::class, 'create'])->name('data.rutanlapas.create');
+    Route::get('/rutanlapas/template', [JaringanRutanLapasAdminController::class, 'template'])->name('data.rutanlapas.template');
+    Route::post('/rutanlapas/import', [JaringanRutanLapasAdminController::class, 'import'])->name('data.rutanlapas.import');
     Route::post('/rutanlapas', [JaringanRutanLapasAdminController::class, 'store'])->name('data.rutanlapas.store');
     Route::get('/rutanlapas/{id}', [JaringanRutanLapasAdminController::class, 'show'])->name('data.rutanlapas.show');
     Route::get('/rutanlapas/{id}/edit', [JaringanRutanLapasAdminController::class, 'edit'])->name('data.rutanlapas.edit');

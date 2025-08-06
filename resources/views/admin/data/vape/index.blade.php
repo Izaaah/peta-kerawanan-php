@@ -7,7 +7,7 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Daftar Penjual Vape</h2>
         <div class="flex gap-2">
-            <a href="{{ route('admin.data.vape.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penjual Vape</a>
+            <a href="{{ route('admin.data.vape.create') }}" class="bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700">+ Tambah Data</a>
             <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
                 <i class="fas fa-arrow-left mr-1"></i>Kembali
             </a>

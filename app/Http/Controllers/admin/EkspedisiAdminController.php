@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Ekspedisi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\DuplicateDetectionService;
 
 class EkspedisiAdminController extends Controller
 {
@@ -82,5 +83,104 @@ class EkspedisiAdminController extends Controller
         $ekspedisi = Ekspedisi::findOrFail($id);
         $ekspedisi->delete();
         return redirect()->route('admin.data.ekspedisi.index')->with('success', 'Data ekspedisi berhasil dihapus.');
+    }
+
+    public function template()
+    {
+        // Create CSV template content
+        $csvContent = "nama,manager,no_hp,jenis,alamat\n";
+
+        // Set headers for download
+        $filename = 'import_ekspedisi.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        // Output CSV content
+        echo $csvContent;
+        exit;
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $handle = fopen($file->getPathname(), 'r');
+
+            if (!$handle) {
+                throw new \Exception('Tidak dapat membaca file');
+            }
+
+            $importedCount = 0;
+            $duplicateCount = 0;
+            $rowNumber = 0;
+
+            while (($data = fgetcsv($handle)) !== false) {
+                $rowNumber++;
+
+                // Skip header row (row 1) and empty rows
+                if ($rowNumber == 1 || empty(array_filter($data))) {
+                    continue;
+                }
+
+                // Validate data structure
+                if (count($data) < 5) {
+                    continue;
+                }
+
+                $ekspedisiData = [
+                    'nama' => trim($data[0] ?? ''),
+                    'manager' => trim($data[1] ?? ''),
+                    'no_hp' => trim($data[2] ?? ''),
+                    'jenis' => trim($data[3] ?? ''),
+                    'alamat' => trim($data[4] ?? ''),
+                    'created_by' => $request->user()->id,
+                ];
+
+                // Validate required fields
+                if (empty($ekspedisiData['nama']) || empty($ekspedisiData['manager']) ||
+                    empty($ekspedisiData['no_hp']) || empty($ekspedisiData['jenis']) ||
+                    empty($ekspedisiData['alamat'])) {
+                    continue;
+                }
+
+                // Validate jenis field
+                if (!in_array($ekspedisiData['jenis'], ['Asperindo', 'Non Asperindo'])) {
+                    continue;
+                }
+
+                // Check for duplicates
+                $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
+                    'ekspedisi',
+                    $ekspedisiData,
+                    $request->user()->id
+                );
+
+                if (!$isDuplicate) {
+                    Ekspedisi::create($ekspedisiData);
+                    $importedCount++;
+                } else {
+                    $duplicateCount++;
+                }
+            }
+
+            fclose($handle);
+
+            $message = "Berhasil mengimport {$importedCount} data ekspedisi.";
+            if ($duplicateCount > 0) {
+                $message .= " {$duplicateCount} data duplikat akan diverifikasi.";
+            }
+
+            return back()->with('success', $message);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
+        }
     }
 }
