@@ -3,7 +3,7 @@
 @section('title', 'Detail Akun Media Sosial')
 
 @section('content')
-<div class="max-w-xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Detail Akun Media Sosial</h2>
         <div class="mb-4">
@@ -18,6 +18,12 @@
             <strong>Link Akun:</strong>
             <div class="text-gray-700">
                 <a href="{{ $medsos->link_akun }}" class="text-blue-600 underline" target="_blank">{{ $medsos->link_akun }}</a>
+            </div>
+        </div>
+        <div class="mb-4">
+            <strong>Created By:</strong>
+            <div class="text-gray-700">
+                <div class="text-gray-700">{{ $medsos->user->name ?? '-' }}</div>
             </div>
         </div>
         <div class="flex gap-2 mt-6">

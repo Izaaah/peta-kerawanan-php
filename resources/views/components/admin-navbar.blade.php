@@ -42,12 +42,12 @@
 
     <!-- Kanan: Logo BNN dan Tulisannya -->
     <div class="logo-bnn">
-        <div class="logo-circle">
-            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN">
-        </div>
         <div class="logo-text">
             <span class="bnn">BNN</span>
-            <span class="prov">Provinsi Jawa Timur</span>
+            <span class="prov">PROVINSI JAWA TIMUR</span>
+        </div>
+        <div class="logo-circle">
+            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN">
         </div>
     </div>
 </div>

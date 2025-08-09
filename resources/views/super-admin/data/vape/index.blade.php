@@ -3,10 +3,13 @@
 @section('title', 'Data Penjual Vape')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Daftar Penjual Vape</h2>
-        <a href="{{ route('super-admin.data.vape.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penjual Vape</a>
+        <a href="{{ route('super-admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+            <i class="fas fa-arrow-left mr-1"></i>Kembali
+        </a>
+        {{-- <a href="{{ route('super-admin.data.vape.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Penjual Vape</a> --}}
     </div>
 
     @if(session('success'))
@@ -14,7 +17,7 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     <form method="GET" action="{{ route('super-admin.data.vape.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama toko, pemilik..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
@@ -23,6 +26,7 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Toko</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Pemilik</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th>
@@ -31,8 +35,9 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($vapeList as $vape)
+                @forelse($vapeList as $index => $vape)
                 <tr>
+                    <td class="px-4 py-2 text-center">{{ ($vapeList->currentPage() - 1) * $vapeList->perPage() + $index + 1 }}</td>
                     <td class="px-4 py-2">{{ $vape->nama_toko }}</td>
                     <td class="px-4 py-2">{{ $vape->pemilik }}</td>
                     <td class="px-4 py-2">{{ $vape->no_hp }}</td>

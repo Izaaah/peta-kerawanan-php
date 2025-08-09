@@ -3,7 +3,7 @@
 @section('title', 'Detail Ekspedisi')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Detail Data Ekspedisi</h2>
         <div class="flex gap-2">
@@ -28,13 +28,13 @@
                         <label class="block text-sm font-medium text-gray-700">No. HP</label>
                         <p class="mt-1 text-gray-900">{{ $ekspedisi->no_hp }}</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Jenis</label>
-                        <p class="mt-1 text-gray-900">{{ $ekspedisi->jenis }}</p>
-                    </div>
                 </div>
             </div>
             <div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Jenis</label>
+                    <p class="mt-1 text-gray-900">{{ $ekspedisi->jenis }}</p>
+                </div>
                 <h3 class="text-lg font-semibold mb-4">Alamat</h3>
                 <div class="bg-gray-50 p-4 rounded">
                     <p class="text-gray-900 whitespace-pre-wrap">{{ $ekspedisi->alamat }}</p>
@@ -63,4 +63,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

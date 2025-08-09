@@ -14,9 +14,9 @@
             </div>
             <div class="space-y-4">
                 <div class="mb-4"><strong>Prekusor:</strong> <div class="text-gray-700">{{ $farmasi->prekusor }}</div></div>
-        <div class="mb-4"><strong>Ijin Penerbit:</strong> <div class="text-gray-700">{{ $farmasi->ijin_penerbit }}</div></div>
-        <div class="mb-4"><strong>Jumlah:</strong> <div class="text-gray-700">{{ $farmasi->jumlah }}</div></div>
-        <div class="mb-4"><strong>Tujuan:</strong> <div class="text-gray-700">{{ $farmasi->tujuan }}</div></div>
+                <div class="mb-4"><strong>Ijin Penerbit:</strong> <div class="text-gray-700">{{ $farmasi->ijin_penerbit }}</div></div>
+                <div class="mb-4"><strong>Jumlah:</strong> <div class="text-gray-700">{{ $farmasi->jumlah }}</div></div>
+                <div class="mb-4"><strong>Tujuan:</strong> <div class="text-gray-700">{{ $farmasi->tujuan }}</div></div>
             </div>
         </div>
 

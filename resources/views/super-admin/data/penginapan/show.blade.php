@@ -3,7 +3,7 @@
 @section('title', 'Detail Penginapan')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Detail Data Penginapan</h2>
         <div class="flex gap-2">
@@ -63,4 +63,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

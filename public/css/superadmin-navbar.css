@@ -106,7 +106,7 @@
     align-items: center;
     gap: 1rem;
     flex: 1;
-    justify-content: center;
+    justify-content: left;
     margin: 0 2rem;
 }
 
@@ -224,19 +224,21 @@
 .logo-bnn {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px; /* Mengurangi jarak antara logo dan teks */
     flex-shrink: 0;
+    justify-content: flex-end; /* Memastikan konten berada di ujung kanan */
 }
 
 .logo-circle {
-    width: 50px;
-    height: 50px;
+    /* width: 35px; Ukuran logo lebih kecil */
+    height: 57px; /* Ukuran logo lebih kecil */
     border-radius: 50%;
     background: white;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    /* margin-right: 5px; Menambahkan margin kanan pada logo */
 }
 
 .logo-circle img {
@@ -248,15 +250,17 @@
 .logo-text {
     display: flex;
     flex-direction: column;
+    margin-right: 5px; /* Menambahkan margin kanan pada teks */
+    text-align: right; /* Mengatur teks rata kanan */
 }
 
 .logo-text .bnn {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Ukuran teks BNN lebih kecil */
 }
 
 .logo-text .prov {
-    font-size: 0.8rem;
+    font-size: 0.9rem; /* Ukuran teks Provinsi Jawa Timur lebih kecil */
     opacity: 0.9;
 }
 

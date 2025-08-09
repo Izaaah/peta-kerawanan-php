@@ -3,15 +3,18 @@
 @section('title', 'Data Penggiat Narkotika')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
+<div class="container mx-auto max-w-7xl px-1 pt-1 pb-2">
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Daftar Penggiat Narkotika</h1>
             <p class="text-sm text-gray-500">Informasi lengkap mengenai Penggiat Narkotika</p>
         </div>
-        <a href="{{ route('super-admin.data.penggiat.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-            <i class="fas fa-plus mr-2"></i>Tambah Penggiat
+        <a href="{{ route('super-admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+            <i class="fas fa-arrow-left mr-1"></i>Kembali
         </a>
+        {{-- <a href="{{ route('super-admin.data.penggiat.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Tambah Penggiat
+        </a> --}}
     </div>
 
     @if(session('success'))

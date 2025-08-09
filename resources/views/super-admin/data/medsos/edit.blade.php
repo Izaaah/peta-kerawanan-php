@@ -3,7 +3,7 @@
 @section('title', 'Edit Akun Media Sosial')
 
 @section('content')
-<div class="max-w-xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Edit Akun Media Sosial</h2>
         <form action="{{ route('super-admin.data.medsos.update', $medsos->id) }}" method="POST">

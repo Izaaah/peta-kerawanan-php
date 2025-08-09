@@ -61,4 +61,11 @@ class ThmController extends Controller
         $thm->update($request->all());
         return redirect()->route('super-admin.data.thm.index')->with('success', 'Data THM berhasil diupdate.');
     }
-} 
+
+    public function destroy($id)
+    {
+        $thm = thm::findOrFail($id);
+        $thm->delete();
+        return redirect()->route('super-admin.data.thm.index')->with('success', 'Data THM berhasil dihapus.');
+    }
+}

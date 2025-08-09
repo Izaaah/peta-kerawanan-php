@@ -1,7 +1,7 @@
 @extends('layouts.superadmin-master')
 
 @section('content')
-<div class="max-w-3xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Edit Jaringan Rutan/Lapas</h2>
         <form action="{{ route('super-admin.data.rutanlapas.update', $rutanlapas->id) }}" method="POST">

@@ -3,15 +3,18 @@
 @section('title', 'Data LSM Narkotika')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
+<div class="container mx-auto px-1 pt-1 pb-2 max-w-7xl">
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Daftar LSM Narkotika</h1>
             <p class="text-sm text-gray-500">Informasi lengkap mengenai LSM</p>
         </div>
-        <a href="{{ route('super-admin.data.lsm.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-            <i class="fas fa-plus mr-2"></i>Tambah LSM
+        <a href="{{ route('super-admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+            <i class="fas fa-arrow-left mr-1"></i>Kembali
         </a>
+        {{-- <a href="{{ route('super-admin.data.lsm.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>Tambah LSM
+        </a> --}}
     </div>
 
     <form method="GET" action="{{ route('super-admin.data.lsm.index') }}" class="mb-4 flex gap-2">
@@ -23,6 +26,7 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama LSM</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ketua</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP Ketua</th>
@@ -32,8 +36,9 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($lsmList as $lsm)
+                @forelse($lsmList as $index => $lsm)
                 <tr>
+                    <td class="px-4 py-2 text-center">{{ ($lsmList->currentPage() - 1) * $lsmList->perPage() + $index + 1 }}</td>
                     <td class="px-4 py-2">{{ $lsm->nama_lsm }}</td>
                     <td class="px-4 py-2">{{ $lsm->ketua_lsm }}</td>
                     <td class="px-4 py-2">{{ $lsm->no_hp_ketua }}</td>

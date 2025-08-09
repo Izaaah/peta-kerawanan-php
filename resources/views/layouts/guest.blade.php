@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'SIJAGAD') }}</title>
+        <link rel="icon" href="{{ asset('storage/img/logo.png') }}" type="image/png"/>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -37,47 +38,46 @@
                 color: white;
                 text-align: center;
                 animation: slideInLeft 1s ease-out;
-            }
-
-            .welcome-content {
-                background: rgba(0, 0, 0, 0.3);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 2.5rem 1.5rem;
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                margin-top: -150px;
             }
 
             .welcome-logo {
-                width: 100px;
                 height: 100px;
                 object-fit: cover;
-                border-radius: 50%;
                 margin: 0 auto 1.5rem;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                border: 3px solid rgba(255, 255, 255, 0.3);
             }
 
             .welcome-title {
-                font-size: 2rem;
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            }
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
 
-            .welcome-subtitle {
-                font-size: 1.5rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
-                color: #39e639;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            }
+.welcome-subtitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #39e639;
+    text-align: center;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-            .welcome-description {
-                font-size: 1rem;
-                line-height: 1.5;
-                margin-bottom: 2rem;
-                opacity: 0.9;
-            }
+.welcome-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    color: #f0f0f0;
+    opacity: 0.95;
+    margin-bottom: 2.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 
             .welcome-features {
                 display: flex;
@@ -105,16 +105,15 @@
             .login-form-section {
                 flex: 0 0 350px;
                 animation: slideInRight 1s ease-out;
+                margin-left: 350px;
             }
 
             .login-form-card {
-                background: rgba(255,255,255,0.95);
+                background: rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
                 border-radius: 20px;
-                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                padding: 2rem 1.5rem;
-                border: 1.5px solid rgba(57,230,57,0.2);
+                padding: 2.5rem 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 position: relative;
                 overflow: hidden;
             }
@@ -126,7 +125,7 @@
                 top: 0; left: 0; right: 0;
                 height: 6px;
                 border-radius: 20px 20px 0 0;
-                background: linear-gradient(90deg, #39e639 0%, #2ecc40 100%);
+                background: linear-gradient(90deg, #B22222 0%, #8B0000 100%);
                 z-index: 2;
             }
 
@@ -134,10 +133,11 @@
                 text-align: center;
                 font-size: 1.8rem;
                 font-weight: bold;
-                color: #1a202c;
+                color: #ffff;
                 margin-bottom: 2rem;
                 position: relative;
                 z-index: 3;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             }
 
             .login-input {
@@ -148,13 +148,13 @@
             }
 
             .login-input:focus {
-                border-color: #39e639;
-                box-shadow: 0 0 0 2px #39e63933;
+                border-color: #DC143C;
+                box-shadow: 0 0 0 2px #8B0000
                 background: #fff;
             }
 
             .login-btn {
-                background: linear-gradient(90deg, #39e639 0%, #2ecc40 100%);
+                background: linear-gradient(90deg, #B22222 0%, #8B0000 100%);
                 color: white;
                 font-weight: bold;
                 padding: 0.85rem 0;
@@ -166,7 +166,7 @@
             }
 
             .login-btn:hover {
-                background: linear-gradient(90deg, #2ecc40 0%, #39e639 100%);
+                background: linear-gradient(90deg, #8B0000 0%, #B22222 100%);
                 box-shadow: 0 4px 16px #39e63933;
                 transform: translateY(-2px) scale(1.03);
             }
@@ -181,13 +181,13 @@
             }
 
             .login-footer a {
-                color: #39e639;
+                color: #DC143C;
                 text-decoration: underline;
                 margin: 0 0.25rem;
             }
 
             .login-footer a:hover {
-                color: #2ecc40;
+                color: #8B0000;
             }
 
             /* Animations */
@@ -216,11 +216,14 @@
                         /* Responsive Design */
             @media (max-width: 1024px) {
                 .login-container {
-                    flex-direction: column;
-                    gap: 1.5rem;
-                    padding: 1rem;
-                    justify-content: center;
-                }
+    display: flex;
+    min-height: 100vh;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 0; /* hilangkan padding agar dempet */
+    gap: 0;     /* hilangkan gap antar kolom */
+}
+
 
                                 .welcome-section {
                     max-width: 100%;
@@ -228,11 +231,18 @@
                 }
 
                 .login-form-section {
-                    flex: 0 0 auto;
-                    width: 100%;
-                    max-width: 350px;
-                    order: 1;
-                }
+    flex: 1;
+    max-width: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 0px; /* agar sama seperti welcome-content */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
 
                 .welcome-title {
                     font-size: 1.8rem;
@@ -255,12 +265,17 @@
                 }
 
                 .welcome-content {
-                    padding: 1.5rem 1rem;
+                    padding: 0.5rem 1rem;
                 }
 
                 .login-form-card {
-                    padding: 1.5rem 1rem;
-                }
+    width: 100%;
+    max-width: 100%;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
 
                 .welcome-title {
                     font-size: 1.4rem;

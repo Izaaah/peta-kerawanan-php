@@ -3,7 +3,7 @@
 @section('title', 'Edit Penjual Vape')
 
 @section('content')
-<div class="max-w-xl mx-auto py-8">
+<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Edit Penjual Vape</h2>
         <form action="{{ route('super-admin.data.vape.update', $vape->id) }}" method="POST">
@@ -32,6 +32,10 @@
             <div class="mb-4">
                 <label class="block font-semibold mb-1">Distributor</label>
                 <textarea name="distributor" class="w-full border-gray-300 rounded px-3 py-2">{{ old('distributor', $vape->distributor) }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block font-semibold mb-1">Created By</label>
+                <div class="text-gray-700">{{ $vape->user->name ?? '-' }}</div>
             </div>
             <div class="flex gap-2 mt-6">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>

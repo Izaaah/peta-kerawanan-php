@@ -215,13 +215,13 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::put('/penginapan/{id}', [PenginapanController::class, 'update'])->name('data.penginapan.update');
     Route::delete('/penginapan/{id}', [PenginapanController::class, 'destroy'])->name('data.penginapan.destroy');
 
-    Route::get('/ekspedisi', [EkspedisiAdminController::class, 'index'])->name('data.ekspedisi.index');
-    Route::get('/ekspedisi/create', [EkspedisiAdminController::class, 'create'])->name('data.ekspedisi.create');
-    Route::post('/ekspedisi', [EkspedisiAdminController::class, 'store'])->name('data.ekspedisi.store');
-    Route::get('/ekspedisi/{id}', [EkspedisiAdminController::class, 'show'])->name('data.ekspedisi.show');
-    Route::get('/ekspedisi/{id}/edit', [EkspedisiAdminController::class, 'edit'])->name('data.ekspedisi.edit');
-    Route::put('/ekspedisi/{id}', [EkspedisiAdminController::class, 'update'])->name('data.ekspedisi.update');
-    Route::delete('/ekspedisi/{id}', [EkspedisiAdminController::class, 'destroy'])->name('data.ekspedisi.destroy');
+    Route::get('/ekspedisi', [EkspedisiController::class, 'index'])->name('data.ekspedisi.index');
+    Route::get('/ekspedisi/create', [EkspedisiController::class, 'create'])->name('data.ekspedisi.create');
+    Route::post('/ekspedisi', [EkspedisiController::class, 'store'])->name('data.ekspedisi.store');
+    Route::get('/ekspedisi/{id}', [EkspedisiController::class, 'show'])->name('data.ekspedisi.show');
+    Route::get('/ekspedisi/{id}/edit', [EkspedisiController::class, 'edit'])->name('data.ekspedisi.edit');
+    Route::put('/ekspedisi/{id}', [EkspedisiController::class, 'update'])->name('data.ekspedisi.update');
+    Route::delete('/ekspedisi/{id}', [EkspedisiController::class, 'destroy'])->name('data.ekspedisi.destroy');
 
     Route::get('/objekvital', [objekvitalController::class, 'index'])->name('data.objekvital.index');
     Route::get('/objekvital/create', [objekvitalController::class, 'create'])->name('data.objekvital.create');
