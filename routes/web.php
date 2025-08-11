@@ -51,6 +51,7 @@ use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AnggaranController;
 
 
 
@@ -268,6 +269,8 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/verification/{id}', [VerificationController::class, 'show'])->name('verification.show');
     Route::post('/verification/{id}/approve', [VerificationController::class, 'approve'])->name('verification.approve');
     Route::post('/verification/{id}/reject', [VerificationController::class, 'reject'])->name('verification.reject');
+
+    Route::post('/anggaran', [AnggaranController::class, 'store'])->name('anggaran.store');
 
 });
 

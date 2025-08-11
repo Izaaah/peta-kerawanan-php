@@ -14,7 +14,8 @@ class PetaController extends Controller
     public function geojson()
     {
         // Coba ambil dari database terlebih dahulu
-        $desaData = DesaGeojson::withCount('kasusNarkoba')->get();
+        // $desaData = DesaGeojson::withCount('dataIndividuTsk')->get();
+        $desaData = DesaGeojson::withCount('dataIndividuTsk')->get();
 
         if ($desaData->count() > 0) {
             // Gunakan data dari database
@@ -28,8 +29,7 @@ class PetaController extends Controller
                         'nama_desa' => $desa->nama_desa,
                         'kecamatan' => $desa->kecamatan,
                         'kabupaten' => $desa->kabupaten,
-                        'kasus_count' => $desa->kasus_narkoba_count,
-                        'kerawanan_level' => $this->getKerawananLevel($desa->kasus_narkoba_count)
+                        'jumlah_kasus' => (int) ($desa->data_individu_tsk_count ?? 0),
                     ],
                     'geometry' => $desa->geometry
                 ];
@@ -58,6 +58,22 @@ class PetaController extends Controller
 
         $content = File::get($path);
         $data = json_decode($content, true);
+
+        $countsByDesa = DataIndividuTsk::selectRaw('LOWER(TRIM(desa)) as desa_key, COUNT(*) as total')
+    ->groupBy('desa_key')
+    ->pluck('total', 'desa_key');
+
+if (isset($data['features']) && is_array($data['features'])) {
+    foreach ($data['features'] as &$feature) {
+        if (!isset($feature['properties']) || !is_array($feature['properties'])) {
+            $feature['properties'] = [];
+        }
+        $desaName = $feature['properties']['nama_desa'] ?? '';
+        $desaKey = strtolower(trim($desaName));
+        $feature['properties']['jumlah_kasus'] = (int) ($countsByDesa[$desaKey] ?? 0);
+    }
+    unset($feature);
+}
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             return response()->json([

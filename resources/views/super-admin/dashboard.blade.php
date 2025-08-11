@@ -310,90 +310,31 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($anggaranList as $anggaran)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">3251</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Pelaksanaan Intelijen Berbasis Teknologi</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 250.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp -</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 250.000.000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">{{ $anggaran->akun }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">{{ $anggaran->kegiatan }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp {{ number_format($anggaran->anggaran_sebelum, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp {{ $anggaran->blokir ? number_format($anggaran->blokir, 0, ',', '.') : '-' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp {{ number_format(($anggaran->anggaran_sebelum - ($anggaran->blokir ?? 0)), 0, ',', '.') }}</td>
+                                <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-900">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        {{-- Aksi seperti edit/hapus dapat ditambahkan di sini --}}
+                                    </div>
+                                </td>
                             </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3251.BKA.002.051.A</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Pemetaan Informasi Jaringan Intelijen</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 125.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp -</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 125.000.000</td>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data anggaran</td>
                             </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3251.BKA.002.051.A</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Pemetaan Informasi Intelijen Taktis</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 125.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp -</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 125.000.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">3258</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Pengawasan Tahanan dan Barang Bukti</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 679.981.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 56.850.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 623.131.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3258.BIA.002.051</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Pengawasan dan Pengelolaan Barang Bukti</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 40.306.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100"></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 40.306.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3258.BIB.002.051</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Pengawasan dan Perawatan Tahanan Tindak Pidana Narkotika dan Prekursor Narkotika dan TPPU</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 119.940.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 8.100.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 111.840.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3258.QAA.002.051</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Asesmen Terpadu Terhadap Tersangka dan/atau Terdakwa Penyalah Guna, Pecandu Narkotika dan Korban Penyalahgunaan Narkotika</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 519.735.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 48.750.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 470.985.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">5354</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Penyidikan Jaringan Peredaran Gelap Narkotika</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 900.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 317.300.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 582.700.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5354.BCA.002.051.A</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Penyelidikan Kasus Tindak Pidana Narkotika</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 540.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 236.800.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 303.200.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5354.BCA.002.051.B</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Penyidikan Kasus Tindak Pidana Narkotika</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 340.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 70.500.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 269.500.000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5354.BCA.002.051.C</td>
-                                <td class="px-6 py-4 text-sm text-gray-900">Koordinasi Kegiatan Penyelesaian Kasus Tindak Pidana Narkotika</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 20.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 10.000.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 10.000.000</td>
-                            </tr>
+                            @endforelse
                         </tbody>
                         <tfoot class="bg-gray-50">
                             <tr>
                                 <td colspan="2" class="px-6 py-4 text-center text-sm font-bold text-gray-900">TOTAL</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-blue-100">Rp 1.829.981.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-red-100">Rp 374.150.000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-yellow-100">Rp 1.455.831.000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-blue-100">Rp {{ number_format($totalAnggaranSebelum, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-red-100">Rp {{ number_format($totalBlokir, 0, ',', '.') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-yellow-100">Rp {{ number_format($totalSetelah, 0, ',', '.') }}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -1083,8 +1024,9 @@
             </button>
         </div>
 
-        <form action="#" method="POST" class="p-6 space-y-4">
-
+        {{-- <form action="#" method="POST" class="p-6 space-y-4"> --}}
+        <form action="{{ route('super-admin.anggaran.store') }}" method="POST" class="p-6 space-y-4">
+                @csrf
             <div>
                 <label for="akun" class="block text-sm font-medium text-gray-700">AKUN</label>
                 <input type="text" id="akun" name="akun" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm uppercase">
@@ -1102,7 +1044,7 @@
                         <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                             Rp
                         </span>
-                        <input type="number" id="anggaran_sebelum" name="anggaran_sebelum"
+                        <input type="number" id="anggaran_sebelum" name="anggaran_sebelum" step="0.01" min="0"
                             class="block w-full rounded-none rounded-r-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                 </div>
@@ -1113,7 +1055,7 @@
                         <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                             Rp
                         </span>
-                        <input type="number" id="anggaran_sebelum" name="anggaran_sebelum"
+                        <input type="number" id="blokir" name="blokir" step="0.01" min="0"
                             class="block w-full rounded-none rounded-r-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
                 </div>

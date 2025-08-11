@@ -40,7 +40,9 @@ class DesaGeojson extends Model
      */
     public function dataIndividuTsk()
     {
-        return $this->hasMany(DataIndividuTsk::class, 'desa_geojson_id');
+        // return $this->hasMany(DataIndividuTsk::class, 'desa_geojson_id');
+        // return $this->hasMany(DataIndividuTsk::class, 'desa', 'nama_desa');
+        return $this->hasMany(DataIndividuTsk::class, 'desa_geojson_id', 'id');
     }
 
     /**
