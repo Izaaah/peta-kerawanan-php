@@ -71,7 +71,7 @@ class TitikMasukAdminController extends Controller
     {
         $request->validate([
             'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
-            'nama_tempat' => 'required|string|max:string|max:255',
+            'nama_tempat' => 'required|string|max:255',
             'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:255',
