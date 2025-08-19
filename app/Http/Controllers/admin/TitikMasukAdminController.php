@@ -35,6 +35,9 @@ class TitikMasukAdminController extends Controller
 
     public function store(Request $request)
     {
+        // Debug: Log the request data
+        \Log::info('TitikMasuk store request data:', $request->all());
+        
         $request->validate([
             'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
             'nama_tempat' => 'required|string|max:255',
@@ -45,10 +48,17 @@ class TitikMasukAdminController extends Controller
         ]);
 
         try {
-            JalurMasuk::create($request->all());
+            $data = $request->all();
+            \Log::info('Data to be saved:', $data);
+            
+            JalurMasuk::create($data);
             return redirect()->route('admin.data.titik-masuk.index')
                 ->with('success', 'Data transportasi berhasil ditambahkan.');
         } catch (\Exception $e) {
+            \Log::error('Error saving TitikMasuk:', [
+                'message' => $e->getMessage(),
+                'data' => $request->all()
+            ]);
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())
                 ->withInput();
         }

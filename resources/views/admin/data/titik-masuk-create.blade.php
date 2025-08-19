@@ -18,7 +18,7 @@
     @endif
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-9xl mx-auto">
         <div class="order-2 lg:order-1 lg:col-span-2">
-            <form action="{{ route('admin.data.titik-masuk.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.data.titik-masuk.store') }}" method="POST" class="space-y-6" id="titikMasukForm">
                 @csrf
                 <div class="bg-white shadow rounded p-6 space-y-4">
                     <h6 class="text-lg font-semibold text-primary"><i class="fas fa-bus mr-2"></i>Data Tempat Titik Masuk</h6>
@@ -57,18 +57,27 @@
                             <select name="kabupaten" id="kabupaten" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Pilih Kabupaten</option>
                             </select>
+                            @error('kabupaten')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="kecamatan" class="block text-sm font-medium text-black   mb-1">Kecamatan <span class="text-red-500">*</span></label>
                             <select name="kecamatan" id="kecamatan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Pilih Kecamatan</option>
                             </select>
+                            @error('kecamatan')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="kelurahan" class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa <span class="text-red-500">*</span></label>
                             <select name="kelurahan" id="kelurahan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Pilih Kelurahan/Desa</option>
                             </select>
+                            @error('kelurahan')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -236,6 +245,37 @@
                         console.error('Error fetching desa:', error);
                     });
             }
+        });
+
+        // Form validation before submission
+        document.getElementById('titikMasukForm')?.addEventListener('submit', function(e) {
+            console.log('Form submission started...');
+            
+            const jenisTransportasi = document.getElementById('jenis_transportasi').value;
+            const namaTempat = document.getElementById('nama_tempat').value;
+            const provinsi = document.getElementById('provinsi').value;
+            const kabupaten = document.getElementById('kabupaten').value;
+            const kecamatan = document.getElementById('kecamatan').value;
+            const kelurahan = document.getElementById('kelurahan').value;
+            
+            console.log('Form values:', {
+                jenis_transportasi: jenisTransportasi,
+                nama_tempat: namaTempat,
+                provinsi: provinsi,
+                kabupaten: kabupaten,
+                kecamatan: kecamatan,
+                kelurahan: kelurahan
+            });
+            
+            // Check if all required fields are filled
+            if (!jenisTransportasi || !namaTempat || !provinsi || !kabupaten || !kecamatan || !kelurahan) {
+                e.preventDefault();
+                alert('Mohon lengkapi semua field yang wajib diisi!');
+                console.error('Form validation failed: Missing required fields');
+                return false;
+            }
+            
+            console.log('Form validation passed, submitting...');
         });
     });
 </script>
