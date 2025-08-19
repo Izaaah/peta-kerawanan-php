@@ -38,13 +38,9 @@
                     </div>
                     <div>
                         <label for="nama_tempat" class="block text-sm font-medium text-gray-700">Nama Tempat <span class="text-red-500">*</span></label>
-                        <div class="flex space-x-2">
-                            <input type="text" name="nama_tempat" id="nama_tempat" value="{{ old('nama_tempat') }}"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
-                            <button type="button" id="searchLocation" class="mt-1 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                        <input type="text" name="nama_tempat" id="nama_tempat" value="{{ old('nama_tempat') }}"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" 
+                            placeholder="Contoh: Stasiun Malang, Bandara Abdul Rachman Saleh" required>
                         @error('nama_tempat')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
@@ -54,8 +50,21 @@
                     <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude') }}">
                     <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude') }}">
                     
-                    <!-- Map display -->
-                    <div id="map" class="w-full h-64 rounded-lg border border-gray-300" style="display: none;"></div>
+                    <!-- Coordinate input fields -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude</label>
+                            <input type="number" step="any" name="latitude" id="latitude_input" value="{{ old('latitude') }}"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="-7.9819">
+                        </div>
+                        <div>
+                            <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude</label>
+                            <input type="number" step="any" name="longitude" id="longitude_input" value="{{ old('longitude') }}"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" 
+                                placeholder="112.6304">
+                        </div>
+                    </div>
                     <div>
                         <label for="provinsi" class="block text-sm font-medium text-black  ">Provinsi <span class="text-red-500">*</span></label>
                         <select name="provinsi" id="provinsi" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
@@ -157,103 +166,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Initializing titik-masuk dropdown functionality...');
-        
-        // Google Maps integration
-        let map, marker;
-        
-        // Initialize Google Maps
-        function initMap() {
-            // Default to Indonesia center
-            const defaultLocation = { lat: -2.5489, lng: 118.0149 };
-            
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 8,
-                center: defaultLocation,
-            });
-            
-            marker = new google.maps.Marker({
-                position: defaultLocation,
-                map: map,
-                draggable: true
-            });
-            
-            // Update coordinates when marker is dragged
-            google.maps.event.addListener(marker, 'dragend', function() {
-                const position = marker.getPosition();
-                document.getElementById('latitude').value = position.lat();
-                document.getElementById('longitude').value = position.lng();
-            });
-        }
-        
-        // Search location function
-        function searchLocation() {
-            const query = document.getElementById('nama_tempat').value;
-            if (!query) {
-                alert('Masukkan nama tempat terlebih dahulu!');
-                return;
-            }
-            
-            // Show loading
-            document.getElementById('searchLocation').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            // Use Google Places API for search
-            const service = new google.maps.places.PlacesService(map);
-            const request = {
-                query: query + ', Indonesia',
-                fields: ['name', 'geometry', 'formatted_address']
-            };
-            
-            service.findPlaceFromQuery(request, function(results, status) {
-                document.getElementById('searchLocation').innerHTML = '<i class="fas fa-search"></i>';
-                
-                if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
-                    const place = results[0];
-                    const location = place.geometry.location;
-                    
-                    // Update map
-                    map.setCenter(location);
-                    map.setZoom(15);
-                    marker.setPosition(location);
-                    
-                    // Update coordinates
-                    document.getElementById('latitude').value = location.lat();
-                    document.getElementById('longitude').value = location.lng();
-                    
-                    // Update nama_tempat with formatted address
-                    document.getElementById('nama_tempat').value = place.formatted_address;
-                    
-                    // Show map
-                    document.getElementById('map').style.display = 'block';
-                    
-                    console.log('Location found:', {
-                        name: place.name,
-                        address: place.formatted_address,
-                        lat: location.lat(),
-                        lng: location.lng()
-                    });
-                } else {
-                    alert('Tidak dapat menemukan lokasi tersebut. Silakan coba dengan nama yang lebih spesifik.');
-                }
-            });
-        }
-        
-        // Event listener for search button
-        document.getElementById('searchLocation')?.addEventListener('click', searchLocation);
-        
-        // Initialize map when Google Maps is loaded
-        if (typeof google !== 'undefined' && google.maps) {
-            initMap();
-        } else {
-            // Load Google Maps API
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap`;
-            script.async = true;
-            script.defer = true;
-            document.head.appendChild(script);
-            
-            // Global callback function
-            window.initMap = initMap;
-        }
         
         // Fetch kabupaten list from API
         fetch('/admin/api/kabupaten-list')

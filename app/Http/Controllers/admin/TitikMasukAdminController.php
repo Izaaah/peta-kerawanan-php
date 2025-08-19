@@ -9,22 +9,19 @@ use App\Http\Controllers\Controller;
 
 class TitikMasukAdminController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = JalurMasuk::query();
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function($sub) use ($q) {
-                $sub->where('jenis_transportasi', 'like', "%$q%")
-                    ->orWhere('nama_tempat', 'like', "%$q%")
-                    ->orWhere('provinsi', 'like', "%$q%")
-                    ->orWhere('kabupaten', 'like', "%$q%")
-                    ->orWhere('kecamatan', 'like', "%$q%")
-                    ->orWhere('kelurahan', 'like', "%$q%");
-            });
-        }
-        $titikMasukList = $query->latest()->paginate(10)->withQueryString();
-        return view('admin.data.titik-masuk.index', compact('titikMasukList'));
+        $titikMasuk = JalurMasuk::orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.data.titik-masuk.index', compact('titikMasuk'));
+    }
+
+    /**
+     * Show the transportation map
+     */
+    public function map()
+    {
+        $provinsiList = JalurMasuk::distinct()->pluck('provinsi')->sort()->values();
+        return view('admin.data.titik-masuk-map', compact('provinsiList'));
     }
 
     public function create()
@@ -255,5 +252,64 @@ class TitikMasukAdminController extends Controller
                 'message' => 'Error getting coordinates: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Get transportation points for map display
+     */
+    public function getTransportationPoints(Request $request)
+    {
+        $query = JalurMasuk::query();
+        
+        // Apply filters
+        if ($request->filled('provinsi')) {
+            $query->where('provinsi', $request->provinsi);
+        }
+        
+        if ($request->filled('kabupaten')) {
+            $query->where('kabupaten', $request->kabupaten);
+        }
+        
+        if ($request->filled('jenis_transportasi')) {
+            $query->where('jenis_transportasi', $request->jenis_transportasi);
+        }
+        
+        // Only return points with coordinates
+        $query->whereNotNull('latitude')
+              ->whereNotNull('longitude')
+              ->where('latitude', '!=', 0)
+              ->where('longitude', '!=', 0);
+        
+        $points = $query->get();
+        
+        return response()->json($points);
+    }
+
+    /**
+     * Get transportation routes for map display
+     */
+    public function getTransportationRoutes(Request $request)
+    {
+        $query = \App\Models\JalurTransportasi::with(['titikAwal', 'titikTujuan']);
+        
+        // Apply filters
+        if ($request->filled('jenis_transportasi')) {
+            $query->where('jenis_transportasi', $request->jenis_transportasi);
+        }
+        
+        if ($request->filled('from_point')) {
+            $query->where('titik_awal_id', $request->from_point);
+        }
+        
+        if ($request->filled('to_point')) {
+            $query->where('titik_tujuan_id', $request->to_point);
+        }
+        
+        // Only return active routes
+        $query->where('status', 'aktif');
+        
+        $routes = $query->get();
+        
+        return response()->json($routes);
     }
 }

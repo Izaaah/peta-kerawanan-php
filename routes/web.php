@@ -48,6 +48,7 @@ use App\Http\Controllers\ThmController;
 use App\Http\Controllers\admin\ThmAdminController;
 use App\Http\Controllers\operator\ThmOperatorController;
 use App\Http\Controllers\admin\TitikMasukAdminController;
+use App\Http\Controllers\admin\JalurTransportasiAdminController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -322,6 +323,18 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/titik-masuk/import', [TitikMasukAdminController::class, 'import'])->name('data.titik-masuk.import');
     Route::post('/titik-masuk/search-places', [TitikMasukAdminController::class, 'searchPlaces'])->name('data.titik-masuk.search-places');
     Route::post('/titik-masuk/get-coordinates', [TitikMasukAdminController::class, 'getCoordinates'])->name('data.titik-masuk.get-coordinates');
+    Route::get('/titik-masuk/map', [TitikMasukAdminController::class, 'map'])->name('data.titik-masuk.map');
+    Route::get('/api/transportation-points', [TitikMasukAdminController::class, 'getTransportationPoints'])->name('api.transportation-points');
+    Route::get('/api/transportation-routes', [TitikMasukAdminController::class, 'getTransportationRoutes'])->name('api.transportation-routes');
+
+    // Jalur Transportasi Routes
+    Route::get('/jalur-transportasi', [JalurTransportasiAdminController::class, 'index'])->name('data.jalur-transportasi.index');
+    Route::get('/jalur-transportasi/create', [JalurTransportasiAdminController::class, 'create'])->name('data.jalur-transportasi.create');
+    Route::post('/jalur-transportasi', [JalurTransportasiAdminController::class, 'store'])->name('data.jalur-transportasi.store');
+    Route::get('/jalur-transportasi/{id}', [JalurTransportasiAdminController::class, 'show'])->name('data.jalur-transportasi.show');
+    Route::get('/jalur-transportasi/{id}/edit', [JalurTransportasiAdminController::class, 'edit'])->name('data.jalur-transportasi.edit');
+    Route::put('/jalur-transportasi/{id}', [JalurTransportasiAdminController::class, 'update'])->name('data.jalur-transportasi.update');
+    Route::delete('/jalur-transportasi/{id}', [JalurTransportasiAdminController::class, 'destroy'])->name('data.jalur-transportasi.destroy');
 
     Route::get('/lsm', [LsmAdminController::class, 'index'])->name('data.lsm.index');
     Route::get('/lsm/create', [LsmAdminController::class, 'create'])->name('data.lsm.create');
