@@ -174,8 +174,6 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');
     Route::get('/api/desa-detail/{id}', [DataDesaController::class, 'detail'])->name('api.desa.detail');
     Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
-    Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
-    Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
 
     Route::get('/medsos', [MedsosController::class, 'index'])->name('data.medsos.index');
     Route::get('/medsos/create', [MedsosController::class, 'create'])->name('data.medsos.create');
@@ -312,7 +310,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
     Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
     Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
-
+    Route::get('/api/desa-list', [DataDesaController::class, 'getDesaList'])->name('api.desa.list');
     Route::get('/titik-masuk', [TitikMasukAdminController::class, 'index'])->name('data.titik-masuk.index');
     Route::get('/titik-masuk/create', [TitikMasukAdminController::class, 'create'])->name('data.titik-masuk.create');
     Route::post('/titik-masuk', [TitikMasukAdminController::class, 'store'])->name('data.titik-masuk.store');
@@ -547,45 +545,7 @@ Route::get('/peta-tkp-residivis', function () {
 
 Route::get('/api/individu-count', [DataIndividuTskController::class, 'getIndividuCount'])->name('api.individu.count');
 
-Route::get('/api/kecamatan-list', function (Request $request) {
-    $kabupaten = urldecode($request->kabupaten);
-    $kecamatanList = \App\Models\DesaGeojson::query()
-        ->where('kabupaten', $kabupaten)
-        ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
-        ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
-        ->distinct()
-        ->pluck('kecamatan')
-        ->sort()
-        ->values();
-    return response()->json($kecamatanList);
-});
 
-Route::get('/api/desa-list', function (Request $request) {
-    $kabupaten = urldecode($request->kabupaten);
-    $kecamatan = urldecode($request->kecamatan);
-    // console.log('Fetch desa-list', kabupaten, kecamatan);
-    $desaList = \App\Models\DesaGeojson::query()
-        ->where('kabupaten', $kabupaten)
-        ->where('kecamatan', $kecamatan)
-        ->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
-        ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
-        ->distinct()
-        ->pluck('nama_desa')
-        ->sort()
-        ->values();
-    return response()->json($desaList);
-});
-
-Route::get('/api/kabupaten-list', function (Request $request) {
-    $kabupatenList = \App\Models\DesaGeojson::query()
-        ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
-        ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
-        ->distinct()
-        ->pluck('kabupaten')
-        ->sort()
-        ->values();
-    return response()->json($kabupatenList);
-});
 
 // Route untuk menampilkan halaman learning_pm
 Route::get('/learning_pm', function () {
