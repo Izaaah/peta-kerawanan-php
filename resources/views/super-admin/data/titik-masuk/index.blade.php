@@ -1,18 +1,18 @@
 @extends('layouts.superadmin-master')
 
-@section('title', 'Data Tempat Transportasi')
+@section('title', 'Data Titik Masuk')
 
 @section('content')
 <div class="container mx-auto max-w-7xl px-1 pt-1 pb-2">
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-2xl font-semibold text-gray-800">Daftar Tempat Transportasi</h1>
-            <p class="text-sm text-gray-500">Informasi lengkap mengenai Tempat Transportasi</p>
+            <h1 class="text-2xl font-semibold text-gray-800">Daftar Tempat Titik Masuk</h1>
+            <p class="text-sm text-gray-500">Informasi lengkap mengenai Titik Masuk</p>
         </div>
         <a href="{{ route('super-admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-1"></i>Kembali
         </a>
-        {{-- <a href="{{ route('super-admin.data.transportasi.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+            {{-- <a href="{{ route('super-admin.data.titik-masuk.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
             <i class="fas fa-plus mr-2"></i>Tambah Transportasi
         </a> --}}
     </div>
@@ -29,7 +29,7 @@
     </div>
     @endif
 
-    <form method="GET" action="{{ route('super-admin.data.transportasi.index') }}" class="mb-4 flex gap-2">
+    <form method="GET" action="{{ route('super-admin.data.titik-masuk.index') }}" class="mb-4 flex gap-2">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari jenis, nama pihak, posisi..." class="border rounded px-3 py-2 w-full" />
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
     </form>
@@ -40,36 +40,38 @@
                 <tr>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis Transportasi</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Pihak</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Posisi</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Lokasi</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Tempat</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Provinsi</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kabupaten</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kecamatan</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kelurahan</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dibuat Oleh</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($transportasiList as $i => $transportasi)
+                    @forelse($titikMasukList as $i => $titikMasuk)
                 <tr>
-                    <td class="px-4 py-2">{{ $transportasiList->firstItem() + $i }}</td>
+                    <td class="px-4 py-2">{{ $titikMasukList->firstItem() + $i }}</td>
                     <td class="px-4 py-2">
                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
-                            @if($transportasi->jenis_transportasi == 'Darat') bg-blue-100 text-blue-800
-                            @elseif($transportasi->jenis_transportasi == 'Laut') bg-green-100 text-green-800
+                            @if($titikMasuk->jenis_transportasi == 'Darat') bg-blue-100 text-blue-800
+                            @elseif($titikMasuk->jenis_transportasi == 'Laut') bg-green-100 text-green-800
                             @else bg-purple-100 text-purple-800
                             @endif">
-                            {{ $transportasi->jenis_transportasi }}
+                            {{ $titikMasuk->jenis_transportasi }}
                         </span>
                     </td>
-                    <td class="px-4 py-2">{{ $transportasi->nama_pihak }}</td>
-                    <td class="px-4 py-2">{{ $transportasi->posisi ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $transportasi->lokasi ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $transportasi->no_hp }}</td>
-                    <td class="px-4 py-2">{{ $transportasi->user->name ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $titikMasuk->nama_tempat }}</td>
+                    <td class="px-4 py-2">{{ $titikMasuk->provinsi }}</td>
+                    <td class="px-4 py-2">{{ $titikMasuk->kabupaten }}</td>
+                    <td class="px-4 py-2">{{ $titikMasuk->kecamatan }}</td>
+                    <td class="px-4 py-2">{{ $titikMasuk->kelurahan }}</td>
+                    <td class="px-4 py-2">{{ $titikMasuk->user->name ?? '-' }}</td>
                     <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('super-admin.data.transportasi.show', $transportasi->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
-                        <a href="{{ route('super-admin.data.transportasi.edit', $transportasi->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
-                        <form action="{{ route('super-admin.data.transportasi.destroy', $transportasi->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
+                        <a href="{{ route('super-admin.data.titik-masuk.show', $titikMasuk->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+                        <a href="{{ route('super-admin.data.titik-masuk.edit', $titikMasuk->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
+                        <form action="{{ route('super-admin.data.titik-masuk.destroy', $titikMasuk->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>
@@ -78,13 +80,13 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data transportasi.</td>
+                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data titik masuk.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
         <div class="mt-4">
-            {{ $transportasiList->links() }}
+            {{ $titikMasukList->links() }}
         </div>
     </div>
 </div>

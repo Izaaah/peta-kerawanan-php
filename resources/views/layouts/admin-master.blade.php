@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>SIJAGAD</title>
+    <link rel="icon" href="{{ asset('storage/img/logo.png') }}" type="image/png"/>
     {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
 
     <!-- Tambahkan di layouts/superadmin-master.blade.php, sebelum </head> -->

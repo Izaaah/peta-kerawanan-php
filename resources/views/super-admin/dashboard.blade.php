@@ -359,14 +359,13 @@
 <!-- Konten Profil Organisasi -->
 <div id="profilContent" class="dashboard-content hidden">
     <div class="bg-white rounded-lg shadow-lg p-8">
-        <div class="flex items-center justify-center mb-8">
-            <img src="{{ asset('storage/img/logoo.png') }}" alt="Logo BNN" class="h-16 mr-3">
-            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN" class="h-16 mr-3">
+        <div class="mb-8 text-center">
+            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN" class="h-16 mb-2 mx-auto">
             <div>
                 <h2 class="text-lg font-bold text-gray-900">BADAN NARKOTIKA NASIONAL</h2>
-                <h3 class="text-base text-gray-600">PROVINSI JAWA TIMUR</h3>
+                <h3 class="text-lg font-bold text-gray-900">PROVINSI JAWA TIMUR</h3>
             </div>
-        </div>
+        </div>              
 
         <div class="grid grid-cols-1 gap-8">
             <!-- Konten lainnya akan ditampilkan di sini -->
@@ -375,14 +374,14 @@
         <!-- Tugas Pokok dan Fungsi -->
 <div class="mt-5 space-y-12 max-w-5xl mx-auto px-4">
 <div class="relative pb-6">
-    <h4 class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-red-600 pb-3">Tugas Pokok dan Fungsi (Tupoksi) Bidang Pemberantasan</h4>
+    <h4 class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-red-600 pb-3">Tugas Pokok dan Fungsi (Tupoksi) Bidang Pemberantasan dan Intelijen</h4>
     <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full"></div>
 </div>
 
 <!-- Tugas Pokok -->
 <div class="bg-gradient-to-br from-white to-blue-50 rounded-base shadow-lg p-8 border-t border-l border-blue-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
     <div class="flex items-center mb-1">
-        <h5 class="text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan</h5>
+        <h5 class="text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan dan Intelijen</h5>
     </div>
     <div class="pl-5 pr-4">
         <p class="text-gray-700 leading-relaxed text-lg bg-white bg-opacity-50 p-4 ml-5 font-sans">
@@ -393,90 +392,115 @@
 </div>
 
 <!-- Fungsi -->
-<div class="bg-gradient-to-br from-white to-green-50 rounded-base shadow-lg p-8 border-t border-l border-green-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden mb-8">
-    <div class="flex items-center">
-        <h5 class="text-2xl font-bold text-black tracking-tight">Fungsi</h5>
-    </div>
-    <div class="pl-1 pr-4">
-        <div class="bg-white bg-opacity-50 p-4 rounded-xl shadow-sm">
-            <ul class="space-y-4 list-none">
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">1</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan koordinasi penyusunan rencana strategis dan rencana kerja tahunan P4GN di bidang pemberantasan dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">2</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">penyiapan pelaksanaan pemberantasan dan pemutusan jaringan kejahatan terorganisasi penyalahgunaan peredaran gelap narkotika dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">3</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan pembangunan dan pemanfaatan intelijen teknologi dan kegiatan intelijen taktis, operasional dan produk dalam rangka P4GN di bidang pemberantasan dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">4</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan administrasi penyelidikan dan penyidikan terhadap tindak pidana narkotika, psikotropika, prekursor, dan bahan adiktif lainnya kecuali bahan adiktif untuk tembakau dan alkohol dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">5</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan administrasi penyidikan tindak pidana pencucian uang yang berasal dari tindak pidana narkotika dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">6</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan pengawasan distribusi prekursor sampai pada pengguna akhir dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">7</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan pengawasan tahanan dan barang bukti dalam wilayah Provinsi;</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">8</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan pembinaan teknis dan supervisi P4GN di bidang pemberantasan kepada BNNK/Kota dalam wilayah Provinsi; dan</p>
-                </li>
-                <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                    <div class="flex-shrink-0 mt-1">
-                        <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                            <span class="text-white text-xs font-bold">9</span>
-                        </span>
-                    </div>
-                    <p class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">Penyiapan pelaksanaan evaluasi dan pelaporan P4GN di bidang pemberantasan dalam wilayah Provinsi.</p>
-                </li>
-            </ul>
+<div class="relative overflow-hidden rounded-2xl border border-emerald-100 bg-gradient-to-br from-white to-emerald-50/60 shadow-xl mb-8">
+    <div class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-emerald-200/30 blur-2xl"></div>
+    <div class="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-emerald-100/30 blur-2xl"></div>
+
+    <div class="relative p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white shadow-md">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M7 13V9a5 5 0 0110 0v4"></path>
+          </svg>
         </div>
+        <h5 class="text-2xl font-bold tracking-tight text-gray-900">Fungsi</h5>
+      </div>
+
+      <div class="bg-white/60 backdrop-blur rounded-xl p-4 border border-emerald-100">
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- 1 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              1
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan koordinasi penyusunan rencana strategis dan rencana kerja tahunan P4GN di bidang pemberantasan dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 2 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              2
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan pemberantasan dan pemutusan jaringan kejahatan terorganisasi penyalahgunaan peredaran gelap narkotika dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 3 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              3
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan pembangunan dan pemanfaatan intelijen teknologi dan kegiatan intelijen taktis, operasional dan produk dalam rangka P4GN di bidang pemberantasan dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 4 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              4
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan administrasi penyelidikan dan penyidikan terhadap tindak pidana narkotika, psikotropika, prekursor, dan bahan adiktif lainnya kecuali bahan adiktif untuk tembakau dan alkohol dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 5 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              5
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan administrasi penyidikan tindak pidana pencucian uang yang berasal dari tindak pidana narkotika dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 6 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              6
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan pengawasan distribusi prekursor sampai pada pengguna akhir dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 7 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              7
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan pengawasan tahanan dan barang bukti dalam wilayah Provinsi;
+            </p>
+          </li>
+
+          <!-- 8 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              8
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan pembinaan teknis dan supervisi P4GN di bidang pemberantasan kepada BNNK/Kota dalam wilayah Provinsi; dan
+            </p>
+          </li>
+
+          <!-- 9 -->
+          <li class="flex items-start gap-4 rounded-xl border border-gray-100 bg-white/70 p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md md:col-span-2">
+            <span class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold ring-2 ring-white shadow">
+              9
+            </span>
+            <p class="text-gray-700 leading-relaxed">
+              Penyiapan pelaksanaan evaluasi dan pelaporan P4GN di bidang pemberantasan dalam wilayah Provinsi.
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
-</div>
-</div>
+  </div>
 
 <!-- Struktur Organisasi -->
 <div class="mt-12 max-w-6xl mx-auto px-4">
@@ -498,120 +522,150 @@
     <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-blue-50 rounded-full opacity-50 -mr-32 -mt-32 z-0"></div>
     <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-red-100 to-red-50 rounded-full opacity-50 -ml-32 -mb-32 z-0"></div>
 
-    <div class="org-chart relative z-10">
-        <!-- Kepala BNNP -->
-        <div class="org-level">
-            <div class="org-box org-head flex items-center bg-gradient-to-r from-red-500 to-red-700 rounded-xl shadow-lg p-5 border-2 border-red-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <div class="w-24 h-24 rounded-full bg-white mr-5 overflow-hidden border-2 border-red-300 shadow-inner flex items-center justify-center">
-                    <svg class="w-14 h-14 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <div class="org-content text-left">
-                    <div class="org-title text-white font-bold text-xl mb-1">Kepala BNNP Jatim</div>
-                    <div class="org-name text-white text-md">Brigjen Pol. Dr. H. Slamet Hadi Tjahjanto</div>
-                </div>
+    <div class="org-chart relative space-y-12">
+
+        <!-- Kepala -->
+        <div class="relative flex flex-col items-center">
+          <div class="flex items-center bg-gradient-to-r from-red-500 to-red-700 rounded-xl shadow-lg p-5 border-2 border-red-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="w-24 h-24 rounded-full bg-white mr-5 overflow-hidden border-2 border-red-300 shadow-inner flex items-center justify-center">
+              <svg class="w-14 h-14 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
             </div>
+            <div class="text-left">
+              <div class="text-white font-bold text-xl mb-1">Kepala BNNP Jatim</div>
+              <div class="text-white text-md">Brigjen Pol. Dr. H. Slamet Hadi Tjahjanto</div>
+            </div>
+          </div>
+          <!-- garis vertikal ke sekretaris -->
+          <div class="h-8 w-0.5 bg-gray-300"></div>
         </div>
 
         <!-- Sekretaris -->
-        <div class="org-level mt-12">
-            <div class="org-box org-secretary flex items-center bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg p-5 border-2 border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <div class="w-20 h-20 rounded-full bg-white mr-5 overflow-hidden border-2 border-blue-300 shadow-inner flex items-center justify-center">
-                    <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div class="relative flex flex-col items-center">
+          <div class="flex items-center bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg p-5 border-2 border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="w-20 h-20 rounded-full bg-white mr-5 overflow-hidden border-2 border-blue-300 shadow-inner flex items-center justify-center">
+              <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="text-left">
+              <div class="text-white font-bold text-lg mb-1">Sekretaris</div>
+              <div class="text-white text-md">AKBP Drs. Heru Pranoto, M.Si</div>
+            </div>
+          </div>
+
+          <!-- konektor vertikal ke level direktorat -->
+          <div class="h-10 w-0.5 bg-gray-300"></div>
+
+          <!-- Level Direktorat -->
+          <div class="relative w-full">
+            <!-- garis horizontal penghubung direktorat -->
+            <div class="absolute left-[8%] right-[8%] top-0 h-0.5 bg-gray-300"></div>
+
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-4">
+              <!-- Direktorat Pencegahan -->
+              <div class="relative flex flex-col items-center">
+                <!-- garis vertikal dari garis horizontal ke box -->
+                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
+                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
+                  <div class="flex items-center mb-3">
+                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
+                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                      </svg>
+                    </div>
+                    <div class="text-left">
+                      <div class="text-white font-bold text-md">Direktorat Pencegahan</div>
+                      <div class="text-white text-sm">Kompol Dra. Suparti</div>
+                    </div>
+                  </div>
+                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Sosialisasi P4GN</li>
+                      <li>Edukasi Masyarakat</li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="org-content text-left">
-                    <div class="org-title text-white font-bold text-lg mb-1">Sekretaris</div>
-                    <div class="org-name text-white text-md">AKBP Drs. Heru Pranoto, M.Si</div>
+              </div>
+
+              <!-- Direktorat Pemberantasan -->
+              <div class="relative flex flex-col items-center">
+                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
+                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
+                  <div class="flex items-center mb-3">
+                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
+                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div class="text-left">
+                      <div class="text-white font-bold text-md">Direktorat Pemberantasan</div>
+                      <div class="text-white text-sm">AKBP Wisnu Pradana, S.H.</div>
+                    </div>
+                  </div>
+                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Penyelidikan</li>
+                      <li>Penyidikan</li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
+
+              <!-- Direktorat Rehabilitasi -->
+              <div class="relative flex flex-col items-center">
+                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
+                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
+                  <div class="flex items-center mb-3">
+                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
+                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div class="text-left">
+                      <div class="text-white font-bold text-md">Direktorat Rehabilitasi</div>
+                      <div class="text-white text-sm">dr. Ratna Dewi, M.Kes</div>
+                    </div>
+                  </div>
+                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Rehabilitasi Medis</li>
+                      <li>Rehabilitasi Sosial</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Direktorat Intelijen -->
+              <div class="relative flex flex-col items-center">
+                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
+                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
+                  <div class="flex items-center mb-3">
+                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
+                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div class="text-left">
+                      <div class="text-white font-bold text-md">Direktorat Intelijen</div>
+                      <div class="text-white text-sm">AKBP Hendra Suhartiyono, S.I.K.</div>
+                    </div>
+                  </div>
+                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Pengumpulan Informasi</li>
+                      <li>Analisis Jaringan</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
             </div>
+          </div>
         </div>
 
-        <!-- Direktorat -->
-        <div class="org-level org-level-directors mt-12">
-            <div class="org-box org-director flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="org-content text-left">
-                        <div class="org-title text-white font-bold text-md">Direktorat Pencegahan</div>
-                        <div class="org-name text-white text-sm">Kompol Dra. Suparti</div>
-                    </div>
-                </div>
-                <div class="mt-auto text-xs text-white bg-green-800 bg-opacity-30 rounded-lg p-2 border border-green-400 border-opacity-30">
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Sosialisasi P4GN</li>
-                        <li>Edukasi Masyarakat</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="org-box org-director flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="org-content text-left">
-                        <div class="org-title text-white font-bold text-md">Direktorat Pemberantasan</div>
-                        <div class="org-name text-white text-sm">AKBP Wisnu Pradana, S.H.</div>
-                    </div>
-                </div>
-                <div class="mt-auto text-xs text-white bg-green-800 bg-opacity-30 rounded-lg p-2 border border-green-400 border-opacity-30">
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Penyelidikan</li>
-                        <li>Penyidikan</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="org-box org-director flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="org-content text-left">
-                        <div class="org-title text-white font-bold text-md">Direktorat Rehabilitasi</div>
-                        <div class="org-name text-white text-sm">dr. Ratna Dewi, M.Kes</div>
-                    </div>
-                </div>
-                <div class="mt-auto text-xs text-white bg-green-800 bg-opacity-30 rounded-lg p-2 border border-green-400 border-opacity-30">
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Rehabilitasi Medis</li>
-                        <li>Rehabilitasi Sosial</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="org-box org-director flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="org-content text-left">
-                        <div class="org-title text-white font-bold text-md">Direktorat Intelijen</div>
-                        <div class="org-name text-white text-sm">AKBP Hendra Suhartiyono, S.I.K.</div>
-                    </div>
-                </div>
-                <div class="mt-auto text-xs text-white bg-green-800 bg-opacity-30 rounded-lg p-2 border border-green-400 border-opacity-30">
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Pengumpulan Informasi</li>
-                        <li>Analisis Jaringan</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+      </div>
 </div>
 </div>
 <div class="mt-12 max-w-6xl mx-auto px-4">
@@ -627,7 +681,7 @@
             <div class="relative px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Rincian Komposisi</h3>
                 <div class="absolute right-0 top-0 mt-3 mr-4">
-                    <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
+                    <a href="#" onclick="openKomposisiModal()" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                         </svg>
@@ -645,7 +699,7 @@
                             <th rowspan="2" class="px-2 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-r">
                                 JUMLAH PERSONIL
                             </th>
-                            <th colspan="3" class="px-6 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-b border-r">
+                            <th colspan="3" class="px-4 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-b border-r">
                                 DSP
                             </th>
                             <th rowspan="2" class="px-6 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-r">
@@ -656,90 +710,26 @@
                             </th>
                         </tr>
                         <tr>
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">JUMLAH</th>
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">TERISI</th>
-                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">KOSONG</th>
+                            <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">JUMLAH</th>
+                            <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">TERISI</th>
+                            <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">KOSONG</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($komposisiList as $komposisi)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">Bidang Pemberantasan</td>
-                            <td class="px-2 py-4 text-sm text-gray-900">30</td>
-                            <td class="px-3 py-3 text-right text-sm text-gray-900 bg-blue-100">50</td>
-                            <td class="px-3 py-3 text-right text-sm text-gray-900 bg-red-100">28</td>
-                            <td class="px-3 py-3 text-right text-sm text-gray-900 bg-yellow-100">22</td>
-                            <td class="px-6 py-4 text-right text-sm text-gray-900 bg-yellow-100">Pemetaan Informasi Jaringan Intelijen</td>
+                            <td class="px-6 py-3 whitespace-nowrap text-center text-sm font-medium text-gray-900 border-r uppercase">{{ $komposisi->bidang }}</td>
+                            <td class="px-2 py-3 text-sm text-gray-900 text-center border-r">{{ $komposisi->jumlah_personil }}</td>
+                            <td class="px-2 py-3 text-sm text-gray-900 bg-blue-100 text-center border-r">{{ $komposisi->dsp_jumlah }}</td>
+                            <td class="px-2 py-3 text-sm text-gray-900 bg-red-100 text-center border-r">{{ $komposisi->dsp_kosong }}</td>
+                            <td class="px-2 py-3 text-sm text-gray-900 bg-yellow-100 text-center border-r">{{ $komposisi->dsp_terisi }}</td>
+                            <td class="px-6 py-3 text-sm text-gray-900 bg-yellow-100 text-center border-r">{{ $komposisi->ket }}</td>
                         </tr>
-                        {{-- <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3251.BKA.002.051.A</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Pemetaan Informasi Jaringan Intelijen</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 125.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp -</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 125.000.000</td>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-sm font-medium text-gray-900">Tidak ada data</td>
                         </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3251.BKA.002.051.A</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Pemetaan Informasi Intelijen Taktis</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 125.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp -</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 125.000.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">3258</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Pengawasan Tahanan dan Barang Bukti</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 679.981.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 56.850.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 623.131.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3258.BIA.002.051</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Pengawasan dan Pengelolaan Barang Bukti</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 40.306.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100"></td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 40.306.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3258.BIB.002.051</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Pengawasan dan Perawatan Tahanan Tindak Pidana Narkotika dan Prekursor Narkotika dan TPPU</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 119.940.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 8.100.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 111.840.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3258.QAA.002.051</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Asesmen Terpadu Terhadap Tersangka dan/atau Terdakwa Penyalah Guna, Pecandu Narkotika dan Korban Penyalahgunaan Narkotika</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 519.735.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 48.750.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 470.985.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">5354</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Penyidikan Jaringan Peredaran Gelap Narkotika</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 900.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 317.300.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 582.700.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5354.BCA.002.051.A</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Penyelidikan Kasus Tindak Pidana Narkotika</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 540.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 236.800.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 303.200.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5354.BCA.002.051.B</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Penyidikan Kasus Tindak Pidana Narkotika</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 340.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 70.500.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 269.500.000</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5354.BCA.002.051.C</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">Koordinasi Kegiatan Penyelesaian Kasus Tindak Pidana Narkotika</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-blue-100">Rp 20.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-red-100">Rp 10.000.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 bg-yellow-100">Rp 10.000.000</td>
-                        </tr> --}}
+                        @endforelse
                     </tbody>
                     <tfoot class="bg-gray-50">
                         <tr>
@@ -1074,6 +1064,65 @@
     </div>
 </div>
 
+<!-- Modal Edit Komposisi -->
+<div id="komposisiModal"
+     class="fixed inset-0 hidden items-center justify-center p-4 bg-black bg-opacity-50"
+     style="z-index: 9999;">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-auto">
+    <div class="flex items-center justify-between px-6 py-4 border-b">
+      <h3 class="text-lg font-semibold text-gray-900" id="komposisiModalTitle">Edit Komposisi</h3>
+      <button type="button" class="text-gray-500 hover:text-gray-700" onclick="closeKomposisiModal()">✕</button>
+    </div>
+
+    <form id="komposisiForm" method="POST" action="{{ route('super-admin.komposisi.store') }}" class="p-6 space-y-4">
+      @csrf
+      <input type="hidden" name="_method" id="komposisiFormMethod" value="POST" />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 uppercase">Bidang/Seksi</label>
+          <input name="bidang" id="komposisi_bidang" type="text"
+                 class="mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 uppercase">Jumlah Personil</label>
+          <input name="jumlah_personil" id="komposisi_jumlah_personil" type="number" min="0"
+                 class="mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" required />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 uppercase">DSP Jumlah</label>
+          <input name="dsp_jumlah" id="komposisi_dsp_jumlah" type="number" min="0"
+                 class="mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 uppercase">DSP Terisi</label>
+          <input name="dsp_terisi" id="komposisi_dsp_terisi" type="number" min="0"
+                 class="mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 uppercase" required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 uppercase">DSP Kosong</label>
+          <input name="dsp_kosong" id="komposisi_dsp_kosong" type="number" min="0" readonly
+            class="mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 uppercase">Keterangan</label>
+        <textarea name="keterangan" id="komposisi_keterangan" rows="3"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"></textarea>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" onclick="closeKomposisiModal()"
+                class="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">Batal</button>
+        <button type="submit" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1536,6 +1585,57 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    function autoCalcKosong() {
+  const j = document.getElementById('komposisi_dsp_jumlah');
+  const t = document.getElementById('komposisi_dsp_terisi');
+  const k = document.getElementById('komposisi_dsp_kosong');
+  const calc = () => {
+    const total = parseInt(j.value || 0, 10);
+    const terisi = parseInt(t.value || 0, 10);
+    k.value = Math.max(0, total - terisi);
+  };
+  j.removeEventListener?.('__calc', j.__calc); t.removeEventListener?.('__calc', t.__calc);
+  j.__calc = calc; t.__calc = calc;
+  j.addEventListener('input', calc); t.addEventListener('input', calc);
+  calc();
+}
+
+    function openKomposisiModal(row = null) {
+  const modal = document.getElementById('komposisiModal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.classList.add('overflow-hidden'); // kunci scroll body
+
+  const form = document.getElementById('komposisiForm');
+  const methodInput = document.getElementById('komposisiFormMethod');
+  const title = document.getElementById('komposisiModalTitle');
+
+  if (row) {
+    form.action = `{{ url('super-admin/komposisi') }}/${row.id}`;
+    methodInput.value = 'PUT';
+    title.textContent = 'Edit Komposisi';
+    document.getElementById('komposisi_bidang').value = row.bidang || '';
+    document.getElementById('komposisi_jumlah_personil').value = row.jumlah_personil ?? 0;
+    document.getElementById('komposisi_dsp_jumlah').value = row.dsp_jumlah ?? 0;
+    document.getElementById('komposisi_dsp_terisi').value = row.dsp_terisi ?? 0;
+    document.getElementById('komposisi_dsp_kosong').value = row.dsp_kosong ?? 0;
+    document.getElementById('komposisi_keterangan').value = row.keterangan || '';
+  } else {
+    form.action = `{{ route('super-admin.komposisi.store') }}`;
+    methodInput.value = 'POST';
+    title.textContent = 'Tambah Komposisi';
+    form.reset();
+  }
+  autoCalcKosong();
+}
+
+function closeKomposisiModal() {
+  const modal = document.getElementById('komposisiModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  document.body.classList.remove('overflow-hidden'); // lepas kunci scroll
+}
 
 </script>
 @endpush

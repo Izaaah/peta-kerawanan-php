@@ -116,7 +116,6 @@
                                         <option value="">Pilih Kabupaten</option>
                                     </select>
                                 </div>
-                                {{-- <div class="grid md:grid-rows-1 gap-4"> --}}
                                 <div>
                                     <label for="kecamatan" class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
                                     <select name="kecamatan" id="kecamatan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">

@@ -7,10 +7,9 @@ use Illuminate\Support\Facades\File;
 use App\Models\DesaGeojson;
 use App\Models\KasusNarkoba;
 use App\Models\DataIndividuTsk;
-use App\Models\TkpResidivisIndividu;
 use Illuminate\Support\Facades\DB;
 
-class PetaController extends Controller
+class PetaTKPController extends Controller
 {
     public function geojson()
     {
@@ -220,65 +219,4 @@ class PetaController extends Controller
             ], 500, ['Content-Type' => 'application/json']);
         }
     }
-
-    public function geojsonTkp()
-{
-    $desaData = DesaGeojson::all();
-
-    $countsByDesa = TkpResidivisIndividu::selectRaw('LOWER(TRIM(desa)) as desa_key, COUNT(*) as total')
-        ->groupBy('desa_key')
-        ->pluck('total', 'desa_key');
-
-    $features = [];
-    foreach ($desaData as $desa) {
-        $desaKey = strtolower(trim($desa->nama_desa));
-        $jumlahKasus = (int) ($countsByDesa[$desaKey] ?? 0);
-        $features[] = [
-            'type' => 'Feature',
-            'properties' => [
-                'id' => $desa->id,
-                'nama_desa' => $desa->nama_desa,
-                'kecamatan' => $desa->kecamatan,
-                'kabupaten' => $desa->kabupaten,
-                'jumlah_kasus' => $jumlahKasus,
-            ],
-            'geometry' => $desa->geometry
-        ];
-    }
-
-    return response()->json([
-        'type' => 'FeatureCollection',
-        'features' => $features
-    ], 200, ['Content-Type' => 'application/json']);
-}
-
-public function getKerawananStatsTkp()
-{
-    try {
-        $totalDesa = DesaGeojson::count();
-
-        $tkpPerDesa = TkpResidivisIndividu::selectRaw('LOWER(TRIM(desa)) as desa_key, COUNT(*) as total')
-            ->groupBy('desa_key')
-            ->pluck('total', 'desa_key');
-
-        $tinggi = 0; $sedang = 0; $rendah = 0; $totalCount = $tkpPerDesa->sum();
-        foreach ($tkpPerDesa as $count) {
-            if ($count > 100) $tinggi++;
-            elseif ($count > 50) $sedang++;
-            elseif ($count > 20) $rendah++;
-        }
-
-        return response()->json([
-            'tinggi' => $tinggi,
-            'sedang' => $sedang,
-            'rendah' => $rendah,
-            'total_desa' => $totalDesa,
-            'debug' => [
-                'total_tkp' => $totalCount,
-            ]
-        ], 200, ['Content-Type' => 'application/json']);
-    } catch (\Throwable $e) {
-        return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
-    }
-}
 }

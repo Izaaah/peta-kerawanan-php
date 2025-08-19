@@ -6,6 +6,7 @@ use App\Models\KasusNarkoba;
 use App\Models\DesaGeojson;
 use App\Models\TkpResidivisIndividu;
 use App\Models\Anggaran;
+use App\Models\Komposisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -89,6 +90,9 @@ class SuperAdminDashboardController extends Controller
         $totalBlokir = (clone $anggaranQuery)->sum('blokir');
         $totalSetelah = $totalAnggaranSebelum - $totalBlokir;
 
+        // Ambil data komposisi
+        $komposisiList = Komposisi::all();
+
         return view('super-admin.dashboard', compact(
             'totalKasus',
             'totalDesa',
@@ -103,7 +107,8 @@ class SuperAdminDashboardController extends Controller
             'anggaranList',
             'totalAnggaranSebelum',
             'totalBlokir',
-            'totalSetelah'
+            'totalSetelah',
+            'komposisiList'
         ));
     }
 

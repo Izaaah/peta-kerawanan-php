@@ -33,7 +33,7 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Manager</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created By</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dibuat Oleh</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>

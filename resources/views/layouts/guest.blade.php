@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'SIJAGAD') }}</title>
+        <title>SIJAGAD</title>
         <link rel="icon" href="{{ asset('storage/img/logo.png') }}" type="image/png"/>
 
         <!-- Fonts -->
@@ -105,7 +105,7 @@
             .login-form-section {
                 flex: 0 0 350px;
                 animation: slideInRight 1s ease-out;
-                margin-left: 350px;
+                margin-left: 410px;
             }
 
             .login-form-card {
@@ -306,7 +306,7 @@
             @yield('content')
         </div>
         <div class="login-footer">
-            &copy; {{ date('Y') }} Peta Kerawanan BNNP JATIM. All rights reserved.<br>
+            &copy; {{ date('Y') }} SIJAGAD. All rights reserved.<br>
             <a href="https://bnn.go.id/" target="_blank">BNN RI</a> |
             <a href="https://jatim.bnn.go.id/" target="_blank">BNNP Jatim</a>
         </div>

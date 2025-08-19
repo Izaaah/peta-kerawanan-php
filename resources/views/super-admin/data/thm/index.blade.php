@@ -35,7 +35,7 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama THM</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ketua THM</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No HP Ketua</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created By</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dibuat Oleh</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>

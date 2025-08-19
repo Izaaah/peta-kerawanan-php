@@ -9,7 +9,6 @@
         <a href="{{ route('super-admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-1"></i>Kembali
         </a>
-        {{-- <a href="{{ route('super-admin.data.medsos.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Tambah Akun</a> --}}
     </div>
 
     @if(session('success'))
@@ -30,12 +29,12 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Media Sosial</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Akun</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Link Akun</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created By</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dibuat Oleh</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($medsosList as $index => $medsos)
+                @forelse($medsosList as $index => $medsos)
                 <tr>
                     <td class="px-4 py-2 text-center">{{ ($medsosList->currentPage() - 1) * $medsosList->perPage() + $index + 1 }}</td>
                     <td class="px-4 py-2">{{ $medsos->nama_media_sosial }}</td>
@@ -54,7 +53,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="px-4 py-2 text-center text-gray-500">Belum ada data akun medsos.</td>
+                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">Belum ada data akun medsos.</td>
                 </tr>
                 @endforelse
             </tbody>

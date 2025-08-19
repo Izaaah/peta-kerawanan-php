@@ -5,13 +5,13 @@
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
         </div>
         <div class="banner-right">
             <span class="profile-label"><a href="{{ route('profile.edit') }}">Profil</a></span>
             <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                 @csrf
-                <button type="submit" class="logout-btn">Logout</button>
+                <button type="submit" class="logout-btn">Keluar</button>
             </form>
         </div>
     </div>
@@ -25,13 +25,13 @@
 
     <!-- Tengah: Menu Navigasi -->
     <div class="menu-area">
-        <div class="menu-btn"><a href="{{ route('super-admin.dashboard') }}">Home</a>
+        <div class="menu-btn"><a href="{{ route('super-admin.dashboard') }}">Beranda</a>
         </div>
         <div class="menu-btn"><a href="{{ route('super-admin.data.index') }}">Data</a></div>
-        {{-- <div class="menu-btn"><a href="{{ route('super-admin.verification.index') }}">Verification</a></div> --}}
-        <div class="menu-btn"><a href="{{ route('super-admin.chart-jaringan') }}">Chart</a></div>
-        <div class="menu-btn"><a href="{{ route('super-admin.user-management.index') }}">User Management</a></div>
-        <div class="menu-btn dropdown-parent">
+        <div class="menu-btn"><a href="{{ route('super-admin.chart-jaringan') }}">Diagram</a></div>
+        <div class="menu-btn"><a href="{{ route('super-admin.verification.index') }}">Verifikasi</a></div>
+        <div class="menu-btn"><a href="{{ route('super-admin.user-management.index') }}">Pengguna</a></div>
+        <div class="menu-btn-peta dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>

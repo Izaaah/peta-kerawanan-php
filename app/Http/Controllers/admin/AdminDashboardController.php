@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\KasusNarkoba;
 use App\Models\DesaGeojson;
 use App\Models\TkpResidivisIndividu;
+use App\Models\Anggaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -156,6 +157,21 @@ class AdminDashboardController extends Controller
             ->orderBy('bulan')
             ->get();
 
+            // Ambil data anggaran berdasarkan role user
+        $user = auth()->user();
+        $anggaranQuery = Anggaran::query();
+        if ($user && !$user->isAdministrator()) {
+            $anggaranQuery->where('created_by', $user->id);
+        }
+
+        $anggaranList = (clone $anggaranQuery)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $totalAnggaranSebelum = (clone $anggaranQuery)->sum('anggaran_sebelum');
+        $totalBlokir = (clone $anggaranQuery)->sum('blokir');
+        $totalSetelah = $totalAnggaranSebelum - $totalBlokir;
+
         return view('admin.dashboard', compact(
             'totalKasus',
             'totalDesa',
@@ -167,7 +183,11 @@ class AdminDashboardController extends Controller
             'statusPie',
             'residivisPie',
             'kasusPerDesa',
-            'trendBulanan'
+            'trendBulanan',
+            'anggaranList',
+            'totalAnggaranSebelum',
+            'totalBlokir',
+            'totalSetelah'
         ));
     }
 

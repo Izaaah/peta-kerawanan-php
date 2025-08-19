@@ -127,6 +127,16 @@
                 <div class="text-xs text-gray-500">Kelola data jasa transportasi</div>
             </div>
         </a>
+        <!-- Card: Data Jasa Titik Masuk -->
+        <a href="{{ route('super-admin.data.titik-masuk.index') }}" class="block group" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-bus-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-blue-800 mb-1">Data Titik Masuk</div>
+                <div class="text-xs text-gray-500">Kelola data titik masuk</div>
+            </div>
+        </a>
         <!-- Card: Data Penginapan (Hotel & Kost) -->
         <a href="{{ route('super-admin.data.penginapan.index') }}" class="block group" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">

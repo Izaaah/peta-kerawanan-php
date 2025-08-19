@@ -48,12 +48,13 @@ use App\Http\Controllers\ThmController;
 use App\Http\Controllers\admin\ThmAdminController;
 use App\Http\Controllers\operator\ThmOperatorController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\KomposisiController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AnggaranController;
-
-
+use App\Http\Controllers\TitikMasukController;
+use App\Http\Controllers\admin\TitikMasukAdminController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -272,6 +273,20 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
 
     Route::post('/anggaran', [AnggaranController::class, 'store'])->name('anggaran.store');
 
+    // Komposisi Routes
+    Route::post('/komposisi', [KomposisiController::class, 'store'])->name('komposisi.store');
+    Route::put('/komposisi/{komposisi}', [KomposisiController::class, 'update'])->name('komposisi.update');
+    Route::delete('/komposisi/{komposisi}', [KomposisiController::class, 'destroy'])->name('komposisi.destroy');
+
+    // Jalur Masuk Routes
+    Route::get('/titik-masuk', [TitikMasukController::class, 'index'])->name('data.titik-masuk.index');
+    Route::get('/titik-masuk/create', [TitikMasukController::class, 'create'])->name('data.titik-masuk.create');
+    Route::post('/titik-masuk', [TitikMasukController::class, 'store'])->name('data.titik-masuk.store');
+    Route::get('/titik-masuk/{id}', [TitikMasukController::class, 'show'])->name('data.titik-masuk.show');
+    Route::get('/titik-masuk/{id}/edit', [TitikMasukController::class, 'edit'])->name('data.titik-masuk.edit');
+    Route::put('/titik-masuk/{id}', [TitikMasukController::class, 'update'])->name('data.titik-masuk.update');
+    Route::delete('/titik-masuk/{id}', [TitikMasukController::class, 'destroy'])->name('data.titik-masuk.destroy');
+
 });
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -284,6 +299,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/peta', function () {
         return view('admin.peta');
     })->name('peta');
+
+    Route::get('/peta-kerawanan-tkp', [\App\Http\Controllers\PetaController::class, 'geojsonTkp'])->name('peta.kerawanan.tkp');
 
     // User Management Routes
     Route::resource('user-management', UserManagementController::class)->parameters([
@@ -430,6 +447,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::put('thm/{id}', [ThmAdminController::class, 'update'])->name('data.thm.update');
     Route::delete('/thm/{id}', [ThmAdminController::class, 'destroy'])->name('data.thm.destroy');
 
+    Route::get('/titik-masuk', [TitikMasukAdminController::class, 'index'])->name('data.titik-masuk.index');
+    Route::get('/titik-masuk/create', [TitikMasukAdminController::class, 'create'])->name('data.titik-masuk.create');
+    Route::post('/titik-masuk', [TitikMasukAdminController::class, 'store'])->name('data.titik-masuk.store');
+    Route::get('/titik-masuk/{id}', [TitikMasukAdminController::class, 'show'])->name('data.titik-masuk.show');
+    Route::get('/titik-masuk/{id}/edit', [TitikMasukAdminController::class, 'edit'])->name('data.titik-masuk.edit');
+    Route::put('/titik-masuk/{id}', [TitikMasukAdminController::class, 'update'])->name('data.titik-masuk.update');
+    Route::delete('/titik-masuk/{id}', [TitikMasukAdminController::class, 'destroy'])->name('data.titik-masuk.destroy');
+    Route::get('/titik-masuk/import', [TitikMasukAdminController::class, 'import'])->name('data.titik-masuk.import');
+    Route::get('/titik-masuk/template', [TitikMasukAdminController::class, 'template'])->name('data.titik-masuk.template');
+
+    Route::get('/api/kecamatan-list', [TitikMasukAdminController::class, 'getKecamatanList'])->name('api.kecamatan.list');
+    Route::get('/api/desa-list', [TitikMasukAdminController::class, 'getDesaList'])->name('api.desa.list');
+
     // Data Pendukung Routes
     Route::get('/data-pendukung', function () {
         return view('admin.data.pendukung');
@@ -517,12 +547,14 @@ Route::middleware('auth')->group(function () {
 Route::get('/peta-penyalahgunaan/domisili', function () {
     return view('map');
 })->name('peta-penyalahgunaan.domisili');
+// Route::get('/peta-penyalahgunaan/tkp', [PetaController::class, 'geojsonTkp'])->name('map-tkp');
 Route::get('/peta-penyalahgunaan/tkp', function () {
     return view('map_tkp');
 })->name('peta-penyalahgunaan.tkp');
 
 // GeoJSON API Route
 Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.kerawanan');
+Route::get('/peta-kerawanan-tkp', [PetaController::class, 'geojsonTkp'])->name('peta.kerawanan.tkp');
 
 // Desa API Routes
 Route::get('/api/desa/stats', [PetaController::class, 'getDesaStats'])->name('api.desa.stats');

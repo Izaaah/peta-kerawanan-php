@@ -4,7 +4,7 @@
             &copy; {{ date('Y') }} BNN Provinsi Jawa Timur. All rights reserved.
         </div>
         <div class="text-sm opacity-80 text-center lg:text-right">
-            SIJAGAD - Sistem Informasi Jaringan Narkotika
+            SIJAGAD
         </div>
     </div>
 </footer>

@@ -5,12 +5,12 @@
         <!-- Kiri: Pesan Selamat Datang -->
         <div class="welcome-section">
             <div class="welcome-content">
-                <h1 class="welcome-title">Selamat Datang di</h1>
+                <h1 class="welcome-title whitespace-nowrap">Selamat Datang di</h1>
                 <img src="{{ asset('storage/img/sijagad.png') }}" alt="Logo BNN" class="welcome-logo">
                 {{-- <h2 class="welcome-subtitle">SIJAGAD</h2> --}}
                 <p class="welcome-description">
-                    Sistem Informasi Jaringan Pemetaan Kawasan <br>Rawan Geospasial
-                    Berbasis Intelijen Dasar
+                    <span class="whitespace-nowrap">Sistem Informasi Jaringan Pemetaan Kawasan</span>
+                    <br>Rawan Geospasial Berbasis Intelijen Dasar
                 </p>
             </div>
         </div>

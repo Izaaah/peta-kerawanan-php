@@ -5,13 +5,13 @@
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
         </div>
         <div class="banner-right">
             <span class="profile-label"><a href="{{ route('profile.edit') }}">Profil</a></span>
             <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                 @csrf
-                <button type="submit" class="logout-btn">Logout</button>
+                <button type="submit" class="logout-btn">Keluar</button>
             </form>
         </div>
     </div>
@@ -25,10 +25,10 @@
 
     <!-- Tengah: Menu Navigasi -->
     <div class="menu-area">
-        <div class="menu-btn"><a href="{{ route('admin.dashboard') }}">Home</a>
+        <div class="menu-btn"><a href="{{ route('admin.dashboard') }}">Beranda</a>
         </div>
         <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data</a></div>
-        <div class="menu-btn"><a href="{{ route('admin.chart-jaringan') }}">Chart</a></div>
+        <div class="menu-btn"><a href="{{ route('admin.chart-jaringan') }}">Diagram</a></div>
         <div class="menu-btn dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>
             <ul class="dropdown-menu">
@@ -51,3 +51,16 @@
         </div>
     </div>
 </div>
+{{-- <script>
+    (function() {
+      const onScroll = () => {
+        if (window.scrollY > 10) {
+          document.body.classList.add('scrolled');
+        } else {
+          document.body.classList.remove('scrolled');
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+    </script> --}}
