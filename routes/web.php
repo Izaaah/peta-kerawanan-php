@@ -47,6 +47,7 @@ use App\Http\Controllers\operator\PenggiatNarkotikaOperatorController;
 use App\Http\Controllers\ThmController;
 use App\Http\Controllers\admin\ThmAdminController;
 use App\Http\Controllers\operator\ThmOperatorController;
+use App\Http\Controllers\admin\TitikMasukAdminController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -311,6 +312,16 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
     Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
     Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
+
+    Route::get('/titik-masuk', [TitikMasukAdminController::class, 'index'])->name('data.titik-masuk.index');
+    Route::get('/titik-masuk/create', [TitikMasukAdminController::class, 'create'])->name('data.titik-masuk.create');
+    Route::post('/titik-masuk', [TitikMasukAdminController::class, 'store'])->name('data.titik-masuk.store');
+    Route::get('/titik-masuk/{id}', [TitikMasukAdminController::class, 'show'])->name('data.titik-masuk.show');
+    Route::get('/titik-masuk/{id}/edit', [TitikMasukAdminController::class, 'edit'])->name('data.titik-masuk.edit');
+    Route::put('/titik-masuk/{id}', [TitikMasukAdminController::class, 'update'])->name('data.titik-masuk.update');
+    Route::delete('/titik-masuk/{id}', [TitikMasukAdminController::class, 'destroy'])->name('data.titik-masuk.destroy');
+    Route::get('/titik-masuk/template', [TitikMasukAdminController::class, 'template'])->name('data.titik-masuk.template');
+    Route::post('/titik-masuk/import', [TitikMasukAdminController::class, 'import'])->name('data.titik-masuk.import');
 
     Route::get('/lsm', [LsmAdminController::class, 'index'])->name('data.lsm.index');
     Route::get('/lsm/create', [LsmAdminController::class, 'create'])->name('data.lsm.create');
