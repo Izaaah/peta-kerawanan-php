@@ -320,6 +320,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::delete('/titik-masuk/{id}', [TitikMasukAdminController::class, 'destroy'])->name('data.titik-masuk.destroy');
     Route::get('/titik-masuk/template', [TitikMasukAdminController::class, 'template'])->name('data.titik-masuk.template');
     Route::post('/titik-masuk/import', [TitikMasukAdminController::class, 'import'])->name('data.titik-masuk.import');
+    Route::post('/titik-masuk/search-places', [TitikMasukAdminController::class, 'searchPlaces'])->name('data.titik-masuk.search-places');
+    Route::post('/titik-masuk/get-coordinates', [TitikMasukAdminController::class, 'getCoordinates'])->name('data.titik-masuk.get-coordinates');
 
     Route::get('/lsm', [LsmAdminController::class, 'index'])->name('data.lsm.index');
     Route::get('/lsm/create', [LsmAdminController::class, 'create'])->name('data.lsm.create');

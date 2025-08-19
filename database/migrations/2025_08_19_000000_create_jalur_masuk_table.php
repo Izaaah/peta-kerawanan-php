@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('kabupaten');
             $table->string('kecamatan');
             $table->string('kelurahan');
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->timestamps();
         });
     }

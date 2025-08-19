@@ -45,6 +45,8 @@ class TitikMasukAdminController extends Controller
             'kabupaten' => 'required|string|max:255',
             'kecamatan' => 'required|string|max:255',
             'kelurahan' => 'required|string|max:255',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
         try {
@@ -195,6 +197,63 @@ class TitikMasukAdminController extends Controller
             
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimpor file: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Search for places using Google Maps API
+     */
+    public function searchPlaces(Request $request)
+    {
+        $request->validate([
+            'query' => 'required|string|max:255'
+        ]);
+
+        try {
+            $googleMapsService = new \App\Services\GoogleMapsService();
+            $places = $googleMapsService->searchPlaces($request->query);
+            
+            return response()->json([
+                'success' => true,
+                'places' => $places
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error searching places: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get coordinates from address using Google Maps API
+     */
+    public function getCoordinates(Request $request)
+    {
+        $request->validate([
+            'address' => 'required|string|max:500'
+        ]);
+
+        try {
+            $googleMapsService = new \App\Services\GoogleMapsService();
+            $coordinates = $googleMapsService->getCoordinatesFromAddress($request->address);
+            
+            if ($coordinates) {
+                return response()->json([
+                    'success' => true,
+                    'coordinates' => $coordinates
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak dapat menemukan koordinat untuk alamat tersebut'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error getting coordinates: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

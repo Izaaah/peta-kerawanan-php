@@ -18,11 +18,15 @@ class JalurMasuk extends Model
         'kabupaten',
         'kecamatan',
         'kelurahan',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     /**
