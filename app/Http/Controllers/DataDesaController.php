@@ -157,20 +157,25 @@ class DataDesaController extends Controller
     public function getKecamatanList(Request $request)
     {
         $kabupaten = $request->kabupaten;
+        
+        // Decode URL encoded kabupaten name
+        $kabupaten = urldecode($kabupaten);
+        
         $query = \App\Models\DesaGeojson::query();
+        
+        // Apply basic filters to exclude invalid data
         $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
               ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
-              ->where('nama_desa', 'not like', '%/%')
               ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
               ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
-              ->where('kecamatan', 'not like', '%/%')
               ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
-              ->where('kabupaten', 'not like', '%/%');
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'");
+        
         if ($kabupaten) {
             $query->where('kabupaten', $kabupaten);
         }
-        $kecamatanList = $query->select('kecamatan')->distinct()->pluck('kecamatan');
+        
+        $kecamatanList = $query->select('kecamatan')->distinct()->pluck('kecamatan')->sort()->values();
         return response()->json($kecamatanList);
     }
 
@@ -178,23 +183,29 @@ class DataDesaController extends Controller
     {
         $kabupaten = $request->kabupaten;
         $kecamatan = $request->kecamatan;
+        
+        // Decode URL encoded parameters
+        $kabupaten = urldecode($kabupaten);
+        $kecamatan = urldecode($kecamatan);
+        
         $query = \App\Models\DesaGeojson::query();
+        
+        // Apply basic filters to exclude invalid data
         $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
               ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
-              ->where('nama_desa', 'not like', '%/%')
               ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
               ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
-              ->where('kecamatan', 'not like', '%/%')
               ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
-              ->where('kabupaten', 'not like', '%/%');
+              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'");
+        
         if ($kabupaten) {
             $query->where('kabupaten', $kabupaten);
         }
         if ($kecamatan) {
             $query->where('kecamatan', $kecamatan);
         }
-        $desaList = $query->select('nama_desa')->distinct()->pluck('nama_desa');
+        
+        $desaList = $query->select('nama_desa')->distinct()->pluck('nama_desa')->sort()->values();
         return response()->json($desaList);
     }
 }

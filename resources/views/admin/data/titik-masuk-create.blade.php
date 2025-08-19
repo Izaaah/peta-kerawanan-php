@@ -175,6 +175,7 @@
             if (kabupaten) {
                 const url = `/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`;
                 console.log('Fetching kecamatan from:', url);
+                console.log('Encoded kabupaten:', encodeURIComponent(kabupaten));
                 
                 fetch(url)
                     .then(response => {
@@ -210,6 +211,8 @@
             if (kecamatan && kabupaten) {
                 const url = `/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`;
                 console.log('Fetching desa from:', url);
+                console.log('Encoded kabupaten:', encodeURIComponent(kabupaten));
+                console.log('Encoded kecamatan:', encodeURIComponent(kecamatan));
                 
                 fetch(url)
                     .then(response => {

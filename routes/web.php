@@ -537,12 +537,11 @@ Route::get('/peta-tkp-residivis', function () {
 Route::get('/api/individu-count', [DataIndividuTskController::class, 'getIndividuCount'])->name('api.individu.count');
 
 Route::get('/api/kecamatan-list', function (Request $request) {
-    $kabupaten = $request->kabupaten;
+    $kabupaten = urldecode($request->kabupaten);
     $kecamatanList = \App\Models\DesaGeojson::query()
         ->where('kabupaten', $kabupaten)
-        ->where('kecamatan', 'not like', '%/%')
-        ->where('kecamatan', 'not like', '%area%')
-        ->where('kecamatan', 'not like', '%unknown%')
+        ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+        ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
         ->distinct()
         ->pluck('kecamatan')
         ->sort()
@@ -551,15 +550,14 @@ Route::get('/api/kecamatan-list', function (Request $request) {
 });
 
 Route::get('/api/desa-list', function (Request $request) {
-    $kabupaten = $request->kabupaten;
-    $kecamatan = $request->kecamatan;
+    $kabupaten = urldecode($request->kabupaten);
+    $kecamatan = urldecode($request->kecamatan);
     // console.log('Fetch desa-list', kabupaten, kecamatan);
     $desaList = \App\Models\DesaGeojson::query()
         ->where('kabupaten', $kabupaten)
         ->where('kecamatan', $kecamatan)
-        ->where('nama_desa', 'not like', '%/%')
-        ->where('nama_desa', 'not like', '%area%')
-        ->where('nama_desa', 'not like', '%unknown%')
+        ->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
+        ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
         ->distinct()
         ->pluck('nama_desa')
         ->sort()
@@ -569,9 +567,8 @@ Route::get('/api/desa-list', function (Request $request) {
 
 Route::get('/api/kabupaten-list', function (Request $request) {
     $kabupatenList = \App\Models\DesaGeojson::query()
-        ->where('kabupaten', 'not like', '%/%')
-        ->where('kabupaten', 'not like', '%area%')
-        ->where('kabupaten', 'not like', '%unknown%')
+        ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+        ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
         ->distinct()
         ->pluck('kabupaten')
         ->sort()
