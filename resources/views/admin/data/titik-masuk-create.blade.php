@@ -135,10 +135,19 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('Initializing titik-masuk dropdown functionality...');
+        
         // Fetch kabupaten list from API
         fetch('/admin/api/kabupaten-list')
-            .then(response => response.json())
+            .then(response => {
+                console.log('Kabupaten response:', response.status, response.ok);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Kabupaten data:', data);
                 const kabupatenSelect = document.getElementById('kabupaten');
                 kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
                 data.forEach(kab => {
@@ -147,10 +156,15 @@
                     option.textContent = kab;
                     kabupatenSelect.appendChild(option);
                 });
+                console.log('Kabupaten dropdown populated with', data.length, 'options');
+            })
+            .catch(error => {
+                console.error('Error fetching kabupaten:', error);
             });
 
         document.getElementById('kabupaten')?.addEventListener('change', function() {
             const kabupaten = this.value;
+            console.log('Kabupaten selected:', kabupaten);
             const kecamatanSelect = document.getElementById('kecamatan');
             const kelurahanSelect = document.getElementById('kelurahan');
 
@@ -159,42 +173,65 @@
             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
             if (kabupaten) {
-                fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
-                    .then(response => response.json())
+                const url = `/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`;
+                console.log('Fetching kecamatan from:', url);
+                
+                fetch(url)
+                    .then(response => {
+                        console.log('Kecamatan response:', response.status, response.ok);
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
-                        // Periksa jika data tersedia dan kemudian update select kecamatan
-                        console.log(data); // Debugging
+                        console.log('Kecamatan data:', data);
                         data.forEach(kecamatan => {
                             const option = document.createElement('option');
                             option.value = kecamatan;
                             option.textContent = kecamatan;
                             kecamatanSelect.appendChild(option);
                         });
+                        console.log('Kecamatan dropdown populated with', data.length, 'options');
                     })
-                    .catch(err => console.error('Error fetching kecamatan:', err));
+                    .catch(error => {
+                        console.error('Error fetching kecamatan:', error);
+                    });
             }
         });
 
         document.getElementById('kecamatan')?.addEventListener('change', function() {
             const kecamatan = this.value;
             const kabupaten = document.getElementById('kabupaten').value;
+            console.log('Kecamatan selected:', kecamatan, 'for kabupaten:', kabupaten);
             const kelurahanSelect = document.getElementById('kelurahan');
             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
             if (kecamatan && kabupaten) {
-                fetch(`/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`)
-                    .then(response => response.json())
+                const url = `/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`;
+                console.log('Fetching desa from:', url);
+                
+                fetch(url)
+                    .then(response => {
+                        console.log('Desa response:', response.status, response.ok);
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
-                        // Periksa jika data tersedia dan update select kelurahan
-                        console.log(data); // Debugging
-                        data.forEach(desa => {
+                        console.log('Desa data:', data);
+                        data.forEach(nama_desa => {
                             const option = document.createElement('option');
-                            option.value = desa;
-                            option.textContent = desa;
+                            option.value = nama_desa;
+                            option.textContent = nama_desa;
                             kelurahanSelect.appendChild(option);
                         });
+                        console.log('Desa dropdown populated with', data.length, 'options');
                     })
-                    .catch(err => console.error('Error fetching desa:', err));
+                    .catch(error => {
+                        console.error('Error fetching desa:', error);
+                    });
             }
         });
     });
