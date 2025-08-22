@@ -16,6 +16,8 @@ class JalurMasuk extends Model
         'nama_tempat',   // integer
         'provinsi',        // integer
         'kabupaten',        // integer
+        'kecamatan',        // integer
+        'kelurahan',        // integer
         'created_by',        // nullable user id
     ];
 
@@ -36,8 +38,8 @@ class JalurMasuk extends Model
         ];
     }
 
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(\App\Models\User::class, 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

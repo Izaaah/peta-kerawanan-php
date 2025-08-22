@@ -47,7 +47,6 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kabupaten</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kecamatan</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kelurahan</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dibuat Oleh</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                 </tr>
             </thead>
@@ -69,7 +68,6 @@
                     <td class="px-4 py-2">{{ $titikMasuk->kabupaten }}</td>
                     <td class="px-4 py-2">{{ $titikMasuk->kecamatan }}</td>
                     <td class="px-4 py-2">{{ $titikMasuk->kelurahan }}</td>
-                    <td class="px-4 py-2">{{ $titikMasuk->user->name ?? '-' }}</td>
                     <td class="px-4 py-2 flex gap-2">
                         <a href="{{ route('admin.data.titik-masuk.show', $titikMasuk->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
                         <a href="{{ route('admin.data.titik-masuk.edit', $titikMasuk->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>

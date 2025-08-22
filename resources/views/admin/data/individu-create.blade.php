@@ -57,22 +57,47 @@
 </div>
 @endif
 
-
                     <form action="{{ route('admin.data.individu.store') }}" method="POST" id="individuForm" enctype="multipart/form-data">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="md:col-span-2 mb-4">
-                                <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
-                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nama') }}">
-                            </div>
-                            <div class="mb-4">
                                 <label for="nik" class="block text-base font-medium text-black">NIK</label>
                                 <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nik') }}">
+                                <div id="nik-duplicate-notification" class="hidden mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <h3 class="text-sm font-medium text-yellow-800">NIK Terdeteksi Duplikat</h3>
+                                            <div class="mt-2 text-sm text-yellow-700">
+                                                <p id="duplicate-message"></p>
+                                                <div id="duplicate-data" class="mt-2 text-xs bg-white p-2 rounded border"></div>
+                                            </div>
+                                            <div class="mt-3 flex space-x-2">
+                                                <button type="button" id="submit-for-verification" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-yellow-800 bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                                                    <i class="fas fa-paper-plane mr-1"></i>
+                                                    Kirim untuk Verifikasi
+                                                </button>
+                                                <button type="button" id="clear-nik" class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                    <i class="fas fa-times mr-1"></i>
+                                                    Hapus NIK
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-4">
                                 <label for="nkk" class="block text-base font-medium text-black">Nomor KK</label>
                                 <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nkk') }}">
+                            </div>
+                            <div class="md:col-span-2 mb-4">
+                                <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
+                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nama') }}">
                             </div>
                             <!-- Input Dinamis Nomor Telepon -->
                             <div class="md:col-span-2 mb-4" id="telepon-wrapper">
@@ -359,552 +384,168 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('kabupaten')?.addEventListener('change', function() {
-            const kabupaten = this.value;
-            const kecamatanSelect = document.getElementById('kecamatan');
-            const kelurahanSelect = document.getElementById('kelurahan');
+    // Event listener untuk perubahan pada 'kabupaten'
+    document.getElementById('kabupaten')?.addEventListener('change', function() {
+        const kabupaten = this.value;
+        const kecamatanSelect = document.getElementById('kecamatan');
+        const kelurahanSelect = document.getElementById('kelurahan');
 
-            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
-            if (kabupaten) {
-                fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(kecamatan => {
-                            const option = document.createElement('option');
-                            option.value = kecamatan;
-                            option.textContent = kecamatan;
-                            kecamatanSelect.appendChild(option);
-                        });
+        if (kabupaten) {
+            fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(kecamatan => {
+                        const option = document.createElement('option');
+                        option.value = kecamatan;
+                        option.textContent = kecamatan;
+                        kecamatanSelect.appendChild(option);
                     });
-            }
-        });
+                });
+        }
+    });
 
-        document.getElementById('kecamatan')?.addEventListener('change', function() {
-            const kecamatan = this.value;
-            const kabupaten = document.getElementById('kabupaten').value;
-            const kelurahanSelect = document.getElementById('kelurahan');
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+    // Event listener untuk perubahan pada 'kecamatan'
+    document.getElementById('kecamatan')?.addEventListener('change', function() {
+        const kecamatan = this.value;
+        const kabupaten = document.getElementById('kabupaten').value;
+        const kelurahanSelect = document.getElementById('kelurahan');
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
-            if (kecamatan && kabupaten) {
-                fetch(`/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data); // debug
-                        data.forEach(nama_desa => {
-                            const option = document.createElement('option');
-                            option.value = nama_desa;
-                            option.textContent = nama_desa;
-                            kelurahanSelect.appendChild(option);
-                        });
+        if (kecamatan && kabupaten) {
+            fetch(`/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(nama_desa => {
+                        const option = document.createElement('option');
+                        option.value = nama_desa;
+                        option.textContent = nama_desa;
+                        kelurahanSelect.appendChild(option);
                     });
-            }
-        });
-
-        ['nik', 'nkk'].forEach(id => {
-            document.getElementById(id)?.addEventListener('input', function() {
-                this.value = this.value.replace(/\D/g, '').slice(0, 16);
-            });
-        });
-
-        // Dinamis input nomor telepon
-        function addTeleponFieldIfNeeded() {
-            const wrapper = document.getElementById('telepon-fields');
-            const rows = wrapper.querySelectorAll('.telepon-row');
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 telepon-row';
-                div.innerHTML = `<input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                <button type="button" class="hapus-telepon bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', addTeleponFieldIfNeeded);
-                div.querySelector('.hapus-telepon').addEventListener('click', function() {
-                    div.remove();
                 });
-            }
         }
-        // Event untuk input pertama
-        document.querySelector('#telepon-fields input').addEventListener('input', addTeleponFieldIfNeeded);
+    });
 
-        // Event hapus untuk input dinamis
-        document.getElementById('telepon-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-telepon')) {
-                e.target.closest('.telepon-row').remove();
-            }
-        });
+    // Fungsionalitas pencarian otomatis NIK
+    let nikCheckTimeout;
+    const nikInput = document.getElementById('nik');
+    const duplicateNotification = document.getElementById('nik-duplicate-notification');
+    const duplicateMessage = document.getElementById('duplicate-message');
+    const duplicateData = document.getElementById('duplicate-data');
+    const submitForVerificationBtn = document.getElementById('submit-for-verification');
+    const clearNikBtn = document.getElementById('clear-nik');
 
-        // Dinamis input no rekening
-        function addRekeningFieldIfNeeded() {
-            const wrapper = document.getElementById('rekening-fields');
-            const rows = wrapper.querySelectorAll('.rekening-row');
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 rekening-row';
-                div.innerHTML = `<input type="number" name="rekening[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                <button type="button" class="hapus-rekening bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', addRekeningFieldIfNeeded);
-                div.querySelector('.hapus-rekening').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event untuk input pertama rekening
-        document.querySelector('#rekening-fields input').addEventListener('input', addRekeningFieldIfNeeded);
+    nikInput.addEventListener('input', function() {
+        const nik = this.value.trim();
 
-        // Event hapus untuk input dinamis rekening
-        document.getElementById('rekening-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-rekening')) {
-                e.target.closest('.rekening-row').remove();
-            }
-        });
-
-        // Dinamis input no ewallet
-        function addEwalletFieldIfNeeded() {
-            const wrapper = document.getElementById('ewallet-fields');
-            const rows = wrapper.querySelectorAll('.ewallet-row');
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 ewallet-row';
-                div.innerHTML = `<input type="number" name="ewallet[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                <button type="button" class="hapus-ewallet bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', addEwalletFieldIfNeeded);
-                div.querySelector('.hapus-ewallet').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event untuk input pertama ewallet
-        document.querySelector('#ewallet-fields input').addEventListener('input', addEwalletFieldIfNeeded);
-
-        // Event hapus untuk input dinamis ewallet
-        document.getElementById('ewallet-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-ewallet')) {
-                e.target.closest('.ewallet-row').remove();
-            }
-        });
-
-        // Dinamis input nama keluarga lain + nik
-        function addKeluargaLainFieldIfNeeded() {
-            const wrapper = document.getElementById('keluarga-lain-fields');
-            const rows = wrapper.querySelectorAll('.keluarga-lain-row');
-            const lastNama = rows[rows.length - 1].querySelector('input[name="nama_keluarga_lain[]"]');
-            const lastNik = rows[rows.length - 1].querySelector('input[name="nik_keluarga_lain[]"]');
-            if ((lastNama.value.trim() !== '' || lastNik.value.trim() !== '') && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex flex-col md:flex-row gap-2 mt-1 keluarga-lain-row';
-                div.innerHTML = `<input type="text" name="nama_keluarga_lain[]" maxlength="100" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nama Keluarga Lain">
-                <input type="text" name="nik_keluarga_lain[]" maxlength="16" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="NIK Keluarga Lain">
-                <button type="button" class="hapus-keluarga-lain bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs self-start md:self-center">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input[name="nama_keluarga_lain[]"]').addEventListener('input', addKeluargaLainFieldIfNeeded);
-                div.querySelector('input[name="nik_keluarga_lain[]"]').addEventListener('input', addKeluargaLainFieldIfNeeded);
-                div.querySelector('.hapus-keluarga-lain').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event untuk input pertama keluarga lain
-        document.querySelector('#keluarga-lain-fields input[name="nama_keluarga_lain[]"]').addEventListener('input', addKeluargaLainFieldIfNeeded);
-        document.querySelector('#keluarga-lain-fields input[name="nik_keluarga_lain[]"]').addEventListener('input', addKeluargaLainFieldIfNeeded);
-
-        // Event hapus untuk input dinamis keluarga lain
-        document.getElementById('keluarga-lain-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-keluarga-lain')) {
-                e.target.closest('.keluarga-lain-row').remove();
-            }
-        });
-
-        // Dinamis input jenis narkotika
-        function addJenisNarkotikaFieldIfNeeded() {
-            const wrapper = document.getElementById('jenis-narkotika-fields');
-            const rows = wrapper.querySelectorAll('.jenis-narkotika-row');
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 jenis-narkotika-row';
-                div.innerHTML = `<input type="text" name="jenis_narkotika[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Jenis Narkotika">
-                <button type="button" class="hapus-jenis-narkotika bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', addJenisNarkotikaFieldIfNeeded);
-                div.querySelector('.hapus-jenis-narkotika').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event untuk input pertama jenis narkotika
-        document.querySelector('#jenis-narkotika-fields input').addEventListener('input', addJenisNarkotikaFieldIfNeeded);
-
-        // Event hapus untuk input dinamis jenis narkotika
-        document.getElementById('jenis-narkotika-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-jenis-narkotika')) {
-                e.target.closest('.jenis-narkotika-row').remove();
-            }
-        });
-
-        // Handle provinsi change
-        document.getElementById('provinsi').addEventListener('change', function() {
-            const isJatim = this.value === 'Jawa Timur';
-            document.getElementById('wilayah-jatim').classList.toggle('hidden', !isJatim);
-            document.getElementById('wilayah-lainnya').classList.toggle('hidden', isJatim);
-            // Set required attribute
-            document.getElementById('kabupaten').required = isJatim;
-            document.getElementById('kecamatan').required = isJatim;
-            document.getElementById('kelurahan').required = isJatim;
-            document.getElementById('provinsi_lain').required = !isJatim;
-            document.querySelector('input[name="kabupaten_lain"]').required = !isJatim;
-            document.querySelector('input[name="kecamatan_lain"]').required = !isJatim;
-            document.querySelector('input[name="kelurahan_lain"]').required = !isJatim;
-        });
-
-        // JS residivis tampilkan detail jika ya
-        function toggleResidivisDetail() {
-            const ya = document.getElementById('residivis-ya');
-            const tidak = document.getElementById('residivis-tidak');
-            const detail = document.getElementById('residivis-detail');
-            if (ya.checked) {
-                detail.classList.remove('hidden');
-                // Set required
-                detail.querySelectorAll('input').forEach(i => i.required = true);
-            } else {
-                detail.classList.add('hidden');
-                detail.querySelectorAll('input').forEach(i => i.required = false);
-            }
-        }
-        document.getElementById('residivis-ya').addEventListener('change', toggleResidivisDetail);
-        document.getElementById('residivis-tidak').addEventListener('change', toggleResidivisDetail);
-        // Inisialisasi
-        toggleResidivisDetail();
-
-        // Dinamis subfield residivis
-        function addDinamisFieldIfNeeded(wrapperId, rowClass, inputName, placeholder) {
-            const wrapper = document.getElementById(wrapperId);
-            const rows = wrapper.querySelectorAll('.' + rowClass);
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 ' + rowClass;
-                div.innerHTML = `<input type="text" name="${inputName}[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="${placeholder}">
-                <button type="button" class="hapus-${rowClass} bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', function() {
-                    addDinamisFieldIfNeeded(wrapperId, rowClass, inputName, placeholder);
-                });
-                div.querySelector(`.hapus-${rowClass}`).addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event dinamis untuk masing-masing subfield residivis
-        document.querySelector('#aph-m-fields input').addEventListener('input', function() {
-            addDinamisFieldIfNeeded('aph-m-fields', 'aph-m-row', 'aph_menangani', 'APH yang menangani');
-        });
-        document.getElementById('aph-m-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-aph-m-row')) {
-                e.target.closest('.aph-m-row').remove();
-            }
-        });
-        document.querySelector('#pasal-fields input').addEventListener('input', function() {
-            addDinamisFieldIfNeeded('pasal-fields', 'pasal-row', 'pasal_disangkakan', 'Pasal yang disangkakan');
-        });
-        document.getElementById('pasal-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-pasal-row')) {
-                e.target.closest('.pasal-row').remove();
-            }
-        });
-        // Dinamis subfield TKP: event dinamis tetap berjalan
-        function addTkpFieldIfNeeded() {
-            const wrapper = document.getElementById('tkp-fields');
-            const rows = wrapper.querySelectorAll('.tkp-row');
-            const lastProv = rows[rows.length - 1].querySelector('.tkp-provinsi');
-            const lastKab = rows[rows.length - 1].querySelector('.tkp-kabupaten');
-            const lastKec = rows[rows.length - 1].querySelector('.tkp-kecamatan');
-            const lastDesa = rows[rows.length - 1].querySelector('.tkp-desa');
-            const lastLokasi = rows[rows.length - 1].querySelector('input');
-            if ((lastProv.value || lastKab.value || lastKec.value || lastDesa.value || lastLokasi.value.trim() !== '') && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'tkp-row space-y-2 mt-1';
-                div.innerHTML = `
-                <select name=\"tkp_provinsi[]\" class=\"block w-full rounded-md border-gray-300 shadow-sm tkp-provinsi\">\n<option value=\"Jawa Timur\">Jawa Timur</option>\n<option value=\"lainnya\">Lainnya</option>\n</select>
-                <select name=\"tkp_kabupaten[]\" class=\"block w-full rounded-md border-gray-300 shadow-sm tkp-kabupaten\">\n<option value=\"\">Pilih Kabupaten</option>\n</select>
-                <select name=\"tkp_kecamatan[]\" class=\"block w-full rounded-md border-gray-300 shadow-sm tkp-kecamatan\">\n<option value=\"\">Kecamatan</option>\n</select>
-                <select name=\"tkp_desa[]\" class=\"block w-full rounded-md border-gray-300 shadow-sm tkp-desa\">\n<option value=\"\">Desa/Kelurahan</option>\n</select>
-                <input type=\"text\" name=\"tkp_lokasi[]\" class=\"block w-full rounded-md border-gray-300 shadow-sm\" placeholder=\"Detail Lokasi (opsional)\">
-                <button type=\"button\" class=\"hapus-tkp-row bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-8 h-8 flex items-center justify-center self-center\" title=\"Hapus\">\n<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\" /></svg>\n</button>`;
-                wrapper.appendChild(div);
-                // Fetch kabupaten list for this row
-                fetch('/api/kabupaten-list')
-                    .then(response => response.json())
-                    .then(data => {
-                        const kabupatenSelect = div.querySelector('.tkp-kabupaten');
-                        kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
-                        data.forEach(kab => {
-                            const option = document.createElement('option');
-                            option.value = kab;
-                            option.textContent = kab;
-                            kabupatenSelect.appendChild(option);
-                        });
-                    });
-                div.querySelector('input').addEventListener('input', addTkpFieldIfNeeded);
-                div.querySelector('.tkp-provinsi').addEventListener('change', function() {
-                    handleTkpProvinsiChange(div);
-                });
-                div.querySelector('.tkp-kabupaten').addEventListener('change', function() {
-                    handleTkpKabupatenChange(div);
-                });
-                div.querySelector('.tkp-kecamatan').addEventListener('change', function() {
-                    handleTkpKecamatanChange(div);
-                });
-                div.querySelector('.hapus-tkp-row').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event dinamis untuk input pertama TKP
-        (function() {
-            const firstTkp = document.querySelector('#tkp-fields .tkp-row');
-            if (firstTkp) {
-                // Fetch kabupaten list for first row
-                fetch('/api/kabupaten-list')
-                    .then(response => response.json())
-                    .then(data => {
-                        const kabupatenSelect = firstTkp.querySelector('.tkp-kabupaten');
-                        kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
-                        data.forEach(kab => {
-                            const option = document.createElement('option');
-                            option.value = kab;
-                            option.textContent = kab;
-                            kabupatenSelect.appendChild(option);
-                        });
-                    });
-                firstTkp.querySelector('input').addEventListener('input', addTkpFieldIfNeeded);
-                firstTkp.querySelector('.tkp-provinsi').addEventListener('change', function() {
-                    handleTkpProvinsiChange(firstTkp);
-                });
-                firstTkp.querySelector('.tkp-kabupaten').addEventListener('change', function() {
-                    handleTkpKabupatenChange(firstTkp);
-                });
-                firstTkp.querySelector('.tkp-kecamatan').addEventListener('change', function() {
-                    handleTkpKecamatanChange(firstTkp);
-                });
-            }
-        })();
-        // Handler dinamis wilayah TKP (AJAX sama seperti wilayah utama)
-        function handleTkpProvinsiChange(row) {
-            const prov = row.querySelector('.tkp-provinsi').value;
-            const kabupatenSelect = row.querySelector('.tkp-kabupaten');
-            const kecamatanSelect = row.querySelector('.tkp-kecamatan');
-            const desaSelect = row.querySelector('.tkp-desa');
-            if (prov === 'Jawa Timur') {
-                kabupatenSelect.disabled = false;
-                kecamatanSelect.disabled = false;
-                desaSelect.disabled = false;
-            } else {
-                kabupatenSelect.value = '';
-                kecamatanSelect.value = '';
-                desaSelect.value = '';
-                kabupatenSelect.disabled = true;
-                kecamatanSelect.disabled = true;
-                desaSelect.disabled = true;
-            }
+        if (nikCheckTimeout) {
+            clearTimeout(nikCheckTimeout);
         }
 
-        function handleTkpKabupatenChange(row) {
-            const kabupaten = row.querySelector('.tkp-kabupaten').value;
-            const kecamatanSelect = row.querySelector('.tkp-kecamatan');
-            const desaSelect = row.querySelector('.tkp-desa');
-            kecamatanSelect.innerHTML = '<option value="">Kecamatan</option>';
-            desaSelect.innerHTML = '<option value="">Desa/Kelurahan</option>';
-            if (kabupaten) {
-                fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(kecamatan => {
-                            const option = document.createElement('option');
-                            option.value = kecamatan;
-                            option.textContent = kecamatan;
-                            kecamatanSelect.appendChild(option);
-                        });
-                        // Attach event handler for kecamatan change (again, in case of dynamic rows)
-                        kecamatanSelect.removeEventListener('change', kecamatanSelect._tkpChangeHandler);
-                        kecamatanSelect._tkpChangeHandler = function() {
-                            handleTkpKecamatanChange(row);
-                        };
-                        kecamatanSelect.addEventListener('change', kecamatanSelect._tkpChangeHandler);
-                    });
-            }
+        if (nik.length === 0 || nik.length < 16) {
+            duplicateNotification.classList.add('hidden');
+            return;
         }
 
-        function handleTkpKecamatanChange(row) {
-            const kabupaten = row.querySelector('.tkp-kabupaten').value;
-            const kecamatan = row.querySelector('.tkp-kecamatan').value;
-            const desaSelect = row.querySelector('.tkp-desa');
-            desaSelect.innerHTML = '<option value="">Desa/Kelurahan</option>';
-            if (kabupaten && kecamatan) {
-                fetch(`/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(nama_desa => {
-                            const option = document.createElement('option');
-                            option.value = nama_desa;
-                            option.textContent = nama_desa;
-                            desaSelect.appendChild(option);
-                        });
-                    });
-            }
-        }
-        // Event hapus untuk input dinamis TKP
-        document.getElementById('tkp-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-tkp-row')) {
-                e.target.closest('.tkp-row').remove();
-            }
-        });
+        nikCheckTimeout = setTimeout(() => {
+            checkNikDuplicate(nik);
+        }, 1000);
+    });
 
-        // Dinamis input vonis
-        function addVonisFieldIfNeeded() {
-            const wrapper = document.getElementById('vonis-fields');
-            const rows = wrapper.querySelectorAll('.vonis-row');
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 vonis-row';
-                div.innerHTML = `<input type="text" name="vonis[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Vonis">
-                <button type="button" class="hapus-vonis bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', addVonisFieldIfNeeded);
-                div.querySelector('.hapus-vonis').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event untuk input pertama vonis
-        document.querySelector('#vonis-fields input').addEventListener('input', addVonisFieldIfNeeded);
-
-        // Event hapus untuk input dinamis vonis
-        document.getElementById('vonis-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-vonis')) {
-                e.target.closest('.vonis-row').remove();
-            }
-        });
-
-        // Dinamis input lapas akhir
-        function addLapasFieldIfNeeded() {
-            const wrapper = document.getElementById('lapas-fields');
-            const rows = wrapper.querySelectorAll('.lapas-row');
-            const lastInput = rows[rows.length - 1].querySelector('input');
-            if (lastInput.value.trim() !== '' && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 lapas-row';
-                div.innerHTML = `<input type="text" name="lapas_akhir[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Lapas akhir">
-                <button type="button" class="hapus-lapas bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs">Hapus</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input').addEventListener('input', addLapasFieldIfNeeded);
-                div.querySelector('.hapus-lapas').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Event untuk input pertama lapas akhir
-        document.querySelector('#lapas-fields input').addEventListener('input', addLapasFieldIfNeeded);
-
-        // Event hapus untuk input dinamis lapas akhir
-        document.getElementById('lapas-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-lapas')) {
-                e.target.closest('.lapas-row').remove();
-            }
-        });
-
-        // Dinamis input keterangan + upload foto (ikon upload saja) + preview
-        function addFotoRowIfNeeded() {
-            const wrapper = document.getElementById('foto-fields');
-            const rows = wrapper.querySelectorAll('.foto-row');
-            const lastKet = rows[rows.length - 1].querySelector('input[type="text"]');
-            const lastFile = rows[rows.length - 1].querySelector('input[type="file"]');
-            if ((lastKet.value.trim() !== '' || lastFile.value) && rows.length < 10) {
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-2 mt-1 foto-row';
-                div.innerHTML = `
-                <input type=\"text\" name=\"keterangan_foto[]\" maxlength=\"100\" class=\"block w-40 rounded-md border-gray-300 shadow-sm\" placeholder=\"Keterangan Foto\">
-                <button type=\"button\" class=\"upload-foto-btn flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full border border-gray-300\" title=\"Upload Foto\">\n<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5 text-gray-500\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12\" /></svg>\n</button>
-                <input type=\"file\" name=\"foto[]\" accept=\"image/*\" class=\"hidden foto-input\">
-                <img src=\"\" alt=\"Preview\" class=\"hidden w-32 h-32 object-cover rounded-md border border-gray-200 foto-preview\">
-                <button type=\"button\" class=\"hapus-foto bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-10 h-10 flex items-center justify-center\" title=\"Hapus\">\n<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\" /></svg>\n</button>`;
-                wrapper.appendChild(div);
-                div.querySelector('input[type="text"]').addEventListener('input', addFotoRowIfNeeded);
-                div.querySelector('input[type="file"]').addEventListener('change', function(e) {
-                    addFotoRowIfNeeded();
-                    handleFotoPreview(e);
-                });
-                div.querySelector('.upload-foto-btn').addEventListener('click', function(e) {
-                    div.querySelector('input[type="file"]').click();
-                });
-                div.querySelector('.hapus-foto').addEventListener('click', function() {
-                    div.remove();
-                });
-            }
-        }
-        // Preview foto
-        function handleFotoPreview(e) {
-            const input = e.target;
-            const img = input.closest('.foto-row').querySelector('.foto-preview');
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    img.src = ev.target.result;
-                    img.classList.remove('hidden');
-                };
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                img.src = '';
-                img.classList.add('hidden');
-            }
-        }
-        // Event untuk input pertama
-        document.querySelector('#foto-fields input[type="text"]').addEventListener('input', addFotoRowIfNeeded);
-        document.querySelector('#foto-fields input[type="file"]').addEventListener('change', function(e) {
-            addFotoRowIfNeeded();
-            handleFotoPreview(e);
-        });
-        document.querySelector('#foto-fields .upload-foto-btn').addEventListener('click', function(e) {
-            this.parentElement.querySelector('input[type="file"]').click();
-        });
-        // Event hapus untuk input dinamis foto
-        document.getElementById('foto-fields').addEventListener('click', function(e) {
-            if (e.target.classList.contains('hapus-foto')) {
-                e.target.closest('.foto-row').remove();
-            }
-        });
-
-        // Fetch kabupaten list from API
-        fetch('/api/kabupaten-list')
+    function checkNikDuplicate(nik) {
+        fetch(`/admin/api/check-nik?nik=${encodeURIComponent(nik)}`)
             .then(response => response.json())
             .then(data => {
-                const kabupatenSelect = document.getElementById('kabupaten');
-                kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
-                data.forEach(kab => {
-                    const option = document.createElement('option');
-                    option.value = kab;
-                    option.textContent = kab;
-                    kabupatenSelect.appendChild(option);
-                });
+                if (data.exists) {
+                    showDuplicateNotification(data);
+                } else {
+                    hideDuplicateNotification();
+                }
+            })
+            .catch(error => {
+                console.error('Error checking NIK:', error);
             });
+    }
 
-        // Debug submit form
-        document.getElementById('individuForm').addEventListener('submit', function(e) {
-            console.log('Form submitted!');
-            // Tampilkan semua data form yang akan dikirim
-            const formData = new FormData(this);
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
+    function showDuplicateNotification(data) {
+        duplicateMessage.textContent = data.message;
+
+        const existingData = data.data;
+        duplicateData.innerHTML = `
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <div><strong>Nama:</strong> ${existingData.nama}</div>
+                <div><strong>NIK:</strong> ${existingData.nik}</div>
+                <div><strong>NKK:</strong> ${existingData.nkk}</div>
+                <div><strong>Status:</strong> ${existingData.status}</div>
+                <div><strong>Peran:</strong> ${existingData.peran_jaringan}</div>
+                <div><strong>Residivis:</strong> ${existingData.residivis ? 'Ya' : 'Tidak'}</div>
+                <div><strong>Alamat:</strong> ${existingData.alamat}</div>
+                <div><strong>Lokasi:</strong> ${existingData.kecamatan}, ${existingData.kabupaten}</div>
+            </div>
+        `;
+
+        duplicateNotification.classList.remove('hidden');
+        duplicateNotification.dataset.existingData = JSON.stringify(data.data);
+    }
+
+    function hideDuplicateNotification() {
+        duplicateNotification.classList.add('hidden');
+        delete duplicateNotification.dataset.existingData;
+    }
+
+    // Menangani tombol kirim untuk verifikasi
+    submitForVerificationBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah submit default form
+
+        const existingData = JSON.parse(duplicateNotification.dataset.existingData || '{}');
+        const formData = new FormData(document.getElementById('individuForm'));
+
+        // Menambahkan data yang ada ke form untuk verifikasi
+        formData.append('existing_data', JSON.stringify(existingData));
+        formData.append('submit_for_verification', '1');
+
+        // Menambahkan logika untuk menghapus atribut 'required' pada field tertentu
+        const fieldsToUnrequire = [
+            'nama', 'nkk', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'peran_jaringan', 'skala_kelas', 'status'
+        ];
+
+        fieldsToUnrequire.forEach(function(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.removeAttribute('required'); // Menghapus atribut required
             }
         });
+
+        // Kirim form
+        document.getElementById('individuForm').submit();
     });
+
+    // Menangani tombol hapus NIK
+    clearNikBtn.addEventListener('click', function() {
+        nikInput.value = '';
+        hideDuplicateNotification();
+        nikInput.focus();
+    });
+
+    // Fetch kabupaten list from API
+    fetch('/api/kabupaten-list')
+        .then(response => response.json())
+        .then(data => {
+            const kabupatenSelect = document.getElementById('kabupaten');
+            kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
+            data.forEach(kab => {
+                const option = document.createElement('option');
+                option.value = kab;
+                option.textContent = kab;
+                kabupatenSelect.appendChild(option);
+            });
+        });
+});
+
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Trigger input file saat tombol diklik

@@ -286,7 +286,9 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/titik-masuk/{id}/edit', [TitikMasukController::class, 'edit'])->name('data.titik-masuk.edit');
     Route::put('/titik-masuk/{id}', [TitikMasukController::class, 'update'])->name('data.titik-masuk.update');
     Route::delete('/titik-masuk/{id}', [TitikMasukController::class, 'destroy'])->name('data.titik-masuk.destroy');
-
+    Route::get('/titik-masuk/import', [TitikMasukController::class, 'import'])->name('data.titik-masuk.import');
+    Route::get('/titik-masuk/template', [TitikMasukController::class, 'template'])->name('data.titik-masuk.template');
+    Route::post('/titik-masuk/import', [TitikMasukController::class, 'import'])->name('data.titik-masuk.import');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -321,6 +323,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::delete('/data-individu/{id}', [DataIndividuTskAdminController::class, 'destroy'])->name('data.individu.destroy');
     Route::get('/api/individu-data', [DataIndividuTskAdminController::class, 'getData'])->name('api.individu.data');
     Route::get('/api/individu-export', [DataIndividuTskAdminController::class, 'export'])->name('api.individu.export');
+    Route::get('/data-individu/verification', [DataIndividuTskAdminController::class, 'verification'])->name('data.individu.verification');    Route::get('/api/check-nik', [DataIndividuTskAdminController::class, 'checkNik'])->name('api.check.nik');
 
     Route::get('/data-desa', [DataDesaController::class, 'index'])->name('data.desa');
     Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');
@@ -457,9 +460,6 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/titik-masuk/import', [TitikMasukAdminController::class, 'import'])->name('data.titik-masuk.import');
     Route::get('/titik-masuk/template', [TitikMasukAdminController::class, 'template'])->name('data.titik-masuk.template');
 
-    Route::get('/api/kecamatan-list', [TitikMasukAdminController::class, 'getKecamatanList'])->name('api.kecamatan.list');
-    Route::get('/api/desa-list', [TitikMasukAdminController::class, 'getDesaList'])->name('api.desa.list');
-
     // Data Pendukung Routes
     Route::get('/data-pendukung', function () {
         return view('admin.data.pendukung');
@@ -493,9 +493,6 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
 // Operator Routes
 Route::middleware(['auth', 'verified'])->prefix('operator')->name('operator.')->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return view('operator.dashboard');
-    // })->name('dashboard');
     Route::get('/dashboard', [OperatorDashboardController::class, 'index'])->name('dashboard');
     Route::get('/data', function () {
         return view('operator.data.index');

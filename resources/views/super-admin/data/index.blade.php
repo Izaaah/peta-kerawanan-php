@@ -23,8 +23,38 @@
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-sky-400 mb-3 shadow mx-auto">
                     <i class="fas fa-user-tie text-white text-2xl"></i>
                 </div>
-                <div class="font-semibold text-blue-700 mb-1">Data Individu TSK</div>
+                <div class="font-semibold text-blue-700 mb-1">Data Individu</div>
                 <div class="text-xs text-gray-500">Kelola data tersangka individu</div>
+            </div>
+        </a>
+        <!-- Card: Data Titik Masuk -->
+        <a href="{{ route('super-admin.data.titik-masuk.index') }}" class="block group" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow mx-auto">
+                    <i class="fas fa-bus-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-blue-800 mb-1">Data Jasa Titik Masuk</div>
+                <div class="text-xs text-gray-500">Kelola data titik masuk</div>
+            </div>
+        </a>
+        <!-- Card: Data THM dan Manager -->
+        <a href="{{ route('super-admin.data.thm.index') }}" class="block group" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-fuchsia-700 mb-1">Data Tempat Hiburan Malam</div>
+                <div class="text-xs text-gray-500">Kelola data Tempat Hiburan Malam dan manager</div>
+            </div>
+        </a>
+        <!-- Card: Data Jaringan di Rutan dan Lapas -->
+        <a href="{{ route('super-admin.data.rutanlapas.index') }}" class="block group">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-network-wired text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-cyan-700 mb-1">Data Jaringan Rutan/Lapas</div>
+                <div class="text-xs text-gray-500">Kelola data jaringan rutan/lapas</div>
             </div>
         </a>
         <!-- Card: Data LSM Narkotika -->
@@ -65,16 +95,6 @@
                 </div>
                 <div class="font-semibold text-indigo-700 mb-1">Data Farmasi Prekursor</div>
                 <div class="text-xs text-gray-500">Kelola data perusahaan/farmasi prekursor</div>
-            </div>
-        </a>
-        <!-- Card: Data Jaringan di Rutan dan Lapas -->
-        <a href="{{ route('super-admin.data.rutanlapas.index') }}" class="block group">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-500 mb-3 shadow mx-auto">
-                    <i class="fas fa-network-wired text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-cyan-700 mb-1">Input Data Jaringan Rutan/Lapas</div>
-                <div class="text-xs text-gray-500">Input data jaringan rutan/lapas</div>
             </div>
         </a>
         <!-- Card: Data Objek Vital -->
@@ -127,16 +147,6 @@
                 <div class="text-xs text-gray-500">Kelola data jasa transportasi</div>
             </div>
         </a>
-        <!-- Card: Data Jasa Titik Masuk -->
-        <a href="{{ route('super-admin.data.titik-masuk.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow mx-auto">
-                    <i class="fas fa-bus-alt text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-blue-800 mb-1">Data Titik Masuk</div>
-                <div class="text-xs text-gray-500">Kelola data titik masuk</div>
-            </div>
-        </a>
         <!-- Card: Data Penginapan (Hotel & Kost) -->
         <a href="{{ route('super-admin.data.penginapan.index') }}" class="block group" tabindex="-1">
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
@@ -145,16 +155,6 @@
                 </div>
                 <div class="font-semibold text-pink-800 mb-1">Data Penginapan</div>
                 <div class="text-xs text-gray-500">Kelola data penginapan</div>
-            </div>
-        </a>
-        <!-- Card: Data THM dan Manager -->
-        <a href="{{ route('super-admin.data.thm.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow mx-auto">
-                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-fuchsia-700 mb-1">Data THM & Manager</div>
-                <div class="text-xs text-gray-500">Kelola data THM dan manager</div>
             </div>
         </a>
         <!-- Card: Data Daerah Penyalahguna -->

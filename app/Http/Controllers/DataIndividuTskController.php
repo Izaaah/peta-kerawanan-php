@@ -21,9 +21,8 @@ class DataIndividuTskController extends Controller
         ];
 
         $sampleData = DataIndividuTsk::with('desaGeojson')
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
+        ->orderBy('created_at', 'desc')
+        ->paginate(15);
 
         $kabupatenList = DesaGeojson::getKabupatenList();
         $kecamatanList = DesaGeojson::getKecamatanList();

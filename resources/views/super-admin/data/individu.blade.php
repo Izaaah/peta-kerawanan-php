@@ -116,9 +116,9 @@
                     </tr>
                 </thead>
                 <tbody id="individuTableBody" class="bg-white divide-y divide-gray-200">
-                    @foreach($sampleData as $index => $individu)
+                    @foreach($sampleData as $i => $individu)
                     <tr>
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
+                        <td class="px-4 py-2">{{ $sampleData->firstItem() + $i }}</td>
                         <td class="px-4 py-2">
                             <div class="font-semibold text-gray-800">{{ $individu->nama }}</div>
                             <div class="text-xs text-gray-500">{{ $individu->nik }}</div>
@@ -170,17 +170,9 @@
             </table>
         </div>
         <!-- Pagination -->
-        <div class="flex justify-between items-center mt-4">
-            <div class="text-sm text-gray-500">
-                Menampilkan {{ $sampleData->count() }} dari {{ $stats['total_individu'] ?? 0 }} data
-            </div>
-            <nav aria-label="Page navigation">
-                <ul class="inline-flex -space-x-px">
-                    <li><span class="px-3 py-1 rounded-l bg-gray-200 text-gray-500">Previous</span></li>
-                    <li><span class="px-3 py-1 bg-blue-600 text-white">1</span></li>
-                    <li><span class="px-3 py-1 rounded-r bg-gray-200 text-gray-500">Next</span></li>
-                </ul>
-            </nav>
+        <div class="mt-4">
+            <!-- Previous and Next buttons will appear automatically with pagination -->
+            {{ $sampleData->links() }}
         </div>
     </div>
 </div>
@@ -196,7 +188,7 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-4">
+            {{-- <div class="modal-body p-4">
                 <div class="text-center mb-3">
                     <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                         <i class="fas fa-trash fa-2x text-danger"></i>
@@ -204,8 +196,8 @@
                     <h6 class="fw-bold text-gray-800">Hapus Data Individu TSK?</h6>
                     <p class="text-muted mb-0">Data yang dihapus tidak dapat dikembalikan!</p>
                 </div>
-            </div>
-            <div class="modal-footer border-0">
+            </div> --}}
+            {{-- <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>Batal
                 </button>
@@ -216,7 +208,7 @@
                         <i class="fas fa-trash me-2"></i>Hapus
                     </button>
                 </form>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

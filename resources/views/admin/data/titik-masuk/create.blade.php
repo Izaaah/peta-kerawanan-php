@@ -8,7 +8,7 @@
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Data Titik Masuk</h1>
             <p class="text-sm text-gray-500">Form untuk input data tempat titik masuk</p>
-       </div>
+        </div>
         <a href="{{ route('admin.data.titik-masuk.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>Kembali
         </a>
@@ -66,7 +66,7 @@
                         </div>
                         <div>
                             <label for="kelurahan" class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa <span class="text-red-500">*</span></label>
-                           <select name="kelurahan" id="kelurahan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <select name="kelurahan" id="kelurahan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Pilih Kelurahan/Desa</option>
                             </select>
                         </div>
@@ -88,9 +88,8 @@
                     <h6 class="font-semibold text-blue-700 mb-2"><i class="fas fa-info-circle mr-2"></i>Informasi</h6>
                     <ul class="list-disc list-inside text-sm text-blue-800 space-y-1">
                         <li>Pastikan semua data tempat transportasi yang diinput sudah benar</li>
-                        <li>Nama pihak dan nomor HP harus valid</li>
                         <li>Data digunakan untuk keperluan verifikasi dan pelaporan</li>
-                   </ul>
+                    </ul>
                 </div>
             </div>
             <div class="mt-4">
@@ -136,7 +135,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Initializing titik-masuk dropdown functionality...');
-      
+
         // Fetch kabupaten list from API
         fetch('/admin/api/kabupaten-list')
             .then(response => {
@@ -175,7 +174,8 @@
             if (kabupaten) {
                 const url = `/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`;
                 console.log('Fetching kecamatan from:', url);
-                
+                console.log('Encoded kabupaten:', encodeURIComponent(kabupaten));
+
                 fetch(url)
                     .then(response => {
                         console.log('Kecamatan response:', response.status, response.ok);
@@ -206,13 +206,16 @@
             console.log('Kecamatan selected:', kecamatan, 'for kabupaten:', kabupaten);
             const kelurahanSelect = document.getElementById('kelurahan');
             kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+
             if (kecamatan && kabupaten) {
                 const url = `/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`;
                 console.log('Fetching desa from:', url);
-                
+                console.log('Encoded kabupaten:', encodeURIComponent(kabupaten));
+                console.log('Encoded kecamatan:', encodeURIComponent(kecamatan));
+
                 fetch(url)
                     .then(response => {
-                       console.log('Desa response:', response.status, response.ok);
+                        console.log('Desa response:', response.status, response.ok);
                         if (!response.ok) {
                             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                         }

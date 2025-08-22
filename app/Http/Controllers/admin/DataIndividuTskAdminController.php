@@ -70,18 +70,18 @@ class DataIndividuTskAdminController extends Controller
     }
 
     public function getIndividuCount(Request $request)
-{
-    $kabupaten = $request->kabupaten;
-    $kecamatan = $request->kecamatan;
-    $desa = $request->desa;
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $desa = $request->desa;
 
-    $count = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
-        ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
-        ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
-        ->count();
+        $count = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+            ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
+            ->count();
 
-    return response()->json(['count' => $count]);
-}
+        return response()->json(['count' => $count]);
+    }
 
     public function create()
     {
@@ -94,24 +94,18 @@ class DataIndividuTskAdminController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
+        // Check if this is a verification submission first
+        $isVerificationSubmission = $request->has('submit_for_verification');
+
+        // Define validation rules based on submission type
+        $validationRules = [
             'nik' => 'required|string|max:20',
-            'nkk' => 'required|string|max:20',
-            'provinsi' => 'required|string|max:100',
-            'kabupaten' => 'required|string|max:100',
-            'kecamatan' => 'required|string|max:100',
-            'kelurahan' => 'required|string|max:100',
-            'alamat' => 'required|string',
             'nama_ayah' => 'nullable|string|max:255',
             'nik_ayah' => 'nullable|string|max:20',
             'nama_ibu' => 'nullable|string|max:255',
             'nik_ibu' => 'nullable|string|max:20',
-            'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
             'modus_operasi' => 'nullable|string',
             'jenis_narkotika' => 'nullable', // array/string
-            'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
-            'status' => 'required|in:Napi,Non napi',
             'residivis' => 'nullable|boolean',
             'sumber_informasi' => 'nullable|in:informan,analisa sosmed,analisa aliran dana',
             // relasi
@@ -129,31 +123,90 @@ class DataIndividuTskAdminController extends Controller
             'keterangan_foto' => 'nullable|array',
             'foto' => 'nullable|array',
             'foto.*' => 'nullable|file|image|max:2048',
-        ]);
+        ];
+
+        // Add required fields only if not verification submission
+        if (!$isVerificationSubmission) {
+            $validationRules = array_merge($validationRules, [
+                'nama' => 'required|string|max:255',
+                'nkk' => 'required|string|max:20',
+                'provinsi' => 'required|string|max:100',
+                'kabupaten' => 'required|string|max:100',
+                'kecamatan' => 'required|string|max:100',
+                'kelurahan' => 'required|string|max:100',
+                'alamat' => 'required|string',
+                'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
+                'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
+                'status' => 'required|in:Napi,Non napi',
+            ]);
+        } else {
+            // For verification submission, make fields optional
+            $validationRules = array_merge($validationRules, [
+                'nama' => 'nullable|string|max:255',
+                'nkk' => 'nullable|string|max:20',
+                'provinsi' => 'nullable|string|max:100',
+                'kabupaten' => 'nullable|string|max:100',
+                'kecamatan' => 'nullable|string|max:100',
+                'kelurahan' => 'nullable|string|max:100',
+                'alamat' => 'nullable|string',
+                'peran_jaringan' => 'nullable|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
+                'skala_kelas' => 'nullable|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
+                'status' => 'nullable|in:Napi,Non napi',
+            ]);
+        }
+
+        $request->validate($validationRules);
 
         // Prepare data for duplicate check
         $data = [
-            'nama' => $request->nama,
+            'nama' => $request->nama ?? '',
             'nik' => $request->nik,
-            'nkk' => $request->nkk,
-            'provinsi' => $request->provinsi,
-            'kabupaten' => $request->kabupaten,
-            'kecamatan' => $request->kecamatan,
-            'kelurahan' => $request->kelurahan,
-            'alamat' => $request->alamat,
+            'nkk' => $request->nkk ?? '',
+            'provinsi' => $request->provinsi ?? '',
+            'kabupaten' => $request->kabupaten ?? '',
+            'kecamatan' => $request->kecamatan ?? '',
+            'kelurahan' => $request->kelurahan ?? '',
+            'alamat' => $request->alamat ?? '',
             'nama_ayah' => $request->nama_ayah,
             'nik_ayah' => $request->nik_ayah,
             'nama_ibu' => $request->nama_ibu,
             'nik_ibu' => $request->nik_ibu,
-            'peran_jaringan' => $request->peran_jaringan,
+            'peran_jaringan' => $request->peran_jaringan ?? '',
             'modus_operasi' => $request->modus_operasi,
-            'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : $request->jenis_narkotika,
-            'skala_kelas' => $request->skala_kelas,
-            'status' => $request->status,
+            'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : ($request->jenis_narkotika ?? ''),
+            'skala_kelas' => $request->skala_kelas ?? '',
+            'status' => $request->status ?? '',
             'residivis' => $request->has('residivis'),
             'sumber_informasi' => $request->sumber_informasi,
             'created_by' => request()->user()->id,
         ];
+
+        // Check if this is a verification submission
+        if ($isVerificationSubmission) {
+            $existingData = [];
+            if ($request->filled('existing_data')) {
+                $existingData = json_decode($request->existing_data, true);
+            }
+
+            // Filter out empty values from new data for verification
+            $newDataForVerification = array_filter($data, function($value) {
+                return $value !== '' && $value !== null;
+            });
+
+            // Create verification record manually
+            \App\Models\DataVerification::create([
+                'table_name' => 'data_individu_tsk',
+                'data_id' => $existingData['id'] ?? 0,
+                'old_data' => json_encode($existingData),
+                'new_data' => json_encode($newDataForVerification),
+                'status' => 'pending',
+                'admin_id' => request()->user()->id,
+            ]);
+
+            return redirect()->back()
+                ->with('success', 'Data telah dikirim untuk verifikasi Super Admin. Data akan ditinjau dan diproses.')
+                ->withInput();
+        }
 
         // Check for duplicates
         $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
@@ -355,7 +408,7 @@ class DataIndividuTskAdminController extends Controller
             $individu = DataIndividuTsk::findOrFail($id);
             $individu->delete();
 
-                return redirect()->route('admin.data.individu')
+            return redirect()->route('admin.data.individu')
                 ->with('success', 'Data individu TSK berhasil dihapus');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -490,5 +543,48 @@ class DataIndividuTskAdminController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function checkNik(Request $request)
+    {
+        $nik = $request->query('nik');
+
+        if (!$nik || strlen($nik) !== 16) {
+            return response()->json([
+                'exists' => false,
+                'message' => 'NIK harus 16 digit'
+            ]);
+        }
+
+        $existingIndividu = DataIndividuTsk::where('nik', $nik)->first();
+
+        if ($existingIndividu) {
+            return response()->json([
+                'exists' => true,
+                'message' => 'NIK sudah terdaftar dalam sistem',
+                'data' => [
+                    'id' => $existingIndividu->id,
+                    'nama' => $existingIndividu->nama,
+                    'nik' => $existingIndividu->nik,
+                    'nkk' => $existingIndividu->nkk,
+                    'provinsi' => $existingIndividu->provinsi,
+                    'kabupaten' => $existingIndividu->kabupaten,
+                    'kecamatan' => $existingIndividu->kecamatan,
+                    'kelurahan' => $existingIndividu->kelurahan,
+                    'alamat' => $existingIndividu->alamat,
+                    'status' => $existingIndividu->status,
+                    'peran_jaringan' => $existingIndividu->peran_jaringan,
+                    'residivis' => $existingIndividu->residivis,
+                    'jenis_narkotika' => $existingIndividu->jenis_narkotika,
+                    'skala_kelas' => $existingIndividu->skala_kelas,
+                    'sumber_informasi' => $existingIndividu->sumber_informasi,
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'exists' => false,
+            'message' => 'NIK belum terdaftar'
+        ]);
     }
 }

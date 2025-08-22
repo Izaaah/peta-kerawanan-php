@@ -34,7 +34,7 @@
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
                 <li><a href="{{ route('peta-penyalahgunaan.tkp') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
-                <li><a href="">Peta Kawasan<br>Rawan Geospasial</a></li>
+                <li><a href="">Peta Kerawanan<br>Titik Masuk</a></li>
             </ul>
         </div>
         {{-- <div class="menu-btn"><a href="{{ route('admin.input.index') }}">Input</a></div> --}}
@@ -51,16 +51,3 @@
         </div>
     </div>
 </div>
-{{-- <script>
-    (function() {
-      const onScroll = () => {
-        if (window.scrollY > 10) {
-          document.body.classList.add('scrolled');
-        } else {
-          document.body.classList.remove('scrolled');
-        }
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-    })();
-    </script> --}}

@@ -61,17 +61,43 @@
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="md:col-span-2 mb-4">
-                                <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
-                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nama') }}">
-                            </div>
                             <div class="mb-4">
                                 <label for="nik" class="block text-base font-medium text-black">NIK</label>
                                 <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nik') }}">
+                                <div id="nik-duplicate-notification" class="hidden mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <h3 class="text-sm font-medium text-yellow-800">NIK Terdeteksi Duplikat</h3>
+                                            <div class="mt-2 text-sm text-yellow-700">
+                                                <p id="duplicate-message"></p>
+                                                <div id="duplicate-data" class="mt-2 text-xs bg-white p-2 rounded border"></div>
+                                            </div>
+                                            <div class="mt-3 flex space-x-2">
+                                                <button type="button" id="submit-for-verification" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-yellow-800 bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                                                    <i class="fas fa-paper-plane mr-1"></i>
+                                                    Kirim untuk Verifikasi
+                                                </button>
+                                                <button type="button" id="clear-nik" class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                    <i class="fas fa-times mr-1"></i>
+                                                    Hapus NIK
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-4">
                                 <label for="nkk" class="block text-base font-medium text-black">Nomor KK</label>
                                 <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nkk') }}">
+                            </div>
+                            <div class="md:col-span-2 mb-4">
+                                <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
+                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nama') }}">
                             </div>
                             <!-- Input Dinamis Nomor Telepon -->
                             <div class="md:col-span-2 mb-4" id="telepon-wrapper">
@@ -406,6 +432,99 @@
             document.getElementById(id)?.addEventListener('input', function() {
                 this.value = this.value.replace(/\D/g, '').slice(0, 16);
             });
+        });
+
+        // NIK Auto-search functionality
+        let nikCheckTimeout;
+        const nikInput = document.getElementById('nik');
+        const duplicateNotification = document.getElementById('nik-duplicate-notification');
+        const duplicateMessage = document.getElementById('duplicate-message');
+        const duplicateData = document.getElementById('duplicate-data');
+        const submitForVerificationBtn = document.getElementById('submit-for-verification');
+        const clearNikBtn = document.getElementById('clear-nik');
+
+        nikInput.addEventListener('input', function() {
+            const nik = this.value.trim();
+
+            // Clear previous timeout
+            if (nikCheckTimeout) {
+                clearTimeout(nikCheckTimeout);
+            }
+
+            // Hide notification if NIK is empty or less than 16 digits
+            if (nik.length === 0 || nik.length < 16) {
+                duplicateNotification.classList.add('hidden');
+                return;
+            }
+
+            // Check NIK after 1 second delay
+            nikCheckTimeout = setTimeout(() => {
+                checkNikDuplicate(nik);
+            }, 1000);
+        });
+
+        function checkNikDuplicate(nik) {
+            fetch(`/admin/api/check-nik?nik=${encodeURIComponent(nik)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        showDuplicateNotification(data);
+                    } else {
+                        hideDuplicateNotification();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking NIK:', error);
+                });
+        }
+
+        function showDuplicateNotification(data) {
+            duplicateMessage.textContent = data.message;
+
+            // Display existing data
+            const existingData = data.data;
+            duplicateData.innerHTML = `
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div><strong>Nama:</strong> ${existingData.nama}</div>
+                    <div><strong>NIK:</strong> ${existingData.nik}</div>
+                    <div><strong>NKK:</strong> ${existingData.nkk}</div>
+                    <div><strong>Status:</strong> ${existingData.status}</div>
+                    <div><strong>Peran:</strong> ${existingData.peran_jaringan}</div>
+                    <div><strong>Residivis:</strong> ${existingData.residivis ? 'Ya' : 'Tidak'}</div>
+                    <div><strong>Alamat:</strong> ${existingData.alamat}</div>
+                    <div><strong>Lokasi:</strong> ${existingData.kecamatan}, ${existingData.kabupaten}</div>
+                </div>
+            `;
+
+            duplicateNotification.classList.remove('hidden');
+
+            // Store existing data for verification
+            duplicateNotification.dataset.existingData = JSON.stringify(data.data);
+        }
+
+        function hideDuplicateNotification() {
+            duplicateNotification.classList.add('hidden');
+            delete duplicateNotification.dataset.existingData;
+        }
+
+        // Handle submit for verification button
+        submitForVerificationBtn.addEventListener('click', function() {
+            const existingData = JSON.parse(duplicateNotification.dataset.existingData || '{}');
+            const formData = new FormData(document.getElementById('individuForm'));
+
+            // Add existing data to form for verification
+            formData.append('existing_data', JSON.stringify(existingData));
+            formData.append('submit_for_verification', '1');
+
+            // Submit form
+            document.getElementById('individuForm').submit();
+        });
+
+        // Handle clear NIK button
+        clearNikBtn.addEventListener('click', function() {
+            nikInput.value = '';
+            hideDuplicateNotification();
+            nikInput.focus();
         });
 
         // Dinamis input nomor telepon

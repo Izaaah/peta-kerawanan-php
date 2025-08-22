@@ -21,7 +21,7 @@ class TitikMasukController extends Controller
                     ->orWhere('kelurahan', 'like', "%$q%");
             });
         }
-        $titikMasukList = $query->latest()->paginate(10)->withQueryString();
+        $titikMasukList = $query->latest()->paginate(15)->withQueryString();
             return view('super-admin.data.titik-masuk.index', compact('titikMasukList'));
     }
 
@@ -61,7 +61,7 @@ class TitikMasukController extends Controller
     public function edit($id)
     {
         $jalurMasuk = JalurMasuk::findOrFail($id);
-        $jenisTransportasiOptions = JalurMasuk::getJenisTransportasiOptions();
+        $jenisTransportasiOptions = JalurMasuk::getJenisTitikMasukOptions();
         return view('super-admin.data.titik-masuk.edit', compact('jalurMasuk'));
     }
 

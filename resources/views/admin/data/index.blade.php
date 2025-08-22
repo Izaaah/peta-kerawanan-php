@@ -69,7 +69,7 @@
         </a>
         <!-- Card: Data Jaringan di Rutan dan Lapas -->
         <a href="{{ route('admin.data.rutanlapas.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 to-cyan-500 mb-3 shadow">
                     <i class="fas fa-network-wired text-white text-2xl"></i>
                 </div>
@@ -79,7 +79,7 @@
         </a>
         <!-- Card: Data Objek Vital -->
         <a href="{{ route('admin.data.objekvital.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-gray-700 to-gray-900 mb-3 shadow mx-auto">
                     <i class="fas fa-landmark text-white text-2xl"></i>
                 </div>
@@ -89,7 +89,7 @@
         </a>
         <!-- Card: Data Jaringan Penggiat -->
         <a href="{{ route('admin.data.penggiat.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-lime-400 to-lime-500 mb-3 shadow mx-auto">
                     <i class="fas fa-people-carry text-white text-2xl"></i>
                 </div>
@@ -99,7 +99,7 @@
         </a>
         <!-- Card: Data Lembaga Rehabilitasi -->
         <a href="{{ route('admin.data.lrehab.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-green-700 to-green-900 mb-3 shadow mx-auto">
                     <i class="fas fa-hospital-alt text-white text-2xl"></i>
                 </div>
@@ -109,7 +109,7 @@
         </a>
         <!-- Card: Data Ekspedisi -->
         <a href="{{ route('admin.data.ekspedisi.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-700 to-yellow-900 mb-3 shadow mx-auto">
                     <i class="fas fa-shipping-fast text-white text-2xl"></i>
                 </div>
@@ -119,7 +119,7 @@
         </a>
         <!-- Card: Data Jasa Transportasi -->
         <a href="{{ route('admin.data.transportasi.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow mx-auto">
                     <i class="fas fa-bus-alt text-white text-2xl"></i>
                 </div>
@@ -129,7 +129,7 @@
         </a>
         <!-- Card: Data Titik Masuk-->
         <a href="{{ route('admin.data.titik-masuk.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-700 to-blue-900 mb-3 shadow mx-auto">
                     <i class="fas fa-bus-alt text-white text-2xl"></i>
                 </div>
@@ -139,7 +139,7 @@
         </a>
         <!-- Card: Data Penginapan (Hotel & Kost) -->
         <a href="{{ route('admin.data.penginapan.index') }}" class="block group" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-700 to-pink-900 mb-3 shadow mx-auto">
                     <i class="fas fa-hotel text-white text-2xl"></i>
                 </div>
@@ -147,9 +147,19 @@
                 <div class="text-xs text-gray-500">Kelola data penginapan</div>
             </div>
         </a>
+        <!-- Card: Data THM dan Manager -->
+        <a href="{{ route('admin.data.thm.index') }}" class="block group" tabindex="-1">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow mx-auto">
+                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
+                </div>
+                <div class="font-semibold text-fuchsia-700 mb-1">Data Tempat Hiburan Malam (THM)</div>
+                <div class="text-xs text-gray-500">Kelola data THM dan manager</div>
+            </div>
+        </a>
         <!-- Card: Data Daerah Penyalahguna -->
         <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-orange-400 to-orange-500 mb-3 shadow mx-auto">
                     <i class="fas fa-user-injured text-white text-2xl"></i>
                 </div>
@@ -159,7 +169,7 @@
         </a>
         <!-- Card: Data Daerah Penyelundupan -->
         <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-amber-400 to-amber-500 mb-3 shadow mx-auto">
                     <i class="fas fa-truck-loading text-white text-2xl"></i>
                 </div>
@@ -167,19 +177,9 @@
                 <div class="text-xs text-gray-500">(Belum tersedia)</div>
             </div>
         </a>
-        <!-- Card: Data THM dan Manager -->
-        <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
-                <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-fuchsia-400 to-fuchsia-500 mb-3 shadow mx-auto">
-                    <i class="fas fa-glass-martini-alt text-white text-2xl"></i>
-                </div>
-                <div class="font-semibold text-fuchsia-700 mb-1">Data THM & Manager</div>
-                <div class="text-xs text-gray-500">(Belum tersedia)</div>
-            </div>
-        </a>
         <!-- Card: Data Jaringan Informasi (Orang) -->
         <a href="#" class="block group opacity-50 cursor-not-allowed" tabindex="-1">
-            <div class="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center border border-transparent">
+            <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
                 <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-sky-400 to-sky-500 mb-3 shadow mx-auto">
                     <i class="fas fa-user-secret text-white text-2xl"></i>
                 </div>

@@ -1,7 +1,7 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
 @section('content')
-@include('components.superadmin-navbar')
+@include('components.admin-navbar')
 
 <div class="container-fluid px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
     <div class="flex flex-col md:flex-row gap-8">
