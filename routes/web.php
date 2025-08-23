@@ -323,7 +323,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::delete('/data-individu/{id}', [DataIndividuTskAdminController::class, 'destroy'])->name('data.individu.destroy');
     Route::get('/api/individu-data', [DataIndividuTskAdminController::class, 'getData'])->name('api.individu.data');
     Route::get('/api/individu-export', [DataIndividuTskAdminController::class, 'export'])->name('api.individu.export');
-    Route::get('/data-individu/verification', [DataIndividuTskAdminController::class, 'verification'])->name('data.individu.verification');    Route::get('/api/check-nik', [DataIndividuTskAdminController::class, 'checkNik'])->name('api.check.nik');
+    Route::get('/data-individu/verification', [DataIndividuTskAdminController::class, 'verification'])->name('data.individu.verification');
+    Route::get('/api/check-nik', [DataIndividuTskAdminController::class, 'checkNik'])->name('api.check.nik');
 
     Route::get('/data-desa', [DataDesaController::class, 'index'])->name('data.desa');
     Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');

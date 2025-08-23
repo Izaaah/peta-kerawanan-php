@@ -90,6 +90,11 @@ class SuperAdminDashboardController extends Controller
         $totalBlokir = (clone $anggaranQuery)->sum('blokir');
         $totalSetelah = $totalAnggaranSebelum - $totalBlokir;
 
+        $totalPersonil = Komposisi::sum('jumlah_personil');
+        $totalDspJumlah = Komposisi::sum('dsp_jumlah');
+        $totalDspKosong = Komposisi::sum('dsp_kosong');
+        $totalDspTerisi = Komposisi::sum('dsp_terisi');
+
         // Ambil data komposisi
         $komposisiList = Komposisi::all();
 
@@ -108,6 +113,10 @@ class SuperAdminDashboardController extends Controller
             'totalAnggaranSebelum',
             'totalBlokir',
             'totalSetelah',
+            'totalPersonil',
+            'totalDspJumlah',
+            'totalDspKosong',
+            'totalDspTerisi',
             'komposisiList'
         ));
     }

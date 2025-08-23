@@ -365,7 +365,7 @@
                 <h2 class="text-lg font-bold text-gray-900">BADAN NARKOTIKA NASIONAL</h2>
                 <h3 class="text-lg font-bold text-gray-900">PROVINSI JAWA TIMUR</h3>
             </div>
-        </div>              
+        </div>
 
         <div class="grid grid-cols-1 gap-8">
             <!-- Konten lainnya akan ditampilkan di sini -->
@@ -504,170 +504,86 @@
 
 <!-- Struktur Organisasi -->
 <div class="mt-12 max-w-6xl mx-auto px-4">
-<div class="relative pb-6 mb-8">
-    <h4 class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">Struktur Organisasi</h4>
-    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full"></div>
-    <div class="absolute right-0 top-0">
-        <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-            </svg>
-            Edit Struktur
-        </a>
+    <div class="relative pb-6 mb-8">
+      <h4 class="text-3xl font-extrabold text-center text-black pb-3">Struktur Organisasi</h4>
+      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-black rounded-full"></div>
     </div>
-</div>
-
-<div class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
-    <!-- Decorative elements -->
-    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-blue-50 rounded-full opacity-50 -mr-32 -mt-32 z-0"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-red-100 to-red-50 rounded-full opacity-50 -ml-32 -mb-32 z-0"></div>
-
-    <div class="org-chart relative space-y-12">
-
+  
+    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-300 overflow-hidden relative mb-12">
+      <div class="org-chart relative space-y-12">
         <!-- Kepala -->
         <div class="relative flex flex-col items-center">
-          <div class="flex items-center bg-gradient-to-r from-red-500 to-red-700 rounded-xl shadow-lg p-5 border-2 border-red-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div class="w-24 h-24 rounded-full bg-white mr-5 overflow-hidden border-2 border-red-300 shadow-inner flex items-center justify-center">
-              <svg class="w-14 h-14 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
+          <div class="flex items-center bg-gray-800 text-white rounded-xl shadow-lg p-5 border-2 border-gray-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="w-24 h-24 rounded-none bg-white mr-5 overflow-hidden border-2 border-gray-300 shadow-inner flex items-center justify-center">
+              <img class="w-14 h-14 object-cover" src="/path/to/photo1.jpg" alt="Kepala BNNP Jatim">
             </div>
             <div class="text-left">
-              <div class="text-white font-bold text-xl mb-1">Kepala BNNP Jatim</div>
-              <div class="text-white text-md">Brigjen Pol. Dr. H. Slamet Hadi Tjahjanto</div>
+              <div class="font-bold text-xl mb-1">Kepala BNNP Jatim</div>
+              <div class="text-md">Brigjen Pol. Dr. H. Slamet Hadi Tjahjanto</div>
             </div>
           </div>
-          <!-- garis vertikal ke sekretaris -->
-          <div class="h-8 w-0.5 bg-gray-300"></div>
+          <div class="h-8 w-0.5 bg-white"></div>
         </div>
-
-        <!-- Sekretaris -->
+  
+        <!-- Kabid Pemberantasan dan Intelijen -->
         <div class="relative flex flex-col items-center">
-          <div class="flex items-center bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg p-5 border-2 border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <div class="w-20 h-20 rounded-full bg-white mr-5 overflow-hidden border-2 border-blue-300 shadow-inner flex items-center justify-center">
-              <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
+          <div class="flex items-center bg-gray-600 text-white rounded-xl shadow-lg p-5 border-2 border-gray-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div class="w-20 h-20 rounded-none bg-white mr-5 overflow-hidden border-2 border-gray-300 shadow-inner flex items-center justify-center">
+              <img class="w-12 h-12 object-cover" src="/path/to/photo2.jpg" alt="Kabid Pemberantasan dan Intelijen">
             </div>
             <div class="text-left">
-              <div class="text-white font-bold text-lg mb-1">Sekretaris</div>
-              <div class="text-white text-md">AKBP Drs. Heru Pranoto, M.Si</div>
+              <div class="font-bold text-lg mb-1">Kabid Pemberantasan dan Intelijen</div>
+              <div class="text-md">Kompol Dra. Suparti</div>
             </div>
           </div>
-
-          <!-- konektor vertikal ke level direktorat -->
-          <div class="h-10 w-0.5 bg-gray-300"></div>
-
-          <!-- Level Direktorat -->
-          <div class="relative w-full">
-            <!-- garis horizontal penghubung direktorat -->
-            <div class="absolute left-[8%] right-[8%] top-0 h-0.5 bg-gray-300"></div>
-
-            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-4">
-              <!-- Direktorat Pencegahan -->
-              <div class="relative flex flex-col items-center">
-                <!-- garis vertikal dari garis horizontal ke box -->
-                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
-                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
-                  <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div class="text-left">
-                      <div class="text-white font-bold text-md">Direktorat Pencegahan</div>
-                      <div class="text-white text-sm">Kompol Dra. Suparti</div>
-                    </div>
+          <div class="h-10 w-0.5 bg-white"></div>
+        </div>
+  
+        <!-- Kasubag Pemberantasan dan Kasubag Wastahi -->
+        <div class="relative w-full">
+          <div class="absolute left-[8%] right-[8%] top-0 h-0.5 bg-white"></div>
+  
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-4">
+            <!-- Kasi Intelijen -->
+            <div class="relative flex flex-col items-center">
+              <span class="absolute -top-8 h-8 w-0.5 bg-white"></span>
+              <div class="flex flex-col bg-gray-500 text-white rounded-xl shadow-lg p-5 border-2 border-gray-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
+                <div class="flex items-center mb-3">
+                  <div class="w-16 h-16 rounded-none bg-white mr-4 overflow-hidden border-2 border-gray-300 shadow-inner flex items-center justify-center">
+                    <img class="w-10 h-10 object-cover" src="/path/to/photo3.jpg" alt="Kasi Intelijen">
                   </div>
-                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
-                    <ul class="list-disc list-inside space-y-1">
-                      <li>Sosialisasi P4GN</li>
-                      <li>Edukasi Masyarakat</li>
-                    </ul>
+                  <div class="text-left">
+                    <div class="font-bold text-md">Kasi Intelijen</div>
+                    <div class="text-sm">Analis Intelijen</div>
                   </div>
                 </div>
               </div>
-
-              <!-- Direktorat Pemberantasan -->
-              <div class="relative flex flex-col items-center">
-                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
-                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
-                  <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div class="text-left">
-                      <div class="text-white font-bold text-md">Direktorat Pemberantasan</div>
-                      <div class="text-white text-sm">AKBP Wisnu Pradana, S.H.</div>
-                    </div>
-                  </div>
-                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
-                    <ul class="list-disc list-inside space-y-1">
-                      <li>Penyelidikan</li>
-                      <li>Penyidikan</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Direktorat Rehabilitasi -->
-              <div class="relative flex flex-col items-center">
-                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
-                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
-                  <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div class="text-left">
-                      <div class="text-white font-bold text-md">Direktorat Rehabilitasi</div>
-                      <div class="text-white text-sm">dr. Ratna Dewi, M.Kes</div>
-                    </div>
-                  </div>
-                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
-                    <ul class="list-disc list-inside space-y-1">
-                      <li>Rehabilitasi Medis</li>
-                      <li>Rehabilitasi Sosial</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Direktorat Intelijen -->
-              <div class="relative flex flex-col items-center">
-                <span class="absolute -top-8 h-8 w-0.5 bg-gray-300"></span>
-                <div class="flex flex-col bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow-lg p-5 border-2 border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
-                  <div class="flex items-center mb-3">
-                    <div class="w-16 h-16 rounded-full bg-white mr-4 overflow-hidden border-2 border-green-300 shadow-inner flex items-center justify-center">
-                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div class="text-left">
-                      <div class="text-white font-bold text-md">Direktorat Intelijen</div>
-                      <div class="text-white text-sm">AKBP Hendra Suhartiyono, S.I.K.</div>
-                    </div>
-                  </div>
-                  <div class="mt-auto text-xs text-white bg-green-800/30 rounded-lg p-2 border border-green-400/30">
-                    <ul class="list-disc list-inside space-y-1">
-                      <li>Pengumpulan Informasi</li>
-                      <li>Analisis Jaringan</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
             </div>
+  
+            <!-- Kasi Wastahi -->
+            <div class="relative flex flex-col items-center">
+              <span class="absolute -top-8 h-8 w-0.5 bg-white"></span>
+              <div class="flex flex-col bg-gray-500 text-white rounded-xl shadow-lg p-5 border-2 border-gray-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full">
+                <div class="flex items-center mb-3">
+                  <div class="w-16 h-16 rounded-none bg-white mr-4 overflow-hidden border-2 border-gray-300 shadow-inner flex items-center justify-center">
+                    <img class="w-10 h-10 object-cover" src="/path/to/photo4.jpg" alt="Kasi Wastahi">
+                  </div>
+                  <div class="text-left">
+                    <div class="font-bold text-md">Kasi Wastahi</div>
+                    <div class="text-sm">Pengolah Data Wastahi</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Additional positions such as Pengawal Tahanan, Penindak, etc -->
+            <!-- You can follow the same structure for the next positions -->
           </div>
         </div>
-
       </div>
-</div>
-</div>
+    </div>
+  </div>
+  
 <div class="mt-12 max-w-6xl mx-auto px-4">
 <div class="relative pb-6 mb-8">
     <h4 class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">Komposisi Personil Pemberantasan</h4>
@@ -696,14 +612,14 @@
                             <th rowspan="2" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider border-r">
                                 BIDANG/SEKSI
                             </th>
-                            <th rowspan="2" class="px-2 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-r">
-                                JUMLAH PERSONIL
+                            <th rowspan="2" class="px-2 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r">
+                                JUMLAH <br>PERSONIL
                             </th>
                             <th colspan="3" class="px-4 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-b border-r">
                                 DSP
                             </th>
                             <th rowspan="2" class="px-6 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-r">
-                                KET
+                                KETERANGAN
                             </th>
                             <th rowspan="2" class="px-2 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">
                                 AKSI
@@ -718,12 +634,12 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($komposisiList as $komposisi)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-3 whitespace-nowrap text-center text-sm font-medium text-gray-900 border-r uppercase">{{ $komposisi->bidang }}</td>
-                            <td class="px-2 py-3 text-sm text-gray-900 text-center border-r">{{ $komposisi->jumlah_personil }}</td>
+                            <td class="px-6 py-3 whitespace-nowrap text-left text-sm font-medium text-gray-900 border-r uppercase">{{ $komposisi->bidang }}</td>
+                            <td class="px-2 py-3 text-sm text-gray-900 bg-green-100 text-center border-r">{{ $komposisi->jumlah_personil }}</td>
                             <td class="px-2 py-3 text-sm text-gray-900 bg-blue-100 text-center border-r">{{ $komposisi->dsp_jumlah }}</td>
                             <td class="px-2 py-3 text-sm text-gray-900 bg-red-100 text-center border-r">{{ $komposisi->dsp_kosong }}</td>
                             <td class="px-2 py-3 text-sm text-gray-900 bg-yellow-100 text-center border-r">{{ $komposisi->dsp_terisi }}</td>
-                            <td class="px-6 py-3 text-sm text-gray-900 bg-yellow-100 text-center border-r">{{ $komposisi->ket }}</td>
+                            <td class="px-6 py-3 text-sm text-gray-900 bg-white text-left border-r">{{ $komposisi->keterangan }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -733,10 +649,11 @@
                     </tbody>
                     <tfoot class="bg-gray-50">
                         <tr>
-                            <td colspan="2" class="px-6 py-4 text-center text-sm font-bold text-gray-900">TOTAL</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-blue-100">Rp 1.829.981.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-red-100">Rp 374.150.000</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-yellow-100">Rp 1.455.831.000</td>
+                            <td colspan="1" class="px-6 py-4 text-center text-sm font-bold border-r text-gray-900">TOTAL</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-green-100 border-r">{{ $totalPersonil }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-blue-100 border-r">{{ $totalDspJumlah }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-red-100 border-r">{{ $totalDspTerisi }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-yellow-100 border-r">{{ $totalDspKosong }}</td>
                         </tr>
                     </tfoot>
                 </table>

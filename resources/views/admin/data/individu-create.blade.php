@@ -435,6 +435,7 @@
     const duplicateMessage = document.getElementById('duplicate-message');
     const duplicateData = document.getElementById('duplicate-data');
     const submitForVerificationBtn = document.getElementById('submit-for-verification');
+    const form = document.getElementById('individuForm');
     const clearNikBtn = document.getElementById('clear-nik');
 
     nikInput.addEventListener('input', function() {
@@ -488,6 +489,18 @@
 
         duplicateNotification.classList.remove('hidden');
         duplicateNotification.dataset.existingData = JSON.stringify(data.data);
+
+        // Menghapus required fields jika NIK terduplikasi
+        const fieldsToUnrequire = [
+            'nama', 'nkk', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'peran_jaringan', 'skala_kelas', 'status'
+        ];
+
+        fieldsToUnrequire.forEach(function(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.removeAttribute('required'); // Hapus atribut required
+            }
+        });
     }
 
     function hideDuplicateNotification() {
@@ -497,29 +510,54 @@
 
     // Menangani tombol kirim untuk verifikasi
     submitForVerificationBtn.addEventListener('click', function(event) {
-        event.preventDefault(); // Mencegah submit default form
+        event.preventDefault();
 
+        // Pastikan form tidak dikirim jika NIK duplikat
+        if (duplicateNotification.classList.contains('hidden')) {
+            alert('NIK tidak terdaftar, mohon periksa kembali!');
+            return; // Jika NIK tidak ditemukan, form tidak dikirim
+        }
+
+        // Mengambil data yang ada untuk verifikasi
         const existingData = JSON.parse(duplicateNotification.dataset.existingData || '{}');
-        const formData = new FormData(document.getElementById('individuForm'));
+        const formData = new FormData(form);
 
-        // Menambahkan data yang ada ke form untuk verifikasi
+        // Menambahkan data yang ada untuk verifikasi
         formData.append('existing_data', JSON.stringify(existingData));
         formData.append('submit_for_verification', '1');
 
-        // Menambahkan logika untuk menghapus atribut 'required' pada field tertentu
-        const fieldsToUnrequire = [
-            'nama', 'nkk', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'peran_jaringan', 'skala_kelas', 'status'
-        ];
+        // Show loading state
+        submitForVerificationBtn.disabled = true;
+        submitForVerificationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengirim...';
 
-        fieldsToUnrequire.forEach(function(fieldId) {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.removeAttribute('required'); // Menghapus atribut required
+        // Kirim form untuk verifikasi
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
             }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message and redirect
+                alert('Data telah dikirim untuk verifikasi Super Admin. Data akan ditinjau dan diproses.');
+                window.location.href = data.redirect || '/admin/data/individu';
+            } else {
+                // Handle errors
+                alert(data.message || 'Terjadi kesalahan saat mengirim data untuk verifikasi.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
+        })
+        .finally(() => {
+            // Restore button state
+            submitForVerificationBtn.disabled = false;
+            submitForVerificationBtn.innerHTML = '<i class="fas fa-paper-plane mr-1"></i> Kirim untuk Verifikasi';
         });
-
-        // Kirim form
-        document.getElementById('individuForm').submit();
     });
 
     // Menangani tombol hapus NIK
