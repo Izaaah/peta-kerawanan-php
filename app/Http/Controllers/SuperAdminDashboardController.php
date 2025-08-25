@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KasusNarkoba;
 use App\Models\DesaGeojson;
+use App\Models\DataIndividuTsk;
 use App\Models\TkpResidivisIndividu;
 use App\Models\Anggaran;
 use App\Models\Komposisi;
@@ -40,12 +41,37 @@ class SuperAdminDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Data untuk grafik kasus per kabupaten nik
+        $kasusPerKabupatenNik = DataIndividuTsk::select('kabupaten', DB::raw('count(*) as total'))
+            ->groupBy('kabupaten')
+            ->orderBy('total', 'desc')
+            ->limit(5)
+            ->get();
+
         // Data untuk grafik kasus per kecamatan
         $kasusPerKecamatan = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
             ->groupBy('kecamatan')
             ->orderBy('total', 'desc')
             ->limit(5)
             ->get();
+
+        // Data untuk grafik kasus per kecamatan nik
+        $kasusPerKecamatanNik = DataIndividuTsk::select('kecamatan', DB::raw('count(*) as total'))
+            ->groupBy('kecamatan')
+            ->orderBy('total', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Data terbaru
+        $kasusTerbaru = TkpResidivisIndividu::orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Data terbaru
+        // $kasusTerbaruIndividu = KasusNarkoba::with('desa')
+        //     ->orderBy('created_at', 'desc')
+        //     ->limit(5)
+        //     ->get();
 
         // Data untuk grafik trend bulanan
         $trendBulanan = KasusNarkoba::select(
@@ -68,12 +94,6 @@ class SuperAdminDashboardController extends Controller
             'Residivis' => \App\Models\DataIndividuTsk::where('residivis', true)->count(),
             'Non Residivis' => \App\Models\DataIndividuTsk::where('residivis', false)->count(),
         ];
-
-        // Data terbaru
-        $kasusTerbaru = KasusNarkoba::with('desa')
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
 
         // Ambil data anggaran berdasarkan role user
         $user = auth()->user();
@@ -105,6 +125,8 @@ class SuperAdminDashboardController extends Controller
             'kecamatanCount',
             'kasusPerKabupaten',
             'kasusPerKecamatan',
+            'kasusPerKabupatenNik',
+            'kasusPerKecamatanNik',
             'trendBulanan',
             'kasusTerbaru',
             'statusPie',
