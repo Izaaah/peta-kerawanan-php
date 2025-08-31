@@ -3,190 +3,192 @@
 @section('title', 'Data Individu TSK')
 
 @section('content')
-@include('components.operator-navbar')
+    @include('components.operator-navbar')
 
-<div class="container-fluid px-4 py-5">
-    <!-- Header Section -->
-    <div class="mb-5">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu TSK</h1>
-        <p class="text-sm text-gray-500 mb-4">Kelola data individu TSK dengan korelasi kasus narkotika</p>
-    </div>
+    <div class="container-fluid px-4 py-5">
+        <!-- Header Section -->
+        <div class="mb-5">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu TSK</h1>
+            <p class="text-sm text-gray-500 mb-4">Kelola data individu TSK dengan korelasi kasus narkotika</p>
+        </div>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white shadow rounded-lg p-4">
-            <p class="text-sm font-medium text-blue-600">Total Individu</p>
-            <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['total_individu'] ?? 0) }}</p>
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white shadow rounded-lg p-4">
+                <p class="text-sm font-medium text-blue-600">Total Individu</p>
+                <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['total_individu'] ?? 0) }}</p>
+            </div>
+            <div class="bg-white shadow rounded-lg p-4">
+                <p class="text-sm font-medium text-green-600">Total Kasus</p>
+                <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['total_kasus'] ?? 0) }}</p>
+            </div>
+            <div class="bg-white shadow rounded-lg p-4">
+                <p class="text-sm font-medium text-yellow-600">Residivis</p>
+                <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['residivis_count'] ?? 0) }}</p>
+            </div>
+            <div class="bg-white shadow rounded-lg p-4">
+                <p class="text-sm font-medium text-indigo-600">Non Residivis</p>
+                <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['non_residivis_count'] ?? 0) }}</p>
+            </div>
         </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <p class="text-sm font-medium text-green-600">Total Kasus</p>
-            <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['total_kasus'] ?? 0) }}</p>
-        </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <p class="text-sm font-medium text-yellow-600">Residivis</p>
-            <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['residivis_count'] ?? 0) }}</p>
-        </div>
-        <div class="bg-white shadow rounded-lg p-4">
-            <p class="text-sm font-medium text-indigo-600">Non Residivis</p>
-            <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['non_residivis_count'] ?? 0) }}</p>
-        </div>
-    </div>
 
-    <!-- Search and Filter Section -->
-    <div class="bg-white shadow rounded-lg p-6 mb-6">
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">Filter & Pencarian</h2>
-        <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
-            <div>
-                <label for="searchIndividu" class="block text-sm font-medium text-gray-700">Cari Individu</label>
-                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="searchIndividu" placeholder="Nama atau NIK...">
-            </div>
-            <div>
-                <label for="filterKabupaten" class="block text-sm font-medium text-gray-700">Kabupaten</label>
-                <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterKabupaten">
-                    <option value="">Semua Kabupaten</option>
-                    @foreach($kabupatenList as $kabupaten)
-                        <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label for="filterStatus" class="block text-sm font-medium text-gray-700">Status</label>
-                <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterStatus">
-                    <option value="">Semua Status</option>
-                    <option value="Napi">Napi</option>
-                    <option value="Non napi">Non napi</option>
-                </select>
-            </div>
-            <div>
-                <label for="filterPeran" class="block text-sm font-medium text-gray-700">Peran</label>
-                <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterPeran">
-                    <option value="">Semua Peran</option>
-                    <option value="koordinator informan">Koordinator Informan</option>
-                    <option value="informan">Informan</option>
-                    <option value="kurir">Kurir</option>
-                    <option value="gudang">Gudang</option>
-                    <option value="broker">Broker</option>
-                    <option value="bandar">Bandar</option>
-                    <option value="beking">Beking</option>
-                    <option value="tidak tahu">Tidak Tahu</option>
-                </select>
-            </div>
-            <div>
-                <label for="filterResidivis" class="block text-sm font-medium text-gray-700">Residivis</label>
-                <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterResidivis">
-                    <option value="">Semua</option>
-                    <option value="1">Ya</option>
-                    <option value="0">Tidak</option>
-                </select>
-            </div>
-            <div class="flex items-end">
-                <button class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" onclick="applyFilters()">
-                    <i class="fas fa-search mr-2"></i>Filter
-                </button>
+        <!-- Search and Filter Section -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Filter & Pencarian</h2>
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div>
+                    <label for="searchIndividu" class="block text-sm font-medium text-gray-700">Cari Individu</label>
+                    <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="searchIndividu"
+                        placeholder="Nama atau NIK...">
+                </div>
+                <div>
+                    <label for="filterKabupaten" class="block text-sm font-medium text-gray-700">Kabupaten</label>
+                    <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterKabupaten">
+                        <option value="">Semua Kabupaten</option>
+                        @foreach ($kabupatenList as $kabupaten)
+                            <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="filterStatus" class="block text-sm font-medium text-gray-700">Status</label>
+                    <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterStatus">
+                        <option value="">Semua Status</option>
+                        <option value="Napi">Napi</option>
+                        <option value="Non napi">Non napi</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filterPeran" class="block text-sm font-medium text-gray-700">Peran</label>
+                    <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterPeran">
+                        <option value="">Semua Peran</option>
+                        <option value="koordinator informan">Koordinator Informan</option>
+                        <option value="informan">Informan</option>
+                        <option value="kurir">Kurir</option>
+                        <option value="gudang">Gudang</option>
+                        <option value="broker">Broker</option>
+                        <option value="bandar">Bandar</option>
+                        <option value="beking">Beking</option>
+                        <option value="tidak tahu">Tidak Tahu</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filterResidivis" class="block text-sm font-medium text-gray-700">Residivis</label>
+                    <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterResidivis">
+                        <option value="">Semua</option>
+                        <option value="1">Ya</option>
+                        <option value="0">Tidak</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        onclick="applyFilters()">
+                        <i class="fas fa-search mr-2"></i>Filter
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Data Table Section -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-semibold text-gray-700">Data Individu TSK</h2>
-            <span class="text-sm text-gray-600">Total: <span id="totalRecords">{{ $sampleData->count() }}</span></span>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-left text-gray-600">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                    <tr>
-                        <th class="px-4 py-2">No</th>
-                        <th class="px-4 py-2">Nama & NIK</th>
-                        <th class="px-4 py-2">Alamat</th>
-                        <th class="px-4 py-2">Status</th>
-                        <th class="px-4 py-2">Peran</th>
-                        <th class="px-4 py-2">Residivis</th>
-                        <th class="px-4 py-2">Kasus Terkait</th>
-                        <th class="px-4 py-2 text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="individuTableBody" class="bg-white divide-y divide-gray-200">
-                    @foreach($sampleData as $index => $individu)
-                    <tr>
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2">
-                            <div class="font-semibold text-gray-800">{{ $individu->nama }}</div>
-                            <div class="text-xs text-gray-500">{{ $individu->nik }}</div>
-                        </td>
-                        <td class="px-4 py-2">
-                            <div class="text-gray-800">{{ $individu->kelurahan }}, {{ $individu->kecamatan }}</div>
-                            <div class="text-xs text-gray-500">{{ $individu->kabupaten }}</div>
-                        </td>
-                        <td class="px-4 py-2">
-                            <span class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
-                                {{ $individu->status }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2">
-                            <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
-                                {{ $individu->peran_jaringan }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2">
-                            @if($individu->residivis)
-                                <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>
-                            @else
-                                <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>
-                            @endif
-                        </td>
-                        <td class="px-4 py-2">
-                            @if($individu->status === 'Napi')
-                                <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">1 Kasus</span>
-                            @else
-                                <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">0 Kasus</span>
-                            @endif
-                        </td>
-                        <td class="px-4 py-2 text-center">
-                            <div class="flex gap-1 justify-center">
-                                {{-- <a href="{{ route('operator.data.individu.show', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
+        <!-- Data Table Section -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-700">Data Individu TSK</h2>
+                <span class="text-sm text-gray-600">Total: <span id="totalRecords">{{ $sampleData->count() }}</span></span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left text-gray-600">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2">No</th>
+                            <th class="px-4 py-2">Nama & NIK</th>
+                            <th class="px-4 py-2">Alamat</th>
+                            <th class="px-4 py-2">Status</th>
+                            <th class="px-4 py-2">Peran</th>
+                            <th class="px-4 py-2">Residivis</th>
+                            <th class="px-4 py-2">Kasus Terkait</th>
+                            <th class="px-4 py-2 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="individuTableBody" class="bg-white divide-y divide-gray-200">
+                        @foreach ($sampleData as $index => $individu)
+                            <tr>
+                                <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                <td class="px-4 py-2">
+                                    <div class="font-semibold text-gray-800">{{ $individu->nama }}</div>
+                                    <div class="text-xs text-gray-500">{{ $individu->nik }}</div>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <div class="text-gray-800">{{ $individu->kelurahan }}, {{ $individu->kecamatan }}
+                                    </div>
+                                    <div class="text-xs text-gray-500">{{ $individu->kabupaten }}</div>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <span
+                                        class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                        {{ $individu->status }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <span
+                                        class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
+                                        {{ $individu->peran_jaringan }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2">
+                                    @if ($individu->residivis)
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>
+                                    @else
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2">
+                                    @if ($individu->status === 'Napi')
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">1
+                                            Kasus</span>
+                                    @else
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">0
+                                            Kasus</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2 text-center">
+                                    <div class="flex gap-1 justify-center">
+                                        {{-- <a href="{{ route('operator.data.individu.show', $individu->id) }}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
                                     <i class="fas fa-eye"></i>
                                 </a> --}}
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <!-- Pagination -->
-        <div class="flex justify-between items-center mt-4">
-            <div class="text-sm text-gray-500">
-                Menampilkan {{ $sampleData->count() }} dari {{ $stats['total_individu'] ?? 0 }} data
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="inline-flex -space-x-px">
-                    <li><span class="px-3 py-1 rounded-l bg-gray-200 text-gray-500">Previous</span></li>
-                    <li><span class="px-3 py-1 bg-blue-600 text-white">1</span></li>
-                    <li><span class="px-3 py-1 rounded-r bg-gray-200 text-gray-500">Next</span></li>
-                </ul>
-            </nav>
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $sampleData->links() }}
+            </div>
         </div>
     </div>
-</div>
 
 
-<script>
-// Data individu dari server
-const individuList = @json($sampleData);
-const perPage = 20;
-let currentPage = 1;
+    <script>
+        // Data individu dari server
+        const individuList = @json($sampleData);
+        const perPage = 20;
+        let currentPage = 1;
 
-function renderTable(data) {
-    const tbody = document.getElementById('individuTableBody');
-    tbody.innerHTML = '';
-    const start = (currentPage - 1) * perPage;
-    const end = start + perPage;
-    const pageData = data.slice(start, end);
-    pageData.forEach((individu, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        function renderTable(data) {
+            const tbody = document.getElementById('individuTableBody');
+            tbody.innerHTML = '';
+            const start = (currentPage - 1) * perPage;
+            const end = start + perPage;
+            const pageData = data.slice(start, end);
+            pageData.forEach((individu, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
             <td class="px-4 py-2">${start + index + 1}</td>
             <td class="px-4 py-2">
                 <div class="font-semibold text-gray-800">${individu.nama}</div>
@@ -232,72 +234,72 @@ function renderTable(data) {
                 </div>
             </td>
         `;
-        tbody.appendChild(row);
-    });
-    document.getElementById('totalRecords').textContent = `${data.length}`;
-    document.getElementById('prevPageBtn').disabled = currentPage === 1;
-    document.getElementById('nextPageBtn').disabled = end >= data.length;
-}
+                tbody.appendChild(row);
+            });
+            document.getElementById('totalRecords').textContent = `${data.length}`;
+            document.getElementById('prevPageBtn').disabled = currentPage === 1;
+            document.getElementById('nextPageBtn').disabled = end >= data.length;
+        }
 
-document.getElementById('prevPageBtn').addEventListener('click', function() {
-    if (currentPage > 1) {
-        currentPage--;
-        renderTable(individuList);
-    }
-});
-document.getElementById('nextPageBtn').addEventListener('click', function() {
-    if ((currentPage * perPage) < individuList.length) {
-        currentPage++;
-        renderTable(individuList);
-    }
-});
+        document.getElementById('prevPageBtn').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable(individuList);
+            }
+        });
+        document.getElementById('nextPageBtn').addEventListener('click', function() {
+            if ((currentPage * perPage) < individuList.length) {
+                currentPage++;
+                renderTable(individuList);
+            }
+        });
 
-// Inisialisasi tombol pagination di bawah tabel
-document.querySelector('.flex.justify-between.items-center.mt-4').insertAdjacentHTML('beforeend', `
+        // Inisialisasi tombol pagination di bawah tabel
+        document.querySelector('.flex.justify-between.items-center.mt-4').insertAdjacentHTML('beforeend', `
     <div class="flex gap-2 ml-4">
         <button id="prevPageBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300" disabled>Previous</button>
         <button id="nextPageBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
     </div>
 `);
 
-renderTable(individuList);
+        renderTable(individuList);
 
-// Load data from API
-function loadData() {
-    const searchTerm = document.getElementById('searchIndividu').value;
-    const kabupaten = document.getElementById('filterKabupaten').value;
-    const status = document.getElementById('filterStatus').value;
-    const peran = document.getElementById('filterPeran').value;
-    const residivis = document.getElementById('filterResidivis').value;
+        // Load data from API
+        function loadData() {
+            const searchTerm = document.getElementById('searchIndividu').value;
+            const kabupaten = document.getElementById('filterKabupaten').value;
+            const status = document.getElementById('filterStatus').value;
+            const peran = document.getElementById('filterPeran').value;
+            const residivis = document.getElementById('filterResidivis').value;
 
-    const params = new URLSearchParams();
-    if (searchTerm) params.append('search', searchTerm);
-    if (kabupaten) params.append('kabupaten', kabupaten);
-    if (status) params.append('status', status);
-    if (peran) params.append('peran_jaringan', peran);
-    if (residivis) params.append('residivis', residivis);
+            const params = new URLSearchParams();
+            if (searchTerm) params.append('search', searchTerm);
+            if (kabupaten) params.append('kabupaten', kabupaten);
+            if (status) params.append('status', status);
+            if (peran) params.append('peran_jaringan', peran);
+            if (residivis) params.append('residivis', residivis);
 
-    fetch(`/super-admin/api/individu-data?${params}`)
-        .then(response => response.json())
-        .then(data => {
-            renderTable(data.data);
-        })
-        .catch(error => {
-            console.error('Error loading data:', error);
-        });
-}
+            fetch(`/super-admin/api/individu-data?${params}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderTable(data.data);
+                })
+                .catch(error => {
+                    console.error('Error loading data:', error);
+                });
+        }
 
-// Apply filters
-function applyFilters() {
-    loadData();
-}
+        // Apply filters
+        function applyFilters() {
+            loadData();
+        }
 
-// Delete individu
-function deleteIndividu(id) {
-    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    const form = document.getElementById('deleteForm');
-    form.action = `/super-admin/data-individu/${id}`;
-    modal.show();
-}
-</script>
+        // Delete individu
+        function deleteIndividu(id) {
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            const form = document.getElementById('deleteForm');
+            form.action = `/super-admin/data-individu/${id}`;
+            modal.show();
+        }
+    </script>
 @endsection

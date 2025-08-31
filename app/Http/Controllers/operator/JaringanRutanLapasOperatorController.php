@@ -19,14 +19,16 @@ class JaringanRutanLapasOperatorController extends Controller
         $query = JaringanRutanLapas::query();
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_napi', 'like', "%$q%")
                     ->orWhere('jenis_napi', 'like', "%$q%")
                     ->orWhere('lapas', 'like', "%$q%")
                     ->orWhere('status_proses', 'like', "%$q%");
             });
         }
-        $rutanlapasList = $query->latest()->paginate(10)->withQueryString();
+        $rutanlapasList = JaringanRutanLapas::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('operator.data.rutanlapas.index', compact('rutanlapasList'));
     }
 

@@ -55,6 +55,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\TitikMasukController;
 use App\Http\Controllers\admin\TitikMasukAdminController;
+use App\Http\Controllers\GaleriController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -289,6 +290,10 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/titik-masuk/import', [TitikMasukController::class, 'import'])->name('data.titik-masuk.import');
     Route::get('/titik-masuk/template', [TitikMasukController::class, 'template'])->name('data.titik-masuk.template');
     Route::post('/titik-masuk/import', [TitikMasukController::class, 'import'])->name('data.titik-masuk.import');
+
+    // Galeri Routes
+    Route::post('/gallery', [GaleriController::class, 'store'])->name('gallery.store');
+    Route::get('/gallery', [GaleriController::class, 'galeri_foto'])->name('gallery.index');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {

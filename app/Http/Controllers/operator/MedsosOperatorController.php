@@ -19,13 +19,15 @@ class MedsosOperatorController extends Controller
         $query = Medsos::query();
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_media_sosial', 'like', "%$q%")
                     ->orWhere('nama_akun', 'like', "%$q%")
                     ->orWhere('link_akun', 'like', "%$q%");
             });
         }
-        $medsosList = $query->latest()->paginate(10)->withQueryString();
+        $medsosList = Medsos::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('operator.data.medsos.index', compact('medsosList'));
     }
 

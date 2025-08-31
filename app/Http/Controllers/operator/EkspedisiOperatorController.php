@@ -19,7 +19,7 @@ class EkspedisiOperatorController extends Controller
         $query = Ekspedisi::query();
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama', 'like', "%$q%")
                     ->orWhere('manager', 'like', "%$q%")
                     ->orWhere('alamat', 'like', "%$q%")
@@ -27,7 +27,10 @@ class EkspedisiOperatorController extends Controller
                     ->orWhere('jenis', 'like', "%$q%");
             });
         }
-        $ekspedisiList = $query->latest()->paginate(10)->withQueryString();
+        // $ekspedisiList = $query->latest()->paginate(10)->withQueryString();
+        $ekspedisiList = Ekspedisi::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('operator.data.ekspedisi.index', compact('ekspedisiList'));
     }
 

@@ -5,7 +5,9 @@
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis
+                Intelijen
+                Dasar</span>
         </div>
         <div class="banner-right">
             <span class="profile-label"><a href="{{ route('profile.edit') }}">Profil</a></span>
@@ -48,7 +50,7 @@
             <span class="prov">PROVINSI JAWA TIMUR</span>
         </div>
         <div class="logo-circle">
-            <img src="{{ asset('storage/img/logo.png') }}" alt="Logo BNN">
+            <img src="{{ asset('img/logo-bnn.png') }}" alt="Logo BNN">
         </div>
     </div>
 </div>

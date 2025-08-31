@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Models\DesaGeojson;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserManagementController extends Controller
 {
@@ -24,9 +26,9 @@ class UserManagementController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('username', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('role', 'like', "%{$search}%");
+                        ->orWhere('username', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
                 });
             })
             ->when($roleFilter, function ($query, $roleFilter) {
@@ -149,58 +151,21 @@ class UserManagementController extends Controller
             ->with('success', 'User deleted successfully.');
     }
 
-    /**
-     * Export users to CSV
-     */
-    public function export(Request $request)
+    public function exportExcel(Request $request)
     {
         $search = $request->get('search');
-        $roleFilter = $request->get('role_filter');
-        $sort = $request->get('sort', 'name');
-        $order = $request->get('order', 'asc');
 
         $users = User::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('username', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('role', 'like', "%{$search}%");
+                        ->orWhere('username', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
                 });
             })
-            ->when($roleFilter, function ($query, $roleFilter) {
-                $query->where('role', $roleFilter);
-            })
-            ->orderBy($sort, $order)
             ->get();
 
-        $filename = 'users_' . date('Y-m-d_H-i-s') . '.csv';
-
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ];
-
-        $callback = function() use ($users) {
-            $file = fopen('php://output', 'w');
-
-            // Add CSV headers
-            fputcsv($file, ['Name', 'Username', 'Email', 'Role', 'Created At']);
-
-            // Add data rows
-            foreach ($users as $user) {
-                fputcsv($file, [
-                    $user->name,
-                    $user->username,
-                    $user->email,
-                    $user->role,
-                    $user->created_at->format('Y-m-d H:i:s')
-                ]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return Excel::download(new UsersExport($users), 'users.xlsx');
     }
 }

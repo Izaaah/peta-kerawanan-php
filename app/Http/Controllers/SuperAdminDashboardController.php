@@ -41,6 +41,12 @@ class SuperAdminDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Data untuk grafik kasus per kabupaten
+        $allKecamatanTkpList = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
+            ->groupBy('kecamatan')
+            ->orderBy('total', 'desc')
+            ->paginate(15)->withQueryString();
+
         // Data untuk grafik kasus per kabupaten nik
         $kasusPerKabupatenNik = DataIndividuTsk::select('kabupaten', DB::raw('count(*) as total'))
             ->groupBy('kabupaten')
@@ -139,7 +145,8 @@ class SuperAdminDashboardController extends Controller
             'totalDspJumlah',
             'totalDspKosong',
             'totalDspTerisi',
-            'komposisiList'
+            'komposisiList',
+            'allKecamatanTkpList'
         ));
     }
 

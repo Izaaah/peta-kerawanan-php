@@ -3,69 +3,100 @@
 @section('title', 'Data Penggiat Narkotika')
 
 @section('content')
-<div class="container mx-auto px-1 pt-1 pb-2 max-w-7xl">
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-semibold text-gray-800">Daftar Penggiat Narkotika</h1>
-            <p class="text-sm text-gray-500">Informasi lengkap mengenai Penggiat Narkotika</p>
+    <div class="container mx-auto px-1 pt-1 pb-2 max-w-7xl">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-800">Daftar Penggiat Narkotika</h1>
+                <p class="text-sm text-gray-500">Informasi lengkap mengenai Penggiat Narkotika</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="{{ route('admin.data.penggiat.create') }}"
+                    class="inline-flex items-center px-8 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>Tambah Data
+                </a>
+                <a href="{{ route('admin.data.index') }}"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                    <i class="fas fa-arrow-left mr-1"></i>Kembali
+                </a>
+            </div>
         </div>
-        <div class="flex gap-2">
-            <a href="{{ route('admin.data.penggiat.create') }}" class="inline-flex items-center px-8 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                <i class="fas fa-plus mr-2"></i>Tambah Data
-            </a>
-            <a href="{{ route('admin.data.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
-                <i class="fas fa-arrow-left mr-1"></i>Kembali
-            </a>
+
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">{{ session('success') }}
+            </div>
+        @endif
+
+        <form method="GET" action="{{ route('admin.data.penggiat.index') }}" class="mb-4 flex gap-2">
+            <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, alamat, no hp..."
+                class="border rounded px-3 py-2 w-full" />
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+        </form>
+
+        <div class="bg-white shadow rounded p-6">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No HP</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($penggiatList as $i => $penggiat)
+                        <tr>
+                            <td class="px-4 py-2">{{ $penggiatList->firstItem() + $i }}</td>
+                            <td class="px-4 py-2">{{ $penggiat->nama }}</td>
+                            <td class="px-4 py-2">{{ $penggiat->alamat }}</td>
+                            <td class="px-4 py-2">{{ $penggiat->no_hp }}</td>
+                            <td class="px-4 py-2 flex gap-2">
+                                <a href="{{ route('admin.data.penggiat.show', $penggiat->id) }}"
+                                    class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
+                                <a href="{{ route('admin.data.penggiat.edit', $penggiat->id) }}"
+                                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
+                                <form action="{{ route('admin.data.penggiat.destroy', $penggiat->id) }}" method="POST"
+                                    onsubmit="return confirmDelete(event)" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-4 py-2 text-center text-gray-500">Belum ada data Penggiat.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <div class="mt-4">
+                {{ $penggiatList->links() }}
+            </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            function confirmDelete(event) {
+                event.preventDefault(); // Mencegah form untuk langsung submit
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">{{ session('success') }}</div>
-    @endif
-
-    <form method="GET" action="{{ route('admin.data.penggiat.index') }}" class="mb-4 flex gap-2">
-        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, alamat, no hp..." class="border rounded px-3 py-2 w-full" />
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
-    </form>
-
-    <div class="bg-white shadow rounded p-6">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No HP</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($penggiatList as $i => $penggiat)
-                <tr>
-                    <td class="px-4 py-2">{{ $penggiatList->firstItem() + $i }}</td>
-                    <td class="px-4 py-2">{{ $penggiat->nama }}</td>
-                    <td class="px-4 py-2">{{ $penggiat->alamat }}</td>
-                    <td class="px-4 py-2">{{ $penggiat->no_hp }}</td>
-                    <td class="px-4 py-2 flex gap-2">
-                        <a href="{{ route('admin.data.penggiat.show', $penggiat->id) }}" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs">Lihat</a>
-                        <a href="{{ route('admin.data.penggiat.edit', $penggiat->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-xs">Edit</a>
-                        <form action="{{ route('admin.data.penggiat.destroy', $penggiat->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-4 py-2 text-center text-gray-500">Belum ada data Penggiat.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-        <div class="mt-4">
-            {{ $penggiatList->links() }}
-        </div>
-    </div>
-</div>
+                // SweetAlert2 Confirmation Popup
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "User ini akan dihapus secara permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika konfirmasi diterima, kirimkan form
+                        event.target.submit();
+                    }
+                });
+            }
+        </script>
+    @endpush
 @endsection

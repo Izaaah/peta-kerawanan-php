@@ -19,14 +19,16 @@ class LsmOperatorController extends Controller
         $query = LsmNarkotika::query();
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_lsm', 'like', "%$q%")
                     ->orWhere('ketua_lsm', 'like', "%$q%")
                     ->orWhere('alamat', 'like', "%$q%")
                     ->orWhere('no_hp_ketua', 'like', "%$q%");
             });
         }
-        $lsmList = $query->latest()->paginate(10)->withQueryString();
+        $lsmList = LsmNarkotika::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('operator.data.lsm.index', compact('lsmList'));
     }
 

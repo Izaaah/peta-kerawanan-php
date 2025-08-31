@@ -18,14 +18,16 @@ class LembagaRehabilitasiOperatorController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_objek', 'like', "%$q%")
                     ->orWhere('nama_manager', 'like', "%$q%")
                     ->orWhere('lokasi', 'like', "%$q%")
                     ->orWhere('no_hp', 'like', "%$q%");
             });
         }
-        $lrehabList = $query->latest()->paginate(10)->withQueryString();
+        $sampleData = LembagaRehabilitasi::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
         return view('operator.data.lrehab.index', compact('lrehabList'));
     }
 

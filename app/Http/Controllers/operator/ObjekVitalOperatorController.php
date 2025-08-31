@@ -18,7 +18,7 @@ class ObjekVitalOperatorController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_objek', 'like', "%$q%")
                     ->orWhere('nama_manager', 'like', "%$q%")
                     ->orWhere('lokasi', 'like', "%$q%")
