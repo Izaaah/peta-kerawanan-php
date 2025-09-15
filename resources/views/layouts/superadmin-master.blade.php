@@ -8,7 +8,7 @@
 
     {{-- <title>{{ config('app.name', 'SIJAGAD') }}</title> --}}
     <title>SIJAGAD</title>
-    <link rel="icon" href="{{ asset('storage/img/logo.png') }}" type="image/png" />
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png" />
 
     <!-- Tambahkan di layouts/superadmin-master.blade.php, sebelum </head> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -23,6 +23,7 @@
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/orgchart@2.1.0/dist/js/orgchart.min.js"></script>
     <!-- Additional Styles -->
     <link rel="stylesheet" href="{{ asset('css/superadmin-components.css') }}">
     @stack('styles')

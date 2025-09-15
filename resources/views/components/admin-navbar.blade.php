@@ -30,7 +30,7 @@
         </div>
         <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data</a></div>
         <div class="menu-btn"><a href="{{ route('admin.chart-jaringan') }}">Diagram</a></div>
-        <div class="menu-btn dropdown-parent">
+        <div class="menu-btn-peta dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
@@ -48,7 +48,7 @@
             <span class="prov">PROVINSI JAWA TIMUR</span>
         </div>
         <div class="logo-circle">
-            <img src="{{ asset('storage/img/logo-bnn.png') }}" alt="Logo BNN">
+            <img src="{{ asset('img/logo-bnn.png') }}" alt="Logo BNN">
         </div>
     </div>
 </div>

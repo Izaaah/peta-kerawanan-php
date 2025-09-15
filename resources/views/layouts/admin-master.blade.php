@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>SIJAGAD</title>
-    <link rel="icon" href="{{ asset('storage/img/logo.png') }}" type="image/png"/>
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png" />
     {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
 
     <!-- Tambahkan di layouts/superadmin-master.blade.php, sebelum </head> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -21,11 +22,12 @@
 
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Additional Styles -->
     <link rel="stylesheet" href="{{ asset('css/admin-components.css') }}">
     @stack('styles')
 </head>
+
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 flex flex-col" style="padding-top: 110px;">
         <!-- Include Superadmin Navbar -->
@@ -45,8 +47,9 @@
         <!-- Footer -->
         @include('components.superadmin-footer')
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Additional Scripts -->
     @stack('scripts')
 </body>
+
 </html>

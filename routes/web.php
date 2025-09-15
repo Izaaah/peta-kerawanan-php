@@ -49,6 +49,7 @@ use App\Http\Controllers\admin\ThmAdminController;
 use App\Http\Controllers\operator\ThmOperatorController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\KomposisiController;
+use App\Http\Controllers\admin\KomposisiAdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,6 +57,7 @@ use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\TitikMasukController;
 use App\Http\Controllers\admin\TitikMasukAdminController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\JabatanController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -291,6 +293,13 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/titik-masuk/template', [TitikMasukController::class, 'template'])->name('data.titik-masuk.template');
     Route::post('/titik-masuk/import', [TitikMasukController::class, 'import'])->name('data.titik-masuk.import');
 
+    // Route::resource('pegawai', JabatanController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('pegawai', [JabatanController::class, 'index'])->name('pegawai.index');
+    Route::post('pegawai', [JabatanController::class, 'store'])->name('pegawai.store');
+    Route::put('pegawai/{pegawai}', [JabatanController::class, 'update'])->name('pegawai.update');   // ganti {jabatan} -> {pegawai}
+    Route::delete('pegawai/{pegawai}', [JabatanController::class, 'destroy'])->name('pegawai.destroy');
+
     // Galeri Routes
     Route::post('/gallery', [GaleriController::class, 'store'])->name('gallery.store');
     Route::get('/gallery', [GaleriController::class, 'galeri_foto'])->name('gallery.index');
@@ -466,6 +475,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/titik-masuk/import', [TitikMasukAdminController::class, 'import'])->name('data.titik-masuk.import');
     Route::get('/titik-masuk/template', [TitikMasukAdminController::class, 'template'])->name('data.titik-masuk.template');
 
+    // Komposisi Routes
+    Route::get('/komposisi', [KomposisiAdminController::class, 'index'])->name('komposisi.index');
+    Route::post('/komposisi', [KomposisiAdminController::class, 'store'])->name('komposisi.store');
+    Route::put('/komposisi/{komposisi}', [KomposisiAdminController::class, 'update'])->name('komposisi.update');
+    Route::delete('/komposisi/{komposisi}', [KomposisiAdminController::class, 'destroy'])->name('komposisi.destroy');
     // Data Pendukung Routes
     Route::get('/data-pendukung', function () {
         return view('admin.data.pendukung');

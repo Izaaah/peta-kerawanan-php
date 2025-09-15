@@ -9,16 +9,12 @@ class Pegawai extends Model
 {
     use HasFactory;
 
+    // Nama tabel (opsional, default Laravel pakai 'pegawais')
     protected $table = 'pegawai';
 
+    // Kolom yang bisa diisi massal (fillable)
     protected $fillable = [
         'nama',
-        'jabatan_id',
+        'jabatan',
     ];
-
-    // Relasi dengan jabatan
-    public function jabatan()
-    {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id');
-    }
 }

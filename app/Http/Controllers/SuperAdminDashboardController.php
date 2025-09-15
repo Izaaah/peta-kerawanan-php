@@ -8,6 +8,8 @@ use App\Models\DataIndividuTsk;
 use App\Models\TkpResidivisIndividu;
 use App\Models\Anggaran;
 use App\Models\Komposisi;
+use App\Models\Galeri;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -124,6 +126,29 @@ class SuperAdminDashboardController extends Controller
         // Ambil data komposisi
         $komposisiList = Komposisi::all();
 
+        $galeri = Galeri::all();
+
+        // Kalau $pegawai belum ada, ambil dari DB
+        if (!isset($pegawai)) {
+            $pegawai = Pegawai::orderBy('jabatan')->orderBy('nama')->get();
+        }
+
+        $jabatanList = $jabatanList ?? [
+            'Kepala',
+            'Kabid Pemberantasan',
+            'Kabag Umum',
+            'Kasi Intelijen',
+            'Analisis Intelijen',
+            'Penyidik Sie Intelijen',
+            'Petugas Pengejaran',
+            'Petugas Penindakan',
+            'Pengolah Data Sie Intelijen',
+            'Kasi Wastahti',
+            'Penjaga Tahanan',
+            'Pengadministrasian Umum',
+            'Pengolahan Data',
+        ];
+
         return view('super-admin.dashboard', compact(
             'totalKasus',
             'totalDesa',
@@ -146,7 +171,10 @@ class SuperAdminDashboardController extends Controller
             'totalDspKosong',
             'totalDspTerisi',
             'komposisiList',
-            'allKecamatanTkpList'
+            'allKecamatanTkpList',
+            'galeri',
+            'jabatanList',
+            'pegawai'
         ));
     }
 
