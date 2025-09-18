@@ -3,7 +3,7 @@
 @section('title', 'Detail Penjual Vape')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
+<div class="mx-auto px-4 py-3">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Detail Penjual Vape</h2>
         <div class="grid md:grid-cols-2 gap-6">

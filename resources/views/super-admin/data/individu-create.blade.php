@@ -7,8 +7,8 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800 light:text-white">Tambah Data Individu TSK</h1>
-                <p class="text-sm text-gray-500">Silakan lengkapi formulir berikut dengan data yang akurat.</p>
+                <h1 class="text-2xl font-bold text-gray-800 light:text-white">Tambah Data Individu Tersangka</h1>
+                <p class="text-sm text-gray-500">Silahkan lengkapi formulir berikut dengan data yang akurat.</p>
             </div>
             <a href="{{ route('super-admin.data.individu') }}"
                 class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">

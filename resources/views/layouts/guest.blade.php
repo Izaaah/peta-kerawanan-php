@@ -52,7 +52,7 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 30px;
-            color: #ffffff;
+            color: brown;
             text-align: center;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             letter-spacing: 1px;
@@ -73,7 +73,7 @@
             font-size: 1.1rem;
             line-height: 1.6;
             text-align: center;
-            color: #f0f0f0;
+            color: brown;
             opacity: 0.95;
             margin-bottom: 2.5rem;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);

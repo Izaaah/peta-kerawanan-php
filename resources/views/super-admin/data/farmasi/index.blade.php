@@ -1,7 +1,7 @@
 @extends('layouts.superadmin-master')
 @section('title', 'Data Perusahaan Farmasi/Prekursor')
 @section('content')
-    <div class="container max-w-7xl mx-auto px-1 pt-1 pb-2">
+    <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar Perusahaan Farmasi/Prekursor</h1>

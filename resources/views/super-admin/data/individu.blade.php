@@ -1,15 +1,15 @@
 @extends('layouts.superadmin-master')
 
-@section('title', 'Data Individu TSK')
+@section('title', 'Data Individu Tersangka')
 
 @section('content')
 @include('components.superadmin-navbar')
 
-<div class="container-fluid px-4 py-5">
+<div class="container-fluid px-4 py-3">
     <!-- Header Section -->
     <div class="mb-5">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu TSK</h1>
-        <p class="text-sm text-gray-500 mb-4">Kelola data individu TSK dengan korelasi kasus narkotika</p>
+        <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu Tersangka</h1>
+        <p class="text-sm text-gray-500 mb-4">Kelola data individu Tersangka dengan korelasi kasus narkotika</p>
         <div class="flex flex-col md:flex-row gap-2 md:gap-3 items-start md:items-center">
             <a href="{{ route('super-admin.data.individu.create') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                 <i class="fas fa-plus mr-2"></i>Tambah Data
@@ -98,7 +98,7 @@
     <!-- Data Table Section -->
     <div class="bg-white shadow rounded-lg p-6">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-semibold text-gray-700">Data Individu TSK</h2>
+            <h2 class="text-lg font-semibold text-gray-700">Data Individu Tersangka</h2>
             <span class="text-sm text-gray-600">Total: <span id="totalRecords">{{ $sampleData->count() }}</span></span>
         </div>
         <div class="overflow-x-auto">

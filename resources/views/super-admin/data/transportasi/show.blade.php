@@ -3,7 +3,7 @@
 @section('title', 'Detail Data Transportasi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
+<div class="mx-auto px-4 py-3">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Detail Data Transportasi</h2>
         <div class="flex gap-2">

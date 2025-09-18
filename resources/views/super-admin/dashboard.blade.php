@@ -3,7 +3,7 @@
 @section('content')
     @include('components.superadmin-navbar')
 
-    <div class="container mx-auto pt-1 pb-4 py-6 max-w-7xl">
+    <div class="container mx-auto px-4 py-3">
         <!-- Tab Navigation -->
         <div class="mb-6">
             <div class="border-b border-gray-200">
@@ -499,7 +499,7 @@
                 </div>
 
                 <!-- Tugas Pokok dan Fungsi -->
-                <div class="mt-5 space-y-12 max-w-5xl mx-auto px-4">
+                <div class="mt-5 space-y-12 mx-auto px-4">
                     <div class="relative pb-6">
                         <h4
                             class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-red-600 pb-3">
@@ -906,8 +906,11 @@
                                         <div class="text-black font-bold text-lg">Penyidik Sie Intelijen</div>
                                         <div class="text-black text-md">
                                             <ol class="list-disc list-inside">
-                                                @php $penyidikSieIntelijen = $pegawai->where('jabatan','Penyidik Sie Intelijen')->first(); @endphp
-                                                <li class="ml-4">{{ $penyidikSieIntelijen->nama ?? '-' }}</li>
+                                                @forelse ($pegawai->where('jabatan','Penyidik Sie Intelijen') as $penyidikSieIntelijen)
+                                                    <li>{{ $penyidikSieIntelijen->nama }}</li>
+                                                @empty
+                                                    <li>-</li>
+                                                @endforelse
                                         </div>
                                     </div>
                                 </div>
@@ -940,8 +943,11 @@
                                         </div>
                                         <div class="text-black text-md">
                                             <ol class="list-disc list-inside">
-                                                @php $petugasPenindakanSieIntelijen = $pegawai->where('jabatan','Petugas Penindakan Sie Intelijen')->first(); @endphp
-                                                <li class="ml-4">{{ $petugasPenindakanSieIntelijen->nama ?? '-' }}</li>
+                                                @forelse ($pegawai->where('jabatan','Petugas Penindakan Sie Intelijen') as $petugasPenindakanSieIntelijen)
+                                                    <li>{{ $petugasPenindakanSieIntelijen->nama }}</li>
+                                                @empty
+                                                    <li>-</li>
+                                                @endforelse
                                             </ol>
                                         </div>
                                     </div>
@@ -955,8 +961,11 @@
                                         <div class="text-black font-bold text-lg">Pengolah Data Sie Intelijen</div>
                                         <div class="text-black text-md">
                                             <ol class="list-disc list-inside">
-                                                @php $pengolahDataSieIntelijen = $pegawai->where('jabatan','Pengolah Data Sie Intelijen')->first(); @endphp
-                                                <li class="ml-4">{{ $pengolahDataSieIntelijen->nama ?? '-' }}</li>
+                                                @forelse ($pegawai->where('jabatan','Pengolah Data Sie Intelijen') as $pengolahDataSieIntelijen)
+                                                    <li>{{ $pengolahDataSieIntelijen->nama }}</li>
+                                                @empty
+                                                    <li>-</li>
+                                                @endforelse
                                             </ol>
                                         </div>
                                     </div>
@@ -976,8 +985,11 @@
                                         </div>
                                         <div class="text-black text-md">
                                             <ol class="list-disc list-inside">
-                                                @php $penjagaTahanan = $pegawai->where('jabatan','Penjaga Tahanan')->first(); @endphp
-                                                <li>{{ $penjagaTahanan->nama ?? '-' }}</li>
+                                                @forelse ($pegawai->where('jabatan','Penjaga Tahanan') as $penjagaTahanan)
+                                                    <li>{{ $penjagaTahanan->nama }}</li>
+                                                @empty
+                                                    <li>-</li>
+                                                @endforelse
                                             </ol>
                                         </div>
                                     </div>
@@ -991,8 +1003,11 @@
                                         <div class="text-black font-bold text-lg">Pengadministrasian Umum</div>
                                         <div class="text-black text-md">
                                             <ol class="list-disc list-inside">
-                                                @php $pengadministrasianUmum = $pegawai->where('jabatan','Pengadministrasian Umum')->first(); @endphp
-                                                <li class="ml-4">{{ $pengadministrasianUmum->nama ?? '-' }}</li>
+                                                @forelse ($pegawai->where('jabatan','Pengadministrasian Umum') as $pengadministrasianUmum)
+                                                    <li>{{ $pengadministrasianUmum->nama }}</li>
+                                                @empty
+                                                    <li>-</li>
+                                                @endforelse
                                             </ol>
                                         </div>
                                     </div>
@@ -1530,8 +1545,8 @@
     <div id="tambahAnggaranModal"
         class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4 mt-12">
 
-        <div>
-            class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 ease-in-out">
+        <div
+            class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 ease-in-out">
 
             <div class="relative px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Tambah Anggaran Baru</h3>

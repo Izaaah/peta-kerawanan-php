@@ -3,7 +3,7 @@
 @section('title', 'Edit Ekspedisi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-1 pt-1 pb-2">
+<div class="mx-auto px-4 py-3">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Edit Data Ekspedisi</h2>
         <a href="{{ route('super-admin.data.ekspedisi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>

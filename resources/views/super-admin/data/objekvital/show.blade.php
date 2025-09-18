@@ -1,7 +1,7 @@
 @extends('layouts.superadmin-master')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-1 mt-1 mb-2">
+<div class="mx-auto px-4 py-3">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Detail Objek Vital</h2>
         <div class="mb-4">
