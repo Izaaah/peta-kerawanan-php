@@ -3,7 +3,7 @@
 @section('content')
     @include('components.superadmin-navbar')
 
-    <div class="container mx-auto px-4 py-3">
+    <div class="mx-auto px-2 py-3">
         <!-- Tab Navigation -->
         <div class="mb-6">
             <div class="border-b border-gray-200">
@@ -440,6 +440,39 @@
                                         <td class="px-2 py-4 whitespace-nowrap text-center text-sm text-gray-900">
                                             <div class="flex items-center justify-center space-x-2">
                                                 {{-- Aksi seperti edit/hapus dapat ditambahkan di sini --}}
+                                                {{-- Tombol Edit --}}
+                                                <a href="#" onclick="tambahAnggaranModal(this.dataset)"
+                                                    data-id="{{ $anggaran->id }}" data-bidang="{{ $anggaran->bidang }}"
+                                                    data-jumlah_personil="{{ $anggaran->jumlah_personil }}"
+                                                    data-dsp_jumlah="{{ $anggaran->dsp_jumlah }}"
+                                                    data-dsp_terisi="{{ $anggaran->dsp_terisi }}"
+                                                    data-dsp_kosong="{{ $anggaran->dsp_kosong }}"
+                                                    data-keterangan="{{ $anggaran->keterangan }}"
+                                                    class="inline-flex items-center px-2 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                    </svg>
+                                                </a>
+
+                                                {{-- Tombol Delete --}}
+                                                <form action="{{ route('super-admin.anggaran.destroy', $anggaran->id) }}"
+                                                    method="POST" onsubmit="return confirmDeleteAnggaran(event)"
+                                                    class="inline-block">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="inline-flex items-center px-2 py-2 bg-gradient-to-r from-red-500 to-red-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-300 transform hover:-translate-y-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-6 4h8" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -463,6 +496,7 @@
                                     <td
                                         class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900 bg-yellow-100">
                                         Rp {{ number_format($totalSetelah, 0, ',', '.') }}</td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -876,7 +910,7 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row sm:space-x-[100px] -translate-y-[50px] ml-[15px]">
+                        <div class="flex flex-col sm:flex-row sm:space-x-[100px] -translate-y-[50px] ml-[65px]">
                             <!-- Kolom Kiri: Analisis Intelijen -->
                             <div class="flex flex-col items-center w-full sm:w-1/2 space-y-4 mt-[-480px]">
 
@@ -975,7 +1009,7 @@
 
                             <!-- Kolom Kanan: Penjaga Tahanan -->
                             <div
-                                class="flex flex-col items-center w-full sm:w-1/2 -mr-[100px] space-y-4 mt-[-480px] translate-x-[-243px]">
+                                class="flex flex-col items-center w-full sm:w-1/2 -mr-[60px] space-y-4 mt-[-480px] translate-x-[-270px]">
 
                                 <!-- Kotak: Analisis Intelijen (Sama dengan Kolom Kiri, bisa disesuaikan) -->
                                 <div
@@ -1458,9 +1492,8 @@
 
 
     <!-- Modal Semua Kabupaten -->
-    <div id="allKabupatenModal"
-        class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4 mt-12">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div id="allKabupatenModal" class="dashboard-content hidden">
+        <div class="space-y-6">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
                 <h3 class="text-lg font-semibold text-gray-900">Daftar Semua Kabupaten/Kota Berdasarkan Jumlah Kasus
                 </h3>
@@ -1546,7 +1579,7 @@
         class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4 mt-12">
 
         <div
-            class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 ease-in-out">
+            class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto mt-10 transform transition-all duration-300 ease-in-out">
 
             <div class="relative px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold text-gray-900">Tambah Anggaran Baru</h3>
@@ -2120,8 +2153,8 @@
                 });
 
                 // Tampilkan modal
-                allKabupatenModal.classList.remove('hidden');
-                document.body.classList.add('overflow-hidden');
+                allKabupatenModal.classList.add('hidden');
+                //document.body.classList.add('overflow-hidden');
             });
 
             // Fungsi untuk menampilkan modal kecamatan
@@ -2426,7 +2459,38 @@
                 calc();
             }
 
-            function openKomposisiModal(row = null) {
+            function openAnggaranModal(row = null) {
+                const modal = document.getElementById('komposisiModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.classList.add('overflow-hidden');
+
+                const form = document.getElementById('komposisiForm');
+                const methodInput = document.getElementById('komposisiFormMethod');
+                const title = document.getElementById('komposisiModalTitle');
+
+                if (row && row.id) {
+                    form.action = `{{ url('super-admin/komposisi') }}/${row.id}`;
+                    methodInput.value = 'PUT';
+                    title.textContent = 'Edit Komposisi';
+
+                    document.getElementById('komposisi_bidang').value = row.bidang || '';
+                    document.getElementById('komposisi_jumlah_personil').value = row.jumlah_personil ?? 0;
+                    document.getElementById('komposisi_dsp_jumlah').value = row.dsp_jumlah ?? 0;
+                    document.getElementById('komposisi_dsp_terisi').value = row.dsp_terisi ?? 0;
+                    document.getElementById('komposisi_dsp_kosong').value = row.dsp_kosong ?? 0;
+                    document.getElementById('komposisi_keterangan').value = row.keterangan || '';
+                } else {
+                    form.action = `{{ route('super-admin.komposisi.store') }}`;
+                    methodInput.value = 'POST';
+                    title.textContent = 'Tambah Komposisi';
+                    form.reset();
+                }
+
+                autoCalcKosong();
+            }
+
+            function openAnggaranModal(row = null) {
                 const modal = document.getElementById('komposisiModal');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -2466,6 +2530,26 @@
             }
 
             function confirmDeleteKomposisi(event) {
+                event.preventDefault(); // Mencegah form untuk langsung submit
+
+                // SweetAlert2 Confirmation Popup
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus secara permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika konfirmasi diterima, kirimkan form
+                        event.target.submit();
+                    }
+                });
+            }
+
+            function confirmDeleteAnggaran(event) {
                 event.preventDefault(); // Mencegah form untuk langsung submit
 
                 // SweetAlert2 Confirmation Popup

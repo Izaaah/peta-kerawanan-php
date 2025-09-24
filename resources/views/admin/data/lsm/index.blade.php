@@ -3,7 +3,7 @@
 @section('title', 'Data LSM Narkotika')
 
 @section('content')
-    <div class="container mx-auto pt-1 pb-2 px-1 max-w-7xl">
+    <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar LSM Narkotika</h1>

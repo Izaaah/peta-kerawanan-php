@@ -23,4 +23,10 @@ class AnggaranController extends Controller
 
         return back()->with('success', 'Anggaran berhasil disimpan.');
     }
+
+    public function destroy(Anggaran $anggaran)
+    {
+        $anggaran->delete();
+        return back()->with('success', 'Komposisi dihapus');
+    }
 }

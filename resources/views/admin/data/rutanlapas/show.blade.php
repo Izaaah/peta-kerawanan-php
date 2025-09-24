@@ -1,7 +1,7 @@
 @extends('layouts.admin-master')
 
 @section('content')
-<div class="max-w-7xl mx-auto pt-1 pb-2 px-1">
+<div class="mx-auto px-4 py-3">
     <div class="bg-white rounded shadow p-6">
         <h2 class="text-xl font-bold mb-4">Detail Jaringan Rutan/Lapas</h2>
         <div class="grid md:grid-cols-2 gap-6">

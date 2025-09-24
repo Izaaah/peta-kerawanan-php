@@ -1,367 +1,475 @@
 @extends('layouts.admin-master')
 
 @section('title', 'Tambah Data Individu TSK')
-@include('components.admin-navbar')
-
 @section('content')
-<div class="px-4 pt-2 pb-6">
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800 light:text-white">Tambah Data Individu TSK</h1>
-            <p class="text-sm text-gray-500">Silakan lengkapi formulir berikut dengan data yang akurat.</p>
+    @include('components.admin-navbar')
+
+    <div class="mx-auto px-4 py-3">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 light:text-white">Tambah Data Individu TSK</h1>
+                <p class="text-sm text-gray-500">Silakan lengkapi formulir berikut dengan data yang akurat.</p>
+            </div>
+            <a href="{{ route('admin.data.individu') }}"
+                class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
+                <i class="fas fa-arrow-left mr-2"></i> Kembali
+            </a>
         </div>
-        <a href="{{ route('admin.data.individu') }}" class="inline-flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md shadow">
-            <i class="fas fa-arrow-left mr-2"></i> Kembali
-        </a>
-    </div>
 
-    <div class="bg-white rounded-lg shadow p-10 max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-7 gap-6">
-            <div class="lg:col-span-5">
-                <!-- Form Input -->
-                <div class="bg-white light:bg-gray-800 shadow rounded-lg p-6">
-                    <h2 class="text-lg font-semibold text-blue-600 mb-4">Formulir Data Individu</h2>
+        <div class="">
+            <div class="grid grid-cols-1 lg:grid-cols-7 gap-6">
+                <div class="lg:col-span-5">
+                    <!-- Form Input -->
+                    <div class="bg-white light:bg-gray-800 shadow rounded-lg p-6">
+                        <h2 class="text-lg font-semibold text-blue-600 mb-4">Formulir Data Individu</h2>
 
-                    @if(session('error'))
-                    <div class="bg-red-100 text-red-800 text-sm p-3 rounded mb-4">
-                        {{ session('error') }}
-                    </div>
-                    @endif
+                        @if (session('error'))
+                            <div class="bg-red-100 text-red-800 text-sm p-3 rounded mb-4">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
-                    {{-- Tampilkan pesan sukses atau error dari session --}}
-@if (session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+                        {{-- Tampilkan pesan sukses atau error dari session --}}
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
 
-@if (session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
 
-{{-- Tampilkan error validasi --}}
-@if ($errors->any())
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Terjadi kesalahan saat mengisi form:</strong>
-    <ul class="mb-0 mt-1">
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+                        {{-- Tampilkan error validasi --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Terjadi kesalahan saat mengisi form:</strong>
+                                <ul class="mb-0 mt-1">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
 
-                    <form action="{{ route('admin.data.individu.store') }}" method="POST" id="individuForm" enctype="multipart/form-data">
-                        @csrf
+                        <form action="{{ route('admin.data.individu.store') }}" method="POST" id="individuForm"
+                            enctype="multipart/form-data">
+                            @csrf
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="md:col-span-2 mb-4">
-                                <label for="nik" class="block text-base font-medium text-black">NIK</label>
-                                <input type="text" name="nik" id="nik" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nik') }}">
-                                <div id="nik-duplicate-notification" class="hidden mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                                    <div class="flex items-start">
-                                        <div class="flex-shrink-0">
-                                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <div class="ml-3 flex-1">
-                                            <h3 class="text-sm font-medium text-yellow-800">NIK Terdeteksi Duplikat</h3>
-                                            <div class="mt-2 text-sm text-yellow-700">
-                                                <p id="duplicate-message"></p>
-                                                <div id="duplicate-data" class="mt-2 text-xs bg-white p-2 rounded border"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="md:col-span-2 mb-4">
+                                    <label for="nik" class="block text-base font-medium text-black">NIK</label>
+                                    <input type="text" name="nik" id="nik" maxlength="16" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"
+                                        value="{{ old('nik') }}">
+                                    <div id="nik-duplicate-notification"
+                                        class="hidden mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20"
+                                                    fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
                                             </div>
-                                            <div class="mt-3 flex space-x-2">
-                                                <button type="button" id="submit-for-verification" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-yellow-800 bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                                                    <i class="fas fa-paper-plane mr-1"></i>
-                                                    Kirim untuk Verifikasi
-                                                </button>
-                                                <button type="button" id="clear-nik" class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                                    <i class="fas fa-times mr-1"></i>
-                                                    Hapus NIK
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="nkk" class="block text-base font-medium text-black">Nomor KK</label>
-                                <input type="text" name="nkk" id="nkk" maxlength="16" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nkk') }}">
-                            </div>
-                            <div class="md:col-span-2 mb-4">
-                                <label for="nama" class="block text-base font-medium text-black">Nama Lengkap</label>
-                                <input type="text" name="nama" id="nama" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base" value="{{ old('nama') }}">
-                            </div>
-                            <!-- Input Dinamis Nomor Telepon -->
-                            <div class="md:col-span-2 mb-4" id="telepon-wrapper">
-                                <label class="block text-base font-medium text-black">Nomor Telepon</label>
-                                <div id="telepon-fields">
-                                    <div class="flex items-center gap-2 mt-1 telepon-row">
-                                        <input type="number" name="telepon[]" maxlength="20" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Input Dinamis No Rekening -->
-                            <div class="md:col-span-2 mb-4" id="rekening-wrapper">
-                                <label class="block text-base font-medium text-black">No. Rekening</label>
-                                <div id="rekening-fields">
-                                    <div class="flex items-center gap-2 mt-1 rekening-row">
-                                        <input type="number" name="rekening[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Input Dinamis No E-Wallet -->
-                            <div class="md:col-span-2 mb-4" id="ewallet-wrapper">
-                                <label class="block text-base font-medium text-black">No. E-Wallet</label>
-                                <div id="ewallet-fields">
-                                    <div class="flex items-center gap-2 mt-1 ewallet-row">
-                                        <input type="number" name="ewallet[]" maxlength="30" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="provinsi" class="block text-sm font-medium text-black  ">Provinsi</label>
-                                <select name="provinsi" id="provinsi" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="Jawa Timur" selected>Jawa Timur</option>
-                                    <option value="lainnya">Lainnya</option>
-                                </select>
-                            </div>
-                            <div id="wilayah-jatim">
-                                <div>
-                                    <label for="kabupaten" class="block text-sm font-medium text-black   mb-1">Kabupaten</label>
-                                    <select name="kabupaten" id="kabupaten" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                        <option value="">Pilih Kabupaten</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="kecamatan" class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
-                                    <select name="kecamatan" id="kecamatan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                        <option value="">Pilih Kecamatan</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="kelurahan" class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa</label>
-                                    <select name="kelurahan" id="kelurahan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                        <option value="">Pilih Kelurahan/Desa</option>
-                                    </select>
-                                </div>
-                                {{-- </div> --}}
-                            </div>
-                            <div id="wilayah-lainnya" class="hidden">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-black   mb-1">Provinsi</label>
-                                        <input type="text" name="provinsi_lain" id="provinsi_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Provinsi">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-black   mb-1">Kabupaten</label>
-                                        <input type="text" name="kabupaten_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Kabupaten">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
-                                        <input type="text" name="kecamatan_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Kecamatan">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa</label>
-                                        <input type="text" name="kelurahan_lain" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Kelurahan/Desa">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="md:col-span-2">
-                                <label for="alamat" class="block text-sm font-medium text-black  ">Alamat Lengkap (Dusun/Jalan/RT/RW)</label>
-                                <textarea name="alamat" id="alamat" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                            </div>
-                            <div>
-                                <label for="nama_ayah" class="block text-sm font-medium text-black  ">Nama Ayah</label>
-                                <input type="text" name="nama_ayah" id="nama_ayah" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label for="nik_ayah" class="block text-sm font-medium text-black  ">NIK Ayah</label>
-                                <input type="text" name="nik_ayah" id="nik_ayah" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label for="nama_ibu" class="block text-sm font-medium text-black  ">Nama Ibu</label>
-                                <input type="text" name="nama_ibu" id="nama_ibu" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <div>
-                                <label for="nik_ibu" class="block text-sm font-medium text-black  ">NIK Ibu</label>
-                                <input type="text" name="nik_ibu" id="nik_ibu" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            </div>
-                            <!-- Input Dinamis Nama Keluarga Lain + NIK -->
-                            <div class="md:col-span-2" id="keluarga-lain-wrapper">
-                                <label class="block text-sm font-medium text-black  ">Nama Keluarga Lain & NIK</label>
-                                <div id="keluarga-lain-fields">
-                                    <div class="flex flex-col md:flex-row gap-2 mt-1 keluarga-lain-row">
-                                        <input type="text" name="nama_keluarga_lain[]" maxlength="100" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nama Keluarga Lain">
-                                        <input type="text" name="nik_keluarga_lain[]" maxlength="16" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="NIK Keluarga Lain">
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="peran_jaringan" class="block text-sm font-medium text-black  ">Peran dalam Jaringan</label>
-                                <select name="peran_jaringan" id="peran_jaringan" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Pilih Peran</option>
-                                    <option value="koordinator informan">Koordinator Informan</option>
-                                    <option value="informan">Informan</option>
-                                    <option value="kurir">Kurir</option>
-                                    <option value="gudang">Gudang</option>
-                                    <option value="broker">Broker</option>
-                                    <option value="bandar">Bandar</option>
-                                    <option value="beking">Beking</option>
-                                    <option value="tidak tahu">Tidak Tahu</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="modus_operasi" class="block text-sm font-medium text-black  ">Modus Operasi</label>
-                                <textarea name="modus_operasi" id="modus_operasi" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-                            </div>
-                            <!-- Input Dinamis Jenis Narkotika -->
-                            <div class="md:col-span-2" id="jenis-narkotika-wrapper">
-                                <label class="block text-sm font-medium text-black  ">Jenis Narkotika</label>
-                                <div id="jenis-narkotika-fields">
-                                    <div class="flex items-center gap-2 mt-1 jenis-narkotika-row">
-                                        <input type="text" name="jenis_narkotika[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Jenis Narkotika">
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="skala_kelas" class="block text-sm font-medium text-black  ">Skala Kelas</label>
-                                <select name="skala_kelas" id="skala_kelas" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Pilih Skala</option>
-                                    <option value="dibawah 10gr">Dibawah 10gr</option>
-                                    <option value="dibawah1ons">Dibawah 1 ons</option>
-                                    <option value="dibawah1kg">Dibawah 1kg</option>
-                                    <option value="diatas1kg">Diatas 1kg</option>
-                                    <option value="tidak tahu">Tidak Tahu</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="status" class="block text-sm font-medium text-black  ">Status</label>
-                                <select name="status" id="status" required class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm appearance-none">
-                                    <option value="">Pilih Status</option>
-                                    <option value="Napi">Napi</option>
-                                    <option value="Non napi">Non napi</option>
-                                </select>
-                            </div>
-                            <!-- Pilihan Resisivis -->
-                            <div class="md:col-span-2" id="residivis-wrapper">
-                                <label class="block text-sm font-medium text-black   mb-1">Residivis</label>
-                                <div class="flex items-center gap-4 mt-1">
-                                    <label class="inline-flex items-center">
-                                        <input type="radio" name="residivis" value="1" class="form-radio text-blue-600" id="residivis-ya">
-                                        <span class="ml-2">Ya</span>
-                                    </label>
-                                    <label class="inline-flex items-center">
-                                        <input type="radio" name="residivis" value="0" class="form-radio text-blue-600" id="residivis-tidak" checked>
-                                        <span class="ml-2">Tidak</span>
-                                    </label>
-                                </div>
-                                <div id="residivis-detail" class="mt-4 hidden bg-gray-50 p-4 rounded-md border border-gray-200">
-                                    <div class="mb-2" id="aph-m-wrapper">
-                                        <label class="block text-xs font-medium text-black mb-1">a. APH yang menangani</label>
-                                        <div id="aph-m-fields">
-                                            <div class="flex items-center gap-2 mt-1 aph-m-row">
-                                                <input type="text" name="aph_menangani[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="APH yang menangani">
+                                            <div class="ml-3 flex-1">
+                                                <h3 class="text-sm font-medium text-yellow-800">NIK Terdeteksi Duplikat</h3>
+                                                <div class="mt-2 text-sm text-yellow-700">
+                                                    <p id="duplicate-message"></p>
+                                                    <div id="duplicate-data"
+                                                        class="mt-2 text-xs bg-white p-2 rounded border"></div>
+                                                </div>
+                                                <div class="mt-3 flex space-x-2">
+                                                    <button type="button" id="submit-for-verification"
+                                                        class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-yellow-800 bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                                                        <i class="fas fa-paper-plane mr-1"></i>
+                                                        Kirim untuk Verifikasi
+                                                    </button>
+                                                    <button type="button" id="clear-nik"
+                                                        class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                        <i class="fas fa-times mr-1"></i>
+                                                        Hapus NIK
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mb-2" id="pasal-wrapper">
-                                        <label class="block text-xs font-medium text-black mb-1">b. Pasal yang disangkakan</label>
-                                        <div id="pasal-fields">
-                                            <div class="flex items-center gap-2 mt-1 pasal-row">
-                                                <input type="text" name="pasal_disangkakan[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Pasal yang disangkakan">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="nkk" class="block text-base font-medium text-black">Nomor KK</label>
+                                    <input type="text" name="nkk" id="nkk" maxlength="16" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"
+                                        value="{{ old('nkk') }}">
+                                </div>
+                                <div class="md:col-span-2 mb-4">
+                                    <label for="nama" class="block text-base font-medium text-black">Nama
+                                        Lengkap</label>
+                                    <input type="text" name="nama" id="nama" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base uppercase"
+                                        value="{{ old('nama') }}">
+                                </div>
+                                <!-- Input Dinamis Nomor Telepon -->
+                                <div class="md:col-span-2 mb-4" id="telepon-wrapper">
+                                    <label class="block text-base font-medium text-black">Nomor Telepon</label>
+                                    <div id="telepon-fields">
+                                        <div class="flex items-center gap-2 mt-1 telepon-row">
+                                            <input type="number" name="telepon[]" maxlength="20"
+                                                class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <!-- Input Dinamis No Rekening -->
+                                    <div class="md:col-span-2 mb-4" id="rekening-wrapper">
+                                        <label class="block text-base font-medium text-black">No. Rekening</label>
+                                        <div id="rekening-fields">
+                                            <div class="flex items-center gap-2 mt-1 rekening-row">
+                                                <input type="number" name="rekening[]" maxlength="30"
+                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mb-2" id="tkp-wrapper">
-                                        <label class="block text-xs font-medium text-black mb-1">c. TKP</label>
-                                        <div id="tkp-fields">
-                                            <div class="tkp-row space-y-2 mt-1">
-                                                <select name="tkp_provinsi[]" class="block w-full rounded-md border-gray-300 shadow-sm tkp-provinsi">
-                                                    <option value="Jawa Timur">Jawa Timur</option>
-                                                    <option value="lainnya">Lainnya</option>
-                                                </select>
-                                                <select name="tkp_kabupaten[]" class="block w-full rounded-md border-gray-300 shadow-sm tkp-kabupaten">
-                                                    <option value="">Kabupaten</option>
-                                                    @foreach($kabupatenList as $kabupaten)
-                                                    <option value="{{ $kabupaten }}">{{ $kabupaten }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <select name="tkp_kecamatan[]" class="block w-full rounded-md border-gray-300 shadow-sm tkp-kecamatan">
-                                                    <option value="">Kecamatan</option>
-                                                </select>
-                                                <select name="tkp_desa[]" class="block w-full rounded-md border-gray-300 shadow-sm tkp-desa">
-                                                    <option value="">Desa/Kelurahan</option>
-                                                </select>
-                                                <input type="text" name="tkp_lokasi[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Detail Lokasi (opsional)">
-                                                <button type="button" class="hapus-tkp-row bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-8 h-8 flex items-center justify-center self-center" title="Hapus">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    <!-- Input Dinamis No E-Wallet -->
+                                    <div class="md:col-span-2 mb-4" id="ewallet-wrapper">
+                                        <label class="block text-base font-medium text-black">No. E-Wallet</label>
+                                        <div id="ewallet-fields">
+                                            <div class="flex items-center gap-2 mt-1 ewallet-row">
+                                                <input type="number" name="ewallet[]" maxlength="30"
+                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="provinsi"
+                                            class="block text-sm font-medium text-black  ">Provinsi</label>
+                                        <select name="provinsi" id="provinsi" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                            <option value="Jawa Timur" selected>Jawa Timur</option>
+                                            <option value="lainnya">Lainnya</option>
+                                        </select>
+                                    </div>
+                                    <div id="wilayah-jatim">
+                                        <div>
+                                            <label for="kabupaten"
+                                                class="block text-sm font-medium text-black   mb-1">Kabupaten</label>
+                                            <select name="kabupaten" id="kabupaten" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                                <option value="">Pilih Kabupaten</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="kecamatan"
+                                                class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
+                                            <select name="kecamatan" id="kecamatan" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                                <option value="">Pilih Kecamatan</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="kelurahan"
+                                                class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa</label>
+                                            <select name="kelurahan" id="kelurahan" required
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                                <option value="">Pilih Kelurahan/Desa</option>
+                                            </select>
+                                        </div>
+                                        {{-- </div> --}}
+                                    </div>
+                                    <div id="wilayah-lainnya" class="hidden">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-black   mb-1">Provinsi</label>
+                                                <input type="text" name="provinsi_lain" id="provinsi_lain"
+                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="Provinsi">
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-black   mb-1">Kabupaten</label>
+                                                <input type="text" name="kabupaten_lain"
+                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="Kabupaten">
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-black   mb-1">Kecamatan</label>
+                                                <input type="text" name="kecamatan_lain"
+                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="Kecamatan">
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-black   mb-1">Kelurahan/Desa</label>
+                                                <input type="text" name="kelurahan_lain"
+                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="Kelurahan/Desa">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="alamat" class="block text-sm font-medium text-black  ">Alamat
+                                            Lengkap (Dusun/Jalan/RT/RW)</label>
+                                        <textarea name="alamat" id="alamat" rows="2" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="nama_ayah" class="block text-sm font-medium text-black  ">Nama
+                                            Ayah</label>
+                                        <input type="text" name="nama_ayah" id="nama_ayah"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm uppercase">
+                                    </div>
+                                    <div>
+                                        <label for="nik_ayah" class="block text-sm font-medium text-black  ">NIK
+                                            Ayah</label>
+                                        <input type="text" name="nik_ayah" id="nik_ayah" maxlength="16"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                    </div>
+                                    <div>
+                                        <label for="nama_ibu" class="block text-sm font-medium text-black  ">Nama
+                                            Ibu</label>
+                                        <input type="text" name="nama_ibu" id="nama_ibu"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm uppercase">
+                                    </div>
+                                    <div>
+                                        <label for="nik_ibu" class="block text-sm font-medium text-black  ">NIK
+                                            Ibu</label>
+                                        <input type="text" name="nik_ibu" id="nik_ibu" maxlength="16"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                    </div>
+                                    <!-- Input Dinamis Nama Keluarga Lain + NIK -->
+                                    <div class="md:col-span-2" id="keluarga-lain-wrapper">
+                                        <label class="block text-sm font-medium text-black  ">Nama Keluarga Lain &
+                                            NIK</label>
+                                        <div id="keluarga-lain-fields">
+                                            <div class="flex flex-col md:flex-row gap-2 mt-1 keluarga-lain-row">
+                                                <input type="text" name="nama_keluarga_lain[]" maxlength="100"
+                                                    class="block w-full rounded-md border-gray-300 shadow-sm uppercase"
+                                                    placeholder="Nama Keluarga Lain">
+                                                <input type="text" name="nik_keluarga_lain[]" maxlength="16"
+                                                    class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="NIK Keluarga Lain">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="peran_jaringan" class="block text-sm font-medium text-black  ">Peran
+                                            dalam Jaringan</label>
+                                        <select name="peran_jaringan" id="peran_jaringan" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                            <option value="">Pilih Peran</option>
+                                            <option value="koordinator informan">Koordinator Informan</option>
+                                            <option value="informan">Informan</option>
+                                            <option value="kurir">Kurir</option>
+                                            <option value="gudang">Gudang</option>
+                                            <option value="bandar">Bandar</option>
+                                            <option value="Penyalahguna">Penyalahguna</option>
+                                            <option value="Korban Penyalahguna">Korban Penyalahguna</option>
+                                            <option value="Pecandu">Pecandu</option>
+                                            <option value="tidak tahu">Tidak Tahu</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="modus_operasi" class="block text-sm font-medium text-black  ">Modus
+                                            Operasi</label>
+                                        <textarea name="modus_operasi" id="modus_operasi" rows="2"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                                    </div>
+                                    <!-- Input Dinamis Jenis Narkotika -->
+                                    <div class="md:col-span-2" id="jenis-narkotika-wrapper">
+                                        <label class="block text-sm font-medium text-black  ">Jenis Narkotika</label>
+                                        <div id="jenis-narkotika-fields">
+                                            <div class="flex items-center gap-2 mt-1 jenis-narkotika-row">
+                                                <input type="text" name="jenis_narkotika[]"
+                                                    class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="Jenis Narkotika">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="skala_kelas" class="block text-sm font-medium text-black  ">Skala
+                                            Kelas</label>
+                                        <div class="flex items-center">
+                                            <input type="number" id="angka" name="angka"
+                                                class="mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm" required
+                                                placeholder="Masukkan angka" />
+                                            <select name="satuan" id="satuan"
+                                                class="mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm ml-2"
+                                                required>
+                                                <option value="">Pilih Satuan</option>
+                                                <option value="gr">Gr</option>
+                                                <option value="ons">Ons</option>
+                                                <option value="kg">Kg</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <label for="status"
+                                            class="block text-sm font-medium text-black  ">Status</label>
+                                        <select name="status" id="status" required
+                                            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm appearance-none">
+                                            <option value="">Pilih Status</option>
+                                            <option value="Voluntary">Voluntary (Sukarela)</option>
+                                            <option value="Compulsory">Compulsory (Upaya Paksa)</option>
+                                        </select>
+                                    </div>
+                                    <!-- Pilihan Resisivis -->
+                                    <div class="md:col-span-2" id="residivis-wrapper">
+                                        <label class="block text-sm font-medium text-black   mb-1">Residivis</label>
+                                        <div class="flex items-center gap-4 mt-1">
+                                            <label class="inline-flex items-center">
+                                                <input type="radio" name="residivis" value="1"
+                                                    class="form-radio text-blue-600" id="residivis-ya">
+                                                <span class="ml-2">Ya</span>
+                                            </label>
+                                            <label class="inline-flex items-center">
+                                                <input type="radio" name="residivis" value="0"
+                                                    class="form-radio text-blue-600" id="residivis-tidak" checked>
+                                                <span class="ml-2">Tidak</span>
+                                            </label>
+                                        </div>
+                                        <div id="residivis-detail"
+                                            class="mt-4 hidden bg-gray-50 p-4 rounded-md border border-gray-200">
+                                            <div class="mb-2" id="aph-m-wrapper">
+                                                <label class="block text-xs font-medium text-black mb-1">a. APH yang
+                                                    menangani</label>
+                                                <div id="aph-m-fields">
+                                                    <div class="flex items-center gap-2 mt-1 aph-m-row">
+                                                        <input type="text" name="aph_menangani[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                            placeholder="APH yang menangani">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2" id="pasal-wrapper">
+                                                <label class="block text-xs font-medium text-black mb-1">b. Pasal yang
+                                                    disangkakan</label>
+                                                <div id="pasal-fields">
+                                                    <div class="flex items-center gap-2 mt-1 pasal-row">
+                                                        <input type="text" name="pasal_disangkakan[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                            placeholder="Pasal yang disangkakan">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2" id="tkp-wrapper">
+                                                <label class="block text-xs font-medium text-black mb-1">c. TKP</label>
+                                                <div id="tkp-fields">
+                                                    <div class="tkp-row space-y-2 mt-1">
+                                                        <select name="tkp_provinsi[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm tkp-provinsi">
+                                                            <option value="Jawa Timur">Jawa Timur</option>
+                                                            <option value="lainnya">Lainnya</option>
+                                                        </select>
+                                                        <select name="tkp_kabupaten[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm tkp-kabupaten">
+                                                            <option value="">Kabupaten</option>
+                                                            @foreach ($kabupatenList as $kabupaten)
+                                                                <option value="{{ $kabupaten }}">{{ $kabupaten }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <select name="tkp_kecamatan[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm tkp-kecamatan">
+                                                            <option value="">Kecamatan</option>
+                                                        </select>
+                                                        <select name="tkp_desa[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm tkp-desa">
+                                                            <option value="">Desa/Kelurahan</option>
+                                                        </select>
+                                                        <input type="text" name="tkp_lokasi[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                            placeholder="Detail Lokasi (opsional)">
+                                                        <button type="button"
+                                                            class="hapus-tkp-row bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-8 h-8 flex items-center justify-center self-center"
+                                                            title="Hapus">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2" id="vonis-wrapper">
+                                                <label class="block text-xs font-medium text-black mb-1">d. Vonis</label>
+                                                <div id="vonis-fields">
+                                                    <div class="flex items-center gap-2 mt-1 vonis-row">
+                                                        <input type="text" name="vonis[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                            placeholder="Vonis">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="lapas-wrapper">
+                                                <label class="block text-xs font-medium text-black mb-1">e. Lapas
+                                                    akhir</label>
+                                                <div id="lapas-fields">
+                                                    <div class="flex items-center gap-2 mt-1 lapas-row">
+                                                        <input type="text" name="lapas_akhir[]"
+                                                            class="block w-full rounded-md border-gray-300 shadow-sm"
+                                                            placeholder="Lapas akhir">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Input Dinamis Keterangan + Upload Foto (ikon upload saja) -->
+                                    <div class="md:col-span-2" id="foto-wrapper">
+                                        <label class="block text-sm font-medium text-black">Keterangan & Upload
+                                            Foto</label>
+                                        <div id="foto-fields">
+                                            <div class="flex items-center gap-2 mt-1 foto-row">
+                                                <input type="text" name="keterangan_foto[]" maxlength="100"
+                                                    class="block w-40 rounded-md border-gray-300 shadow-sm"
+                                                    placeholder="Keterangan Foto">
+
+                                                {{-- Tombol untuk memilih file --}}
+                                                <button type="button"
+                                                    class="upload-foto-btn flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full border border-gray-300"
+                                                    title="Upload Foto">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                                                     </svg>
                                                 </button>
+
+                                                <input type="file" name="foto[]" accept="image/*"
+                                                    class="hidden foto-input">
+                                                <img src="" alt="Preview"
+                                                    class="hidden w-32 h-32 object-cover rounded-md border border-gray-200 foto-preview">
+
+                                                <button type="button"
+                                                    class="hapus-foto bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs self-center">Hapus</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="mb-2" id="vonis-wrapper">
-                                        <label class="block text-xs font-medium text-black mb-1">d. Vonis</label>
-                                        <div id="vonis-fields">
-                                            <div class="flex items-center gap-2 mt-1 vonis-row">
-                                                <input type="text" name="vonis[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Vonis">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="lapas-wrapper">
-                                        <label class="block text-xs font-medium text-black mb-1">e. Lapas akhir</label>
-                                        <div id="lapas-fields">
-                                            <div class="flex items-center gap-2 mt-1 lapas-row">
-                                                <input type="text" name="lapas_akhir[]" class="block w-full rounded-md border-gray-300 shadow-sm" placeholder="Lapas akhir">
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
-                            </div>
-                            <!-- Input Dinamis Keterangan + Upload Foto (ikon upload saja) -->
-                            <div class="md:col-span-2" id="foto-wrapper">
-                                <label class="block text-sm font-medium text-black">Keterangan & Upload Foto</label>
-                                <div id="foto-fields">
-                                    <div class="flex items-center gap-2 mt-1 foto-row">
-                                        <input type="text" name="keterangan_foto[]" maxlength="100" class="block w-40 rounded-md border-gray-300 shadow-sm" placeholder="Keterangan Foto">
 
-                                        {{-- Tombol untuk memilih file --}}
-                                        <button type="button" class="upload-foto-btn flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full border border-gray-300" title="Upload Foto">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
-                                            </svg>
-                                        </button>
-
-                                        <input type="file" name="foto[]" accept="image/*" class="hidden foto-input">
-                                        <img src="" alt="Preview" class="hidden w-32 h-32 object-cover rounded-md border border-gray-200 foto-preview">
-
-                                        <button type="button" class="hapus-foto bg-red-100 hover:bg-red-200 text-red-600 rounded px-2 py-1 text-xs self-center">Hapus</button>
-                                    </div>
+                                <div class="flex justify-end gap-2 mt-6">
+                                    <button type="reset"
+                                        class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-md">Reset</button>
+                                    <button type="submit"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md inline-flex items-center">
+                                        <i class="fas fa-save mr-2"></i> Simpan
+                                    </button>
                                 </div>
-                            </div>
-
-                        </div>
-
-                        <div class="flex justify-end gap-2 mt-6">
-                            <button type="reset" class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-md">Reset</button>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md inline-flex items-center">
-                                <i class="fas fa-save mr-2"></i> Simpan
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
+            </div>
             <!-- Sidebar Info -->
             <div class="lg:col-span-2">
                 <div class="bg-white light:bg-gray-800 shadow rounded-lg p-4 text-xs">
@@ -374,107 +482,109 @@
                         </ul>
                     </div>
                     <div class="bg-yellow-50 text-yellow-700 text-xs p-2 rounded flex items-center">
-                        <i class="fas fa-exclamation-triangle mr-1"></i> NIK harus unik dan tidak boleh duplikat.
+                        <i class="fas fa-exclamation-triangle mr-1"></i> <span class="ml-2">Jika NIK sudah terdaftar,
+                            maka akan ada tombol untuk verifikasi akses edit data ke super-admin.</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Event listener untuk perubahan pada 'kabupaten'
-    document.getElementById('kabupaten')?.addEventListener('change', function() {
-        const kabupaten = this.value;
-        const kecamatanSelect = document.getElementById('kecamatan');
-        const kelurahanSelect = document.getElementById('kelurahan');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listener untuk perubahan pada 'kabupaten'
+            document.getElementById('kabupaten')?.addEventListener('change', function() {
+                const kabupaten = this.value;
+                const kecamatanSelect = document.getElementById('kecamatan');
+                const kelurahanSelect = document.getElementById('kelurahan');
 
-        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+                kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
-        if (kabupaten) {
-            fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(kecamatan => {
-                        const option = document.createElement('option');
-                        option.value = kecamatan;
-                        option.textContent = kecamatan;
-                        kecamatanSelect.appendChild(option);
-                    });
-                });
-        }
-    });
-
-    // Event listener untuk perubahan pada 'kecamatan'
-    document.getElementById('kecamatan')?.addEventListener('change', function() {
-        const kecamatan = this.value;
-        const kabupaten = document.getElementById('kabupaten').value;
-        const kelurahanSelect = document.getElementById('kelurahan');
-        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
-
-        if (kecamatan && kabupaten) {
-            fetch(`/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`)
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(nama_desa => {
-                        const option = document.createElement('option');
-                        option.value = nama_desa;
-                        option.textContent = nama_desa;
-                        kelurahanSelect.appendChild(option);
-                    });
-                });
-        }
-    });
-
-    // Fungsionalitas pencarian otomatis NIK
-    let nikCheckTimeout;
-    const nikInput = document.getElementById('nik');
-    const duplicateNotification = document.getElementById('nik-duplicate-notification');
-    const duplicateMessage = document.getElementById('duplicate-message');
-    const duplicateData = document.getElementById('duplicate-data');
-    const submitForVerificationBtn = document.getElementById('submit-for-verification');
-    const form = document.getElementById('individuForm');
-    const clearNikBtn = document.getElementById('clear-nik');
-
-    nikInput.addEventListener('input', function() {
-        const nik = this.value.trim();
-
-        if (nikCheckTimeout) {
-            clearTimeout(nikCheckTimeout);
-        }
-
-        if (nik.length === 0 || nik.length < 16) {
-            duplicateNotification.classList.add('hidden');
-            return;
-        }
-
-        nikCheckTimeout = setTimeout(() => {
-            checkNikDuplicate(nik);
-        }, 1000);
-    });
-
-    function checkNikDuplicate(nik) {
-        fetch(`/admin/api/check-nik?nik=${encodeURIComponent(nik)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.exists) {
-                    showDuplicateNotification(data);
-                } else {
-                    hideDuplicateNotification();
+                if (kabupaten) {
+                    fetch(`/admin/api/kecamatan-list?kabupaten=${encodeURIComponent(kabupaten)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(kecamatan => {
+                                const option = document.createElement('option');
+                                option.value = kecamatan;
+                                option.textContent = kecamatan;
+                                kecamatanSelect.appendChild(option);
+                            });
+                        });
                 }
-            })
-            .catch(error => {
-                console.error('Error checking NIK:', error);
             });
-    }
 
-    function showDuplicateNotification(data) {
-        duplicateMessage.textContent = data.message;
+            // Event listener untuk perubahan pada 'kecamatan'
+            document.getElementById('kecamatan')?.addEventListener('change', function() {
+                const kecamatan = this.value;
+                const kabupaten = document.getElementById('kabupaten').value;
+                const kelurahanSelect = document.getElementById('kelurahan');
+                kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
 
-        const existingData = data.data;
-        duplicateData.innerHTML = `
+                if (kecamatan && kabupaten) {
+                    fetch(
+                            `/api/desa-list?kabupaten=${encodeURIComponent(kabupaten)}&kecamatan=${encodeURIComponent(kecamatan)}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(nama_desa => {
+                                const option = document.createElement('option');
+                                option.value = nama_desa;
+                                option.textContent = nama_desa;
+                                kelurahanSelect.appendChild(option);
+                            });
+                        });
+                }
+            });
+
+            // Fungsionalitas pencarian otomatis NIK
+            let nikCheckTimeout;
+            const nikInput = document.getElementById('nik');
+            const duplicateNotification = document.getElementById('nik-duplicate-notification');
+            const duplicateMessage = document.getElementById('duplicate-message');
+            const duplicateData = document.getElementById('duplicate-data');
+            const submitForVerificationBtn = document.getElementById('submit-for-verification');
+            const form = document.getElementById('individuForm');
+            const clearNikBtn = document.getElementById('clear-nik');
+
+            nikInput.addEventListener('input', function() {
+                const nik = this.value.trim();
+
+                if (nikCheckTimeout) {
+                    clearTimeout(nikCheckTimeout);
+                }
+
+                if (nik.length === 0 || nik.length < 16) {
+                    duplicateNotification.classList.add('hidden');
+                    return;
+                }
+
+                nikCheckTimeout = setTimeout(() => {
+                    checkNikDuplicate(nik);
+                }, 1000);
+            });
+
+            function checkNikDuplicate(nik) {
+                fetch(`/admin/api/check-nik?nik=${encodeURIComponent(nik)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            showDuplicateNotification(data);
+                        } else {
+                            hideDuplicateNotification();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking NIK:', error);
+                    });
+            }
+
+            function showDuplicateNotification(data) {
+                duplicateMessage.textContent = data.message;
+
+                const existingData = data.data;
+                duplicateData.innerHTML = `
             <div class="grid grid-cols-2 gap-2 text-xs">
                 <div><strong>Nama:</strong> ${existingData.nama}</div>
                 <div><strong>NIK:</strong> ${existingData.nik}</div>
@@ -487,138 +597,143 @@
             </div>
         `;
 
-        duplicateNotification.classList.remove('hidden');
-        duplicateNotification.dataset.existingData = JSON.stringify(data.data);
+                duplicateNotification.classList.remove('hidden');
+                duplicateNotification.dataset.existingData = JSON.stringify(data.data);
 
-        // Menghapus required fields jika NIK terduplikasi
-        const fieldsToUnrequire = [
-            'nama', 'nkk', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'peran_jaringan', 'skala_kelas', 'status'
-        ];
+                // Menghapus required fields jika NIK terduplikasi
+                const fieldsToUnrequire = [
+                    'nama', 'nkk', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat',
+                    'peran_jaringan', 'skala_kelas', 'status'
+                ];
 
-        fieldsToUnrequire.forEach(function(fieldId) {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.removeAttribute('required'); // Hapus atribut required
+                fieldsToUnrequire.forEach(function(fieldId) {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.removeAttribute('required'); // Hapus atribut required
+                    }
+                });
             }
-        });
-    }
 
-    function hideDuplicateNotification() {
-        duplicateNotification.classList.add('hidden');
-        delete duplicateNotification.dataset.existingData;
-    }
-
-    // Menangani tombol kirim untuk verifikasi
-    submitForVerificationBtn.addEventListener('click', function(event) {
-        event.preventDefault();
-
-        // Pastikan form tidak dikirim jika NIK duplikat
-        if (duplicateNotification.classList.contains('hidden')) {
-            alert('NIK tidak terdaftar, mohon periksa kembali!');
-            return; // Jika NIK tidak ditemukan, form tidak dikirim
-        }
-
-        // Mengambil data yang ada untuk verifikasi
-        const existingData = JSON.parse(duplicateNotification.dataset.existingData || '{}');
-        const formData = new FormData(form);
-
-        // Menambahkan data yang ada untuk verifikasi
-        formData.append('existing_data', JSON.stringify(existingData));
-        formData.append('submit_for_verification', '1');
-
-        // Show loading state
-        submitForVerificationBtn.disabled = true;
-        submitForVerificationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mengirim...';
-
-        // Kirim form untuk verifikasi
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
+            function hideDuplicateNotification() {
+                duplicateNotification.classList.add('hidden');
+                delete duplicateNotification.dataset.existingData;
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Show success message and redirect
-                alert('Data telah dikirim untuk verifikasi Super Admin. Data akan ditinjau dan diproses.');
-                window.location.href = data.redirect || '/admin/data/individu';
-            } else {
-                // Handle errors
-                alert(data.message || 'Terjadi kesalahan saat mengirim data untuk verifikasi.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
-        })
-        .finally(() => {
-            // Restore button state
-            submitForVerificationBtn.disabled = false;
-            submitForVerificationBtn.innerHTML = '<i class="fas fa-paper-plane mr-1"></i> Kirim untuk Verifikasi';
-        });
-    });
 
-    // Menangani tombol hapus NIK
-    clearNikBtn.addEventListener('click', function() {
-        nikInput.value = '';
-        hideDuplicateNotification();
-        nikInput.focus();
-    });
+            // Menangani tombol kirim untuk verifikasi
+            submitForVerificationBtn.addEventListener('click', function(event) {
+                event.preventDefault();
 
-    // Fetch kabupaten list from API
-    fetch('/api/kabupaten-list')
-        .then(response => response.json())
-        .then(data => {
-            const kabupatenSelect = document.getElementById('kabupaten');
-            kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
-            data.forEach(kab => {
-                const option = document.createElement('option');
-                option.value = kab;
-                option.textContent = kab;
-                kabupatenSelect.appendChild(option);
-            });
-        });
-});
-
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Trigger input file saat tombol diklik
-        document.querySelectorAll('.upload-foto-btn').forEach((btn, index) => {
-            btn.addEventListener('click', function () {
-                const input = btn.parentElement.querySelector('.foto-input');
-                input.click();
-            });
-        });
-
-        // Preview gambar
-        document.querySelectorAll('.foto-input').forEach((input) => {
-            input.addEventListener('change', function () {
-                const preview = input.parentElement.querySelector('.foto-preview');
-                const file = input.files[0];
-
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.src = e.target.result;
-                        preview.classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
+                // Pastikan form tidak dikirim jika NIK duplikat
+                if (duplicateNotification.classList.contains('hidden')) {
+                    alert('NIK tidak terdaftar, mohon periksa kembali!');
+                    return; // Jika NIK tidak ditemukan, form tidak dikirim
                 }
-            });
-        });
 
-        // Tombol hapus
-        document.querySelectorAll('.hapus-foto').forEach((btn) => {
-            btn.addEventListener('click', function () {
-                const row = btn.closest('.foto-row');
-                row.remove();
+                // Mengambil data yang ada untuk verifikasi
+                const existingData = JSON.parse(duplicateNotification.dataset.existingData || '{}');
+                const formData = new FormData(form);
+
+                // Menambahkan data yang ada untuk verifikasi
+                formData.append('existing_data', JSON.stringify(existingData));
+                formData.append('submit_for_verification', '1');
+
+                // Show loading state
+                submitForVerificationBtn.disabled = true;
+                submitForVerificationBtn.innerHTML =
+                    '<i class="fas fa-spinner fa-spin mr-1"></i> Mengirim...';
+
+                // Kirim form untuk verifikasi
+                fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message and redirect
+                            alert(
+                                'Data telah dikirim untuk verifikasi Super Admin. Data akan ditinjau dan diproses.'
+                            );
+                            window.location.href = data.redirect || '/admin/data/individu';
+                        } else {
+                            // Handle errors
+                            alert(data.message ||
+                                'Terjadi kesalahan saat mengirim data untuk verifikasi.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
+                    })
+                    .finally(() => {
+                        // Restore button state
+                        submitForVerificationBtn.disabled = false;
+                        submitForVerificationBtn.innerHTML =
+                            '<i class="fas fa-paper-plane mr-1"></i> Kirim untuk Verifikasi';
+                    });
+            });
+
+            // Menangani tombol hapus NIK
+            clearNikBtn.addEventListener('click', function() {
+                nikInput.value = '';
+                hideDuplicateNotification();
+                nikInput.focus();
+            });
+
+            // Fetch kabupaten list from API
+            fetch('/api/kabupaten-list')
+                .then(response => response.json())
+                .then(data => {
+                    const kabupatenSelect = document.getElementById('kabupaten');
+                    kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
+                    data.forEach(kab => {
+                        const option = document.createElement('option');
+                        option.value = kab;
+                        option.textContent = kab;
+                        kabupatenSelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger input file saat tombol diklik
+            document.querySelectorAll('.upload-foto-btn').forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    const input = btn.parentElement.querySelector('.foto-input');
+                    input.click();
+                });
+            });
+
+            // Preview gambar
+            document.querySelectorAll('.foto-input').forEach((input) => {
+                input.addEventListener('change', function() {
+                    const preview = input.parentElement.querySelector('.foto-preview');
+                    const file = input.files[0];
+
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+
+            // Tombol hapus
+            document.querySelectorAll('.hapus-foto').forEach((btn) => {
+                btn.addEventListener('click', function() {
+                    const row = btn.closest('.foto-row');
+                    row.remove();
+                });
             });
         });
-    });
     </script>
 
 @endsection

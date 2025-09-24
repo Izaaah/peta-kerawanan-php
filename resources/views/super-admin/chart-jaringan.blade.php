@@ -1,5 +1,7 @@
 @extends('layouts.superadmin-master')
 
+@section('title', 'Diagram')
+
 @section('content')
     @include('components.superadmin-navbar')
 
@@ -379,3 +381,4 @@
             });
         </script>
     @endpush
+@endsection

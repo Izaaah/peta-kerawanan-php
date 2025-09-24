@@ -3,7 +3,7 @@
 @section('title', 'Tambah Jaringan Rutan/Lapas')
 
 @section('content')
-<div class="container mx-auto px-1 pt-1 pb-2 max-w-7xl">
+<div class="container mx-auto px-4 py-3">
     <div class="flex justify-between items-center lg:mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Jaringan Rutan/Lapas</h1>

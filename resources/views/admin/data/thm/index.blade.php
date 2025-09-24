@@ -3,7 +3,7 @@
 @section('title', 'Data THM')
 
 @section('content')
-    <div class="container mx-auto px-4 py-6">
+    <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar Tempat Hiburan Malam (THM)</h1>

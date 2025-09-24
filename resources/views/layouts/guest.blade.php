@@ -48,6 +48,32 @@
             margin: 0 auto 1.5rem;
         }
 
+        .logo-atas {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-right: 10px;
+            margin-top: 10px;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        .logo-atass {
+            position: absolute;
+            top: 0;
+            right: 70px;
+            margin-right: 10px;
+            margin-top: 10px;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        .logo-between {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
         .welcome-title {
             font-size: 2.5rem;
             font-weight: 700;

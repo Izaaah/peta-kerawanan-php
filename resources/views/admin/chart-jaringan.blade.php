@@ -1,13 +1,15 @@
 @extends('layouts.admin-master')
 
-@section('content')
-@include('components.admin-navbar')
+@section('title', 'Diagram')
 
-<div class="container-fluid px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
+@section('content')
+    @include('components.admin-navbar')
+
+<div class="container-fluid px-4 py-2 min-h-screen bg-gray-50 light:bg-gray-900">
     <div class="flex flex-col md:flex-row gap-8">
 
         <!-- Main Content -->
-        <main class="flex-1 mt-[90px]">
+        <main class="flex-1">
             <div class="bg-white light:bg-gray-800 rounded-lg shadow-md p-6">
                 <h1 class="text-2xl font-bold text-gray-800 light:text-gray-100 mb-2">Chart Jaringan Narkoba</h1>
                 <p class="text-gray-500 light:text-gray-300 mb-6">Buat dan visualisasikan jaringan pelaku narkoba secara interaktif.</p>
@@ -234,3 +236,4 @@
   </script>
 
 @endpush
+@endsection

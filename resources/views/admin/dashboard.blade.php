@@ -10,7 +10,7 @@
 @section('content')
     @include('components.admin-navbar')
 
-    <div class="container mx-auto pt-1 pb-4 py-6 max-w-7xl">
+    <div class="mx-auto px-2 py-3">
         <!-- Tab Navigation -->
         <div class="mb-6">
             <div class="border-b border-gray-200">
@@ -406,7 +406,7 @@
                 </div>
 
                 <!-- Tugas Pokok dan Fungsi -->
-                <div class="mt-5 space-y-12 max-w-5xl mx-auto px-4">
+                <div class="mt-5 space-y-12 mx-auto px-4">
                     <div class="relative pb-6">
                         <h4
                             class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-red-600 pb-3">
@@ -577,8 +577,7 @@
         </div> --}}
                     </div>
 
-                    <div
-                        class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
+                    <div class="overflow-hidden relative mb-12">
                         <!-- Decorative elements -->
                         <div
                             class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-blue-50 rounded-full opacity-50 -mr-32 -mt-32 z-0">
@@ -973,127 +972,128 @@
                                     </div>
                                     <div {{-- class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12"> --}} </div>
                                     </div>
-                                    <div
-                                        class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
-                                        <div class="space-y-6">
-                                            <!-- Tabel Komposisi -->
-                                            <div class="relative pb-6 mb-8">
-                                                <h4
-                                                    class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
-                                                    Komposisi Personil Pemberantasan</h4>
-                                                <div
-                                                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white rounded-lg shadow">
-                                            <div class="relative px-6 py-4 border-b border-gray-200">
-                                                <h3 class="text-lg font-semibold text-gray-900">Rincian Komposisi</h3>
-                                                <div class="absolute right-0 top-0 mt-3 mr-4">
-                                                    <a href="#" onclick="openKomposisiModal()"
-                                                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
-                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                                            </path>
-                                                        </svg>
-                                                        Tambah Komposisi
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="overflow-x-auto">
-                                                <table class="min-w-full divide-y divide-gray-200">
-                                                    <thead class="bg-gray-50">
-                                                        <tr>
-                                                            <th rowspan="2"
-                                                                class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider border-r">
-                                                                BIDANG/SEKSI
-                                                            </th>
-                                                            <th rowspan="2"
-                                                                class="px-2 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r">
-                                                                JUMLAH <br>PERSONIL
-                                                            </th>
-                                                            <th colspan="3"
-                                                                class="px-4 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-b border-r">
-                                                                DSP
-                                                            </th>
-                                                            <th rowspan="2"
-                                                                class="px-6 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-r">
-                                                                KETERANGAN
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th
-                                                                class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
-                                                                JUMLAH</th>
-                                                            <th
-                                                                class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
-                                                                TERISI</th>
-                                                            <th
-                                                                class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
-                                                                KOSONG</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="bg-white divide-y divide-gray-200">
-                                                        @forelse($komposisiList as $komposisi)
-                                                            <tr class="hover:bg-gray-50">
-                                                                <td
-                                                                    class="px-6 py-3 whitespace-nowrap text-left text-sm font-medium text-gray-900 border-r uppercase">
-                                                                    {{ $komposisi->bidang }}</td>
-                                                                <td
-                                                                    class="px-2 py-3 text-sm text-gray-900 bg-green-100 text-center border-r">
-                                                                    {{ $komposisi->jumlah_personil }}</td>
-                                                                <td
-                                                                    class="px-2 py-3 text-sm text-gray-900 bg-blue-100 text-center border-r">
-                                                                    {{ $komposisi->dsp_jumlah }}</td>
-                                                                <td
-                                                                    class="px-2 py-3 text-sm text-gray-900 bg-red-100 text-center border-r">
-                                                                    {{ $komposisi->dsp_kosong }}</td>
-                                                                <td
-                                                                    class="px-2 py-3 text-sm text-gray-900 bg-yellow-100 text-center border-r">
-                                                                    {{ $komposisi->dsp_terisi }}</td>
-                                                                <td
-                                                                    class="px-6 py-3 text-sm text-gray-900 bg-white text-left border-r">
-                                                                    {{ $komposisi->keterangan }}</td>
-                                                            </tr>
-                                                        @empty
-                                                            <tr>
-                                                                <td colspan="7"
-                                                                    class="px-6 py-4 text-center text-sm font-medium text-gray-900">
-                                                                    Tidak ada data</td>
-                                                            </tr>
-                                                        @endforelse
-                                                    </tbody>
-                                                    <tfoot class="bg-gray-50">
-                                                        <tr>
-                                                            <td colspan="1"
-                                                                class="px-6 py-4 text-center text-sm font-bold border-r text-gray-900">
-                                                                TOTAL</td>
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-green-100 border-r">
-                                                                {{ $totalPersonil }}</td>
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-blue-100 border-r">
-                                                                {{ $totalDspJumlah }}</td>
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-red-100 border-r">
-                                                                {{ $totalDspTerisi }}</td>
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-yellow-100 border-r">
-                                                                {{ $totalDspKosong }}</td>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                                <!-- Removed all extra table elements that were outside the table structure -->
-                                            </div>
-                                        </div>
-
-
-                                    </div>
                                 </div>
                             </div>
+                            <div
+                                class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
+                                <div class="space-y-6">
+                                    <!-- Tabel Komposisi -->
+                                    <div class="relative pb-6 mb-8">
+                                        <h4
+                                            class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
+                                            Komposisi Personil Pemberantasan</h4>
+                                        <div
+                                            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg shadow">
+                                    <div class="relative px-6 py-4 border-b border-gray-200">
+                                        <h3 class="text-lg font-semibold text-gray-900">Rincian Komposisi</h3>
+                                        <div class="absolute right-0 top-0 mt-3 mr-4">
+                                            <a href="#" onclick="openKomposisiModal()"
+                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                                    </path>
+                                                </svg>
+                                                Tambah Komposisi
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th rowspan="2"
+                                                        class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider border-r">
+                                                        BIDANG/SEKSI
+                                                    </th>
+                                                    <th rowspan="2"
+                                                        class="px-2 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r">
+                                                        JUMLAH <br>PERSONIL
+                                                    </th>
+                                                    <th colspan="3"
+                                                        class="px-4 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-b border-r">
+                                                        DSP
+                                                    </th>
+                                                    <th rowspan="2"
+                                                        class="px-6 py-3 text-center text-base font-medium text-gray-500 uppercase tracking-wider border-r">
+                                                        KETERANGAN
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th
+                                                        class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
+                                                        JUMLAH</th>
+                                                    <th
+                                                        class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
+                                                        TERISI</th>
+                                                    <th
+                                                        class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
+                                                        KOSONG</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                @forelse($komposisiList as $komposisi)
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td
+                                                            class="px-6 py-3 whitespace-nowrap text-left text-sm font-medium text-gray-900 border-r uppercase">
+                                                            {{ $komposisi->bidang }}</td>
+                                                        <td
+                                                            class="px-2 py-3 text-sm text-gray-900 bg-green-100 text-center border-r">
+                                                            {{ $komposisi->jumlah_personil }}</td>
+                                                        <td
+                                                            class="px-2 py-3 text-sm text-gray-900 bg-blue-100 text-center border-r">
+                                                            {{ $komposisi->dsp_jumlah }}</td>
+                                                        <td
+                                                            class="px-2 py-3 text-sm text-gray-900 bg-red-100 text-center border-r">
+                                                            {{ $komposisi->dsp_kosong }}</td>
+                                                        <td
+                                                            class="px-2 py-3 text-sm text-gray-900 bg-yellow-100 text-center border-r">
+                                                            {{ $komposisi->dsp_terisi }}</td>
+                                                        <td
+                                                            class="px-6 py-3 text-sm text-gray-900 bg-white text-left border-r">
+                                                            {{ $komposisi->keterangan }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="7"
+                                                            class="px-6 py-4 text-center text-sm font-medium text-gray-900">
+                                                            Tidak ada data</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                            <tfoot class="bg-gray-50">
+                                                <tr>
+                                                    <td colspan="1"
+                                                        class="px-6 py-4 text-center text-sm font-bold border-r text-gray-900">
+                                                        TOTAL</td>
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-green-100 border-r">
+                                                        {{ $totalPersonil }}</td>
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-blue-100 border-r">
+                                                        {{ $totalDspJumlah }}</td>
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-red-100 border-r">
+                                                        {{ $totalDspTerisi }}</td>
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900 bg-yellow-100 border-r">
+                                                        {{ $totalDspKosong }}</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <!-- Removed all extra table elements that were outside the table structure -->
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
                         </div>
 
                         <style>

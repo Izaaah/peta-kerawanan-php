@@ -3,7 +3,7 @@
 @section('title', 'Edit Data Transportasi')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8">
+<div class="mx-auto px-4 py-3">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold">Edit Data Transportasi</h2>
         <a href="{{ route('admin.data.transportasi.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali</a>

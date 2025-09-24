@@ -3,7 +3,7 @@
 @section('title', 'Data Akun Media Sosial')
 
 @section('content')
-    <div class="max-w-7xl mx-auto pt-1 pb-2 px-1">
+    <div class="mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold">Daftar Akun Media Sosial Transaksi Narkotika</h2>
             <div class="flex gap-2">

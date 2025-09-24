@@ -275,6 +275,7 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::post('/verification/{id}/reject', [VerificationController::class, 'reject'])->name('verification.reject');
 
     Route::post('/anggaran', [AnggaranController::class, 'store'])->name('anggaran.store');
+    Route::delete('/anggaran/{anggaran}', [AnggaranController::class, 'destroy'])->name('anggaran.destroy');
 
     // Komposisi Routes
     Route::post('/komposisi', [KomposisiController::class, 'store'])->name('komposisi.store');

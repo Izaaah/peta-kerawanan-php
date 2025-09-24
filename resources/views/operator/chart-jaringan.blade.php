@@ -1,5 +1,7 @@
 @extends('layouts.operator')
 
+@section('title', 'Diagram')
+
 @section('content')
 @include('components.operator-navbar')
 
@@ -234,3 +236,4 @@
   </script>
 
 @endpush
+@endsection

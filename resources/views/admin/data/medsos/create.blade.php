@@ -3,7 +3,7 @@
 @section('title', 'Tambah Akun Media Sosial')
 
 @section('content')
-<div class="container mx-auto pt-1 pb-2 max-w-7xl px-1">
+<div class="container mx-auto px-4 py-3">
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Tambah Akun Media Sosial</h1>

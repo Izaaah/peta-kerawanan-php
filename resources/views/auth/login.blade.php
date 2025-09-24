@@ -16,6 +16,10 @@
         </div>
 
         <!-- Kanan: Form Login -->
+        <div class="logo-between">
+            <img src="{{ asset('img/logo-bnn.png') }}" alt="Logo BNN" class="logo-atas">
+            <img src="{{ asset('img/logo-bnn-new.png') }}" alt="Logo BNN New" class="logo-atass">
+        </div>
         <div class="login-form-section">
             <div class="login-form-card">
                 <h3 class="login-form-title">Login</h3>
@@ -27,12 +31,18 @@
                     @csrf
                     <!-- Username -->
                     <div class="mb-4">
-                        <input id="username" class="login-input block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" placeholder="Username atau email" />
+                        <input id="username"
+                            class="login-input block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                            type="text" name="username" :value="old('username')" required autofocus
+                            autocomplete="username" placeholder="Username atau email" />
                         <x-input-error :messages="$errors->get('username')" class="mt-2" />
                     </div>
                     <!-- Password -->
                     <div class="mb-4">
-                        <input id="password" class="login-input block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500" type="password" name="password" required autocomplete="current-password" placeholder="Password" />
+                        <input id="password"
+                            class="login-input block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                            type="password" name="password" required autocomplete="current-password"
+                            placeholder="Password" />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
                     <!-- Remember Me -->

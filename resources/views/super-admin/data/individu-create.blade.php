@@ -3,7 +3,7 @@
 @section('title', 'Tambah Data Individu TSK')
 
 @section('content')
-    <div class="px-4 pt-2 pb-6">
+    <div class="mx-auto px-4 py-3">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
@@ -16,7 +16,7 @@
             </a>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-10 max-w-6xl mx-auto">
+        <div class="">
             <div class="grid grid-cols-1 lg:grid-cols-7 gap-6">
                 <div class="lg:col-span-5">
                     <!-- Form Input -->
@@ -271,9 +271,10 @@
                                             <option value="informan">Informan</option>
                                             <option value="kurir">Kurir</option>
                                             <option value="gudang">Gudang</option>
-                                            <option value="broker">Broker</option>
                                             <option value="bandar">Bandar</option>
-                                            <option value="beking">Beking</option>
+                                            <option value="Penyalahguna">Penyalahguna</option>
+                                            <option value="Korban Penyalahguna">Korban Penyalahguna</option>
+                                            <option value="Pecandu">Pecandu</option>
                                             <option value="tidak tahu">Tidak Tahu</option>
                                         </select>
                                     </div>
@@ -313,8 +314,8 @@
                                         <select name="status" id="status" required
                                             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm appearance-none">
                                             <option value="">Pilih Status</option>
-                                            <option value="Napi">Napi</option>
-                                            <option value="Non napi">Non napi</option>
+                                            <option value="Voluntary">Voluntary (Sukarela)</option>
+                                            <option value="Non napi">Compulsory (Upaya Paksa)</option>
                                         </select>
                                     </div>
                                     <!-- Pilihan Resisivis -->
@@ -521,20 +522,20 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Info -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white light:bg-gray-800 shadow rounded-lg p-4 text-xs">
-                        <h2 class="text-base font-semibold text-blue-600 mb-3">Informasi Penting</h2>
-                        <div class="bg-blue-50 text-blue-700 text-xs p-2 rounded mb-3">
-                            <ul class="list-disc pl-4">
-                                <li>Data akan terhubung dengan data kasus narkoba secara otomatis.</li>
-                                <li>Pilih status "Napi" jika individu terlibat kasus.</li>
-                                <li>Desa akan dipetakan berdasarkan kecamatan dan kelurahan.</li>
-                            </ul>
-                        </div>
-                        <div class="bg-yellow-50 text-yellow-700 text-xs p-2 rounded flex items-center">
-                            <i class="fas fa-exclamation-triangle mr-1"></i> NIK harus unik dan tidak boleh duplikat.
-                        </div>
+            </div>
+            <!-- Sidebar Info -->
+            <div class="lg:col-span-2">
+                <div class="bg-white light:bg-gray-800 shadow rounded-lg p-4 text-xs">
+                    <h2 class="text-base font-semibold text-blue-600 mb-3">Informasi Penting</h2>
+                    <div class="bg-blue-50 text-blue-700 text-xs p-2 rounded mb-3">
+                        <ul class="list-disc pl-4">
+                            <li>Data akan terhubung dengan data kasus narkoba secara otomatis.</li>
+                            <li>Pilih status "Napi" jika individu terlibat kasus.</li>
+                            <li>Desa akan dipetakan berdasarkan kecamatan dan kelurahan.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-yellow-50 text-yellow-700 text-xs p-2 rounded flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> NIK harus unik dan tidak boleh duplikat.
                     </div>
                 </div>
             </div>
