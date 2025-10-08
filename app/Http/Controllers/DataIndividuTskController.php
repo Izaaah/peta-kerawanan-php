@@ -20,9 +20,9 @@ class DataIndividuTskController extends Controller
             'non_residivis_count' => DataIndividuTsk::where('residivis', false)->count(),
         ];
 
-        $sampleData = DataIndividuTsk::with('desaGeojson')
-        ->orderBy('created_at', 'desc')
-        ->paginate(15);
+        $sampleData = DataIndividuTsk::with(['desaGeojson', 'createdBy'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
         $kabupatenList = DesaGeojson::getKabupatenList();
         $kecamatanList = DesaGeojson::getKecamatanList();
@@ -31,18 +31,62 @@ class DataIndividuTskController extends Controller
     }
 
     public function getIndividuCount(Request $request)
-{
-    $kabupaten = $request->kabupaten;
-    $kecamatan = $request->kecamatan;
-    $desa = $request->desa;
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $desa = $request->desa;
 
-    $count = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
-        ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
-        ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
-        ->count();
+        $count = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+            ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
+            ->count();
 
-    return response()->json(['count' => $count]);
-}
+        return response()->json(['count' => $count]);
+    }
+
+    public function getIndividuInformanCount(Request $request)
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $desa = $request->desa;
+
+        // Membuat query dasar untuk menghitung individu yang bisa dijadikan informan
+        // Informan biasanya adalah broker, bandar, atau kurir yang memiliki informasi jaringan
+        $count = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+            ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
+            ->whereIn('peran_jaringan', ['broker', 'bandar', 'kurir'])
+            ->count();
+
+        // Mengembalikan jumlah individu yang bisa dijadikan informan
+        return response()->json(['count' => $count]);
+    }
+
+    public function getIndividuInformanDetail(Request $request)
+    {
+        $kabupaten = $request->kabupaten;
+        $kecamatan = $request->kecamatan;
+        $desa = $request->desa;
+
+        // Query untuk mendapatkan detail perhitungan per peran
+        $query = DataIndividuTsk::whereRaw('LOWER(TRIM(kabupaten)) = ?', [strtolower(trim($kabupaten))])
+            ->whereRaw('LOWER(TRIM(kecamatan)) = ?', [strtolower(trim($kecamatan))])
+            ->whereRaw('LOWER(TRIM(kelurahan)) = ?', [strtolower(trim($desa))])
+            ->whereIn('peran_jaringan', ['broker', 'bandar', 'kurir']);
+
+        // Hitung per peran
+        $brokerCount = (clone $query)->where('peran_jaringan', 'broker')->count();
+        $bandarCount = (clone $query)->where('peran_jaringan', 'bandar')->count();
+        $kurirCount = (clone $query)->where('peran_jaringan', 'kurir')->count();
+        $totalCount = $brokerCount + $bandarCount + $kurirCount;
+
+        return response()->json([
+            'total' => $totalCount,
+            'broker' => $brokerCount,
+            'bandar' => $bandarCount,
+            'kurir' => $kurirCount
+        ]);
+    }
 
     public function create()
     {
@@ -68,11 +112,11 @@ class DataIndividuTskController extends Controller
             'nik_ayah' => 'nullable|string|max:20',
             'nama_ibu' => 'nullable|string|max:255',
             'nik_ibu' => 'nullable|string|max:20',
-            'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
+            'peran_jaringan' => 'nullable|string|max:50',
             'modus_operasi' => 'nullable|string',
             'jenis_narkotika' => 'nullable', // array/string
-            'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
-            'status' => 'required|in:Napi,Non napi',
+            'skala_kelas' => 'nullable|string|max:50',
+            'status' => 'nullable|string|max:50',
             'residivis' => 'nullable|boolean',
             'sumber_informasi' => 'nullable|in:informan,analisa sosmed,analisa aliran dana',
             // relasi
@@ -256,11 +300,11 @@ class DataIndividuTskController extends Controller
             'nik_ayah' => 'nullable|string|max:20',
             'nama_ibu' => 'nullable|string|max:255',
             'nik_ibu' => 'nullable|string|max:20',
-            'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
+            'peran_jaringan' => 'nullable|string|max:50',
             'modus_operasi' => 'nullable|string',
             'jenis_narkotika' => 'nullable|string',
-            'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
-            'status' => 'required|in:Napi,Non napi',
+            'skala_kelas' => 'nullable|string|max:50',
+            'status' => 'nullable|string|max:50',
             'residivis' => 'boolean',
             'sumber_informasi' => 'nullable|in:informan,analisa sosmed,analisa aliran dana',
             'desa_geojson_id' => 'nullable|exists:desa_geojson,id'
@@ -332,7 +376,7 @@ class DataIndividuTskController extends Controller
 
     public function getData(Request $request)
     {
-        $query = DataIndividuTsk::with('desaGeojson');
+        $query = DataIndividuTsk::with(['desaGeojson', 'createdBy']);
 
         // Apply filters
         if ($request->filled('search')) {

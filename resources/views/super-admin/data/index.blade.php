@@ -5,7 +5,7 @@
 @section('content')
     @include('components.superadmin-navbar')
 
-    <div class="container mx-auto py-8 px-2">
+    <div class="mx-auto py-8 px-2">
         <!-- Search Input -->
         <div class="flex justify-center mb-6">
             <div class="relative w-full max-w-md">
@@ -27,7 +27,7 @@
                         <i class="fas fa-user-tie text-white text-2xl"></i>
                     </div>
                     <div class="font-semibold text-blue-700 mb-1">Data Individu</div>
-                    <div class="text-xs text-gray-500">Kelola data tersangka individu</div>
+                    <div class="text-xs text-gray-500">Kelola profil individu</div>
                 </div>
             </a>
             <!-- Card: Data Titik Masuk -->
@@ -66,54 +66,6 @@
                     <div class="text-xs text-gray-500">Kelola data jaringan rutan/lapas</div>
                 </div>
             </a>
-            <!-- Card: Data LSM Narkotika -->
-            <a href="{{ route('super-admin.data.lsm.index') }}" class="block group">
-                <div
-                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                    <div
-                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-purple-400 to-purple-500 mb-3 shadow mx-auto">
-                        <i class="fas fa-users text-white text-2xl"></i>
-                    </div>
-                    <div class="font-semibold text-purple-700 mb-1">Data LSM Narkotika</div>
-                    <div class="text-xs text-gray-500">Kelola data LSM narkotika</div>
-                </div>
-            </a>
-            <!-- Card: Data Akun Sosmed -->
-            <a href="{{ route('super-admin.data.medsos.index') }}" class="block group">
-                <div
-                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                    <div
-                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-400 to-pink-500 mb-3 shadow mx-auto">
-                        <i class="fab fa-instagram text-white text-2xl"></i>
-                    </div>
-                    <div class="font-semibold text-pink-700 mb-1">Data Akun Sosmed</div>
-                    <div class="text-xs text-gray-500">Kelola data akun media sosial</div>
-                </div>
-            </a>
-            <!-- Card: Data Penjual Vape -->
-            <a href="{{ route('super-admin.data.vape.index') }}" class="block group">
-                <div
-                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                    <div
-                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-gray-400 to-gray-500 mb-3 shadow mx-auto">
-                        <i class="fas fa-smoking text-white text-2xl"></i>
-                    </div>
-                    <div class="font-semibold text-gray-700 mb-1">Data Penjual Vape</div>
-                    <div class="text-xs text-gray-500">Kelola data penjual vape</div>
-                </div>
-            </a>
-            <!-- Card: Data Farmasi Prekursor -->
-            <a href="{{ route('super-admin.data.farmasi.index') }}" class="block group">
-                <div
-                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
-                    <div
-                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-indigo-400 to-indigo-500 mb-3 shadow mx-auto">
-                        <i class="fas fa-flask text-white text-2xl"></i>
-                    </div>
-                    <div class="font-semibold text-indigo-700 mb-1">Data Farmasi Prekursor</div>
-                    <div class="text-xs text-gray-500">Kelola data perusahaan/farmasi prekursor</div>
-                </div>
-            </a>
             <!-- Card: Data Objek Vital -->
             <a href="{{ route('super-admin.data.objekvital.index') }}" class="block group" tabindex="-1">
                 <div
@@ -136,6 +88,18 @@
                     </div>
                     <div class="font-semibold text-lime-700 mb-1">Data Jaringan Penggiat</div>
                     <div class="text-xs text-gray-500">Kelola data jaringan penggiat</div>
+                </div>
+            </a>
+            <!-- Card: Data LSM Narkotika -->
+            <a href="{{ route('super-admin.data.lsm.index') }}" class="block group">
+                <div
+                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-purple-400 to-purple-500 mb-3 shadow mx-auto">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <div class="font-semibold text-purple-700 mb-1">Data LSM Narkotika</div>
+                    <div class="text-xs text-gray-500">Kelola data LSM narkotika</div>
                 </div>
             </a>
             <!-- Card: Data Lembaga Rehabilitasi -->
@@ -186,6 +150,42 @@
                     <div class="text-xs text-gray-500">Kelola data penginapan</div>
                 </div>
             </a>
+            <!-- Card: Data Akun Sosmed -->
+            <a href="{{ route('super-admin.data.medsos.index') }}" class="block group">
+                <div
+                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-400 to-pink-500 mb-3 shadow mx-auto">
+                        <i class="fab fa-instagram text-white text-2xl"></i>
+                    </div>
+                    <div class="font-semibold text-pink-700 mb-1">Data Akun Sosmed</div>
+                    <div class="text-xs text-gray-500">Kelola data akun media sosial</div>
+                </div>
+            </a>
+            <!-- Card: Data Farmasi Prekursor -->
+            <a href="{{ route('super-admin.data.farmasi.index') }}" class="block group">
+                <div
+                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-indigo-400 to-indigo-500 mb-3 shadow mx-auto">
+                        <i class="fas fa-flask text-white text-2xl"></i>
+                    </div>
+                    <div class="font-semibold text-indigo-700 mb-1">Data Farmasi Prekursor</div>
+                    <div class="text-xs text-gray-500">Kelola data perusahaan/farmasi prekursor</div>
+                </div>
+            </a>
+            <!-- Card: Data Penjual Vape -->
+            <a href="{{ route('super-admin.data.vape.index') }}" class="block group">
+                <div
+                    class="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition flex flex-col items-center text-center border border-transparent hover:border-blue-400">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tr from-gray-400 to-gray-500 mb-3 shadow mx-auto">
+                        <i class="fas fa-smoking text-white text-2xl"></i>
+                    </div>
+                    <div class="font-semibold text-gray-700 mb-1">Data Penjual Vape</div>
+                    <div class="text-xs text-gray-500">Kelola data penjual vape</div>
+                </div>
+            </a>
         </div>
         <div id="noResultMsg" class="hidden text-center text-gray-400 text-sm py-8">Tidak ada jenis data yang ditemukan.
         </div>
@@ -206,7 +206,7 @@
                 let visibleCount = 0;
                 cards.forEach(card => {
                     const label = card.querySelector('div.font-semibold')?.textContent
-                    .toLowerCase() || '';
+                        .toLowerCase() || '';
                     if (label.includes(q)) {
                         card.classList.remove('hidden');
                         visibleCount++;

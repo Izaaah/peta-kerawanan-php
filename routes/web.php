@@ -93,7 +93,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', 'role.redirect'])->name('dashboard');
 
 // Super Admin Routes
-Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('super-admin')->name('super-admin.')->group(function () {
     Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/chart-jaringan', function () {
@@ -179,6 +179,7 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
     Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
     Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
+    Route::get('/api/desa-list', [DataDesaController::class, 'getDesaList'])->name('api.desa.list');
 
     Route::get('/medsos', [MedsosController::class, 'index'])->name('data.medsos.index');
     Route::get('/medsos/create', [MedsosController::class, 'create'])->name('data.medsos.create');
@@ -275,6 +276,8 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     Route::post('/verification/{id}/reject', [VerificationController::class, 'reject'])->name('verification.reject');
 
     Route::post('/anggaran', [AnggaranController::class, 'store'])->name('anggaran.store');
+    Route::get('/anggaran/{anggaran}', [AnggaranController::class, 'show'])->name('anggaran.show');
+    Route::put('/anggaran/{anggaran}', [AnggaranController::class, 'update'])->name('anggaran.update');
     Route::delete('/anggaran/{anggaran}', [AnggaranController::class, 'destroy'])->name('anggaran.destroy');
 
     // Komposisi Routes
@@ -304,9 +307,26 @@ Route::middleware(['auth', 'verified'])->prefix('super-admin')->name('super-admi
     // Galeri Routes
     Route::post('/gallery', [GaleriController::class, 'store'])->name('gallery.store');
     Route::get('/gallery', [GaleriController::class, 'galeri_foto'])->name('gallery.index');
+
+    // Tupoksi Routes
+    Route::get('/tupoksi', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'index'])->name('tupoksi.index');
+    Route::post('/tupoksi/tugas', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'storeTugas'])->name('tupoksi.tugas.store');
+    Route::post('/tupoksi/fungsi', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'storeFungsi'])->name('tupoksi.fungsi.store');
+    Route::put('/tupoksi/tugas/{id}', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'updateTugas'])->name('tupoksi.tugas.update');
+    Route::put('/tupoksi/fungsi/{id}', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'updateFungsi'])->name('tupoksi.fungsi.update');
+    Route::delete('/tupoksi/tugas/{id}', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'destroyTugas'])->name('tupoksi.tugas.destroy');
+    Route::delete('/tupoksi/fungsi/{id}', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'destroyFungsi'])->name('tupoksi.fungsi.destroy');
+    Route::get('/tupoksi/tugas/{id?}', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'getTugas'])->name('tupoksi.tugas.get');
+    Route::get('/tupoksi/fungsi/{id?}', [\App\Http\Controllers\SuperAdmin\TupoksiController::class, 'getFungsi'])->name('tupoksi.fungsi.get');
+
+    // News Routes
+    Route::post('/news/store', [\App\Http\Controllers\SuperAdmin\NewsController::class, 'store'])->name('news.store');
+    Route::post('/news/preview', [\App\Http\Controllers\SuperAdmin\NewsController::class, 'preview'])->name('news.preview');
+    Route::put('/news/{id}/position', [\App\Http\Controllers\SuperAdmin\NewsController::class, 'updatePosition'])->name('news.position');
+    Route::delete('/news/{id}', [\App\Http\Controllers\SuperAdmin\NewsController::class, 'destroy'])->name('news.destroy');
 });
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/chart-jaringan', function () {
@@ -333,20 +353,20 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/data-individu/create', [DataIndividuTskAdminController::class, 'create'])->name('data.individu.create');
     Route::post('/data-individu', [DataIndividuTskAdminController::class, 'store'])->name('data.individu.store');
     Route::get('/data-individu/{id}', [DataIndividuTskAdminController::class, 'show'])->name('data.individu.show');
-    Route::get('/data-individu/{id}/edit', [DataIndividuTskAdminController::class, 'edit'])->name('data.individu.edit');
-    Route::put('/data-individu/{id}', [DataIndividuTskAdminController::class, 'update'])->name('data.individu.update');
+    Route::get('/data-individu/{id}/edit', [DataIndividuTskAdminController::class, 'edit'])->name('data.individu.edit'); // Ini untuk form edit
     Route::delete('/data-individu/{id}', [DataIndividuTskAdminController::class, 'destroy'])->name('data.individu.destroy');
+    Route::put('/data-individu/{id}', [DataIndividuTskAdminController::class, 'update'])->name('data.individu.update'); // Ini untuk update
+
     Route::get('/api/individu-data', [DataIndividuTskAdminController::class, 'getData'])->name('api.individu.data');
     Route::get('/api/individu-export', [DataIndividuTskAdminController::class, 'export'])->name('api.individu.export');
     Route::get('/data-individu/verification', [DataIndividuTskAdminController::class, 'verification'])->name('data.individu.verification');
     Route::get('/api/check-nik', [DataIndividuTskAdminController::class, 'checkNik'])->name('api.check.nik');
+    Route::get('/api/search-individu-by-nik', [DataIndividuTskAdminController::class, 'searchIndividuByNik'])->name('api.search.individu.by.nik');
 
-    Route::get('/data-desa', [DataDesaController::class, 'index'])->name('data.desa');
-    Route::get('/api/desa-data', [DataDesaController::class, 'getData'])->name('api.desa.data');
-    Route::get('/api/desa-detail/{id}', [DataDesaController::class, 'detail'])->name('api.desa.detail');
-    Route::get('/api/desa-export', [DataDesaController::class, 'export'])->name('api.desa.export');
-    Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list');
-    Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list');
+    // Admin API for wilayah dropdowns
+    Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('admin.api.kabupaten.list');
+    Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('admin.api.kecamatan.list');
+    Route::get('/api/desa-list', [DataDesaController::class, 'getDesaList'])->name('admin.api.desa.list');
 
     Route::get('/lsm', [LsmAdminController::class, 'index'])->name('data.lsm.index');
     Route::get('/lsm/create', [LsmAdminController::class, 'create'])->name('data.lsm.create');
@@ -513,7 +533,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 });
 
 // Operator Routes
-Route::middleware(['auth', 'verified'])->prefix('operator')->name('operator.')->group(function () {
+Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('operator')->name('operator.')->group(function () {
     Route::get('/dashboard', [OperatorDashboardController::class, 'index'])->name('dashboard');
     Route::get('/data', function () {
         return view('operator.data.index');
@@ -570,6 +590,17 @@ Route::get('/peta-penyalahgunaan/tkp', function () {
     return view('map_tkp');
 })->name('peta-penyalahgunaan.tkp');
 
+Route::get('/peta-penyalahgunaan/titik-masuk', [App\Http\Controllers\TransportationRouteController::class, 'index'])->name('peta-penyalahgunaan.titik-masuk');
+
+// Transportation Routes API
+Route::prefix('api/transportation-routes')->middleware(['auth'])->group(function () {
+    Route::get('/', [App\Http\Controllers\TransportationRouteController::class, 'getRoutes'])->name('api.routes.index');
+    Route::post('/', [App\Http\Controllers\TransportationRouteController::class, 'store'])->name('api.routes.store');
+    Route::put('/{id}', [App\Http\Controllers\TransportationRouteController::class, 'update'])->name('api.routes.update');
+    Route::delete('/{id}', [App\Http\Controllers\TransportationRouteController::class, 'destroy'])->name('api.routes.destroy');
+    Route::post('/{id}/toggle', [App\Http\Controllers\TransportationRouteController::class, 'toggleActive'])->name('api.routes.toggle');
+});
+
 // GeoJSON API Route
 Route::get('/peta-kerawanan', [PetaController::class, 'geojson'])->name('peta.kerawanan');
 Route::get('/peta-kerawanan-tkp', [PetaController::class, 'geojsonTkp'])->name('peta.kerawanan.tkp');
@@ -585,49 +616,14 @@ Route::get('/peta-tkp-residivis', function () {
 })->name('peta-tkp-residivis');
 
 Route::get('/api/individu-count', [DataIndividuTskController::class, 'getIndividuCount'])->name('api.individu.count');
+Route::get('/api/informan-count', [DataIndividuTskController::class, 'getIndividuInformanCount'])->name('api.individuInforman.count');
+Route::get('/api/informan-detail', [DataIndividuTskController::class, 'getIndividuInformanDetail'])->name('api.individuInforman.detail');
 
-Route::get('/api/kecamatan-list', function (Request $request) {
-    $kabupaten = $request->kabupaten;
-    $kecamatanList = \App\Models\DesaGeojson::query()
-        ->where('kabupaten', $kabupaten)
-        ->where('kecamatan', 'not like', '%/%')
-        ->where('kecamatan', 'not like', '%area%')
-        ->where('kecamatan', 'not like', '%unknown%')
-        ->distinct()
-        ->pluck('kecamatan')
-        ->sort()
-        ->values();
-    return response()->json($kecamatanList);
-});
+// Public API routes for map functionality
+Route::get('/api/kabupaten-list', [DataDesaController::class, 'getKabupatenList'])->name('api.kabupaten.list.public');
+Route::get('/api/kecamatan-list', [DataDesaController::class, 'getKecamatanList'])->name('api.kecamatan.list.public');
+Route::get('/api/desa-list', [DataDesaController::class, 'getDesaList'])->name('api.desa.list.public');
 
-Route::get('/api/desa-list', function (Request $request) {
-    $kabupaten = $request->kabupaten;
-    $kecamatan = $request->kecamatan;
-    // console.log('Fetch desa-list', kabupaten, kecamatan);
-    $desaList = \App\Models\DesaGeojson::query()
-        ->where('kabupaten', $kabupaten)
-        ->where('kecamatan', $kecamatan)
-        ->where('nama_desa', 'not like', '%/%')
-        ->where('nama_desa', 'not like', '%area%')
-        ->where('nama_desa', 'not like', '%unknown%')
-        ->distinct()
-        ->pluck('nama_desa')
-        ->sort()
-        ->values();
-    return response()->json($desaList);
-});
-
-Route::get('/api/kabupaten-list', function (Request $request) {
-    $kabupatenList = \App\Models\DesaGeojson::query()
-        ->where('kabupaten', 'not like', '%/%')
-        ->where('kabupaten', 'not like', '%area%')
-        ->where('kabupaten', 'not like', '%unknown%')
-        ->distinct()
-        ->pluck('kabupaten')
-        ->sort()
-        ->values();
-    return response()->json($kabupatenList);
-});
 
 // Route untuk menampilkan halaman learning_pm
 Route::get('/learning_pm', function () {

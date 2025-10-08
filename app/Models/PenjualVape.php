@@ -15,7 +15,19 @@ class PenjualVape extends Model
         'no_hp',
         'liquid_dicurigai',
         'distributor',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'provinsi_lain',
+        'kabupaten_lain',
+        'kecamatan_lain',
+        'kelurahan_lain',
         'created_by',
+    ];
+
+    protected $casts = [
+        'liquid_dicurigai' => 'array',
     ];
 
     public function user()

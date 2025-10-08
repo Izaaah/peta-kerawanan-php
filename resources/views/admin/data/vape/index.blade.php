@@ -31,7 +31,7 @@
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Liquid Dicurigai</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Distributor</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Lokasi</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -42,7 +42,9 @@
                             <td class="px-4 py-2">{{ $vape->nama_toko }}</td>
                             <td class="px-4 py-2">{{ $vape->pemilik }}</td>
                             <td class="px-4 py-2">{{ $vape->no_hp }}</td>
-                            <td class="px-4 py-2">{{ $vape->liquid_dicurigai }}</td>
+                            <td class="px-4 py-2">
+                                {{ is_array($vape->liquid_dicurigai) ? implode(', ', $vape->liquid_dicurigai) : $vape->liquid_dicurigai ?? '-' }}
+                            </td>
                             <td class="px-4 py-2">{{ $vape->distributor }}</td>
                             <td class="px-4 py-2">{{ $vape->lokasi }}</td>
                             <td class="px-4 py-2 flex gap-2">

@@ -17,6 +17,14 @@ class Penginapan extends Model
         'nama_pengelola',
         'lokasi',
         'no_hp',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'provinsi_lain',
+        'kabupaten_lain',
+        'kecamatan_lain',
+        'kelurahan_lain',
         'created_by',
     ];
 

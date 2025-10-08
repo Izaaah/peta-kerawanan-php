@@ -5,11 +5,11 @@
 @section('content')
     @include('components.superadmin-navbar')
 
-    <div class="container-fluid px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
+    <div class="px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
         <div class="flex flex-col md:flex-row gap-8">
 
             <!-- Main Content -->
-            <main class="flex-1 mt-[90px]">
+            <main class="flex-1">
                 <div class="bg-white light:bg-gray-800 rounded-lg shadow-md p-6">
                     <h1 class="text-2xl font-bold text-gray-800 light:text-gray-100 mb-2">Chart Jaringan Narkoba</h1>
                     <p class="text-gray-500 light:text-gray-300 mb-6">Buat dan visualisasikan jaringan pelaku narkoba secara
@@ -168,8 +168,6 @@
                             <div class="flex gap-2 mt-4">
                                 <button @click="downloadSvg" class="bg-gray-700 text-white px-4 py-2 rounded">Download
                                     SVG</button>
-                                <button @click="downloadPng" class="bg-blue-500 text-white px-4 py-2 rounded">Download
-                                    PNG</button>
                                 <button @click="downloadPdf" class="bg-red-500 text-white px-4 py-2 rounded">Download
                                     PDF</button>
                             </div>
@@ -194,8 +192,6 @@
 
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/canvg@3.0.9/lib/umd.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script>
             if (window.mermaid) {
@@ -306,75 +302,216 @@
                             alert('Diagram tidak ditemukan. Pastikan sudah ada visualisasi jaringan.');
                         }
                     },
-                    downloadPng() {
-                        console.log('Download PNG clicked');
-                        const svg = this.$refs.mermaidEl.querySelector('svg');
-                        if (svg) {
-                            console.log('SVG ditemukan', svg);
-                            let width = svg.getAttribute('width') || 800;
-                            let height = svg.getAttribute('height') || 400;
-                            const scale = 2; // scale factor to increase resolution
-                            svg.setAttribute('width', width * scale);
-                            svg.setAttribute('height', height * scale);
 
-                            // Create a canvas to render the SVG
-                            const canvas = document.createElement('canvas');
-                            canvas.width = width * scale;
-                            canvas.height = height * scale;
-                            const ctx = canvas.getContext('2d');
-
-                            // Use canvg to render the SVG into the canvas
-                            canvg.Canvg.fromString(ctx, svg.outerHTML).render().then(() => {
-                                // Create the PNG image from the canvas
-                                const tmpCanvas = document.createElement('canvas');
-                                tmpCanvas.width = width;
-                                tmpCanvas.height = height;
-                                const tmpCtx = tmpCanvas.getContext('2d');
-                                tmpCtx.drawImage(canvas, 0, 0, width, height);
-
-                                // Trigger the download of the PNG file
-                                const link = document.createElement('a');
-                                link.download = 'jaringan.png';
-                                link.href = tmpCanvas.toDataURL();
-                                link.click();
-                                console.log('Download PNG triggered');
-                            }).catch(e => {
-                                console.error('canvg error', e);
-                            });
-
-                            // Restore original dimensions after rendering
-                            svg.setAttribute('width', width);
-                            svg.setAttribute('height', height);
-                        } else {
-                            alert('Diagram tidak ditemukan. Pastikan sudah ada visualisasi jaringan.');
-                            console.error('SVG not found');
-                        }
-                    },
-
-                    downloadPdf() {
+                    async downloadPdf() {
                         console.log('Download PDF clicked');
                         const svg = this.$refs.mermaidEl.querySelector('svg');
-                        if (svg) {
-                            let width = svg.getAttribute('width') || 800;
-                            let height = svg.getAttribute('height') || 400;
-                            svg.setAttribute('width', width);
-                            svg.setAttribute('height', height);
-                            const canvas = document.createElement('canvas');
-                            canvas.width = width;
-                            canvas.height = height;
-                            canvg.Canvg.fromString(canvas.getContext('2d'), svg.outerHTML).render().then(
-                                () => {
-                                    const imgData = canvas.toDataURL('image/png');
-                                    const pdf = new window.jspdf.jsPDF({
-                                        orientation: 'landscape',
-                                        unit: 'pt',
-                                        format: [canvas.width, canvas.height]
-                                    });
-                                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-                                    pdf.save('jaringan.pdf');
+                        if (svg && this.nodes.length > 0) {
+                            try {
+                                // Show loading message
+                                const originalText = 'Download PDF';
+                                const button = event.target;
+                                button.textContent = 'Membuat PDF...';
+                                button.disabled = true;
+
+                                // Convert SVG to image first
+                                const svgData = new XMLSerializer().serializeToString(svg);
+                                const svgBlob = new Blob([svgData], {
+                                    type: 'image/svg+xml;charset=utf-8'
                                 });
+                                const svgUrl = URL.createObjectURL(svgBlob);
+
+                                const imgData = await new Promise((resolve, reject) => {
+                                    const img = new Image();
+                                    img.onload = function() {
+                                        const canvas = document.createElement('canvas');
+                                        const ctx = canvas.getContext('2d');
+
+                                        canvas.width = img.width || 800;
+                                        canvas.height = img.height || 600;
+
+                                        ctx.fillStyle = 'white';
+                                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                        ctx.drawImage(img, 0, 0, canvas.width, canvas
+                                            .height);
+
+                                        const imageData = canvas.toDataURL('image/png');
+                                        URL.revokeObjectURL(svgUrl);
+                                        resolve(imageData);
+                                    };
+                                    img.onerror = () => {
+                                        URL.revokeObjectURL(svgUrl);
+                                        reject(new Error('Failed to load SVG'));
+                                    };
+                                    img.src = svgUrl;
+                                });
+
+                                // Create PDF document
+                                const pdf = new window.jspdf.jsPDF({
+                                    orientation: 'portrait',
+                                    unit: 'mm',
+                                    format: 'a4'
+                                });
+
+                                // Set default font
+                                pdf.setFont('helvetica', 'normal');
+
+                                // Add title
+                                pdf.setFontSize(18);
+                                pdf.text('LAPORAN JARINGAN NARKOBA', 105, 20, {
+                                    align: 'center'
+                                });
+
+                                // Add date
+                                pdf.setFontSize(10);
+                                const currentDate = new Date().toLocaleDateString('id-ID', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                });
+                                pdf.text(`Tanggal: ${currentDate}`, 105, 30, {
+                                    align: 'center'
+                                });
+
+                                let yPosition = 50;
+
+                                // Add summary
+                                pdf.setFontSize(12);
+                                pdf.text('RINGKASAN JARINGAN', 20, yPosition);
+                                yPosition += 10;
+
+                                pdf.setFontSize(10);
+                                pdf.text(`Total Node: ${this.nodes.length}`, 20, yPosition);
+                                yPosition += 8;
+
+                                // Count connections
+                                let totalConnections = 0;
+                                this.nodes.forEach(node => {
+                                    totalConnections += node.connections.length;
+                                });
+                                pdf.text(`Total Koneksi: ${totalConnections}`, 20, yPosition);
+                                yPosition += 20;
+
+                                // Add diagram
+                                pdf.setFontSize(12);
+                                pdf.text('DIAGRAM JARINGAN', 20, yPosition);
+                                yPosition += 10;
+
+                                // Add the diagram image
+                                const imgWidth = 150; // mm
+                                const imgHeight = 100; // mm (fixed height for consistency)
+
+                                if (yPosition + imgHeight > 270) {
+                                    pdf.addPage();
+                                    yPosition = 20;
+                                }
+
+                                pdf.addImage(imgData, 'PNG', 20, yPosition, imgWidth, imgHeight);
+                                yPosition += imgHeight + 15;
+
+                                // Add nodes list
+                                pdf.setFontSize(12);
+                                pdf.text('DAFTAR NODE JARINGAN', 20, yPosition);
+                                yPosition += 10;
+
+                                pdf.setFontSize(10);
+                                this.nodes.forEach((node, index) => {
+                                    if (yPosition > 270) { // Check if we need a new page
+                                        pdf.addPage();
+                                        yPosition = 20;
+                                        pdf.setFontSize(12);
+                                        pdf.text('DAFTAR NODE JARINGAN (Lanjutan)', 20,
+                                            yPosition);
+                                        yPosition += 10;
+                                        pdf.setFontSize(10);
+                                    }
+
+                                    const nodeName = node.name || `Node ${index + 1}`;
+                                    const nodeType = node.type.charAt(0).toUpperCase() + node
+                                        .type
+                                        .slice(1);
+
+                                    pdf.text(`${index + 1}. ${nodeName} (${nodeType})`, 20,
+                                        yPosition);
+                                    yPosition += 6;
+
+                                    if (node.connections.length > 0) {
+                                        const connectionText = node.connections.map(connIdx => {
+                                            const targetNode = this.nodes[connIdx];
+                                            return targetNode.name ||
+                                                `Node ${connIdx + 1}`;
+                                        }).join(', ');
+                                        pdf.text(`   Terhubung dengan: ${connectionText}`, 25,
+                                            yPosition);
+                                        yPosition += 6;
+                                    }
+                                    yPosition += 3;
+                                });
+
+                                // Add connections matrix
+                                yPosition += 10;
+                                if (yPosition > 250) {
+                                    pdf.addPage();
+                                    yPosition = 20;
+                                }
+
+                                pdf.setFontSize(12);
+                                pdf.text('MATRIX KONEKSI', 20, yPosition);
+                                yPosition += 10;
+
+                                pdf.setFontSize(9);
+                                pdf.text('Dari - Ke', 20, yPosition);
+                                pdf.text('Tipe', 120, yPosition);
+                                yPosition += 6;
+
+                                // Draw line
+                                pdf.line(20, yPosition, 180, yPosition);
+                                yPosition += 6;
+
+                                this.nodes.forEach((fromNode, fromIdx) => {
+                                    fromNode.connections.forEach(toIdx => {
+                                        if (yPosition > 270) {
+                                            pdf.addPage();
+                                            yPosition = 20;
+                                        }
+
+                                        const fromName = fromNode.name ||
+                                            `Node ${fromIdx + 1}`;
+                                        const toNode = this.nodes[toIdx];
+                                        const toName = toNode.name ||
+                                            `Node ${toIdx + 1}`;
+
+                                        pdf.text(`${fromName} - ${toName}`, 20,
+                                            yPosition);
+                                        pdf.text(`${fromNode.type} - ${toNode.type}`,
+                                            120,
+                                            yPosition);
+                                        yPosition += 6;
+                                    });
+                                });
+
+                                // Save the PDF
+                                pdf.save('laporan-jaringan-narkoba.pdf');
+
+                                console.log('Download PDF berhasil');
+
+                                // Restore button state
+                                button.textContent = originalText;
+                                button.disabled = false;
+
+                            } catch (error) {
+                                console.error('Error creating PDF:', error);
+                                alert('Terjadi kesalahan saat membuat file PDF.');
+
+                                // Restore button state on error
+                                const button = event.target;
+                                button.textContent = 'Download PDF';
+                                button.disabled = false;
+                            }
                         } else {
-                            alert('Diagram tidak ditemukan. Pastikan sudah ada visualisasi jaringan.');
+                            alert(
+                                'Diagram tidak ditemukan atau belum ada node. Pastikan sudah menambahkan node jaringan.'
+                            );
                         }
                     }
                 }));

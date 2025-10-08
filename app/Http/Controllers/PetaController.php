@@ -19,16 +19,28 @@ class PetaController extends Controller
 
         if ($desaData->count() > 0) {
             // Jika FK desa_geojson_id belum terisi, fallback hitung berdasarkan nama (kelurahan)
-            $countsByKelurahan = DataIndividuTsk::selectRaw('LOWER(TRIM(kelurahan)) as kel_key, COUNT(*) as total')
-                ->groupBy('kel_key')
-                ->pluck('total', 'kel_key');
+            // Perbaikan: gunakan kombinasi kabupaten, kecamatan, dan kelurahan untuk menghindari konflik nama
+            $countsByKelurahan = DataIndividuTsk::selectRaw('
+                LOWER(TRIM(kabupaten)) as kab_key,
+                LOWER(TRIM(kecamatan)) as kec_key,
+                LOWER(TRIM(kelurahan)) as kel_key,
+                COUNT(*) as total
+            ')
+                ->groupBy('kab_key', 'kec_key', 'kel_key')
+                ->get()
+                ->mapWithKeys(function ($item) {
+                    return [$item->kab_key . '|' . $item->kec_key . '|' . $item->kel_key => $item->total];
+                });
 
             $features = [];
 
             foreach ($desaData as $desa) {
                 $byFk = (int) ($desa->data_individu_tsk_count ?? 0);
+                $kabKey = strtolower(trim($desa->kabupaten));
+                $kecKey = strtolower(trim($desa->kecamatan));
                 $kelKey = strtolower(trim($desa->nama_desa));
-                $byName = (int) ($countsByKelurahan[$kelKey] ?? 0);
+                $combinedKey = $kabKey . '|' . $kecKey . '|' . $kelKey;
+                $byName = (int) ($countsByKelurahan[$combinedKey] ?? 0);
                 $jumlahKasus = max($byFk, $byName);
 
                 $features[] = [
@@ -76,9 +88,18 @@ class PetaController extends Controller
         }
 
         // Perkaya fitur dengan jumlah_kasus dari DataIndividuTsk (mapping nama_desa ~ kelurahan)
-        $countsByKelurahan = DataIndividuTsk::selectRaw('LOWER(TRIM(kelurahan)) as kelurahan_key, COUNT(*) as total')
-            ->groupBy('kelurahan_key')
-            ->pluck('total', 'kelurahan_key');
+        // Perbaikan: gunakan kombinasi kabupaten, kecamatan, dan kelurahan untuk menghindari konflik nama
+        $countsByKelurahan = DataIndividuTsk::selectRaw('
+            LOWER(TRIM(kabupaten)) as kab_key,
+            LOWER(TRIM(kecamatan)) as kec_key,
+            LOWER(TRIM(kelurahan)) as kel_key,
+            COUNT(*) as total
+        ')
+            ->groupBy('kab_key', 'kec_key', 'kel_key')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->kab_key . '|' . $item->kec_key . '|' . $item->kel_key => $item->total];
+            });
 
         if (isset($data['features']) && is_array($data['features'])) {
             foreach ($data['features'] as &$feature) {
@@ -86,8 +107,15 @@ class PetaController extends Controller
                     $feature['properties'] = [];
                 }
                 $desaName = $feature['properties']['nama_desa'] ?? '';
-                $kelurahanKey = strtolower(trim($desaName));
-                $feature['properties']['jumlah_kasus'] = (int) ($countsByKelurahan[$kelurahanKey] ?? 0);
+                $kecamatan = $feature['properties']['kecamatan'] ?? '';
+                $kabupaten = $feature['properties']['kabupaten'] ?? '';
+
+                $kabKey = strtolower(trim($kabupaten));
+                $kecKey = strtolower(trim($kecamatan));
+                $kelKey = strtolower(trim($desaName));
+                $combinedKey = $kabKey . '|' . $kecKey . '|' . $kelKey;
+
+                $feature['properties']['jumlah_kasus'] = (int) ($countsByKelurahan[$combinedKey] ?? 0);
             }
             unset($feature);
         }
@@ -222,63 +250,78 @@ class PetaController extends Controller
     }
 
     public function geojsonTkp()
-{
-    $desaData = DesaGeojson::all();
+    {
+        $desaData = DesaGeojson::all();
 
-    $countsByDesa = TkpResidivisIndividu::selectRaw('LOWER(TRIM(desa)) as desa_key, COUNT(*) as total')
-        ->groupBy('desa_key')
-        ->pluck('total', 'desa_key');
+        // Perbaikan: gunakan kombinasi kabupaten, kecamatan, dan desa untuk menghindari konflik nama
+        $countsByDesa = TkpResidivisIndividu::selectRaw('
+        LOWER(TRIM(kabupaten)) as kab_key,
+        LOWER(TRIM(kecamatan)) as kec_key,
+        LOWER(TRIM(desa)) as desa_key,
+        COUNT(*) as total
+    ')
+            ->groupBy('kab_key', 'kec_key', 'desa_key')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->kab_key . '|' . $item->kec_key . '|' . $item->desa_key => $item->total];
+            });
 
-    $features = [];
-    foreach ($desaData as $desa) {
-        $desaKey = strtolower(trim($desa->nama_desa));
-        $jumlahKasus = (int) ($countsByDesa[$desaKey] ?? 0);
-        $features[] = [
-            'type' => 'Feature',
-            'properties' => [
-                'id' => $desa->id,
-                'nama_desa' => $desa->nama_desa,
-                'kecamatan' => $desa->kecamatan,
-                'kabupaten' => $desa->kabupaten,
-                'jumlah_kasus' => $jumlahKasus,
-            ],
-            'geometry' => $desa->geometry
-        ];
-    }
-
-    return response()->json([
-        'type' => 'FeatureCollection',
-        'features' => $features
-    ], 200, ['Content-Type' => 'application/json']);
-}
-
-public function getKerawananStatsTkp()
-{
-    try {
-        $totalDesa = DesaGeojson::count();
-
-        $tkpPerDesa = TkpResidivisIndividu::selectRaw('LOWER(TRIM(desa)) as desa_key, COUNT(*) as total')
-            ->groupBy('desa_key')
-            ->pluck('total', 'desa_key');
-
-        $tinggi = 0; $sedang = 0; $rendah = 0; $totalCount = $tkpPerDesa->sum();
-        foreach ($tkpPerDesa as $count) {
-            if ($count > 100) $tinggi++;
-            elseif ($count > 50) $sedang++;
-            elseif ($count > 20) $rendah++;
+        $features = [];
+        foreach ($desaData as $desa) {
+            $kabKey = strtolower(trim($desa->kabupaten));
+            $kecKey = strtolower(trim($desa->kecamatan));
+            $desaKey = strtolower(trim($desa->nama_desa));
+            $combinedKey = $kabKey . '|' . $kecKey . '|' . $desaKey;
+            $jumlahKasus = (int) ($countsByDesa[$combinedKey] ?? 0);
+            $features[] = [
+                'type' => 'Feature',
+                'properties' => [
+                    'id' => $desa->id,
+                    'nama_desa' => $desa->nama_desa,
+                    'kecamatan' => $desa->kecamatan,
+                    'kabupaten' => $desa->kabupaten,
+                    'jumlah_kasus' => $jumlahKasus,
+                ],
+                'geometry' => $desa->geometry
+            ];
         }
 
         return response()->json([
-            'tinggi' => $tinggi,
-            'sedang' => $sedang,
-            'rendah' => $rendah,
-            'total_desa' => $totalDesa,
-            'debug' => [
-                'total_tkp' => $totalCount,
-            ]
+            'type' => 'FeatureCollection',
+            'features' => $features
         ], 200, ['Content-Type' => 'application/json']);
-    } catch (\Throwable $e) {
-        return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
     }
-}
+
+    public function getKerawananStatsTkp()
+    {
+        try {
+            $totalDesa = DesaGeojson::count();
+
+            $tkpPerDesa = TkpResidivisIndividu::selectRaw('LOWER(TRIM(desa)) as desa_key, COUNT(*) as total')
+                ->groupBy('desa_key')
+                ->pluck('total', 'desa_key');
+
+            $tinggi = 0;
+            $sedang = 0;
+            $rendah = 0;
+            $totalCount = $tkpPerDesa->sum();
+            foreach ($tkpPerDesa as $count) {
+                if ($count > 100) $tinggi++;
+                elseif ($count > 50) $sedang++;
+                elseif ($count > 20) $rendah++;
+            }
+
+            return response()->json([
+                'tinggi' => $tinggi,
+                'sedang' => $sedang,
+                'rendah' => $rendah,
+                'total_desa' => $totalDesa,
+                'debug' => [
+                    'total_tkp' => $totalCount,
+                ]
+            ], 200, ['Content-Type' => 'application/json']);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
+        }
+    }
 }

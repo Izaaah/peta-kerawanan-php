@@ -10,8 +10,12 @@ use App\Models\Anggaran;
 use App\Models\Komposisi;
 use App\Models\Galeri;
 use App\Models\Pegawai;
+use App\Models\Tugas;
+use App\Models\Fungsi;
+use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SuperAdminDashboardController extends Controller
 {
@@ -103,6 +107,36 @@ class SuperAdminDashboardController extends Controller
             'Non Residivis' => \App\Models\DataIndividuTsk::where('residivis', false)->count(),
         ];
 
+        // Data untuk statistik jenis kelamin
+        $jenisKelaminStats = [
+            'Laki-laki' => \App\Models\DataIndividuTsk::where('jenis_kelamin', 'L')->count(),
+            'Perempuan' => \App\Models\DataIndividuTsk::where('jenis_kelamin', 'P')->count(),
+        ];
+
+        // Data untuk statistik umur (berdasarkan tanggal lahir)
+        $totalIndividu = \App\Models\DataIndividuTsk::whereNotNull('tgl_lahir')->count();
+        $anakAnak = 0;
+        $dewasa = 0;
+
+        if ($totalIndividu > 0) {
+            $individuData = \App\Models\DataIndividuTsk::whereNotNull('tgl_lahir')->get();
+
+            foreach ($individuData as $individu) {
+                $umur = Carbon::parse($individu->tgl_lahir)->age;
+
+                if ($umur >= 1 && $umur < 18) {
+                    $anakAnak++;
+                } elseif ($umur >= 18) {
+                    $dewasa++;
+                }
+            }
+        }
+
+        $umurStats = [
+            'Anak-anak (1-17 tahun)' => $anakAnak,
+            'Dewasa (18+ tahun)' => $dewasa,
+        ];
+
         // Ambil data anggaran berdasarkan role user
         $user = auth()->user();
         $anggaranQuery = Anggaran::query();
@@ -110,13 +144,47 @@ class SuperAdminDashboardController extends Controller
             $anggaranQuery->where('created_by', $user->id);
         }
 
+        // Ambil data anggaran dengan struktur hierarkis
         $anggaranList = (clone $anggaranQuery)
+            ->with('children')
+            ->where('is_main_activity', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Hitung total dari semua data (termasuk sub activities)
         $totalAnggaranSebelum = (clone $anggaranQuery)->sum('anggaran_sebelum');
         $totalBlokir = (clone $anggaranQuery)->sum('blokir');
         $totalSetelah = $totalAnggaranSebelum - $totalBlokir;
+
+        // Data untuk statistik anggaran
+        $anggaranStats = [
+            'Total Anggaran Sebelum' => $totalAnggaranSebelum,
+            'Total Blokir' => $totalBlokir,
+            'Total Anggaran Setelah' => $totalSetelah,
+            'Jumlah Kegiatan' => $anggaranQuery->count(),
+        ];
+
+        // Data untuk pie chart anggaran berdasarkan akun (seperti gambar)
+        $anggaranByAkun = (clone $anggaranQuery)
+            ->select('akun', DB::raw('SUM(anggaran_sebelum) as total_anggaran'), DB::raw('SUM(blokir) as total_blokir'))
+            ->groupBy('akun')
+            ->get();
+
+        $anggaranPie = [];
+        foreach ($anggaranByAkun as $item) {
+            // Tambahkan anggaran normal
+            $anggaranPie[$item->akun] = $item->total_anggaran;
+            // Tambahkan anggaran blokir jika ada
+            if ($item->total_blokir > 0) {
+                $anggaranPie[$item->akun . ' (Blokir)'] = $item->total_blokir;
+            }
+        }
+
+        // Data untuk pie chart jenis kegiatan (main vs sub activities)
+        $kegiatanPie = [
+            'Kegiatan Utama' => $anggaranQuery->where('is_main_activity', true)->count(),
+            'Sub Kegiatan' => $anggaranQuery->where('is_main_activity', false)->count(),
+        ];
 
         $totalPersonil = Komposisi::sum('jumlah_personil');
         $totalDspJumlah = Komposisi::sum('dsp_jumlah');
@@ -127,6 +195,26 @@ class SuperAdminDashboardController extends Controller
         $komposisiList = Komposisi::all();
 
         $galeri = Galeri::all();
+
+        // Ambil data tugas dan fungsi
+        $tugas = Tugas::all();
+        $fungsi = Fungsi::all();
+
+        // Ambil data berita
+        // Fetch berita with position ordering (with fallback if position column doesn't exist)
+        try {
+            $berita = Berita::orderByRaw("
+                CASE
+                    WHEN position = 'utama' THEN 1
+                    WHEN position = 'pinggir' THEN 2
+                    WHEN position = 'bawah' THEN 3
+                    ELSE 4
+                END
+            ")->orderBy('created_at', 'desc')->get();
+        } catch (\Exception $e) {
+            // Fallback if position column doesn't exist yet
+            $berita = Berita::orderBy('created_at', 'desc')->get();
+        }
 
         // Kalau $pegawai belum ada, ambil dari DB
         if (!isset($pegawai)) {
@@ -162,6 +250,11 @@ class SuperAdminDashboardController extends Controller
             'kasusTerbaru',
             'statusPie',
             'residivisPie',
+            'jenisKelaminStats',
+            'umurStats',
+            'anggaranStats',
+            'anggaranPie',
+            'kegiatanPie',
             'anggaranList',
             'totalAnggaranSebelum',
             'totalBlokir',
@@ -174,7 +267,10 @@ class SuperAdminDashboardController extends Controller
             'allKecamatanTkpList',
             'galeri',
             'jabatanList',
-            'pegawai'
+            'pegawai',
+            'tugas',
+            'fungsi',
+            'berita'
         ));
     }
 

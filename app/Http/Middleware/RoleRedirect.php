@@ -20,16 +20,16 @@ class RoleRedirect
         if (Auth::check()) {
             $user = Auth::user();
 
-            // Cek jika sudah di dashboard yang sesuai, jangan redirect lagi
+            // Cek apakah user mengakses route yang sesuai dengan rolenya
             if (
-                ($user->role === 'super-admin' && $request->routeIs('super-admin.dashboard')) ||
-                ($user->role === 'administrator' && $request->routeIs('admin.dashboard')) ||
-                ($user->role === 'operator' && $request->routeIs('operator.dashboard'))
+                ($user->role === 'super-admin' && $request->routeIs('super-admin.*')) ||
+                ($user->role === 'administrator' && $request->routeIs('admin.*')) ||
+                ($user->role === 'operator' && $request->routeIs('operator.*'))
             ) {
                 return $next($request);
             }
 
-            // Redirect based on role
+            // Redirect based on role jika mengakses route yang tidak sesuai
             if ($user->role === 'super-admin') {
                 return redirect()->route('super-admin.dashboard');
             } elseif ($user->role === 'administrator') {

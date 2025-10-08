@@ -3,7 +3,7 @@
 @section('title', 'Data THM')
 
 @section('content')
-    <div class="container mx-auto px-4 py-3">
+    <div class="mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar Tempat Hiburan Malam (THM)</h1>
@@ -32,6 +32,7 @@
                     <tr>
                         <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama THM</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ketua THM</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No HP Ketua</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Dibuat Oleh</th>
@@ -44,6 +45,13 @@
                             <td class="px-4 py-2 text-center">
                                 {{ ($thmList->currentPage() - 1) * $thmList->perPage() + $index + 1 }}</td>
                             <td class="px-4 py-2">{{ $thm->nama_thm }}</td>
+                            <td class="px-4 py-2">
+                                @if ($thm->kelurahan && $thm->kecamatan && $thm->kabupaten)
+                                    {{ $thm->kelurahan }}, {{ $thm->kecamatan }}, {{ $thm->kabupaten }}
+                                @else
+                                    <span class="text-gray-400">-</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-2">{{ $thm->ketua_thm }}</td>
                             <td class="px-4 py-2">{{ $thm->no_hp_ketua }}</td>
                             <td class="px-4 py-2">{{ $thm->user->name ?? '-' }}</td>
@@ -87,7 +95,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 py-2 text-center text-gray-500">Belum ada data THM.</td>
+                            <td colspan="7" class="px-4 py-2 text-center text-gray-500">Belum ada data THM.</td>
                         </tr>
                     @endforelse
                 </tbody>

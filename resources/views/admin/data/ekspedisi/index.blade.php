@@ -3,8 +3,8 @@
 @section('title', 'Data Ekspedisi')
 
 @section('content')
-    <div class="container mx-auto px-4 py-3">
-        <div class="flex justify-between items-center mb-6">
+    <div class="mx-auto px-4 py-3">
+        <div class="flex justify-between items-center mb-4">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar Ekspedisi</h1>
                 <p class="text-sm text-gray-500">Informasi lengkap mengenai Ekspedisi</p>
@@ -37,22 +37,34 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Manager</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Manager</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($ekspedisiList as $i => $ekspedisi)
                         <tr>
-                            <td class="px-4 py-2">{{ $ekspedisiList->firstItem() + $i }}</td>
+                            <td class="px-4 py-2 text-center">{{ $ekspedisiList->firstItem() + $i }}</td>
                             <td class="px-4 py-2">{{ $ekspedisi->nama }}</td>
+                            <td class="px-4 py-2">
+                                @if ($ekspedisi->provinsi)
+                                    @if ($ekspedisi->provinsi === 'lainnya')
+                                        {{ $ekspedisi->provinsi_lain ?? '' }}, {{ $ekspedisi->kabupaten_lain ?? '' }},
+                                        {{ $ekspedisi->kecamatan_lain ?? '' }}, {{ $ekspedisi->kelurahan_lain ?? '' }}
+                                    @else
+                                        {{ $ekspedisi->provinsi }}, {{ $ekspedisi->kabupaten ?? '' }},
+                                        {{ $ekspedisi->kecamatan ?? '' }}, {{ $ekspedisi->kelurahan ?? '' }}
+                                    @endif
+                                @else
+                                    {{ $ekspedisi->alamat }}
+                                @endif
+                            </td>
                             <td class="px-4 py-2">{{ $ekspedisi->manager }}</td>
-                            <td class="px-4 py-2">{{ $ekspedisi->alamat }}</td>
                             <td class="px-4 py-2">{{ $ekspedisi->no_hp }}</td>
                             <td class="px-4 py-2">{{ $ekspedisi->jenis }}</td>
                             <td class="px-1 py-2 flex gap-2 justify-center">

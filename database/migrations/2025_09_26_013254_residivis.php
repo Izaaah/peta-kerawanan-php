@@ -1,0 +1,99 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // Menambah tabel tkp_residivis_individu
+        Schema::create('tkp_residivis_individu', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
+            $table->string('provinsi', 100)->nullable();
+            $table->string('kabupaten', 100)->nullable();
+            $table->string('kecamatan', 100)->nullable();
+            $table->string('desa', 100)->nullable();
+            $table->string('lokasi', 255)->nullable();
+            $table->unsignedBigInteger('created_by')->nullable(); // Menambahkan kolom 'created_by'
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null'); // Membuat relasi foreign key ke tabel 'users'
+            $table->timestamps();
+        });
+
+        // Mengubah tabel data_individu_tsk untuk memindahkan beberapa kolom ke status
+        Schema::table('data_individu_tsk', function (Blueprint $table) {
+            // Cek apakah kolom-kolom ini ada, dan jika ada, hapus
+            if (Schema::hasColumn('data_individu_tsk', 'modus_operasi')) {
+                $table->dropColumn('modus_operasi');
+            }
+
+            if (Schema::hasColumn('data_individu_tsk', 'jenis_narkotika')) {
+                $table->dropColumn('jenis_narkotika');
+            }
+
+            if (Schema::hasColumn('data_individu_tsk', 'skala_kelas')) {
+                $table->dropColumn('skala_kelas');
+            }
+
+            // Menambahkan kolom status sebagai varchar (string) hanya jika kolom status belum ada
+            if (!Schema::hasColumn('data_individu_tsk', 'status')) {
+                $table->string('status', 50)->nullable(); // Kolom status umum (Compulsory, Proses Hukum Lanjutan, Narapidana)
+            }
+        });
+
+        // Menambah tabel status_hukum untuk status lebih lanjut (Compulsory, Proses Hukum Lanjutan, Narapidana)
+        Schema::create('status_hukum', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
+            $table->string('status_hukum', 50);  // Contoh status: Compulsory, Proses Hukum Lanjutan, Narapidana
+            $table->date('tanggal_kasus')->nullable();
+            $table->string('nomor_kasus')->nullable();
+            $table->string('satuan_kerja')->nullable();
+            $table->string('aph')->nullable(); // APH yang menangani
+            $table->string('pasal_disangkakan')->nullable(); // Kolom pasal yang disangkakan
+            $table->timestamps();
+        });
+
+        // Menambah tabel residivis_detail untuk menyimpan file dokumen, pasal disangkakan, vonis, dan lapas
+        Schema::create('residivis_detail', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
+            $table->string('file_dokumen')->nullable();  // Untuk menyimpan file dokumen
+            $table->string('pasal_disangkakan')->nullable(); // Kolom pasal yang disangkakan
+            $table->string('vonis')->nullable(); // Kolom vonis
+            $table->string('lapas_akhir')->nullable(); // Kolom lapas
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // Menghapus tabel tkp_residivis_individu jika rollback
+        Schema::dropIfExists('tkp_residivis_individu');
+
+        // Menghapus tabel status_hukum jika rollback
+        Schema::dropIfExists('status_hukum');
+
+        // Menghapus tabel residivis_detail jika rollback
+        Schema::dropIfExists('residivis_detail');
+
+        // Membalik perubahan di tabel data_individu_tsk
+        Schema::table('data_individu_tsk', function (Blueprint $table) {
+            // Menambah kembali kolom yang telah dihapus
+            $table->text('modus_operasi')->nullable();
+            $table->text('jenis_narkotika')->nullable();
+            $table->string('skala_kelas', 50)->nullable();
+
+            // Menghapus kolom status jika rollback
+            $table->dropColumn('status');
+        });
+    }
+};

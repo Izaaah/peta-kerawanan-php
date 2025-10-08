@@ -6,6 +6,9 @@ use App\Models\DataIndividuTsk;
 use App\Models\DesaGeojson;
 use App\Models\KasusNarkoba;
 use App\Models\TkpResidivisIndividu;
+use App\Models\StatusHukum;
+use App\Models\ResidivisDetail;
+use App\Models\LembagaRehabilitasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -19,45 +22,45 @@ class DataIndividuTskAdminController extends Controller
         $userId = $user->id;
 
         $stats = [
-            'total_individu' => DataIndividuTsk::where(function($query) use ($userId, $userKabupaten) {
+            'total_individu' => DataIndividuTsk::where(function ($query) use ($userId, $userKabupaten) {
                 $query->where('created_by', $userId)
-                      ->orWhere(function($q) use ($userKabupaten) {
-                          $q->whereNull('created_by')
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
                             ->where('kabupaten', $userKabupaten);
-                      });
+                    });
             })->count(),
-            'total_kasus' => KasusNarkoba::where(function($query) use ($userId, $userKabupaten) {
+            'total_kasus' => KasusNarkoba::where(function ($query) use ($userId, $userKabupaten) {
                 $query->where('created_by', $userId)
-                      ->orWhere(function($q) use ($userKabupaten) {
-                          $q->whereNull('created_by')
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
                             ->where('kabupaten', $userKabupaten);
-                      });
+                    });
             })->count(),
             'residivis_count' => DataIndividuTsk::where('residivis', true)
-                ->where(function($query) use ($userId, $userKabupaten) {
+                ->where(function ($query) use ($userId, $userKabupaten) {
                     $query->where('created_by', $userId)
-                          ->orWhere(function($q) use ($userKabupaten) {
-                              $q->whereNull('created_by')
+                        ->orWhere(function ($q) use ($userKabupaten) {
+                            $q->whereNull('created_by')
                                 ->where('kabupaten', $userKabupaten);
-                          });
+                        });
                 })->count(),
             'non_residivis_count' => DataIndividuTsk::where('residivis', false)
-                ->where(function($query) use ($userId, $userKabupaten) {
+                ->where(function ($query) use ($userId, $userKabupaten) {
                     $query->where('created_by', $userId)
-                          ->orWhere(function($q) use ($userKabupaten) {
-                              $q->whereNull('created_by')
+                        ->orWhere(function ($q) use ($userKabupaten) {
+                            $q->whereNull('created_by')
                                 ->where('kabupaten', $userKabupaten);
-                          });
+                        });
                 })->count(),
         ];
 
-        $sampleData = DataIndividuTsk::with('desaGeojson')
-            ->where(function($query) use ($userId, $userKabupaten) {
+        $sampleData = DataIndividuTsk::with(['desaGeojson', 'createdBy'])
+            ->where(function ($query) use ($userId, $userKabupaten) {
                 $query->where('created_by', $userId)
-                      ->orWhere(function($q) use ($userKabupaten) {
-                          $q->whereNull('created_by')
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
                             ->where('kabupaten', $userKabupaten);
-                      });
+                    });
             })
             ->orderBy('created_at', 'desc')
             ->limit(10)
@@ -89,79 +92,74 @@ class DataIndividuTskAdminController extends Controller
         $kecamatanList = DesaGeojson::getKecamatanList();
         $desaList = DesaGeojson::all();
 
-        return view('admin.data.individu-create', compact('kabupatenList', 'kecamatanList', 'desaList'));
+        // Get lembaga rehabilitasi with IPWL certification
+        $ipwlList = LembagaRehabilitasi::whereJsonContains('sertifikasi', 'IPWL')->get();
+
+        return view('admin.data.individu-create', compact('kabupatenList', 'kecamatanList', 'desaList', 'ipwlList'));
     }
+
 
     public function store(Request $request)
     {
-        // Check if this is a verification submission first
-        $isVerificationSubmission = $request->has('submit_for_verification');
-
-        // Define validation rules based on submission type
         $validationRules = [
             'nik' => 'required|string|max:20',
-            'nama_ayah' => 'nullable|string|max:255',
-            'nik_ayah' => 'nullable|string|max:20',
-            'nama_ibu' => 'nullable|string|max:255',
-            'nik_ibu' => 'nullable|string|max:20',
-            'modus_operasi' => 'nullable|string',
-            'jenis_narkotika' => 'nullable', // array/string
+            'nkk' => 'required|string|max:16',
+            'nama' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tempat_lahir' => 'required|string|max:255',
+            'tgl_lahir' => 'required|date',
+            'provinsi' => 'required|string|max:100',
+            'kabupaten' => 'required|string|max:100',
+            'kecamatan' => 'required|string|max:100',
+            'kelurahan' => 'required|string|max:100',
+            'alamat' => 'required|string',
+            'status' => 'nullable|string|max:50',
+            'peran_jaringan' => 'nullable|string|max:50',
             'residivis' => 'nullable|boolean',
-            'sumber_informasi' => 'nullable|in:informan,analisa sosmed,analisa aliran dana',
-            // relasi
+            'sumber_informasi' => 'nullable|string|max:50',
+            'angka' => 'nullable|string|max:50',
+            'satuan' => 'nullable|string|max:50',
             'telepon' => 'nullable|array',
             'rekening' => 'nullable|array',
             'ewallet' => 'nullable|array',
             'nama_keluarga_lain' => 'nullable|array',
             'nik_keluarga_lain' => 'nullable|array',
-            // residivis detail
             'aph_menangani' => 'nullable|array',
             'pasal_disangkakan' => 'nullable|array',
             'vonis' => 'nullable|array',
             'lapas_akhir' => 'nullable|array',
-            // foto
-            'keterangan_foto' => 'nullable|array',
             'foto' => 'nullable|array',
             'foto.*' => 'nullable|file|image|max:2048',
+            'ipwl_id' => 'nullable|exists:lembaga_rehabilitasi,id',
+            'ipwl_compulsary_id' => 'nullable|exists:lembaga_rehabilitasi,id',
+            'rekomendasi' => 'nullable|array',
+            'rekomendasi.*' => 'nullable|string|max:255',
+            'putusan_pengadilan' => 'nullable|array',
+            'putusan_pengadilan.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
+            // New validation rules for dynamic fields
+            'noKasus' => 'nullable|array',
+            'noKasus.*' => 'nullable|string|max:255',
+            'noKasus_prosesHukum' => 'nullable|array',
+            'noKasus_prosesHukum.*' => 'nullable|string|max:255',
+            'noKasus_narapidana' => 'nullable|array',
+            'noKasus_narapidana.*' => 'nullable|string|max:255',
+            'file_residivis' => 'nullable|array',
+            'file_residivis.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
+            'vonis_residivis' => 'nullable|array',
+            'vonis_residivis.*' => 'nullable|string|max:255',
+            'lapas_akhir_residivis' => 'nullable|array',
+            'lapas_akhir_residivis.*' => 'nullable|string|max:255',
         ];
-
-        // Add required fields only if not verification submission
-        if (!$isVerificationSubmission) {
-            $validationRules = array_merge($validationRules, [
-                'nama' => 'required|string|max:255',
-                'nkk' => 'required|string|max:20',
-                'provinsi' => 'required|string|max:100',
-                'kabupaten' => 'required|string|max:100',
-                'kecamatan' => 'required|string|max:100',
-                'kelurahan' => 'required|string|max:100',
-                'alamat' => 'required|string',
-                'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
-                'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
-                'status' => 'required|in:Napi,Non napi',
-            ]);
-        } else {
-            // For verification submission, make fields optional
-            $validationRules = array_merge($validationRules, [
-                'nama' => 'nullable|string|max:255',
-                'nkk' => 'nullable|string|max:20',
-                'provinsi' => 'nullable|string|max:100',
-                'kabupaten' => 'nullable|string|max:100',
-                'kecamatan' => 'nullable|string|max:100',
-                'kelurahan' => 'nullable|string|max:100',
-                'alamat' => 'nullable|string',
-                'peran_jaringan' => 'nullable|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
-                'skala_kelas' => 'nullable|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
-                'status' => 'nullable|in:Napi,Non napi',
-            ]);
-        }
 
         $request->validate($validationRules);
 
-        // Prepare data for duplicate check
         $data = [
             'nama' => $request->nama ?? '',
             'nik' => $request->nik,
             'nkk' => $request->nkk ?? '',
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tgl_lahir' => $request->tgl_lahir,
             'provinsi' => $request->provinsi ?? '',
             'kabupaten' => $request->kabupaten ?? '',
             'kecamatan' => $request->kecamatan ?? '',
@@ -172,61 +170,61 @@ class DataIndividuTskAdminController extends Controller
             'nama_ibu' => $request->nama_ibu,
             'nik_ibu' => $request->nik_ibu,
             'peran_jaringan' => $request->peran_jaringan ?? '',
-            'modus_operasi' => $request->modus_operasi,
+            'modus_operasi' => $request->modus_operasi ?? '',
             'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : ($request->jenis_narkotika ?? ''),
-            'skala_kelas' => $request->skala_kelas ?? '',
+            'jumlah_barang_bukti' => $request->angka ?? '',
+            'satuan_barang_bukti' => $request->satuan ?? '',
             'status' => $request->status ?? '',
             'residivis' => $request->has('residivis'),
             'sumber_informasi' => $request->sumber_informasi,
+            'ipwl_id' => $request->ipwl_id,
+            'ipwl_compulsary_id' => $request->ipwl_compulsary_id,
+            'rekomendasi' => is_array($request->rekomendasi) ? implode(',', $request->rekomendasi) : $request->rekomendasi,
+            // New fields for dynamic LKN numbers
+            'noKasus_compulsary' => is_array($request->noKasus) ? implode(',', array_filter($request->noKasus)) : '',
+            'noKasus_prosesHukum' => is_array($request->noKasus_prosesHukum) ? implode(',', array_filter($request->noKasus_prosesHukum)) : '',
+            'noKasus_narapidana' => is_array($request->noKasus_narapidana) ? implode(',', array_filter($request->noKasus_narapidana)) : '',
             'created_by' => request()->user()->id,
         ];
 
-        // Check if this is a verification submission
-        if ($isVerificationSubmission) {
-            $existingData = [];
-            if ($request->filled('existing_data')) {
-                $existingData = json_decode($request->existing_data, true);
+        // Check for duplicates if this is a verification submission
+        if ($request->has('submit_for_verification')) {
+            $existingData = json_decode($request->existing_data, true);
+            $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
+                'data_individu_tsk',
+                $data,
+                $request->user()->id,
+                $existingData['id'] ?? null
+            );
+
+            if ($isDuplicate) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Permintaan verifikasi edit telah dikirim ke Super Admin. Data akan ditinjau dan diproses.',
+                    'redirect' => route('admin.data.individu')
+                ]);
             }
+        } else {
+            // Check for duplicates for normal submission
+            $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
+                'data_individu_tsk',
+                $data,
+                $request->user()->id
+            );
 
-            // Filter out empty values from new data for verification
-            $newDataForVerification = array_filter($data, function($value) {
-                return $value !== '' && $value !== null;
-            });
-
-            // Create verification record manually
-            \App\Models\DataVerification::create([
-                'table_name' => 'data_individu_tsk',
-                'data_id' => $existingData['id'] ?? 0,
-                'old_data' => json_encode($existingData),
-                'new_data' => json_encode($newDataForVerification),
-                'status' => 'pending',
-                'admin_id' => request()->user()->id,
-            ]);
-
-            return redirect()->back()
-                ->with('success', 'Data telah dikirim untuk verifikasi Super Admin. Data akan ditinjau dan diproses.')
-                ->withInput();
-        }
-
-        // Check for duplicates
-        $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
-            'data_individu_tsk',
-            $data,
-            request()->user()->id
-        );
-
-        if ($isDuplicate) {
-            return redirect()->back()
-                ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
-                ->withInput();
+            if ($isDuplicate) {
+                return redirect()->back()
+                    ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
+                    ->withInput();
+            }
         }
 
         DB::beginTransaction();
         try {
-            // Simpan data utama
+            // Simpan data individu
             $individu = DataIndividuTsk::create($data);
 
-            // Telepon
+            // Menyimpan data terkait telepon
             if ($request->filled('telepon')) {
                 foreach ($request->telepon as $telp) {
                     if ($telp) {
@@ -234,7 +232,8 @@ class DataIndividuTskAdminController extends Controller
                     }
                 }
             }
-            // Rekening
+
+            // Menyimpan data rekening
             if ($request->filled('rekening')) {
                 foreach ($request->rekening as $rek) {
                     if ($rek) {
@@ -242,7 +241,8 @@ class DataIndividuTskAdminController extends Controller
                     }
                 }
             }
-            // Ewallet
+
+            // Menyimpan data e-wallet
             if ($request->filled('ewallet')) {
                 foreach ($request->ewallet as $ew) {
                     if ($ew) {
@@ -250,19 +250,18 @@ class DataIndividuTskAdminController extends Controller
                     }
                 }
             }
-            // Keluarga Lain
+
+            // Menyimpan data keluarga lain
             if ($request->filled('nama_keluarga_lain') && $request->filled('nik_keluarga_lain')) {
                 foreach ($request->nama_keluarga_lain as $i => $nama) {
                     $nik = $request->nik_keluarga_lain[$i] ?? null;
                     if ($nama || $nik) {
-                        $individu->keluargaLain()->create([
-                            'nama' => $nama,
-                            'nik' => $nik,
-                        ]);
+                        $individu->keluargaLain()->create(['nama' => $nama, 'nik' => $nik]);
                     }
                 }
             }
-            // Residivis Detail
+
+            // Menyimpan detail residivis
             if ($request->filled('aph_menangani') && $request->filled('pasal_disangkakan') && $request->filled('vonis') && $request->filled('lapas_akhir')) {
                 foreach ($request->aph_menangani as $i => $aph) {
                     $pasal = $request->pasal_disangkakan[$i] ?? null;
@@ -278,23 +277,56 @@ class DataIndividuTskAdminController extends Controller
                     }
                 }
             }
-            // Foto
+
+            // Menyimpan foto jika ada
             if ($request->filled('foto')) {
                 foreach ($request->file('foto') as $i => $foto) {
                     if ($foto && $foto->isValid()) {
                         $keterangan = $request->keterangan_foto[$i] ?? null;
                         $path = $foto->store('foto-individu', 'public');
-                        $individu->foto()->create([
-                            'path' => $path,
-                            'keterangan' => $keterangan,
-                        ]);
+                        $individu->foto()->create(['path' => $path, 'keterangan' => $keterangan]);
                     }
                 }
             }
 
+            // Menyimpan file putusan pengadilan jika ada
+            if ($request->filled('putusan_pengadilan')) {
+                $putusanPaths = [];
+                foreach ($request->file('putusan_pengadilan') as $putusan) {
+                    if ($putusan && $putusan->isValid()) {
+                        $path = $putusan->store('putusan-pengadilan', 'public');
+                        $putusanPaths[] = $path;
+                    }
+                }
+                $individu->update(['putusan_pengadilan' => implode(',', $putusanPaths)]);
+            }
+
+            // Menyimpan file residivis jika ada
+            if ($request->filled('file_residivis')) {
+                $fileResidivisPaths = [];
+                foreach ($request->file('file_residivis') as $file) {
+                    if ($file && $file->isValid()) {
+                        $path = $file->store('file-residivis', 'public');
+                        $fileResidivisPaths[] = $path;
+                    }
+                }
+                $individu->update(['file_residivis' => implode(',', $fileResidivisPaths)]);
+            }
+
+            // Menyimpan vonis residivis jika ada
+            if ($request->filled('vonis_residivis')) {
+                $vonisResidivis = array_filter($request->vonis_residivis);
+                $individu->update(['vonis_residivis' => implode(',', $vonisResidivis)]);
+            }
+
+            // Menyimpan lapas akhir residivis jika ada
+            if ($request->filled('lapas_akhir_residivis')) {
+                $lapasAkhirResidivis = array_filter($request->lapas_akhir_residivis);
+                $individu->update(['lapas_akhir_residivis' => implode(',', $lapasAkhirResidivis)]);
+            }
+
             DB::commit();
             return redirect()->route('admin.data.individu')->with('success', 'Data individu berhasil disimpan.');
-
         } catch (\Exception $e) {
             DB::rollback();
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())->withInput();
@@ -316,12 +348,12 @@ class DataIndividuTskAdminController extends Controller
 
     public function edit($id)
     {
-        $individu = DataIndividuTsk::findOrFail($id);
+        $individu = DataIndividuTsk::with(['telepon', 'rekening', 'ewallet'])->findOrFail($id);
         $kabupatenList = DesaGeojson::getKabupatenList();
         $kecamatanList = DesaGeojson::getKecamatanList();
         $desaList = DesaGeojson::all();
 
-        return view('admin.data.individu.edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList'));
+        return view('admin.data.individu-edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList'));
     }
 
     public function update(Request $request, $id)
@@ -331,31 +363,66 @@ class DataIndividuTskAdminController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'nik' => 'required|string|max:20|unique:data_individu_tsk,nik,' . $id,
-            'nkk' => 'required|string|max:20',
-            'provinsi' => 'required|string|max:100',
-            'kabupaten' => 'required|string|max:100',
-            'kecamatan' => 'required|string|max:100',
-            'kelurahan' => 'required|string|max:100',
-            'alamat' => 'required|string',
+            'nkk' => 'required|string|max:16',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tempat_lahir' => 'required|string|max:255',
+            'tgl_lahir' => 'required|date',
+            'provinsi' => 'nullable|string|max:100',
+            'kabupaten' => 'nullable|string|max:100',
+            'kecamatan' => 'nullable|string|max:100',
+            'kelurahan' => 'nullable|string|max:100',
+            'alamat' => 'nullable|string',
             'nama_ayah' => 'nullable|string|max:255',
             'nik_ayah' => 'nullable|string|max:20',
             'nama_ibu' => 'nullable|string|max:255',
             'nik_ibu' => 'nullable|string|max:20',
-            'peran_jaringan' => 'required|in:koordinator informan,informan,kurir,gudang,broker,bandar,beking,tidak tahu',
+            'peran_jaringan' => 'nullable|string|max:50',
             'modus_operasi' => 'nullable|string',
             'jenis_narkotika' => 'nullable|string',
-            'skala_kelas' => 'required|in:dibawah 10gr,dibawah1ons,dibawah1kg,diatas1kg,tidak tahu',
-            'status' => 'required|in:Napi,Non napi',
+            'jumlah_barang_bukti' => 'nullable|string|max:50',
+            'satuan_barang_bukti' => 'nullable|string|max:50',
+            'status' => 'nullable|string|max:50',
             'residivis' => 'boolean',
             'sumber_informasi' => 'nullable|in:informan,analisa sosmed,analisa aliran dana',
-            'desa_geojson_id' => 'nullable|exists:desa_geojson,id'
+            'desa_geojson_id' => 'nullable|exists:desa_geojson,id',
+            'telepon' => 'nullable|array',
+            'telepon.*' => 'nullable|string|max:20',
+            'rekening' => 'nullable|array',
+            'rekening.*' => 'nullable|string|max:30',
+            'ewallet' => 'nullable|array',
+            'ewallet.*' => 'nullable|string|max:30',
+            'angka' => 'nullable|string|max:50',
+            'satuan' => 'nullable|string|max:50'
         ]);
 
         try {
             DB::beginTransaction();
 
-            $data = $request->all();
-            $data['residivis'] = $request->has('residivis');
+            $data = [
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'nkk' => $request->nkk,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tgl_lahir' => $request->tgl_lahir,
+                'provinsi' => $request->provinsi,
+                'kabupaten' => $request->kabupaten,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'alamat' => $request->alamat,
+                'nama_ayah' => $request->nama_ayah,
+                'nik_ayah' => $request->nik_ayah,
+                'nama_ibu' => $request->nama_ibu,
+                'nik_ibu' => $request->nik_ibu,
+                'peran_jaringan' => $request->peran_jaringan,
+                'modus_operasi' => $request->modus_operasi,
+                'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : ($request->jenis_narkotika ?? ''),
+                'jumlah_barang_bukti' => $request->angka ?? '',
+                'satuan_barang_bukti' => $request->satuan ?? '',
+                'status' => $request->status,
+                'residivis' => $request->residivis ?? 0,
+                'sumber_informasi' => $request->sumber_informasi,
+            ];
 
             // Find desa based on kelurahan
             if ($request->filled('kelurahan')) {
@@ -371,8 +438,38 @@ class DataIndividuTskAdminController extends Controller
 
             $individu->update($data);
 
+            // Update telepon
+            $individu->telepon()->delete(); // Hapus semua telepon lama
+            if ($request->filled('telepon')) {
+                foreach ($request->telepon as $telp) {
+                    if ($telp) {
+                        $individu->telepon()->create(['nomor_telepon' => $telp]);
+                    }
+                }
+            }
+
+            // Update rekening
+            $individu->rekening()->delete(); // Hapus semua rekening lama
+            if ($request->filled('rekening')) {
+                foreach ($request->rekening as $rek) {
+                    if ($rek) {
+                        $individu->rekening()->create(['no_rekening' => $rek]);
+                    }
+                }
+            }
+
+            // Update ewallet
+            $individu->ewallet()->delete(); // Hapus semua ewallet lama
+            if ($request->filled('ewallet')) {
+                foreach ($request->ewallet as $ew) {
+                    if ($ew) {
+                        $individu->ewallet()->create(['no_ewallet' => $ew]);
+                    }
+                }
+            }
+
             // Update kasus narkoba if status changed
-            if ($request->status === 'Napi') {
+            if ($request->status === 'Narapidana') {
                 KasusNarkoba::updateOrCreate(
                     ['nik' => $request->nik],
                     [
@@ -380,8 +477,9 @@ class DataIndividuTskAdminController extends Controller
                         'kecamatan' => $request->kecamatan,
                         'kabupaten' => $request->kabupaten,
                         'nama_tsk' => $request->nama,
-                        'jenis_narkotika' => $request->jenis_narkotika,
-                        'skala_kelas' => $request->skala_kelas,
+                        'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : ($request->jenis_narkotika ?? ''),
+                        'jumlah_barang_bukti' => $request->angka ?? '',
+                        'satuan_barang_bukti' => $request->satuan ?? '',
                         'status' => $request->status,
                         'residivis' => $data['residivis'],
                         'peran_jaringan' => $request->peran_jaringan,
@@ -422,19 +520,19 @@ class DataIndividuTskAdminController extends Controller
         $userId = $user->id;
 
         $query = DataIndividuTsk::with('desaGeojson')
-            ->where(function($query) use ($userId, $userKabupaten) {
+            ->where(function ($query) use ($userId, $userKabupaten) {
                 $query->where('created_by', $userId)
-                      ->orWhere(function($q) use ($userKabupaten) {
-                          $q->whereNull('created_by')
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
                             ->where('kabupaten', $userKabupaten);
-                      });
+                    });
             });
 
         // Apply filters
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%')
-                  ->orWhere('nik', 'like', '%' . $request->search . '%');
+                    ->orWhere('nik', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -467,19 +565,19 @@ class DataIndividuTskAdminController extends Controller
         $userId = $user->id;
 
         $query = DataIndividuTsk::with('desaGeojson')
-            ->where(function($query) use ($userId, $userKabupaten) {
+            ->where(function ($query) use ($userId, $userKabupaten) {
                 $query->where('created_by', $userId)
-                      ->orWhere(function($q) use ($userKabupaten) {
-                          $q->whereNull('created_by')
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
                             ->where('kabupaten', $userKabupaten);
-                      });
+                    });
             });
 
         // Apply same filters as getData
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%')
-                  ->orWhere('nik', 'like', '%' . $request->search . '%');
+                    ->orWhere('nik', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -585,6 +683,43 @@ class DataIndividuTskAdminController extends Controller
         return response()->json([
             'exists' => false,
             'message' => 'NIK belum terdaftar'
+        ]);
+    }
+
+    public function searchIndividuByNik(Request $request)
+    {
+        $nik = $request->query('nik');
+        $onlyNarapidana = (bool) $request->query('onlyNarapidana', false);
+
+        if (!$nik || strlen($nik) !== 16) {
+            return response()->json([
+                'success' => false,
+                'message' => 'NIK harus 16 digit'
+            ]);
+        }
+
+        $query = DataIndividuTsk::where('nik', $nik);
+        if ($onlyNarapidana) {
+            $query->where('status', 'Narapidana');
+        }
+        $individu = $query->first();
+
+        if ($individu) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'id' => $individu->id,
+                    'nama' => $individu->nama,
+                    'nik' => $individu->nik,
+                    'kabupaten' => $individu->kabupaten,
+                    'kecamatan' => $individu->kecamatan,
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Individu tidak ditemukan'
         ]);
     }
 }

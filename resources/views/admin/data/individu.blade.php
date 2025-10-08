@@ -8,8 +8,8 @@
     <div class="container-fluid mx-auto px-4 py-3">
         <!-- Header Section -->
         <div class="mb-5">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu TSK</h1>
-            <p class="text-sm text-gray-500 mb-4">Kelola data individu TSK dengan korelasi kasus narkotika</p>
+            <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Profil Individu</h1>
+            <p class="text-sm text-gray-500 mb-4">Kelola data profil individu dengan korelasi kasus narkotika</p>
             <div class="flex flex-col md:flex-row gap-2 md:gap-3 items-start md:items-center">
                 <a href="{{ route('admin.data.individu.create') }}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
@@ -64,8 +64,10 @@
                     <label for="filterStatus" class="block text-sm font-medium text-gray-700">Status</label>
                     <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterStatus">
                         <option value="">Semua Status</option>
-                        <option value="Voluntary">Voluntary (Sukarela)</option>
-                        <option value="Compulsory">Compulsory (Upaya Paksa)</option>
+                        <option value="Voluntary">Voluntary</option>
+                        <option value="Compulsary">Compulsary</option>
+                        <option value="Proses Hukum Lanjur">Proses Hukum Lanjur</option>
+                        <option value="Narapidana">Narapidana</option>
                     </select>
                 </div>
                 <div>
@@ -91,10 +93,14 @@
                         <option value="0">Tidak</option>
                     </select>
                 </div>
-                <div class="flex items-end">
-                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                <div class="flex items-end gap-2">
+                    <button class="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         onclick="applyFilters()">
                         <i class="fas fa-search mr-2"></i>Filter
+                    </button>
+                    <button class="flex-1 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                        onclick="resetFilters()">
+                        <i class="fas fa-undo mr-2"></i>Reset
                     </button>
                 </div>
             </div>
@@ -103,7 +109,7 @@
         <!-- Data Table Section -->
         <div class="bg-white shadow rounded-lg p-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold text-gray-700">Data Individu TSK</h2>
+                <h2 class="text-lg font-semibold text-gray-700">Profil Individu</h2>
                 <span class="text-sm text-gray-600">Total: <span id="totalRecords">{{ $sampleData->count() }}</span></span>
             </div>
             <div class="overflow-x-auto">
@@ -116,7 +122,8 @@
                             <th class="px-4 py-2">Status</th>
                             <th class="px-4 py-2">Peran</th>
                             <th class="px-4 py-2">Residivis</th>
-                            <th class="px-4 py-2">Kasus Terkait</th>
+                            <th class="px-4 py-2">Nomor Telepon</th>
+                            <th class="px-4 py-2">Created By</th>
                             <th class="px-4 py-2 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -135,7 +142,7 @@
                                 </td>
                                 <td class="px-4 py-2">
                                     <span
-                                        class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                        class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Narapidana' || $individu->status === 'Proses Hukum Lanjut' ? 'bg-red-100 text-red-700' : ($individu->status === 'Compulsary' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700') }}">
                                         {{ $individu->status }}
                                     </span>
                                 </td>
@@ -155,14 +162,31 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-2">
-                                    @if ($individu->status === 'Napi')
-                                        <span
-                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">1
-                                            Kasus</span>
+                                    @if ($individu->telepon && $individu->telepon->count() > 0)
+                                        @foreach ($individu->telepon as $telepon)
+                                            <span
+                                                class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
+                                                {{ $telepon->nomor_telepon }}
+                                            </span>
+                                        @endforeach
                                     @else
                                         <span
-                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">0
-                                            Kasus</span>
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">
+                                            -
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2">
+                                    @if ($individu->createdBy)
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
+                                            {{ $individu->createdBy->name }}
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">
+                                            -
+                                        </span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 text-center">
@@ -284,9 +308,17 @@
                 }
             </td>
             <td class="px-4 py-2">
-                ${individu.status === 'Napi' ?
-                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">1 Kasus</span>' :
-                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">0 Kasus</span>'
+                ${individu.telepon && individu.telepon.length > 0 ?
+                    individu.telepon.map(telepon => 
+                        `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">${telepon.nomor_telepon}</span>`
+                    ).join('') :
+                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
+                }
+            </td>
+            <td class="px-4 py-2">
+                ${individu.created_by ?
+                    `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">${individu.created_by.name}</span>` :
+                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
                 }
             </td>
             <td class="px-4 py-2 text-center">
@@ -362,6 +394,20 @@
         // Apply filters
         function applyFilters() {
             loadData();
+        }
+
+        // Reset filters
+        function resetFilters() {
+            // Clear all filter inputs
+            document.getElementById('searchIndividu').value = '';
+            document.getElementById('filterKabupaten').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterPeran').value = '';
+            document.getElementById('filterResidivis').value = '';
+
+            // Reset to original data
+            currentPage = 1;
+            renderTable(individuList);
         }
 
         // Delete individu

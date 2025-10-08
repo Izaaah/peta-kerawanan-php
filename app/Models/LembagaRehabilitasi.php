@@ -13,13 +13,36 @@ class LembagaRehabilitasi extends Model
 
     protected $fillable = [
         'nama',
-        'jenis',
+        'jenis_lrehab',
+        'nama_ketua',
+        'no_hp',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'provinsi_lain',
+        'kabupaten_lain',
+        'kecamatan_lain',
+        'kelurahan_lain',
+        'alamat',
+        'sertifikasi',
+        'nomor_sni_nasional',
+        'nomor_sni_reguler',
         'created_by',
     ];
 
-    public static function getJenisOptions()
+    protected $casts = [
+        'sertifikasi' => 'array',
+    ];
+
+    public static function getJenisLrehabOptions()
     {
-        return ['IPWL', 'Rawat Inap', 'Non Rawat Inap', 'SNI Nasional', 'SNI Reguler'];
+        return ['LRIP', 'LRKM'];
+    }
+
+    public static function getSertifikasiOptions()
+    {
+        return ['IPWL', 'SNI_Nasional', 'SNI_Reguler'];
     }
 
     public function user()

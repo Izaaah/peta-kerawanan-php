@@ -18,7 +18,7 @@ class EkspedisiAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama', 'like', "%$q%")
                     ->orWhere('manager', 'like', "%$q%")
                     ->orWhere('alamat', 'like', "%$q%")
@@ -33,7 +33,17 @@ class EkspedisiAdminController extends Controller
     public function create()
     {
         $jenisOptions = Ekspedisi::getJenisOptions();
-        return view('admin.data.ekspedisi.create', compact('jenisOptions'));
+
+        $kabupatenList = \App\Models\DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.ekspedisi.create', compact('jenisOptions', 'kabupatenList'));
     }
 
     public function store(Request $request)
@@ -46,6 +56,14 @@ class EkspedisiAdminController extends Controller
             'alamat' => 'required|string',
             'no_hp' => 'required|string|max:20',
             'jenis' => 'required|in:Asperindo,Non Asperindo',
+            'provinsi' => 'required|string|max:255',
+            'kabupaten' => 'nullable|string|max:255',
+            'kecamatan' => 'nullable|string|max:255',
+            'kelurahan' => 'nullable|string|max:255',
+            'provinsi_lain' => 'nullable|string|max:255',
+            'kabupaten_lain' => 'nullable|string|max:255',
+            'kecamatan_lain' => 'nullable|string|max:255',
+            'kelurahan_lain' => 'nullable|string|max:255',
         ]);
         Ekspedisi::create($data);
         return redirect()->route('admin.data.ekspedisi.index')->with('success', 'Data ekspedisi berhasil disimpan.');
@@ -61,7 +79,17 @@ class EkspedisiAdminController extends Controller
     {
         $ekspedisi = Ekspedisi::findOrFail($id);
         $jenisOptions = Ekspedisi::getJenisOptions();
-        return view('admin.data.ekspedisi.edit', compact('ekspedisi', 'jenisOptions'));
+
+        $kabupatenList = \App\Models\DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.ekspedisi.edit', compact('ekspedisi', 'jenisOptions', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
@@ -72,6 +100,14 @@ class EkspedisiAdminController extends Controller
             'alamat' => 'required|string',
             'no_hp' => 'required|string|max:20',
             'jenis' => 'required|in:Asperindo,Non Asperindo',
+            'provinsi' => 'required|string|max:255',
+            'kabupaten' => 'nullable|string|max:255',
+            'kecamatan' => 'nullable|string|max:255',
+            'kelurahan' => 'nullable|string|max:255',
+            'provinsi_lain' => 'nullable|string|max:255',
+            'kabupaten_lain' => 'nullable|string|max:255',
+            'kecamatan_lain' => 'nullable|string|max:255',
+            'kelurahan_lain' => 'nullable|string|max:255',
         ]);
         $ekspedisi = Ekspedisi::findOrFail($id);
         $ekspedisi->update($request->all());
@@ -87,8 +123,8 @@ class EkspedisiAdminController extends Controller
 
     public function template()
     {
-        // Create CSV template content
-        $csvContent = "nama,manager,no_hp,jenis,alamat\n";
+        // Create CSV template content with all form fields
+        $csvContent = "nama,provinsi,kabupaten,kecamatan,kelurahan,alamat,manager,no_hp,jenis\n";
 
         // Set headers for download
         $filename = 'import_ekspedisi.csv';
@@ -130,23 +166,29 @@ class EkspedisiAdminController extends Controller
                 }
 
                 // Validate data structure
-                if (count($data) < 5) {
+                if (count($data) < 9) {
                     continue;
                 }
 
                 $ekspedisiData = [
                     'nama' => trim($data[0] ?? ''),
-                    'manager' => trim($data[1] ?? ''),
-                    'no_hp' => trim($data[2] ?? ''),
-                    'jenis' => trim($data[3] ?? ''),
-                    'alamat' => trim($data[4] ?? ''),
+                    'provinsi' => trim($data[1] ?? ''),
+                    'kabupaten' => trim($data[2] ?? ''),
+                    'kecamatan' => trim($data[3] ?? ''),
+                    'kelurahan' => trim($data[4] ?? ''),
+                    'alamat' => trim($data[5] ?? ''),
+                    'manager' => trim($data[6] ?? ''),
+                    'no_hp' => trim($data[7] ?? ''),
+                    'jenis' => trim($data[8] ?? ''),
                     'created_by' => $request->user()->id,
                 ];
 
                 // Validate required fields
-                if (empty($ekspedisiData['nama']) || empty($ekspedisiData['manager']) ||
+                if (
+                    empty($ekspedisiData['nama']) || empty($ekspedisiData['manager']) ||
                     empty($ekspedisiData['no_hp']) || empty($ekspedisiData['jenis']) ||
-                    empty($ekspedisiData['alamat'])) {
+                    empty($ekspedisiData['alamat']) || empty($ekspedisiData['provinsi'])
+                ) {
                     continue;
                 }
 
@@ -178,7 +220,6 @@ class EkspedisiAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }

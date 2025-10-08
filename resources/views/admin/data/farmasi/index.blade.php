@@ -34,19 +34,19 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
+                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Manager</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Lokasi</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($farmasiList as $i => $farmasi)
                         <tr>
-                            <td class="px-4 py-2">{{ $farmasiList->firstItem() + $i }}</td>
+                            <td class="px-4 py-2 text-center">{{ $farmasiList->firstItem() + $i }}</td>
                             <td class="px-4 py-2">{{ $farmasi->jenis }}</td>
                             <td class="px-4 py-2">{{ $farmasi->nama }}</td>
                             <td class="px-4 py-2">{{ $farmasi->manager }}</td>

@@ -296,8 +296,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label for="skala_kelas" class="block text-sm font-medium text-black  ">Skala
-                                            Kelas</label>
+                                        <label for="skala_kelas" class="block text-sm font-medium text-black  ">Jumlah
+                                            Barang Bukti</label>
                                         <select name="skala_kelas" id="skala_kelas" required
                                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                                             <option value="">Pilih Skala</option>
@@ -315,7 +315,9 @@
                                             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm appearance-none">
                                             <option value="">Pilih Status</option>
                                             <option value="Voluntary">Voluntary (Sukarela)</option>
-                                            <option value="Non napi">Compulsory (Upaya Paksa)</option>
+                                            <option value="Compulsary">Compulsory (Upaya Paksa)</option>
+                                            <option value="Proses Hukum Lanjut">Proses Hukum Lanjut</option>
+                                            <option value="Narapidana">Narapidana</option>
                                         </select>
                                     </div>
                                     <!-- Pilihan Resisivis -->

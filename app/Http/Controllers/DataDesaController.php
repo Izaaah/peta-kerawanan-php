@@ -15,22 +15,26 @@ class DataDesaController extends Controller
 
         $query = \App\Models\DesaGeojson::query();
         $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
-              ->where('nama_desa', 'not like', '%/%')
-              ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
-              ->where('kecamatan', 'not like', '%/%')
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
-              ->where('kabupaten', 'not like', '%/%');
+            ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+            ->where('nama_desa', 'not like', '%/%')
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+            ->where('kecamatan', 'not like', '%/%')
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+            ->where('kabupaten', 'not like', '%/%');
 
         $desaList = $query->get();
 
         // Statistik berdasarkan hasil filter
         $stats = [
             'total_desa' => $desaList->count(),
-            'desa_dengan_kasus' => $desaList->filter(function($desa) { return $desa->kasusNarkoba()->count() > 0; })->count(),
-            'total_kasus' => $desaList->sum(function($desa) { return $desa->kasusNarkoba()->count(); }),
+            'desa_dengan_kasus' => $desaList->filter(function ($desa) {
+                return $desa->kasusNarkoba()->count() > 0;
+            })->count(),
+            'total_kasus' => $desaList->sum(function ($desa) {
+                return $desa->kasusNarkoba()->count();
+            }),
             'kabupaten_count' => $desaList->pluck('kabupaten')->unique()->count(),
             'kecamatan_count' => $desaList->pluck('kecamatan')->unique()->count(),
         ];
@@ -53,7 +57,7 @@ class DataDesaController extends Controller
 
         if ($request->filled('kerawanan')) {
             // Filter by kerawanan level
-            switch($request->kerawanan) {
+            switch ($request->kerawanan) {
                 case 'Rendah':
                     $query->where('kasus_narkoba_count', 0);
                     break;
@@ -77,7 +81,7 @@ class DataDesaController extends Controller
 
     public function detail($id)
     {
-        $desa = DesaGeojson::with(['kasusNarkoba' => function($query) {
+        $desa = DesaGeojson::with(['kasusNarkoba' => function ($query) {
             $query->orderBy('created_at', 'desc');
         }])->find($id);
 
@@ -121,13 +125,17 @@ class DataDesaController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ];
 
-        $callback = function() use ($data) {
+        $callback = function () use ($data) {
             $file = fopen('php://output', 'w');
 
             // Add headers
             fputcsv($file, [
-                'ID', 'Nama Desa', 'Kecamatan', 'Kabupaten',
-                'Jumlah Kasus', 'Tingkat Kerawanan'
+                'ID',
+                'Nama Desa',
+                'Kecamatan',
+                'Kabupaten',
+                'Jumlah Kasus',
+                'Tingkat Kerawanan'
             ]);
 
             // Add data
@@ -156,45 +164,45 @@ class DataDesaController extends Controller
 
     public function getKecamatanList(Request $request)
     {
-        $kabupaten = $request->kabupaten;
+        $kabupaten = $request->query('kabupaten');
         $query = \App\Models\DesaGeojson::query();
         $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
-              ->where('nama_desa', 'not like', '%/%')
-              ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
-              ->where('kecamatan', 'not like', '%/%')
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
-              ->where('kabupaten', 'not like', '%/%');
+            ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+            ->where('nama_desa', 'not like', '%/%')
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+            ->where('kecamatan', 'not like', '%/%')
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+            ->where('kabupaten', 'not like', '%/%');
         if ($kabupaten) {
             $query->where('kabupaten', $kabupaten);
         }
-        $kecamatanList = $query->select('kecamatan')->distinct()->pluck('kecamatan');
+        $kecamatanList = $query->select('kecamatan')->distinct()->pluck('kecamatan')->sort()->values();
         return response()->json($kecamatanList);
     }
 
     public function getDesaList(Request $request)
     {
-        $kabupaten = $request->kabupaten;
-        $kecamatan = $request->kecamatan;
+        $kabupaten = $request->query('kabupaten');
+        $kecamatan = $request->query('kecamatan');
         $query = \App\Models\DesaGeojson::query();
         $query->whereRaw("LOWER(nama_desa) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
-              ->where('nama_desa', 'not like', '%/%')
-              ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
-              ->where('kecamatan', 'not like', '%/%')
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
-              ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
-              ->where('kabupaten', 'not like', '%/%');
+            ->whereRaw("LOWER(nama_desa) NOT LIKE '%unknown%'")
+            ->where('nama_desa', 'not like', '%/%')
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kecamatan) NOT LIKE '%unknown%'")
+            ->where('kecamatan', 'not like', '%/%')
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%area%'")
+            ->whereRaw("LOWER(kabupaten) NOT LIKE '%unknown%'")
+            ->where('kabupaten', 'not like', '%/%');
         if ($kabupaten) {
             $query->where('kabupaten', $kabupaten);
         }
         if ($kecamatan) {
             $query->where('kecamatan', $kecamatan);
         }
-        $desaList = $query->select('nama_desa')->distinct()->pluck('nama_desa');
+        $desaList = $query->select('nama_desa')->distinct()->pluck('nama_desa')->sort()->values();
         return response()->json($desaList);
     }
 }

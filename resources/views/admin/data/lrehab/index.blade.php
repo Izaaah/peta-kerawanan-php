@@ -3,7 +3,7 @@
 @section('title', 'Data Lembaga Rehabilitasi')
 
 @section('content')
-    <div class="container mx-auto px-4 py-3">
+    <div class="mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar Lembaga Rehabilitasi</h1>
@@ -27,8 +27,8 @@
         @endif
 
         <form method="GET" action="{{ route('admin.data.lrehab.index') }}" class="mb-4 flex gap-2">
-            <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, jenis..."
-                class="border rounded px-3 py-2 w-full" />
+            <input type="text" name="q" value="{{ request('q') }}"
+                placeholder="Cari nama, nama ketua, no HP, jenis..." class="border rounded px-3 py-2 w-full" />
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
         </form>
 
@@ -37,8 +37,11 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis Lembaga</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Lembaga</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Ketua</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No HP</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
@@ -46,8 +49,24 @@
                     @forelse($lrehabList as $i => $lrehab)
                         <tr>
                             <td class="px-4 py-2">{{ $lrehabList->firstItem() + $i }}</td>
+                            <td class="px-4 py-2">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    {{ $lrehab->jenis_lrehab == 'LRIP' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                                    {{ $lrehab->jenis_lrehab ?? 'N/A' }}
+                                </span>
+                            </td>
                             <td class="px-4 py-2">{{ $lrehab->nama }}</td>
-                            <td class="px-4 py-2">{{ $lrehab->jenis }}</td>
+                            <td class="px-4 py-2">{{ $lrehab->nama_ketua ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $lrehab->no_hp ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">
+                                @if ($lrehab->provinsi == 'Jawa Timur')
+                                    {{ $lrehab->kabupaten ?? '' }}, {{ $lrehab->kecamatan ?? '' }},
+                                    {{ $lrehab->kelurahan ?? '' }}
+                                @else
+                                    {{ $lrehab->provinsi_lain ?? '' }}, {{ $lrehab->kabupaten_lain ?? '' }}
+                                @endif
+                            </td>
                             <td class="px-1 py-2 flex gap-2 justify-center">
                                 <a href="{{ route('admin.data.lrehab.show', $lrehab->id) }}"
                                     class="text-blue-600 hover:text-blue-900 flex items-center border border-blue-600 rounded-md px-1 py-1 text-sm">
@@ -87,7 +106,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-4 py-2 text-center text-gray-500">Belum ada data Lembaga
+                            <td colspan="7" class="px-4 py-2 text-center text-gray-500">Belum ada data Lembaga
                                 Rehabilitasi.</td>
                         </tr>
                     @endforelse

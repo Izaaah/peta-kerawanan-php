@@ -18,8 +18,9 @@ class JaringanRutanLapasAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_napi', 'like', "%$q%")
+                    ->orWhere('nik', 'like', "%$q%")
                     ->orWhere('jenis_napi', 'like', "%$q%")
                     ->orWhere('lapas', 'like', "%$q%")
                     ->orWhere('status_proses', 'like', "%$q%");
@@ -41,6 +42,7 @@ class JaringanRutanLapasAdminController extends Controller
         $data = $request->all();
         $data['created_by'] = $request->user()->id;
         $request->validate([
+            'nik' => 'nullable|digits:16',
             'nama_napi' => 'required|string|max:255',
             'jenis_napi' => 'required|in:Napi Narkotika,Napi Non Narkotika',
             'lapas' => 'required|string|max:255',
@@ -70,6 +72,7 @@ class JaringanRutanLapasAdminController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'nik' => 'nullable|digits:16',
             'nama_napi' => 'required|string|max:255',
             'jenis_napi' => 'required|in:Napi Narkotika,Napi Non Narkotika',
             'lapas' => 'required|string|max:255',
@@ -151,9 +154,11 @@ class JaringanRutanLapasAdminController extends Controller
                 ];
 
                 // Validate required fields
-                if (empty($rutanlapasData['nama_napi']) || empty($rutanlapasData['jenis_napi']) ||
+                if (
+                    empty($rutanlapasData['nama_napi']) || empty($rutanlapasData['jenis_napi']) ||
                     empty($rutanlapasData['lapas']) || empty($rutanlapasData['lokasi_lapas']) ||
-                    empty($rutanlapasData['status_proses'])) {
+                    empty($rutanlapasData['status_proses'])
+                ) {
                     continue;
                 }
 
@@ -190,7 +195,6 @@ class JaringanRutanLapasAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }

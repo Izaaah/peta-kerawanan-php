@@ -18,11 +18,14 @@ class TransportasiAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('jenis_transportasi', 'like', "%$q%")
                     ->orWhere('nama_pihak', 'like', "%$q%")
-                    ->orWhere('posisi', 'like', "%$q%")
-                    ->orWhere('lokasi', 'like', "%$q%")
+                    ->orWhere('alamat', 'like', "%$q%")
+                    ->orWhere('provinsi', 'like', "%$q%")
+                    ->orWhere('kabupaten', 'like', "%$q%")
+                    ->orWhere('kecamatan', 'like', "%$q%")
+                    ->orWhere('kelurahan', 'like', "%$q%")
                     ->orWhere('no_hp', 'like', "%$q%");
             });
         }
@@ -43,8 +46,17 @@ class TransportasiAdminController extends Controller
         $request->validate([
             'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
             'nama_pihak' => 'required|string|max:255',
-            'posisi' => 'nullable|string|max:255',
-            'lokasi' => 'required|string',
+            'provinsi' => 'nullable|string|max:255',
+            'kabupaten' => 'nullable|string|max:255',
+            'kecamatan' => 'nullable|string|max:255',
+            'kelurahan' => 'nullable|string|max:255',
+            'provinsi_lain' => 'nullable|string|max:255',
+            'kabupaten_lain' => 'nullable|string|max:255',
+            'kecamatan_lain' => 'nullable|string|max:255',
+            'kelurahan_lain' => 'nullable|string|max:255',
+            'alamat' => 'required|string',
+            'nama_manager' => 'nullable|string|max:255',
+            'jabatan' => 'nullable|string|max:255',
             'no_hp' => 'required|string|max:20',
         ]);
 
@@ -76,8 +88,17 @@ class TransportasiAdminController extends Controller
         $request->validate([
             'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
             'nama_pihak' => 'required|string|max:255',
-            'posisi' => 'nullable|string|max:255',
-            'lokasi' => 'required|string',
+            'provinsi' => 'nullable|string|max:255',
+            'kabupaten' => 'nullable|string|max:255',
+            'kecamatan' => 'nullable|string|max:255',
+            'kelurahan' => 'nullable|string|max:255',
+            'provinsi_lain' => 'nullable|string|max:255',
+            'kabupaten_lain' => 'nullable|string|max:255',
+            'kecamatan_lain' => 'nullable|string|max:255',
+            'kelurahan_lain' => 'nullable|string|max:255',
+            'alamat' => 'required|string',
+            'nama_manager' => 'nullable|string|max:255',
+            'jabatan' => 'nullable|string|max:255',
             'no_hp' => 'required|string|max:20',
         ]);
 
@@ -109,7 +130,7 @@ class TransportasiAdminController extends Controller
     public function template()
     {
         // Create CSV template content
-        $csvContent = "jenis_transportasi,nama_pihak,posisi,no_hp,lokasi\n";
+        $csvContent = "jenis_transportasi,nama_pihak,provinsi,kabupaten,kecamatan,kelurahan,provinsi_lain,kabupaten_lain,kecamatan_lain,kelurahan_lain,alamat,nama_manager,jabatan,no_hp\n";
 
         // Set headers for download
         $filename = 'import_transportasi.csv';
@@ -151,22 +172,33 @@ class TransportasiAdminController extends Controller
                 }
 
                 // Validate data structure
-                if (count($data) < 4) {
+                if (count($data) < 5) {
                     continue;
                 }
 
                 $transportasiData = [
                     'jenis_transportasi' => trim($data[0] ?? ''),
                     'nama_pihak' => trim($data[1] ?? ''),
-                    'posisi' => trim($data[2] ?? ''),
-                    'no_hp' => trim($data[3] ?? ''),
-                    'lokasi' => trim($data[4] ?? ''),
+                    'provinsi' => trim($data[2] ?? ''),
+                    'kabupaten' => trim($data[3] ?? ''),
+                    'kecamatan' => trim($data[4] ?? ''),
+                    'kelurahan' => trim($data[5] ?? ''),
+                    'provinsi_lain' => trim($data[6] ?? ''),
+                    'kabupaten_lain' => trim($data[7] ?? ''),
+                    'kecamatan_lain' => trim($data[8] ?? ''),
+                    'kelurahan_lain' => trim($data[9] ?? ''),
+                    'alamat' => trim($data[10] ?? ''),
+                    'nama_manager' => trim($data[11] ?? ''),
+                    'jabatan' => trim($data[12] ?? ''),
+                    'no_hp' => trim($data[13] ?? ''),
                     'created_by' => $request->user()->id,
                 ];
 
                 // Validate required fields
-                if (empty($transportasiData['jenis_transportasi']) || empty($transportasiData['nama_pihak']) ||
-                    empty($transportasiData['no_hp']) || empty($transportasiData['lokasi'])) {
+                if (
+                    empty($transportasiData['jenis_transportasi']) || empty($transportasiData['nama_pihak']) ||
+                    empty($transportasiData['no_hp']) || empty($transportasiData['alamat'])
+                ) {
                     continue;
                 }
 
@@ -198,7 +230,6 @@ class TransportasiAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }

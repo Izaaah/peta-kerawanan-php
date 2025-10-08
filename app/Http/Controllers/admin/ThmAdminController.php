@@ -18,7 +18,7 @@ class ThmAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_thm', 'like', "%$q%")
                     ->orWhere('ketua_thm', 'like', "%$q%")
                     ->orWhere('no_hp_ketua', 'like', "%$q%");
@@ -30,7 +30,16 @@ class ThmAdminController extends Controller
 
     public function create()
     {
-        return view('admin.data.thm.create');
+        $kabupatenList = \App\Models\DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.thm.create', compact('kabupatenList'));
     }
 
     public function store(Request $request)
@@ -39,8 +48,13 @@ class ThmAdminController extends Controller
             'nama_thm' => 'required|string|max:255',
             'ketua_thm' => 'required|string|max:255',
             'no_hp_ketua' => 'required|string|max:20',
+            'provinsi' => 'required|string|max:255',
+            'kabupaten' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'kelurahan' => 'required|string|max:255',
+            'alamat' => 'required|string',
         ]);
-        
+
         $data = $request->all();
         $data['created_by'] = $request->user()->id;
 
@@ -70,19 +84,34 @@ class ThmAdminController extends Controller
     public function edit($id)
     {
         $thm = Thm::findOrFail($id);
-        return view('admin.data.thm.edit', compact('thm'));
+
+        $kabupatenList = \App\Models\DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.thm.edit', compact('thm', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
     {
         $thm = Thm::findOrFail($id);
-        
+
         $request->validate([
             'nama_thm' => 'required|string|max:255',
             'ketua_thm' => 'required|string|max:255',
             'no_hp_ketua' => 'required|string|max:20',
+            'provinsi' => 'required|string|max:255',
+            'kabupaten' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'kelurahan' => 'required|string|max:255',
+            'alamat' => 'required|string',
         ]);
-        
+
         $data = $request->all();
         $data['created_by'] = $request->user()->id;
 

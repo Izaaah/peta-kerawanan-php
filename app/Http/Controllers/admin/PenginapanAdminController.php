@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\DesaGeojson;
 use App\Models\Penginapan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ class PenginapanAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama', 'like', "%$q%")
                     ->orWhere('jenis', 'like', "%$q%")
                     ->orWhere('nama_pengelola', 'like', "%$q%")
@@ -32,7 +33,16 @@ class PenginapanAdminController extends Controller
     public function create()
     {
         $jenisOptions = Penginapan::getJenisOptions();
-        return view('admin.data.penginapan.create', compact('jenisOptions'));
+        $kabupatenList = DesaGeojson::whereNotNull('kabupaten')
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.penginapan.create', compact('jenisOptions', 'kabupatenList'));
     }
 
     public function store(Request $request)
@@ -45,6 +55,14 @@ class PenginapanAdminController extends Controller
             'nama_pengelola' => 'required|string|max:255',
             'lokasi' => 'required|string',
             'no_hp' => 'required|string|max:20',
+            'provinsi' => 'nullable|string',
+            'kabupaten' => 'nullable|string',
+            'kecamatan' => 'nullable|string',
+            'kelurahan' => 'nullable|string',
+            'provinsi_lain' => 'nullable|string',
+            'kabupaten_lain' => 'nullable|string',
+            'kecamatan_lain' => 'nullable|string',
+            'kelurahan_lain' => 'nullable|string',
         ]);
         Penginapan::create($data);
         return redirect()->route('admin.data.penginapan.index')->with('success', 'Data penginapan berhasil disimpan.');
@@ -60,7 +78,16 @@ class PenginapanAdminController extends Controller
     {
         $penginapan = Penginapan::findOrFail($id);
         $jenisOptions = Penginapan::getJenisOptions();
-        return view('admin.data.penginapan.edit', compact('penginapan', 'jenisOptions'));
+        $kabupatenList = DesaGeojson::whereNotNull('kabupaten')
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.penginapan.edit', compact('penginapan', 'jenisOptions', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
@@ -71,6 +98,14 @@ class PenginapanAdminController extends Controller
             'nama_pengelola' => 'required|string|max:255',
             'lokasi' => 'required|string',
             'no_hp' => 'required|string|max:20',
+            'provinsi' => 'nullable|string',
+            'kabupaten' => 'nullable|string',
+            'kecamatan' => 'nullable|string',
+            'kelurahan' => 'nullable|string',
+            'provinsi_lain' => 'nullable|string',
+            'kabupaten_lain' => 'nullable|string',
+            'kecamatan_lain' => 'nullable|string',
+            'kelurahan_lain' => 'nullable|string',
         ]);
         $penginapan = Penginapan::findOrFail($id);
         $penginapan->update($request->all());
@@ -143,9 +178,11 @@ class PenginapanAdminController extends Controller
                 ];
 
                 // Validate required fields
-                if (empty($penginapanData['nama']) || empty($penginapanData['jenis']) ||
+                if (
+                    empty($penginapanData['nama']) || empty($penginapanData['jenis']) ||
                     empty($penginapanData['nama_pengelola']) || empty($penginapanData['no_hp']) ||
-                    empty($penginapanData['lokasi'])) {
+                    empty($penginapanData['lokasi'])
+                ) {
                     continue;
                 }
 
@@ -177,7 +214,6 @@ class PenginapanAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }

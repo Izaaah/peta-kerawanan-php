@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\LembagaRehabilitasi;
+use App\Models\DesaGeojson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\DuplicateDetectionService;
@@ -18,9 +19,11 @@ class LembagaRehabilitasiAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama', 'like', "%$q%")
-                    ->orWhere('jenis', 'like', "%$q%");
+                    ->orWhere('nama_ketua', 'like', "%$q%")
+                    ->orWhere('no_hp', 'like', "%$q%")
+                    ->orWhere('jenis_lrehab', 'like', "%$q%");
             });
         }
         $lrehabList = $query->latest()->paginate(10)->withQueryString();
@@ -29,18 +32,48 @@ class LembagaRehabilitasiAdminController extends Controller
 
     public function create()
     {
-        $jenisOptions = LembagaRehabilitasi::getJenisOptions();
-        return view('admin.data.lrehab.create', compact('jenisOptions'));
+        $jenisLrehabOptions = LembagaRehabilitasi::getJenisLrehabOptions();
+        $kabupatenList = \App\Models\DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+        return view('admin.data.lrehab.create', compact('jenisLrehabOptions', 'kabupatenList'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         $data['created_by'] = $request->user()->id;
+
+        // Handle sertifikasi array
+        if ($request->has('sertifikasi')) {
+            $data['sertifikasi'] = $request->sertifikasi;
+        } else {
+            $data['sertifikasi'] = [];
+        }
+
         $request->validate([
             'nama' => 'required|string|max:255',
-            'jenis' => 'required|in:IPWL,Rawat Inap,Non Rawat Inap,SNI Nasional,SNI Reguler',
+            'jenis_lrehab' => 'required|in:LRIP,LRKM',
+            'nama_ketua' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:20',
+            'provinsi' => 'required|string|max:100',
+            'alamat' => 'required|string',
+            'kabupaten' => 'nullable|string|max:100',
+            'kecamatan' => 'nullable|string|max:100',
+            'kelurahan' => 'nullable|string|max:100',
+            'provinsi_lain' => 'nullable|string|max:100',
+            'kabupaten_lain' => 'nullable|string|max:100',
+            'kecamatan_lain' => 'nullable|string|max:100',
+            'kelurahan_lain' => 'nullable|string|max:100',
+            'nomor_sni_nasional' => 'nullable|string|max:100',
+            'nomor_sni_reguler' => 'nullable|string|max:100',
         ]);
+
         LembagaRehabilitasi::create($data);
         return redirect()->route('admin.data.lrehab.index')->with('success', 'Data lembaga rehabilitasi berhasil disimpan.');
     }
@@ -54,18 +87,49 @@ class LembagaRehabilitasiAdminController extends Controller
     public function edit($id)
     {
         $lrehab = LembagaRehabilitasi::findOrFail($id);
-        $jenisOptions = LembagaRehabilitasi::getJenisOptions();
-        return view('admin.data.lrehab.edit', compact('lrehab', 'jenisOptions'));
+        $jenisLrehabOptions = LembagaRehabilitasi::getJenisLrehabOptions();
+        $kabupatenList = \App\Models\DesaGeojson::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+        return view('admin.data.lrehab.edit', compact('lrehab', 'jenisLrehabOptions', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
     {
+        $data = $request->all();
+
+        // Handle sertifikasi array
+        if ($request->has('sertifikasi')) {
+            $data['sertifikasi'] = $request->sertifikasi;
+        } else {
+            $data['sertifikasi'] = [];
+        }
+
         $request->validate([
             'nama' => 'required|string|max:255',
-            'jenis' => 'required|in:IPWL,Rawat Inap,Non Rawat Inap,SNI Nasional,SNI Reguler',
+            'jenis_lrehab' => 'required|in:LRIP,LRKM',
+            'nama_ketua' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:20',
+            'provinsi' => 'required|string|max:100',
+            'alamat' => 'required|string',
+            'kabupaten' => 'nullable|string|max:100',
+            'kecamatan' => 'nullable|string|max:100',
+            'kelurahan' => 'nullable|string|max:100',
+            'provinsi_lain' => 'nullable|string|max:100',
+            'kabupaten_lain' => 'nullable|string|max:100',
+            'kecamatan_lain' => 'nullable|string|max:100',
+            'kelurahan_lain' => 'nullable|string|max:100',
+            'nomor_sni_nasional' => 'nullable|string|max:100',
+            'nomor_sni_reguler' => 'nullable|string|max:100',
         ]);
+
         $lrehab = LembagaRehabilitasi::findOrFail($id);
-        $lrehab->update($request->all());
+        $lrehab->update($data);
         return redirect()->route('admin.data.lrehab.index')->with('success', 'Data lembaga rehabilitasi berhasil diupdate.');
     }
 
@@ -164,7 +228,6 @@ class LembagaRehabilitasiAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }

@@ -66,6 +66,8 @@
                         <option value="">Semua Status</option>
                         <option value="Voluntary">Voluntary (Sukarela)</option>
                         <option value="Compulsory">Compulsory (Upaya Paksa)</option>
+                        <option value="Proses Hukum Lanjut">Proses Hukum Lanjut</option>
+                        <option value="Narapidana">Narapidana</option>
                     </select>
                 </div>
                 <div>
@@ -103,7 +105,7 @@
         <!-- Data Table Section -->
         <div class="bg-white shadow rounded-lg p-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold text-gray-700">Data Individu Tersangka</h2>
+                <h2 class="text-lg font-semibold text-gray-700">Profil Individu</h2>
                 <span class="text-sm text-gray-600">Total: <span id="totalRecords">{{ $sampleData->count() }}</span></span>
             </div>
             <div class="overflow-x-auto">
@@ -116,7 +118,8 @@
                             <th class="px-4 py-2">Status</th>
                             <th class="px-4 py-2">Peran</th>
                             <th class="px-4 py-2">Residivis</th>
-                            <th class="px-4 py-2">Kasus Terkait</th>
+                            <th class="px-4 py-2">Nomor Telepon</th>
+                            <th class="px-4 py-2">Dibuat Oleh</th>
                             <th class="px-4 py-2 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -155,34 +158,72 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-2">
-                                    @if ($individu->status === 'Napi')
-                                        <span
-                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">1
-                                            Kasus</span>
+                                    @if ($individu->telepon && $individu->telepon->count() > 0)
+                                        @foreach ($individu->telepon as $telepon)
+                                            <span
+                                                class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
+                                                {{ $telepon->nomor_telepon }}
+                                            </span>
+                                        @endforeach
                                     @else
                                         <span
-                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">0
-                                            Kasus</span>
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">
+                                            -
+                                        </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-2 text-center">
-                                    <div class="flex gap-1 justify-center">
-                                        <a href="{{ route('super-admin.data.individu.show', $individu->id) }}"
-                                            class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50"
-                                            title="Lihat Detail">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}"
-                                            class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50"
-                                            title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button
-                                            class="inline-flex items-center px-2 py-1 text-xs text-red-600 border border-red-600 rounded hover:bg-red-50"
-                                            onclick="deleteIndividu({{ $individu->id }})" title="Hapus">
-                                            <i class="fas fa-trash"></i>
+                                <td class="px-4 py-2">
+                                    @if ($individu->createdBy)
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
+                                            {{ $individu->createdBy->name }}
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">
+                                            -
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-1 py-2 flex gap-2 justify-center my-auto">
+                                    <a href="{{ route('super-admin.data.individu.show', $individu->id) }}"
+                                        class="text-blue-600 hover:text-blue-900 flex items-center border border-blue-600 rounded-md px-1 py-1 text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                            </path>
+                                        </svg>
+                                        Lihat
+                                    </a>
+                                    <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}"
+                                        class="text-indigo-600 hover:text-indigo-900 flex items-center border border-indigo-600 rounded-md px-1 py-1 text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        </svg>
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('super-admin.data.individu.destroy', $individu->id) }}"
+                                        method="POST" class="inline-block"
+                                        onsubmit="return confirm('Yakin ingin menghapus user ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-600 hover:text-red-900 flex items-center border border-red-600 rounded-md px-1 py-1 text-sm">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                </path>
+                                            </svg>
+                                            Hapus
                                         </button>
-                                    </div>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -193,42 +234,6 @@
             <div class="mt-4">
                 <!-- Previous and Next buttons will appear automatically with pagination -->
                 {{ $sampleData->links() }}
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header border-0 bg-danger text-white">
-                    <h5 class="modal-title fw-bold">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Konfirmasi Hapus
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                {{-- <div class="modal-body p-4">
-                <div class="text-center mb-3">
-                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                        <i class="fas fa-trash fa-2x text-danger"></i>
-                    </div>
-                    <h6 class="fw-bold text-gray-800">Hapus Data Individu TSK?</h6>
-                    <p class="text-muted mb-0">Data yang dihapus tidak dapat dikembalikan!</p>
-                </div>
-            </div> --}}
-                {{-- <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>Batal
-                </button>
-                <form id="deleteForm" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash me-2"></i>Hapus
-                    </button>
-                </form>
-            </div> --}}
             </div>
         </div>
     </div>
@@ -274,9 +279,17 @@
                 }
             </td>
             <td class="px-4 py-2">
-                ${individu.status === 'Napi' ?
-                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">1 Kasus</span>' :
-                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">0 Kasus</span>'
+                ${individu.telepon && individu.telepon.length > 0 ?
+                    individu.telepon.map(telepon => 
+                        `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">${telepon.nomor_telepon}</span>`
+                    ).join('') :
+                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
+                }
+            </td>
+            <td class="px-4 py-2">
+                ${individu.created_by ?
+                    `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">${individu.created_by.name}</span>` :
+                    '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
                 }
             </td>
             <td class="px-4 py-2 text-center">

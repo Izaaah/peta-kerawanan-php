@@ -10,8 +10,11 @@
     <link rel="icon" href="{{ asset('storage/img/logo-bnn.png') }}" type="image/png" />
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -75,34 +78,41 @@
         }
 
         .welcome-title {
+            font-family: 'Poppins', sans-serif;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 30px;
-            color: brown;
+            color: black;
             text-align: center;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
+            text-shadow: 0 0 5px white, 0 0 10px white, 0 0 15px white;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .welcome-subtitle {
+            font-family: 'Poppins', sans-serif;
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 500;
             margin-bottom: 1rem;
             color: #39e639;
             text-align: center;
             text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-transform: uppercase;
+            line-height: 1.3;
         }
 
         .welcome-description {
+            font-family: 'Inter', sans-serif;
             font-size: 1.1rem;
-            line-height: 1.6;
+            font-weight: 400;
+            line-height: 1.7;
             text-align: center;
             color: brown;
             opacity: 0.95;
             margin-bottom: 2.5rem;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.3px;
         }
 
 
@@ -159,21 +169,27 @@
         }
 
         .login-form-title {
+            font-family: 'Poppins', sans-serif;
             text-align: center;
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 600;
             color: #ffff;
             margin-bottom: 2rem;
             position: relative;
             z-index: 3;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+            line-height: 1.3;
         }
 
         .login-input {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
             transition: box-shadow 0.2s, border-color 0.2s;
             background: rgba(255, 255, 255, 0.9);
             font-size: 1rem;
             border-radius: 8px;
+            letter-spacing: 0.2px;
         }
 
         .login-input:focus {
@@ -182,15 +198,17 @@
         }
 
         .login-btn {
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(90deg, #B22222 0%, #8B0000 100%);
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             padding: 0.85rem 0;
             border-radius: 10px;
             font-size: 1.08rem;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
             box-shadow: 0 2px 8px #39e63922;
+            text-transform: uppercase;
         }
 
         .login-btn:hover {
@@ -200,12 +218,16 @@
         }
 
         .login-footer {
+            font-family: 'Inter', sans-serif;
             margin-top: 2rem;
             text-align: center;
             color: white;
             font-size: 0.9rem;
+            font-weight: 400;
             opacity: 0.8;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.2px;
+            line-height: 1.5;
         }
 
         .login-footer a {
@@ -279,10 +301,12 @@
 
             .welcome-title {
                 font-size: 1.8rem;
+                font-weight: 600;
             }
 
             .welcome-subtitle {
                 font-size: 1.3rem;
+                font-weight: 500;
             }
 
             .welcome-logo {
@@ -312,10 +336,12 @@
 
             .welcome-title {
                 font-size: 1.4rem;
+                font-weight: 600;
             }
 
             .welcome-subtitle {
                 font-size: 1.1rem;
+                font-weight: 500;
             }
 
             .welcome-description {
@@ -335,7 +361,8 @@
     </style>
 </head>
 
-<body class="font-sans text-gray-900 antialiased login-bg">
+<body class="text-gray-900 antialiased login-bg"
+    style="font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
     <div class="login-container">
         @yield('content')
     </div>

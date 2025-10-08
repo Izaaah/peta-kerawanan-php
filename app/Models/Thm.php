@@ -13,6 +13,11 @@ class Thm extends Model
         'nama_thm',
         'ketua_thm',
         'no_hp_ketua',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'alamat',
         'created_by',
     ];
 

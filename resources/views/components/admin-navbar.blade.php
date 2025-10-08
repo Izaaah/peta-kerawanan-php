@@ -21,21 +21,21 @@
 <div class="superadmin-navbar">
     <!-- Kiri: Logo Sijagad -->
     <div class="logo-sijagad">
-        <img src="{{ asset('storage/img/sijagad.png') }}" alt="Logo Sijagad" class="sijagad-logo">
+        <img src="{{ asset('img/sijagad.png') }}" alt="Logo Sijagad" class="sijagad-logo">
     </div>
 
     <!-- Tengah: Menu Navigasi -->
     <div class="menu-area">
         <div class="menu-btn"><a href="{{ route('admin.dashboard') }}">Beranda</a>
         </div>
-        <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data</a></div>
+        <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data Intelijen</a></div>
         <div class="menu-btn"><a href="{{ route('admin.chart-jaringan') }}">Diagram</a></div>
         <div class="menu-btn-peta dropdown-parent">
             Peta <span class="dropdown-arrow">&#9662;</span>
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
                 <li><a href="{{ route('peta-penyalahgunaan.tkp') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
-                <li><a href="">Peta Kerawanan<br>Titik Masuk</a></li>
+                <li><a href="{{ route('peta-penyalahgunaan.titik-masuk') }}">Peta Kawasan<br>Titik Masuk</a></li>
             </ul>
         </div>
         {{-- <div class="menu-btn"><a href="{{ route('admin.input.index') }}">Input</a></div> --}}

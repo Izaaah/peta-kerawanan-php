@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\DesaGeojson;
 use App\Models\PenjualVape;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ class PenjualVapeAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_toko', 'like', "%$q%")
                     ->orWhere('pemilik', 'like', "%$q%")
                     ->orWhere('lokasi', 'like', "%$q%")
@@ -31,21 +32,47 @@ class PenjualVapeAdminController extends Controller
 
     public function create()
     {
-        return view('admin.data.vape.create');
+        $kabupatenList = DesaGeojson::whereNotNull('kabupaten')
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.vape.create', compact('kabupatenList'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         $data['created_by'] = $request->user()->id;
+
+        // Handle liquid_dicurigai array
+        if ($request->has('liquid_dicurigai')) {
+            $liquidArray = array_filter($request->input('liquid_dicurigai', []));
+            $data['liquid_dicurigai'] = !empty($liquidArray) ? $liquidArray : null;
+        }
+
         $request->validate([
             'nama_toko' => 'required|string|max:255',
             'pemilik' => 'required|string|max:255',
             'lokasi' => 'required|string',
             'no_hp' => 'required|string|max:20',
-            'liquid_dicurigai' => 'nullable|string',
+            'liquid_dicurigai' => 'nullable|array',
+            'liquid_dicurigai.*' => 'nullable|string|max:255',
             'distributor' => 'nullable|string',
+            'provinsi' => 'nullable|string',
+            'kabupaten' => 'nullable|string',
+            'kecamatan' => 'nullable|string',
+            'kelurahan' => 'nullable|string',
+            'provinsi_lain' => 'nullable|string',
+            'kabupaten_lain' => 'nullable|string',
+            'kecamatan_lain' => 'nullable|string',
+            'kelurahan_lain' => 'nullable|string',
         ]);
+
         PenjualVape::create($data);
         return redirect()->route('admin.data.vape.index')->with('success', 'Data penjual vape berhasil disimpan.');
     }
@@ -59,21 +86,48 @@ class PenjualVapeAdminController extends Controller
     public function edit($id)
     {
         $vape = PenjualVape::findOrFail($id);
-        return view('admin.data.vape.edit', compact('vape'));
+        $kabupatenList = DesaGeojson::whereNotNull('kabupaten')
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct()
+            ->pluck('kabupaten')
+            ->sort()
+            ->values();
+
+        return view('admin.data.vape.edit', compact('vape', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
     {
+        $data = $request->all();
+
+        // Handle liquid_dicurigai array
+        if ($request->has('liquid_dicurigai')) {
+            $liquidArray = array_filter($request->input('liquid_dicurigai', []));
+            $data['liquid_dicurigai'] = !empty($liquidArray) ? $liquidArray : null;
+        }
+
         $request->validate([
             'nama_toko' => 'required|string|max:255',
             'pemilik' => 'required|string|max:255',
             'lokasi' => 'required|string',
             'no_hp' => 'required|string|max:20',
-            'liquid_dicurigai' => 'nullable|string',
+            'liquid_dicurigai' => 'nullable|array',
+            'liquid_dicurigai.*' => 'nullable|string|max:255',
             'distributor' => 'nullable|string',
+            'provinsi' => 'nullable|string',
+            'kabupaten' => 'nullable|string',
+            'kecamatan' => 'nullable|string',
+            'kelurahan' => 'nullable|string',
+            'provinsi_lain' => 'nullable|string',
+            'kabupaten_lain' => 'nullable|string',
+            'kecamatan_lain' => 'nullable|string',
+            'kelurahan_lain' => 'nullable|string',
         ]);
+
         $vape = PenjualVape::findOrFail($id);
-        $vape->update($request->all());
+        $vape->update($data);
         return redirect()->route('admin.data.vape.index')->with('success', 'Data penjual vape berhasil diupdate.');
     }
 
@@ -144,8 +198,10 @@ class PenjualVapeAdminController extends Controller
                 ];
 
                 // Validate required fields
-                if (empty($vapeData['nama_toko']) || empty($vapeData['pemilik']) ||
-                    empty($vapeData['lokasi']) || empty($vapeData['no_hp'])) {
+                if (
+                    empty($vapeData['nama_toko']) || empty($vapeData['pemilik']) ||
+                    empty($vapeData['lokasi']) || empty($vapeData['no_hp'])
+                ) {
                     continue;
                 }
 
@@ -172,7 +228,6 @@ class PenjualVapeAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LsmNarkotika;
+use App\Models\DesaGeojson;
 use App\Services\DuplicateDetectionService;
 
 class LsmAdminController extends Controller
@@ -18,7 +19,7 @@ class LsmAdminController extends Controller
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
+            $query->where(function ($sub) use ($q) {
                 $sub->where('nama_lsm', 'like', "%$q%")
                     ->orWhere('ketua_lsm', 'like', "%$q%")
                     ->orWhere('alamat', 'like', "%$q%")
@@ -31,7 +32,8 @@ class LsmAdminController extends Controller
 
     public function create()
     {
-        return view('admin.data.lsm.create');
+        $kabupatenList = DesaGeojson::getKabupatenList();
+        return view('admin.data.lsm.create', compact('kabupatenList'));
     }
 
     public function store(Request $request)
@@ -39,7 +41,12 @@ class LsmAdminController extends Controller
         $request->validate([
             'nama_lsm' => 'required|string|max:255',
             'ketua_lsm' => 'required|string|max:255',
+            'provinsi' => 'nullable|string|max:100',
+            'kabupaten' => 'nullable|string|max:100',
+            'kecamatan' => 'nullable|string|max:100',
+            'kelurahan' => 'nullable|string|max:100',
             'alamat' => 'required|string',
+            'no_telp' => 'nullable|string|max:20',
             'no_hp_ketua' => 'required|string|max:20',
         ]);
 
@@ -76,14 +83,15 @@ class LsmAdminController extends Controller
     public function edit($id)
     {
         $lsm = LsmNarkotika::findOrFail($id);
-        return view('admin.data.lsm.edit', compact('lsm'));
+        $kabupatenList = DesaGeojson::getKabupatenList();
+        return view('admin.data.lsm.edit', compact('lsm', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
     {
         $lsm = LsmNarkotika::findOrFail($id);
         $oldData = $lsm->toArray();
-        $newData = $request->only(['nama_lsm', 'ketua_lsm', 'alamat', 'no_hp_ketua']);
+        $newData = $request->only(['nama_lsm', 'ketua_lsm', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'no_telp', 'no_hp_ketua']);
         $newData['created_by'] = $request->user()->id;
 
         // Check for duplicates
@@ -117,8 +125,8 @@ class LsmAdminController extends Controller
 
     public function template()
     {
-        // Create CSV template content
-        $csvContent = "nama_lsm,ketua_lsm,alamat,no_hp_ketua\n";
+        // Create CSV template content with all form fields
+        $csvContent = "nama_lsm,provinsi,kabupaten,kecamatan,kelurahan,alamat,no_telp,ketua_lsm,no_hp_ketua\n";
 
         // Set headers for download
         $filename = 'import_lsm_narkotika' . '.csv';
@@ -161,21 +169,28 @@ class LsmAdminController extends Controller
                 }
 
                 // Validate data structure
-                if (count($data) < 4) {
+                if (count($data) < 9) {
                     continue;
                 }
 
                 $lsmData = [
                     'nama_lsm' => trim($data[0] ?? ''),
-                    'ketua_lsm' => trim($data[1] ?? ''),
-                    'alamat' => trim($data[2] ?? ''),
-                    'no_hp_ketua' => trim($data[3] ?? ''),
+                    'provinsi' => trim($data[1] ?? ''),
+                    'kabupaten' => trim($data[2] ?? ''),
+                    'kecamatan' => trim($data[3] ?? ''),
+                    'kelurahan' => trim($data[4] ?? ''),
+                    'alamat' => trim($data[5] ?? ''),
+                    'no_telp' => trim($data[6] ?? ''),
+                    'ketua_lsm' => trim($data[7] ?? ''),
+                    'no_hp_ketua' => trim($data[8] ?? ''),
                     'created_by' => $request->user()->id,
                 ];
 
                 // Validate required fields
-                if (empty($lsmData['nama_lsm']) || empty($lsmData['ketua_lsm']) ||
-                    empty($lsmData['alamat']) || empty($lsmData['no_hp_ketua'])) {
+                if (
+                    empty($lsmData['nama_lsm']) || empty($lsmData['ketua_lsm']) ||
+                    empty($lsmData['alamat']) || empty($lsmData['no_hp_ketua'])
+                ) {
                     continue;
                 }
 
@@ -202,10 +217,8 @@ class LsmAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }
-
     }
 }

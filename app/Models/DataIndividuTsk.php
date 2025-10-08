@@ -15,6 +15,9 @@ class DataIndividuTsk extends Model
         'nama',
         'nik',
         'nkk',
+        'jenis_kelamin',
+        'tempat_lahir',
+        'tgl_lahir',
         'provinsi',
         'kabupaten',
         'kecamatan',
@@ -27,11 +30,22 @@ class DataIndividuTsk extends Model
         'peran_jaringan',
         'modus_operasi',
         'jenis_narkotika',
-        'skala_kelas',
+        'jumlah_barang_bukti',
+        'satuan_barang_bukti',
         'status',
         'residivis',
         'sumber_informasi',
         'desa_geojson_id',
+        'ipwl_id',
+        'ipwl_compulsary_id',
+        'rekomendasi',
+        'putusan_pengadilan',
+        'noKasus_compulsary',
+        'noKasus_prosesHukum',
+        'noKasus_narapidana',
+        'file_residivis',
+        'vonis_residivis',
+        'lapas_akhir_residivis',
         'created_by'
     ];
 
@@ -45,6 +59,22 @@ class DataIndividuTsk extends Model
     public function desaGeojson()
     {
         return $this->belongsTo(DesaGeojson::class, 'desa_geojson_id');
+    }
+
+    /**
+     * Relasi dengan lembaga rehabilitasi IPWL (Voluntary)
+     */
+    public function ipwlLembaga()
+    {
+        return $this->belongsTo(LembagaRehabilitasi::class, 'ipwl_id');
+    }
+
+    /**
+     * Relasi dengan lembaga rehabilitasi IPWL (Compulsary)
+     */
+    public function ipwlCompulsaryLembaga()
+    {
+        return $this->belongsTo(LembagaRehabilitasi::class, 'ipwl_compulsary_id');
     }
 
     /**
@@ -141,6 +171,14 @@ class DataIndividuTsk extends Model
     public function scopeNonResidivis($query)
     {
         return $query->where('residivis', false);
+    }
+
+    /**
+     * Relasi dengan user yang membuat
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
 

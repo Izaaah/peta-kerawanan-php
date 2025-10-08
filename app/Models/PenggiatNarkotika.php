@@ -13,6 +13,15 @@ class PenggiatNarkotika extends Model
         'nama',
         'alamat',
         'no_hp',
+        'kegiatan',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'provinsi_lain',
+        'kabupaten_lain',
+        'kecamatan_lain',
+        'kelurahan_lain',
         'created_by',
     ];
 

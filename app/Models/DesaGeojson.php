@@ -129,7 +129,11 @@ class DesaGeojson extends Model
      */
     public static function getKabupatenList()
     {
-        return self::distinct('kabupaten')
+        return self::query()
+            ->where('kabupaten', 'not like', '%/%')
+            ->where('kabupaten', 'not like', '%area%')
+            ->where('kabupaten', 'not like', '%unknown%')
+            ->distinct('kabupaten')
             ->pluck('kabupaten')
             ->sort()
             ->values();
@@ -140,7 +144,11 @@ class DesaGeojson extends Model
      */
     public static function getKecamatanList($kabupaten = null)
     {
-        $query = self::distinct('kecamatan');
+        $query = self::query()
+            ->where('kecamatan', 'not like', '%/%')
+            ->where('kecamatan', 'not like', '%area%')
+            ->where('kecamatan', 'not like', '%unknown%')
+            ->distinct('kecamatan');
 
         if ($kabupaten) {
             $query->where('kabupaten', $kabupaten);

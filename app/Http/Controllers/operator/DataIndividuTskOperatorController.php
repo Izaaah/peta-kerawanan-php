@@ -60,7 +60,7 @@ class DataIndividuTskOperatorController extends Controller
 
     public function getData(Request $request)
     {
-        $query = DataIndividuTsk::with('desaGeojson');
+        $query = DataIndividuTsk::with(['desaGeojson', 'createdBy']);
 
         // Apply filters
         if ($request->filled('search')) {

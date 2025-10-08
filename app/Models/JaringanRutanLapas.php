@@ -12,6 +12,7 @@ class JaringanRutanLapas extends Model
     protected $table = 'jaringan_rutan_lapas';
 
     protected $fillable = [
+        'nik',
         'nama_napi',
         'jenis_napi',
         'lapas',

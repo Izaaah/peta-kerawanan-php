@@ -10,6 +10,9 @@ class Medsos extends Model
 
     protected $fillable = [
         'nama_media_sosial',
+        'nama_media_sosial_lainnya',
+        'jenis_akun',
+        'individu_id',
         'nama_akun',
         'link_akun',
         'created_by',
@@ -18,5 +21,10 @@ class Medsos extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+
+    public function individu()
+    {
+        return $this->belongsTo(\App\Models\DataIndividuTsk::class, 'individu_id');
     }
 }

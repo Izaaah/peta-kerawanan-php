@@ -14,7 +14,12 @@ class LsmNarkotika extends Model
     protected $fillable = [
         'nama_lsm',
         'ketua_lsm',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
         'alamat',
+        'no_telp',
         'no_hp_ketua',
         'created_by',
     ];

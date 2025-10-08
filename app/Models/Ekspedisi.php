@@ -17,6 +17,14 @@ class Ekspedisi extends Model
         'alamat',
         'no_hp',
         'jenis',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'provinsi_lain',
+        'kabupaten_lain',
+        'kecamatan_lain',
+        'kelurahan_lain',
         'created_by',
     ];
 
