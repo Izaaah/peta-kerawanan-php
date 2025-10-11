@@ -165,11 +165,13 @@
                                     <p class="mt-2">Visualisasi akan muncul setelah menambahkan node</p>
                                 </div>
                             </div>
-                            <div class="flex gap-2 mt-4">
-                                <button @click="downloadSvg" class="bg-gray-700 text-white px-4 py-2 rounded">Download
-                                    SVG</button>
-                                <button @click="downloadPdf" class="bg-red-500 text-white px-4 py-2 rounded">Download
-                                    PDF</button>
+                            <div class="flex gap-2 mt-4 flex-wrap">
+                                <button @click="downloadSvg" class="bg-gray-700 text-white px-4 py-2 rounded text-sm">
+                                    <i class="fas fa-download mr-1"></i>Download SVG
+                                </button>
+                                <button @click="downloadPdf" class="bg-red-500 text-white px-4 py-2 rounded text-sm">
+                                    <i class="fas fa-file-pdf mr-1"></i>Download PDF
+                                </button>
                             </div>
                         </section>
 
@@ -190,15 +192,42 @@
         </div>
     </div>
 
+
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+            onerror="console.error('Failed to load jsPDF from CDN'); loadJSPdfFallback();"></script>
         <script>
+            function loadJSPdfFallback() {
+                // Fallback CDN
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js';
+                script.onload = function() {
+                    console.log('jsPDF loaded from fallback CDN');
+                };
+                script.onerror = function() {
+                    console.error('Failed to load jsPDF from fallback CDN too');
+                    alert('Library PDF tidak dapat dimuat. Silakan periksa koneksi internet Anda.');
+                };
+                document.head.appendChild(script);
+            }
+        </script>
+        <script>
+            // Initialize mermaid
             if (window.mermaid) {
                 window.mermaid.initialize({
                     startOnLoad: false
                 });
             }
+
+            // Check jsPDF loading
+            window.addEventListener('load', function() {
+                if (typeof window.jspdf === 'undefined') {
+                    console.error('jsPDF library failed to load');
+                } else {
+                    console.log('jsPDF library loaded successfully');
+                }
+            });
         </script>
         <script>
             document.addEventListener('alpine:init', () => {
@@ -305,7 +334,21 @@
 
                     async downloadPdf() {
                         console.log('Download PDF clicked');
+
+                        // Check if jsPDF is loaded
+                        if (typeof window.jspdf === 'undefined') {
+                            alert('Library PDF belum dimuat. Silakan refresh halaman dan coba lagi.');
+                            console.error('jsPDF is not available');
+                            return;
+                        }
+
+                        console.log('jsPDF library status:', window.jspdf);
+
                         const svg = this.$refs.mermaidEl.querySelector('svg');
+                        console.log('SVG element found:', svg);
+                        console.log('Nodes count:', this.nodes.length);
+                        console.log('Mermaid element ref:', this.$refs.mermaidEl);
+
                         if (svg && this.nodes.length > 0) {
                             try {
                                 // Show loading message
@@ -314,44 +357,141 @@
                                 button.textContent = 'Membuat PDF...';
                                 button.disabled = true;
 
-                                // Convert SVG to image first
-                                const svgData = new XMLSerializer().serializeToString(svg);
-                                const svgBlob = new Blob([svgData], {
-                                    type: 'image/svg+xml;charset=utf-8'
-                                });
-                                const svgUrl = URL.createObjectURL(svgBlob);
-
+                                // Convert SVG to image using data URL to avoid tainted canvas
                                 const imgData = await new Promise((resolve, reject) => {
-                                    const img = new Image();
-                                    img.onload = function() {
+                                    try {
+                                        // Get SVG dimensions and scale down for PDF
+                                        const svgRect = svg.getBoundingClientRect();
+
+                                        // Scale down for PDF (0.7 = 70% of original size)
+                                        const scaleFactor = 0.7;
+                                        const originalWidth = Math.min(svgRect.width || 800,
+                                            600); // Max 600px width
+                                        const originalHeight = Math.min(svgRect.height || 600,
+                                            450); // Max 450px height
+                                        const width = originalWidth * scaleFactor;
+                                        const height = originalHeight * scaleFactor;
+
+                                        console.log('Original SVG dimensions:', originalWidth,
+                                            'x', originalHeight);
+                                        console.log('Scaled dimensions for PDF:', width, 'x',
+                                            height);
+                                        console.log('SVG rect:', svgRect);
+                                        console.log('Scale factor for PDF:', scaleFactor);
+
+                                        // Create canvas with proper dimensions (smaller for PDF)
                                         const canvas = document.createElement('canvas');
                                         const ctx = canvas.getContext('2d');
 
-                                        canvas.width = img.width || 800;
-                                        canvas.height = img.height || 600;
+                                        canvas.width = width;
+                                        canvas.height = height;
 
+                                        // Set white background
                                         ctx.fillStyle = 'white';
                                         ctx.fillRect(0, 0, canvas.width, canvas.height);
-                                        ctx.drawImage(img, 0, 0, canvas.width, canvas
-                                            .height);
 
-                                        const imageData = canvas.toDataURL('image/png');
-                                        URL.revokeObjectURL(svgUrl);
-                                        resolve(imageData);
-                                    };
-                                    img.onerror = () => {
-                                        URL.revokeObjectURL(svgUrl);
-                                        reject(new Error('Failed to load SVG'));
-                                    };
-                                    img.src = svgUrl;
+                                        console.log('Canvas dimensions for PDF:', canvas.width,
+                                            'x', canvas.height);
+
+                                        // Method 1: Try data URL approach
+                                        const svgData = new XMLSerializer().serializeToString(
+                                            svg);
+                                        const svgString =
+                                            `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgData)))}`;
+
+                                        // Create image from data URL
+                                        const img = new Image();
+                                        img.crossOrigin =
+                                            'anonymous'; // This helps with CORS issues
+
+                                        img.onload = function() {
+                                            try {
+                                                // Draw image to canvas with scaled dimensions
+                                                ctx.drawImage(img, 0, 0, canvas.width,
+                                                    canvas.height);
+
+                                                // Convert canvas to data URL
+                                                const imageData = canvas.toDataURL(
+                                                    'image/png');
+                                                console.log('Image data length:', imageData
+                                                    .length);
+                                                resolve(imageData);
+                                            } catch (canvasError) {
+                                                console.error('Canvas drawing error:',
+                                                    canvasError);
+
+                                                // Fallback: Try direct SVG drawing without image
+                                                try {
+                                                    console.log(
+                                                        'Trying fallback method...');
+                                                    const fallbackImageData = canvas
+                                                        .toDataURL('image/png');
+                                                    console.log('Fallback successful');
+                                                    resolve(fallbackImageData);
+                                                } catch (fallbackError) {
+                                                    console.error('Fallback also failed:',
+                                                        fallbackError);
+
+                                                    // Last resort: Create a simple placeholder image
+                                                    ctx.fillStyle = '#f0f0f0';
+                                                    ctx.fillRect(0, 0, width, height);
+                                                    ctx.fillStyle = '#333';
+                                                    ctx.font = '16px Arial';
+                                                    ctx.textAlign = 'center';
+                                                    ctx.fillText('Diagram Jaringan', width /
+                                                        2, height / 2 - 10);
+                                                    ctx.fillText('(Tidak dapat diekspor)',
+                                                        width / 2, height / 2 + 10);
+
+                                                    const placeholderImageData = canvas
+                                                        .toDataURL('image/png');
+                                                    resolve(placeholderImageData);
+                                                }
+                                            }
+                                        };
+
+                                        img.onerror = (error) => {
+                                            console.error('Error loading SVG image:',
+                                                error);
+
+                                            // Fallback: Create placeholder image
+                                            console.log('Creating placeholder image...');
+                                            ctx.fillStyle = '#f0f0f0';
+                                            ctx.fillRect(0, 0, width, height);
+                                            ctx.fillStyle = '#333';
+                                            ctx.font = '16px Arial';
+                                            ctx.textAlign = 'center';
+                                            ctx.fillText('Diagram Jaringan', width / 2,
+                                                height / 2 - 10);
+                                            ctx.fillText('(Gagal memuat)', width / 2,
+                                                height / 2 + 10);
+
+                                            const placeholderImageData = canvas.toDataURL(
+                                                'image/png');
+                                            resolve(placeholderImageData);
+                                        };
+
+                                        img.src = svgString;
+
+                                    } catch (error) {
+                                        console.error('SVG processing error:', error);
+                                        reject(new Error('Failed to process SVG: ' + error
+                                            .message));
+                                    }
                                 });
 
-                                // Create PDF document
-                                const pdf = new window.jspdf.jsPDF({
-                                    orientation: 'portrait',
-                                    unit: 'mm',
-                                    format: 'a4'
-                                });
+                                // Create PDF document with proper error handling
+                                let pdf;
+                                try {
+                                    pdf = new window.jspdf.jsPDF({
+                                        orientation: 'portrait',
+                                        unit: 'mm',
+                                        format: 'a4'
+                                    });
+                                } catch (pdfError) {
+                                    console.error('Error creating PDF:', pdfError);
+                                    throw new Error('Gagal membuat dokumen PDF: ' + pdfError.message);
+                                }
 
                                 // Set default font
                                 pdf.setFont('helvetica', 'normal');
@@ -397,9 +537,9 @@
                                 pdf.text('DIAGRAM JARINGAN', 20, yPosition);
                                 yPosition += 10;
 
-                                // Add the diagram image
-                                const imgWidth = 150; // mm
-                                const imgHeight = 100; // mm (fixed height for consistency)
+                                // Add the diagram image (smaller size for PDF)
+                                const imgWidth = 100; // mm (reduced from 150)
+                                const imgHeight = 70; // mm (reduced from 100)
 
                                 if (yPosition + imgHeight > 270) {
                                     pdf.addPage();
@@ -491,9 +631,13 @@
                                 });
 
                                 // Save the PDF
-                                pdf.save('laporan-jaringan-narkoba.pdf');
-
-                                console.log('Download PDF berhasil');
+                                try {
+                                    pdf.save('laporan-jaringan-narkoba.pdf');
+                                    console.log('Download PDF berhasil');
+                                } catch (saveError) {
+                                    console.error('Error saving PDF:', saveError);
+                                    throw new Error('Gagal menyimpan file PDF: ' + saveError.message);
+                                }
 
                                 // Restore button state
                                 button.textContent = originalText;
@@ -501,7 +645,7 @@
 
                             } catch (error) {
                                 console.error('Error creating PDF:', error);
-                                alert('Terjadi kesalahan saat membuat file PDF.');
+                                alert('Terjadi kesalahan saat membuat file PDF: ' + error.message);
 
                                 // Restore button state on error
                                 const button = event.target;

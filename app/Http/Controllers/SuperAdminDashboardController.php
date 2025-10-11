@@ -47,6 +47,13 @@ class SuperAdminDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Data untuk tabel detail kabupaten TKP (20 data teratas)
+        $dataKabupatenTkp = TkpResidivisIndividu::select('kabupaten', DB::raw('count(*) as total_kasus'))
+            ->groupBy('kabupaten')
+            ->orderBy('total_kasus', 'desc')
+            ->limit(20)
+            ->get();
+
         // Data untuk grafik kasus per kabupaten
         $allKecamatanTkpList = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
             ->groupBy('kecamatan')
@@ -60,6 +67,13 @@ class SuperAdminDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Data untuk tabel detail kabupaten NIK (20 data teratas)
+        $dataKabupatenNik = DataIndividuTsk::select('kabupaten', DB::raw('count(*) as total_kasus'))
+            ->groupBy('kabupaten')
+            ->orderBy('total_kasus', 'desc')
+            ->limit(20)
+            ->get();
+
         // Data untuk grafik kasus per kecamatan
         $kasusPerKecamatan = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
             ->groupBy('kecamatan')
@@ -67,11 +81,25 @@ class SuperAdminDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Data untuk tabel detail kecamatan TKP (20 data teratas)
+        $dataKecamatanTkp = TkpResidivisIndividu::select('kecamatan', 'kabupaten', DB::raw('count(*) as total_kasus'))
+            ->groupBy('kecamatan', 'kabupaten')
+            ->orderBy('total_kasus', 'desc')
+            ->limit(20)
+            ->get();
+
         // Data untuk grafik kasus per kecamatan nik
         $kasusPerKecamatanNik = DataIndividuTsk::select('kecamatan', DB::raw('count(*) as total'))
             ->groupBy('kecamatan')
             ->orderBy('total', 'desc')
             ->limit(5)
+            ->get();
+
+        // Data untuk tabel detail kecamatan NIK (20 data teratas)
+        $dataKecamatanNik = DataIndividuTsk::select('kecamatan', 'kabupaten', DB::raw('count(*) as total_kasus'))
+            ->groupBy('kecamatan', 'kabupaten')
+            ->orderBy('total_kasus', 'desc')
+            ->limit(20)
             ->get();
 
         // Data terbaru
@@ -246,6 +274,10 @@ class SuperAdminDashboardController extends Controller
             'kasusPerKecamatan',
             'kasusPerKabupatenNik',
             'kasusPerKecamatanNik',
+            'dataKabupatenTkp',
+            'dataKecamatanTkp',
+            'dataKabupatenNik',
+            'dataKecamatanNik',
             'trendBulanan',
             'kasusTerbaru',
             'statusPie',

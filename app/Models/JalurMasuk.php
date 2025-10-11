@@ -18,10 +18,26 @@ class JalurMasuk extends Model
         'kabupaten',        // integer
         'kecamatan',        // integer
         'kelurahan',        // integer
-        'created_by',        // nullable user id
+        'latitude',         // decimal: koordinat lintang
+        'longitude',        // decimal: koordinat bujur
+        'transport_type',   // enum: jenis transportasi detail
+        'route_name',       // string: nama rute
+        'waypoints',        // json: waypoint untuk multi-segment
+        'is_multi_segment', // boolean: apakah multi-segment
+        'distance_km',      // decimal: jarak dalam km
+        'description',      // text: deskripsi
+        'color',           // string: warna rute
+        'is_active',       // boolean: status aktif
+        'created_by',      // nullable user id
     ];
 
     protected $casts = [
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
+        'distance_km' => 'decimal:2',
+        'waypoints' => 'array',
+        'is_multi_segment' => 'boolean',
+        'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
@@ -36,6 +52,39 @@ class JalurMasuk extends Model
             'Laut' => 'Laut',
             'Udara' => 'Udara'
         ];
+    }
+
+    /**
+     * Get transport type options (detailed)
+     */
+    public static function getTransportTypeOptions()
+    {
+        return [
+            'pesawat' => '✈️ Pesawat',
+            'kapal' => '🚢 Kapal Laut',
+            'kereta' => '🚂 Kereta Api',
+            'mobil' => '🚗 Mobil',
+            'motor' => '🏍️ Motor',
+            'truk' => '🚚 Truk',
+            'bus' => '🚌 Bus'
+        ];
+    }
+
+    /**
+     * Get transport icon
+     */
+    public static function getTransportIcon($type)
+    {
+        $icons = [
+            'pesawat' => '✈️',
+            'kapal' => '🚢',
+            'kereta' => '🚂',
+            'mobil' => '🚗',
+            'motor' => '🏍️',
+            'truk' => '🚚',
+            'bus' => '🚌'
+        ];
+        return $icons[$type] ?? '🚗';
     }
 
     public function creator()

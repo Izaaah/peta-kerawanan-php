@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Models\JalurMasuk;
+use App\Models\TransportationRoute;
 use App\Models\DesaGeojson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,23 +13,21 @@ class TitikMasukAdminController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $query = JalurMasuk::query();
+        $query = TransportationRoute::query();
         if (!$user->isSuperAdmin()) {
             $query->where('created_by', $user->id);
         }
         if ($request->filled('q')) {
             $q = $request->q;
-            $query->where(function($sub) use ($q) {
-                $sub->where('jenis_transportasi', 'like', "%$q%")
-                    ->orWhere('nama_tempat', 'like', "%$q%")
-                    ->orWhere('provinsi', 'like', "%$q%")
-                    ->orWhere('kabupaten', 'like', "%$q%")
-                    ->orWhere('kecamatan', 'like', "%$q%")
-                    ->orWhere('kelurahan', 'like', "%$q%");
+            $query->where(function ($sub) use ($q) {
+                $sub->where('route_name', 'like', "%$q%")
+                    ->orWhere('start_location', 'like', "%$q%")
+                    ->orWhere('end_location', 'like', "%$q%")
+                    ->orWhere('transport_type', 'like', "%$q%");
             });
         }
         $titikMasukList = $query->latest()->paginate(10)->withQueryString();
-            return view('admin.data.titik-masuk.index', compact('titikMasukList'));
+        return view('admin.data.titik-masuk.index', compact('titikMasukList'));
     }
 
     public function create()
@@ -38,70 +36,94 @@ class TitikMasukAdminController extends Controller
         $kecamatanList = DesaGeojson::getKecamatanList();
         $desaList = DesaGeojson::all();
 
-        $jenisTitikMasukOptions = JalurMasuk::getJenisTitikMasukOptions();
-        return view('admin.data.titik-masuk.create', compact('jenisTitikMasukOptions', 'kabupatenList', 'kecamatanList', 'desaList'));
+        $transportTypeOptions = TransportationRoute::getTransportTypeOptions();
+        return view('admin.data.titik-masuk.create', compact('transportTypeOptions', 'kabupatenList', 'kecamatanList', 'desaList'));
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
-        'nama_tempat' => 'required|string|max:255',
-        'provinsi' => 'required|string|max:255',
-        'kabupaten' => 'required|string|max:255',
-        'kecamatan' => 'required|string|max:255',
-        'kelurahan' => 'required|string|max:255',
-    ]);
-
-    try {
-        $data = $request->only([
-            'jenis_transportasi','nama_tempat','provinsi','kabupaten','kecamatan','kelurahan'
+    {
+        $request->validate([
+            'route_name' => 'required|string|max:255',
+            'start_location' => 'required|string|max:255',
+            'start_lat' => 'required|numeric|between:-90,90',
+            'start_lng' => 'required|numeric|between:-180,180',
+            'end_location' => 'nullable|string|max:255',
+            'end_lat' => 'nullable|numeric|between:-90,90',
+            'end_lng' => 'nullable|numeric|between:-180,180',
+            'transport_type' => 'required|in:pesawat,kapal,kereta,mobil,motor,truk,bus',
+            'waypoints' => 'nullable|json',
+            'is_multi_segment' => 'boolean',
+            'distance_km' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
+            'is_active' => 'boolean',
         ]);
-        $data['created_by'] = $request->user()->id; // set creator
 
-        JalurMasuk::create($data);
+        try {
+            $data = $request->all();
+            $data['created_by'] = $request->user()->id;
 
-        return redirect()->route('admin.data.titik-masuk.index')
-            ->with('success', 'Data transportasi berhasil ditambahkan.');
-    } catch (\Exception $e) {
-        return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())
-            ->withInput();
+            // Convert waypoints to array if it's a string
+            if (isset($data['waypoints']) && is_string($data['waypoints'])) {
+                $data['waypoints'] = json_decode($data['waypoints'], true);
+            }
+
+            TransportationRoute::create($data);
+
+            return redirect()->route('admin.data.titik-masuk.index')
+                ->with('success', 'Data titik masuk berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())
+                ->withInput();
+        }
     }
-}
 
     public function show($id)
     {
-        $jalurMasuk = JalurMasuk::findOrFail($id);
-        return view('admin.data.titik-masuk.show', compact('jalurMasuk'));
+        $titikMasuk = TransportationRoute::findOrFail($id);
+        return view('admin.data.titik-masuk.show', compact('titikMasuk'));
     }
 
     public function edit($id)
     {
-        $jalurMasuk = JalurMasuk::findOrFail($id);
-        $jenisTitikMasukOptions = JalurMasuk::getJenisTitikMasukOptions();
-        return view('admin.data.titik-masuk.edit', compact('jalurMasuk'));
+        $titikMasuk = TransportationRoute::findOrFail($id);
+        $transportTypeOptions = TransportationRoute::getTransportTypeOptions();
+        $kabupatenList = DesaGeojson::getKabupatenList();
+        return view('admin.data.titik-masuk.edit', compact('titikMasuk', 'transportTypeOptions', 'kabupatenList'));
     }
 
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-        $data['created_by'] = $request->user()->id;
-
         $request->validate([
-            'jenis_transportasi' => 'required|in:Darat,Laut,Udara',
-            'nama_tempat' => 'required|string|max:255',
-            'provinsi' => 'required|string|max:255',
-            'kabupaten' => 'required|string|max:255',
-            'kecamatan' => 'required|string|max:255',
-            'kelurahan' => 'required|string|max:255',
+            'route_name' => 'required|string|max:255',
+            'start_location' => 'required|string|max:255',
+            'start_lat' => 'required|numeric|between:-90,90',
+            'start_lng' => 'required|numeric|between:-180,180',
+            'end_location' => 'nullable|string|max:255',
+            'end_lat' => 'nullable|numeric|between:-90,90',
+            'end_lng' => 'nullable|numeric|between:-180,180',
+            'transport_type' => 'required|in:pesawat,kapal,kereta,mobil,motor,truk,bus',
+            'waypoints' => 'nullable|json',
+            'is_multi_segment' => 'boolean',
+            'distance_km' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string',
+            'color' => 'nullable|string|max:7',
+            'is_active' => 'boolean',
         ]);
 
         try {
-            $jalurMasuk = JalurMasuk::findOrFail($id);
-            $jalurMasuk->update($data);
+            $titikMasuk = TransportationRoute::findOrFail($id);
+            $data = $request->all();
+
+            // Convert waypoints to array if it's a string
+            if (isset($data['waypoints']) && is_string($data['waypoints'])) {
+                $data['waypoints'] = json_decode($data['waypoints'], true);
+            }
+
+            $titikMasuk->update($data);
 
             return redirect()->route('admin.data.titik-masuk.index')
-                ->with('success', 'Data transportasi berhasil diperbarui.');
+                ->with('success', 'Data titik masuk berhasil diperbarui.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage())
                 ->withInput();
@@ -111,8 +133,8 @@ class TitikMasukAdminController extends Controller
     public function destroy($id)
     {
         try {
-            $jalurMasuk = JalurMasuk::findOrFail($id);
-            $jalurMasuk->delete();
+            $titikMasuk = TransportationRoute::findOrFail($id);
+            $titikMasuk->delete();
 
             return redirect()->route('admin.data.titik-masuk.index')
                 ->with('success', 'Data transportasi berhasil dihapus.');
@@ -123,8 +145,8 @@ class TitikMasukAdminController extends Controller
 
     public function template()
     {
-        // Create CSV template content
-        $csvContent = "jenis_transportasi,nama_tempat,provinsi,kabupaten,kecamatan,kelurahan\n";
+        // Create CSV template content with all form fields
+        $csvContent = "route_name,start_location,start_lat,start_lng,end_location,end_lat,end_lng,transport_type,waypoints,is_multi_segment,distance_km,description,color,is_active\n";
 
         // Set headers for download
         $filename = 'import_titik_masuk' . '.csv';
@@ -167,36 +189,46 @@ class TitikMasukAdminController extends Controller
                 }
 
                 // Validate data structure
-                if (count($data) < 4) {
+                if (count($data) < 6) {
                     continue;
                 }
 
-                $lsmData = [
-                    'jenis_transportasi' => trim($data[0] ?? ''),
-                    'nama_tempat' => trim($data[1] ?? ''),
-                    'provinsi' => trim($data[2] ?? ''),
-                    'kabupaten' => trim($data[3] ?? ''),
-                    'kecamatan' => trim($data[4] ?? ''),
-                    'kelurahan' => trim($data[5] ?? ''),
+                $titikMasukData = [
+                    'route_name' => trim($data[0] ?? ''),
+                    'start_location' => trim($data[1] ?? ''),
+                    'start_lat' => !empty($data[2]) ? floatval($data[2]) : null,
+                    'start_lng' => !empty($data[3]) ? floatval($data[3]) : null,
+                    'end_location' => trim($data[4] ?? ''),
+                    'end_lat' => !empty($data[5]) ? floatval($data[5]) : null,
+                    'end_lng' => !empty($data[6]) ? floatval($data[6]) : null,
+                    'transport_type' => trim($data[7] ?? ''),
+                    'waypoints' => trim($data[8] ?? ''),
+                    'is_multi_segment' => isset($data[9]) ? filter_var($data[9], FILTER_VALIDATE_BOOLEAN) : false,
+                    'distance_km' => !empty($data[10]) ? floatval($data[10]) : null,
+                    'description' => trim($data[11] ?? ''),
+                    'color' => trim($data[12] ?? ''),
+                    'is_active' => isset($data[13]) ? filter_var($data[13], FILTER_VALIDATE_BOOLEAN) : true,
                     'created_by' => $request->user()->id,
                 ];
 
                 // Validate required fields
-                if (empty($lsmData['jenis_transportasi']) || empty($lsmData['nama_tempat']) ||
-                    empty($lsmData['provinsi']) || empty($lsmData['kabupaten']) ||
-                    empty($lsmData['kecamatan']) || empty($lsmData['kelurahan'])) {
+                if (
+                    empty($titikMasukData['route_name']) || empty($titikMasukData['start_location']) ||
+                    empty($titikMasukData['start_lat']) || empty($titikMasukData['start_lng']) ||
+                    empty($titikMasukData['transport_type'])
+                ) {
                     continue;
                 }
 
                 // Check for duplicates
                 $isDuplicate = DuplicateDetectionService::checkAndCreateVerification(
                     'titik_masuk',
-                    $lsmData,
+                    $titikMasukData,
                     $request->user()->id
                 );
 
                 if (!$isDuplicate) {
-                    JalurMasuk::create($lsmData);
+                    TransportationRoute::create($titikMasukData);
                     $importedCount++;
                 } else {
                     $duplicateCount++;
@@ -211,10 +243,8 @@ class TitikMasukAdminController extends Controller
             }
 
             return back()->with('success', $message);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengimport file: ' . $e->getMessage());
         }
-
     }
 }

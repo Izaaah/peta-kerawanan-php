@@ -7,6 +7,11 @@ use App\Models\DesaGeojson;
 use App\Models\TkpResidivisIndividu;
 use App\Models\Anggaran;
 use App\Models\Komposisi;
+use App\Models\Pegawai;
+use App\Models\Tugas;
+use App\Models\Fungsi;
+use App\Models\Galeri;
+use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -46,22 +51,8 @@ class AdminDashboardController extends Controller
         $kabupatenCount = 1; // hanya kabupaten user
         $kecamatanCount = $filteredDesaQuery->distinct('kecamatan')->count('kecamatan');
 
-        // Data untuk grafik kasus per kabupaten (hanya kabupaten user, hanya data user ini)
-        $kasusPerKabupaten = TkpResidivisIndividu::select('kabupaten', DB::raw('count(*) as total'))
-            ->where(function ($query) use ($userId, $userKabupaten) {
-                $query->where('created_by', $userId)
-                    ->orWhere(function ($q) use ($userKabupaten) {
-                        $q->whereNull('created_by')
-                            ->where('kabupaten', $userKabupaten);
-                    });
-            })
-            ->where('kabupaten', $userKabupaten)
-            ->groupBy('kabupaten')
-            ->orderBy('total', 'desc')
-            ->get();
-
-        // Data untuk grafik kasus per kecamatan (hanya kabupaten user, hanya data user ini)
-        $kasusPerKecamatan = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
+        // Data untuk grafik kasus per kecamatan berdasarkan TKP (hanya kabupaten user, hanya data user ini)
+        $kasusPerKecamatanTkp = TkpResidivisIndividu::select('kecamatan', DB::raw('count(*) as total'))
             ->where(function ($query) use ($userId, $userKabupaten) {
                 $query->where('created_by', $userId)
                     ->orWhere(function ($q) use ($userKabupaten) {
@@ -72,6 +63,50 @@ class AdminDashboardController extends Controller
             ->where('kabupaten', $userKabupaten)
             ->groupBy('kecamatan')
             ->orderBy('total', 'desc')
+            ->get();
+
+        // Data untuk grafik kasus per desa berdasarkan TKP (hanya kabupaten user, hanya data user ini)
+        $kasusPerDesaTkp = TkpResidivisIndividu::select('desa', 'kecamatan', DB::raw('count(*) as total'))
+            ->where(function ($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                    });
+            })
+            ->where('kabupaten', $userKabupaten)
+            ->groupBy('desa', 'kecamatan')
+            ->orderBy('total', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Data untuk grafik kasus per kecamatan berdasarkan NIK (hanya kabupaten user, hanya data user ini)
+        $kasusPerKecamatanNik = \App\Models\DataIndividuTsk::select('kecamatan', DB::raw('count(*) as total'))
+            ->where(function ($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                    });
+            })
+            ->where('kabupaten', $userKabupaten)
+            ->groupBy('kecamatan')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        // Data untuk grafik kasus per desa berdasarkan NIK (hanya kabupaten user, hanya data user ini)
+        $kasusPerDesaNik = \App\Models\DataIndividuTsk::select('kelurahan', 'kecamatan', DB::raw('count(*) as total'))
+            ->where(function ($query) use ($userId, $userKabupaten) {
+                $query->where('created_by', $userId)
+                    ->orWhere(function ($q) use ($userKabupaten) {
+                        $q->whereNull('created_by')
+                            ->where('kabupaten', $userKabupaten);
+                    });
+            })
+            ->where('kabupaten', $userKabupaten)
+            ->groupBy('kelurahan', 'kecamatan')
+            ->orderBy('total', 'desc')
+            ->limit(10)
             ->get();
 
         // Data untuk pie chart status individu (hanya data user ini)
@@ -158,8 +193,47 @@ class AdminDashboardController extends Controller
             ->orderBy('bulan')
             ->get();
 
+        // Data untuk pie chart jenis kelamin (hanya data user ini)
+        $jenisKelaminStats = [
+            'Laki-laki' => \App\Models\DataIndividuTsk::where('jenis_kelamin', 'L')
+                ->where(function ($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                        ->orWhere(function ($q) use ($userKabupaten) {
+                            $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                        });
+                })->count(),
+            'Perempuan' => \App\Models\DataIndividuTsk::where('jenis_kelamin', 'P')
+                ->where(function ($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                        ->orWhere(function ($q) use ($userKabupaten) {
+                            $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                        });
+                })->count(),
+        ];
+
+        // Data untuk pie chart kategori umur (hanya data user ini)
+        $umurStats = [
+            'Anak-anak (1-17 tahun)' => \App\Models\DataIndividuTsk::whereRaw('TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) < 18')
+                ->where(function ($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                        ->orWhere(function ($q) use ($userKabupaten) {
+                            $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                        });
+                })->count(),
+            'Dewasa (18+ tahun)' => \App\Models\DataIndividuTsk::whereRaw('TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) >= 18')
+                ->where(function ($query) use ($userId, $userKabupaten) {
+                    $query->where('created_by', $userId)
+                        ->orWhere(function ($q) use ($userKabupaten) {
+                            $q->whereNull('created_by')
+                                ->where('kabupaten', $userKabupaten);
+                        });
+                })->count(),
+        ];
+
         // Ambil data anggaran berdasarkan role user
-        $user = auth()->user();
         $anggaranQuery = Anggaran::query();
         if ($user && !$user->isAdministrator()) {
             $anggaranQuery->where('created_by', $user->id);
@@ -181,18 +255,51 @@ class AdminDashboardController extends Controller
         // Ambil data komposisi
         $komposisiList = Komposisi::all();
 
+        // Ambil data pegawai untuk struktur organisasi
+        $pegawai = Pegawai::all();
+
+        // Ambil data tugas dan fungsi
+        $tugas = Tugas::all();
+        $fungsi = Fungsi::all();
+
+        // Ambil data galeri
+        $galeri = Galeri::all();
+
+        // Ambil data berita
+        $berita = Berita::orderBy('created_at', 'desc')->limit(4)->get();
+
+        // Ambil daftar jabatan untuk dropdown
+        $jabatanList = [
+            'Ketua',
+            'Kabid Pemberantasan',
+            'Kabag Umum',
+            'Kasi Intelijen',
+            'Kasi Wastahti',
+            'Analisis Intelijen',
+            'Penyidik Sie Intelijen',
+            'Petugas Pengejaran',
+            'Petugas Penindakan Sie Intelijen',
+            'Pengolah Data Sie Intelijen',
+            'Penjaga Tahanan',
+            'Pengadministrasian Umum',
+        ];
+
         return view('admin.dashboard', compact(
             'totalKasus',
             'totalDesa',
             'kabupatenCount',
             'kecamatanCount',
-            'kasusPerKabupaten',
-            'kasusPerKecamatan',
+            'kasusPerKecamatanTkp',
+            'kasusPerDesaTkp',
+            'kasusPerKecamatanNik',
+            'kasusPerDesaNik',
             'kasusTerbaru',
             'statusPie',
             'residivisPie',
             'kasusPerDesa',
             'trendBulanan',
+            'jenisKelaminStats',
+            'umurStats',
             'anggaranList',
             'totalAnggaranSebelum',
             'totalBlokir',
@@ -201,7 +308,13 @@ class AdminDashboardController extends Controller
             'totalPersonil',
             'totalDspJumlah',
             'totalDspKosong',
-            'totalDspTerisi'
+            'totalDspTerisi',
+            'pegawai',
+            'tugas',
+            'fungsi',
+            'galeri',
+            'berita',
+            'jabatanList'
         ));
     }
 

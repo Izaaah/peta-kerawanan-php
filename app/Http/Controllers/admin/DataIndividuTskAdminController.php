@@ -9,6 +9,9 @@ use App\Models\TkpResidivisIndividu;
 use App\Models\StatusHukum;
 use App\Models\ResidivisDetail;
 use App\Models\LembagaRehabilitasi;
+use App\Models\CompulsaryStatus;
+use App\Models\ProsesHukumStatus;
+use App\Models\NarapidanaStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -149,6 +152,14 @@ class DataIndividuTskAdminController extends Controller
             'vonis_residivis.*' => 'nullable|string|max:255',
             'lapas_akhir_residivis' => 'nullable|array',
             'lapas_akhir_residivis.*' => 'nullable|string|max:255',
+            // Compulsary fields validation (new format)
+            'no_kasus' => 'nullable|array',
+            'no_kasus.*' => 'nullable|string|max:255',
+            'tanggal_kasus' => 'nullable|date',
+            'satuan_kerja' => 'nullable|string|max:255',
+            // Support old field names for backward compatibility
+            'tgl-kasus' => 'nullable|date',
+            'satker' => 'nullable|string|max:255',
         ];
 
         $request->validate($validationRules);
@@ -178,12 +189,6 @@ class DataIndividuTskAdminController extends Controller
             'residivis' => $request->has('residivis'),
             'sumber_informasi' => $request->sumber_informasi,
             'ipwl_id' => $request->ipwl_id,
-            'ipwl_compulsary_id' => $request->ipwl_compulsary_id,
-            'rekomendasi' => is_array($request->rekomendasi) ? implode(',', $request->rekomendasi) : $request->rekomendasi,
-            // New fields for dynamic LKN numbers
-            'noKasus_compulsary' => is_array($request->noKasus) ? implode(',', array_filter($request->noKasus)) : '',
-            'noKasus_prosesHukum' => is_array($request->noKasus_prosesHukum) ? implode(',', array_filter($request->noKasus_prosesHukum)) : '',
-            'noKasus_narapidana' => is_array($request->noKasus_narapidana) ? implode(',', array_filter($request->noKasus_narapidana)) : '',
             'created_by' => request()->user()->id,
         ];
 
@@ -223,6 +228,51 @@ class DataIndividuTskAdminController extends Controller
         try {
             // Simpan data individu
             $individu = DataIndividuTsk::create($data);
+
+            // Handle status-specific data using separate tables
+            if ($request->status == 'Compulsary') {
+                // Create Compulsary status
+                $compulsaryData = [
+                    'individu_id' => $individu->id,
+                    'no_kasus' => is_array($request->no_kasus) ? implode(',', array_filter($request->no_kasus)) : ($request->no_kasus ?? ''),
+                    'tanggal_kasus' => $request->tanggal_kasus,
+                    'satuan_kerja' => $request->satuan_kerja,
+                    'aph_menangani' => is_array($request->aph_menangani) ? implode(',', array_filter($request->aph_menangani)) : ($request->aph_menangani ?? ''),
+                    'pasal_disangkakan' => is_array($request->pasal_disangkakan) ? implode(',', array_filter($request->pasal_disangkakan)) : ($request->pasal_disangkakan ?? ''),
+                    'ipwl_id' => $request->ipwl_compulsary_id,
+                    'rekomendasi' => is_array($request->rekomendasi) ? implode(',', array_filter($request->rekomendasi)) : ($request->rekomendasi ?? ''),
+                ];
+
+                \App\Models\CompulsaryStatus::create($compulsaryData);
+            } elseif ($request->status == 'Proses Hukum Lanjut') {
+                // Create Proses Hukum status
+                $prosesData = [
+                    'individu_id' => $individu->id,
+                    'no_kasus' => is_array($request->no_kasus_proses) ? implode(',', array_filter($request->no_kasus_proses)) : ($request->no_kasus_proses ?? ''),
+                    'tanggal_kasus' => $request->tanggal_kasus_proses,
+                    'satuan_kerja' => $request->satuan_kerja_proses,
+                    'aph_menangani' => is_array($request->aph_menangani_proses) ? implode(',', array_filter($request->aph_menangani_proses)) : ($request->aph_menangani_proses ?? ''),
+                    'pasal_disangkakan' => is_array($request->pasal_disangkakan_proses) ? implode(',', array_filter($request->pasal_disangkakan_proses)) : ($request->pasal_disangkakan_proses ?? ''),
+                    'ipwl_id' => $request->ipwl_proses_id,
+                    'rekomendasi' => is_array($request->rekomendasi_proses) ? implode(',', array_filter($request->rekomendasi_proses)) : ($request->rekomendasi_proses ?? ''),
+                ];
+
+                \App\Models\ProsesHukumStatus::create($prosesData);
+            } elseif ($request->status == 'Narapidana') {
+                // Create Narapidana status
+                $narapidanaData = [
+                    'individu_id' => $individu->id,
+                    'no_kasus' => is_array($request->no_kasus_narapidana) ? implode(',', array_filter($request->no_kasus_narapidana)) : ($request->no_kasus_narapidana ?? ''),
+                    'tanggal_kasus' => $request->tanggal_kasus_narapidana,
+                    'satuan_kerja' => $request->satuan_kerja_narapidana,
+                    'aph_menangani' => is_array($request->aph_menangani_narapidana) ? implode(',', array_filter($request->aph_menangani_narapidana)) : ($request->aph_menangani_narapidana ?? ''),
+                    'pasal_disangkakan' => is_array($request->pasal_disangkakan_narapidana) ? implode(',', array_filter($request->pasal_disangkakan_narapidana)) : ($request->pasal_disangkakan_narapidana ?? ''),
+                    'ipwl_id' => $request->ipwl_narapidana_id,
+                    'rekomendasi' => is_array($request->rekomendasi_narapidana) ? implode(',', array_filter($request->rekomendasi_narapidana)) : ($request->rekomendasi_narapidana ?? ''),
+                ];
+
+                \App\Models\NarapidanaStatus::create($narapidanaData);
+            }
 
             // Menyimpan data terkait telepon
             if ($request->filled('telepon')) {
@@ -335,7 +385,7 @@ class DataIndividuTskAdminController extends Controller
 
     public function show($id)
     {
-        $individu = DataIndividuTsk::with(['desaGeojson', 'telepon', 'rekening', 'ewallet', 'keluargaLain', 'residivisDetail', 'foto'])
+        $individu = DataIndividuTsk::with(['desaGeojson', 'telepon', 'rekening', 'ewallet', 'keluargaLain', 'residivisDetail', 'foto', 'compulsaryStatus.ipwlLembaga', 'prosesHukumStatus.ipwlLembaga', 'narapidanaStatus.ipwlLembaga'])
             ->findOrFail($id);
 
         $kasusCount = KasusNarkoba::where('nama_desa', $individu->kelurahan)
@@ -348,12 +398,24 @@ class DataIndividuTskAdminController extends Controller
 
     public function edit($id)
     {
-        $individu = DataIndividuTsk::with(['telepon', 'rekening', 'ewallet'])->findOrFail($id);
+        $individu = DataIndividuTsk::with([
+            'telepon',
+            'rekening',
+            'ewallet',
+            'tkpResidivis',
+            'compulsaryStatus',
+            'prosesHukumStatus',
+            'narapidanaStatus'
+        ])->findOrFail($id);
+
         $kabupatenList = DesaGeojson::getKabupatenList();
         $kecamatanList = DesaGeojson::getKecamatanList();
         $desaList = DesaGeojson::all();
 
-        return view('admin.data.individu-edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList'));
+        // Get IPWL list for dropdowns
+        $ipwlList = \App\Models\LembagaRehabilitasi::all();
+
+        return view('admin.data.individu-edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList', 'ipwlList'));
     }
 
     public function update(Request $request, $id)
@@ -378,7 +440,8 @@ class DataIndividuTskAdminController extends Controller
             'nik_ibu' => 'nullable|string|max:20',
             'peran_jaringan' => 'nullable|string|max:50',
             'modus_operasi' => 'nullable|string',
-            'jenis_narkotika' => 'nullable|string',
+            'jenis_narkotika' => 'nullable|array',
+            'jenis_narkotika.*' => 'nullable|string|max:255',
             'jumlah_barang_bukti' => 'nullable|string|max:50',
             'satuan_barang_bukti' => 'nullable|string|max:50',
             'status' => 'nullable|string|max:50',
@@ -392,7 +455,75 @@ class DataIndividuTskAdminController extends Controller
             'ewallet' => 'nullable|array',
             'ewallet.*' => 'nullable|string|max:30',
             'angka' => 'nullable|string|max:50',
-            'satuan' => 'nullable|string|max:50'
+            'satuan' => 'nullable|string|max:50',
+            // Compulsary fields
+            'no_kasus' => 'nullable|array',
+            'no_kasus.*' => 'nullable|string|max:255',
+            'tanggal_kasus' => 'nullable|date',
+            'satuan_kerja' => 'nullable|string|max:255',
+            'aph_menangani' => 'nullable|array',
+            'aph_menangani.*' => 'nullable|string|max:255',
+            'pasal_disangkakan' => 'nullable|array',
+            'pasal_disangkakan.*' => 'nullable|string|max:255',
+            'ipwl_compulsary_id' => 'nullable|exists:lembaga_rehabilitasi,id',
+            'rekomendasi' => 'nullable|array',
+            'rekomendasi.*' => 'nullable|string|max:255',
+            // Proses Hukum Lanjut fields
+            'no_kasus_proses' => 'nullable|array',
+            'no_kasus_proses.*' => 'nullable|string|max:255',
+            'tanggal_kasus_proses' => 'nullable|date',
+            'satuan_kerja_proses' => 'nullable|string|max:255',
+            'aph_menangani_proses' => 'nullable|array',
+            'aph_menangani_proses.*' => 'nullable|string|max:255',
+            'pasal_disangkakan_proses' => 'nullable|array',
+            'pasal_disangkakan_proses.*' => 'nullable|string|max:255',
+            'ipwl_proses_id' => 'nullable|exists:lembaga_rehabilitasi,id',
+            'rekomendasi_proses' => 'nullable|array',
+            'rekomendasi_proses.*' => 'nullable|string|max:255',
+            // Narapidana fields
+            'no_kasus_narapidana' => 'nullable|array',
+            'no_kasus_narapidana.*' => 'nullable|string|max:255',
+            'tanggal_kasus_narapidana' => 'nullable|date',
+            'satuan_kerja_narapidana' => 'nullable|string|max:255',
+            'aph_menangani_narapidana' => 'nullable|array',
+            'aph_menangani_narapidana.*' => 'nullable|string|max:255',
+            'pasal_disangkakan_narapidana' => 'nullable|array',
+            'pasal_disangkakan_narapidana.*' => 'nullable|string|max:255',
+            'ipwl_narapidana_id' => 'nullable|exists:lembaga_rehabilitasi,id',
+            'rekomendasi_narapidana' => 'nullable|array',
+            'rekomendasi_narapidana.*' => 'nullable|string|max:255',
+            // TKP fields
+            'tkp_provinsi' => 'nullable|array',
+            'tkp_provinsi.*' => 'nullable|string|max:100',
+            'tkp_kabupaten' => 'nullable|array',
+            'tkp_kabupaten.*' => 'nullable|string|max:100',
+            'tkp_kecamatan' => 'nullable|array',
+            'tkp_kecamatan.*' => 'nullable|string|max:100',
+            'tkp_desa' => 'nullable|array',
+            'tkp_desa.*' => 'nullable|string|max:100',
+            'tkp_lokasi' => 'nullable|array',
+            'tkp_lokasi.*' => 'nullable|string|max:255',
+            // TKP fields for status-specific forms
+            'tkp_provinsi_proses' => 'nullable|array',
+            'tkp_provinsi_proses.*' => 'nullable|string|max:100',
+            'tkp_kabupaten_proses' => 'nullable|array',
+            'tkp_kabupaten_proses.*' => 'nullable|string|max:100',
+            'tkp_kecamatan_proses' => 'nullable|array',
+            'tkp_kecamatan_proses.*' => 'nullable|string|max:100',
+            'tkp_desa_proses' => 'nullable|array',
+            'tkp_desa_proses.*' => 'nullable|string|max:100',
+            'tkp_lokasi_proses' => 'nullable|array',
+            'tkp_lokasi_proses.*' => 'nullable|string|max:255',
+            'tkp_provinsi_narapidana' => 'nullable|array',
+            'tkp_provinsi_narapidana.*' => 'nullable|string|max:100',
+            'tkp_kabupaten_narapidana' => 'nullable|array',
+            'tkp_kabupaten_narapidana.*' => 'nullable|string|max:100',
+            'tkp_kecamatan_narapidana' => 'nullable|array',
+            'tkp_kecamatan_narapidana.*' => 'nullable|string|max:100',
+            'tkp_desa_narapidana' => 'nullable|array',
+            'tkp_desa_narapidana.*' => 'nullable|string|max:100',
+            'tkp_lokasi_narapidana' => 'nullable|array',
+            'tkp_lokasi_narapidana.*' => 'nullable|string|max:255'
         ]);
 
         try {
@@ -424,6 +555,103 @@ class DataIndividuTskAdminController extends Controller
                 'sumber_informasi' => $request->sumber_informasi,
             ];
 
+            // Update main individu data
+            $individu->update($data);
+
+            // Handle status-specific data using separate tables
+            if ($request->status == 'Compulsary') {
+                // Handle TKP data for Compulsary
+                $tkpData = [];
+                if ($request->tkp_provinsi && is_array($request->tkp_provinsi)) {
+                    for ($i = 0; $i < count($request->tkp_provinsi); $i++) {
+                        if (!empty($request->tkp_provinsi[$i])) {
+                            $tkpData[] = [
+                                'provinsi' => $request->tkp_provinsi[$i],
+                                'kabupaten' => $request->tkp_kabupaten[$i] ?? '',
+                                'kecamatan' => $request->tkp_kecamatan[$i] ?? '',
+                                'desa' => $request->tkp_desa[$i] ?? '',
+                                'lokasi' => $request->tkp_lokasi[$i] ?? '',
+                            ];
+                        }
+                    }
+                }
+
+                // Update or create Compulsary status
+                $compulsaryData = [
+                    'no_kasus' => is_array($request->no_kasus) ? implode(',', array_filter($request->no_kasus)) : ($request->no_kasus ?? ''),
+                    'tanggal_kasus' => $request->tanggal_kasus,
+                    'satuan_kerja' => $request->satuan_kerja,
+                    'aph_menangani' => is_array($request->aph_menangani) ? implode(',', array_filter($request->aph_menangani)) : ($request->aph_menangani ?? ''),
+                    'pasal_disangkakan' => is_array($request->pasal_disangkakan) ? implode(',', array_filter($request->pasal_disangkakan)) : ($request->pasal_disangkakan ?? ''),
+                    'ipwl_id' => $request->ipwl_compulsary_id,
+                    'rekomendasi' => is_array($request->rekomendasi) ? implode(',', array_filter($request->rekomendasi)) : ($request->rekomendasi ?? ''),
+                    'tkp_lokasi' => !empty($tkpData) ? json_encode($tkpData) : null,
+                ];
+
+                $individu->compulsaryStatus()->updateOrCreate(['individu_id' => $individu->id], $compulsaryData);
+            } elseif ($request->status == 'Proses Hukum Lanjut') {
+                // Handle TKP data for Proses Hukum
+                $tkpData = [];
+                if ($request->tkp_provinsi_proses && is_array($request->tkp_provinsi_proses)) {
+                    for ($i = 0; $i < count($request->tkp_provinsi_proses); $i++) {
+                        if (!empty($request->tkp_provinsi_proses[$i])) {
+                            $tkpData[] = [
+                                'provinsi' => $request->tkp_provinsi_proses[$i],
+                                'kabupaten' => $request->tkp_kabupaten_proses[$i] ?? '',
+                                'kecamatan' => $request->tkp_kecamatan_proses[$i] ?? '',
+                                'desa' => $request->tkp_desa_proses[$i] ?? '',
+                                'lokasi' => $request->tkp_lokasi_proses[$i] ?? '',
+                            ];
+                        }
+                    }
+                }
+
+                // Update or create Proses Hukum status
+                $prosesData = [
+                    'no_kasus' => is_array($request->no_kasus_proses) ? implode(',', array_filter($request->no_kasus_proses)) : ($request->no_kasus_proses ?? ''),
+                    'tanggal_kasus' => $request->tanggal_kasus_proses,
+                    'satuan_kerja' => $request->satuan_kerja_proses,
+                    'aph_menangani' => is_array($request->aph_menangani_proses) ? implode(',', array_filter($request->aph_menangani_proses)) : ($request->aph_menangani_proses ?? ''),
+                    'pasal_disangkakan' => is_array($request->pasal_disangkakan_proses) ? implode(',', array_filter($request->pasal_disangkakan_proses)) : ($request->pasal_disangkakan_proses ?? ''),
+                    'ipwl_id' => $request->ipwl_proses_id,
+                    'rekomendasi' => is_array($request->rekomendasi_proses) ? implode(',', array_filter($request->rekomendasi_proses)) : ($request->rekomendasi_proses ?? ''),
+                    'tkp_lokasi' => !empty($tkpData) ? json_encode($tkpData) : null,
+                ];
+
+                $individu->prosesHukumStatus()->updateOrCreate(['individu_id' => $individu->id], $prosesData);
+            } elseif ($request->status == 'Narapidana') {
+                // Handle TKP data for Narapidana
+                $tkpData = [];
+                if ($request->tkp_provinsi_narapidana && is_array($request->tkp_provinsi_narapidana)) {
+                    for ($i = 0; $i < count($request->tkp_provinsi_narapidana); $i++) {
+                        if (!empty($request->tkp_provinsi_narapidana[$i])) {
+                            $tkpData[] = [
+                                'provinsi' => $request->tkp_provinsi_narapidana[$i],
+                                'kabupaten' => $request->tkp_kabupaten_narapidana[$i] ?? '',
+                                'kecamatan' => $request->tkp_kecamatan_narapidana[$i] ?? '',
+                                'desa' => $request->tkp_desa_narapidana[$i] ?? '',
+                                'lokasi' => $request->tkp_lokasi_narapidana[$i] ?? '',
+                            ];
+                        }
+                    }
+                }
+
+                // Update or create Narapidana status
+                $narapidanaData = [
+                    'no_kasus' => is_array($request->no_kasus_narapidana) ? implode(',', array_filter($request->no_kasus_narapidana)) : ($request->no_kasus_narapidana ?? ''),
+                    'tanggal_kasus' => $request->tanggal_kasus_narapidana,
+                    'satuan_kerja' => $request->satuan_kerja_narapidana,
+                    'aph_menangani' => is_array($request->aph_menangani_narapidana) ? implode(',', array_filter($request->aph_menangani_narapidana)) : ($request->aph_menangani_narapidana ?? ''),
+                    'pasal_disangkakan' => is_array($request->pasal_disangkakan_narapidana) ? implode(',', array_filter($request->pasal_disangkakan_narapidana)) : ($request->pasal_disangkakan_narapidana ?? ''),
+                    'ipwl_id' => $request->ipwl_narapidana_id,
+                    'rekomendasi' => is_array($request->rekomendasi_narapidana) ? implode(',', array_filter($request->rekomendasi_narapidana)) : ($request->rekomendasi_narapidana ?? ''),
+                    'tkp_lokasi' => !empty($tkpData) ? json_encode($tkpData) : null,
+                ];
+
+                $individu->narapidanaStatus()->updateOrCreate(['individu_id' => $individu->id], $narapidanaData);
+            }
+
+
             // Find desa based on kelurahan
             if ($request->filled('kelurahan')) {
                 $desa = DesaGeojson::where('nama_desa', 'like', '%' . $request->kelurahan . '%')
@@ -435,8 +663,6 @@ class DataIndividuTskAdminController extends Controller
                     $data['desa_geojson_id'] = $desa->id;
                 }
             }
-
-            $individu->update($data);
 
             // Update telepon
             $individu->telepon()->delete(); // Hapus semua telepon lama
@@ -468,26 +694,25 @@ class DataIndividuTskAdminController extends Controller
                 }
             }
 
-            // Update kasus narkoba if status changed
-            if ($request->status === 'Narapidana') {
-                KasusNarkoba::updateOrCreate(
-                    ['nik' => $request->nik],
-                    [
-                        'nama_desa' => $request->kelurahan,
-                        'kecamatan' => $request->kecamatan,
-                        'kabupaten' => $request->kabupaten,
-                        'nama_tsk' => $request->nama,
-                        'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : ($request->jenis_narkotika ?? ''),
-                        'jumlah_barang_bukti' => $request->angka ?? '',
-                        'satuan_barang_bukti' => $request->satuan ?? '',
-                        'status' => $request->status,
-                        'residivis' => $data['residivis'],
-                        'peran_jaringan' => $request->peran_jaringan,
-                        'modus_operasi' => $request->modus_operasi,
-                        'sumber_informasi' => $request->sumber_informasi
-                    ]
-                );
+            // Update TKP data
+            $individu->tkpResidivis()->delete(); // Hapus semua TKP lama
+            if ($request->filled('tkp_provinsi') && $request->filled('tkp_kabupaten')) {
+                foreach ($request->tkp_provinsi as $i => $provinsi) {
+                    if (!empty($provinsi) && !empty($request->tkp_kabupaten[$i])) {
+                        $individu->tkpResidivis()->create([
+                            'provinsi' => $provinsi,
+                            'kabupaten' => $request->tkp_kabupaten[$i] ?? '',
+                            'kecamatan' => $request->tkp_kecamatan[$i] ?? '',
+                            'desa' => $request->tkp_desa[$i] ?? '',
+                            'lokasi' => $request->tkp_lokasi[$i] ?? '',
+                            'created_by' => request()->user()->id
+                        ]);
+                    }
+                }
             }
+
+            // Note: kasus_narkoba table only has basic fields (nama_desa, kecamatan, kabupaten, keterangan)
+            // Individual data is stored in data_individu_tsk and related status tables
 
             DB::commit();
 

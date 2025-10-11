@@ -18,7 +18,7 @@ class VerificationController extends Controller
             ->with('admin')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('verification.index', compact('verifications'));
+        return view('super-admin.verification.index', compact('verifications'));
     }
 
     public function approve($id)
@@ -105,7 +105,7 @@ class VerificationController extends Controller
         $tableDisplayName = DuplicateDetectionService::getTableDisplayName($verification->table_name);
         $fieldLabels = DuplicateDetectionService::getFieldLabels($verification->table_name);
 
-        return view('verification.show', compact('verification', 'tableDisplayName', 'fieldLabels'));
+        return view('super-admin.verification.show', compact('verification', 'tableDisplayName', 'fieldLabels'));
     }
 
     /**

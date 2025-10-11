@@ -12,7 +12,7 @@ class TransportationRouteController extends Controller
      */
     public function index()
     {
-        return view('map_titikMasuk_optimized');
+        return view('map.map_titikMasuk_optimized');
     }
 
     /**

@@ -3,17 +3,13 @@
 @section('title', 'Data Titik Masuk')
 
 @section('content')
-    <div class="container mx-auto px-4 py-3">
+    <div class="mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-semibold text-gray-800">Daftar Tempat Titik Masuk</h1>
                 <p class="text-sm text-gray-500">Informasi lengkap mengenai Titik Masuk</p>
             </div>
             <div class="flex gap-2">
-                <a href="{{ route('admin.data.titik-masuk.create') }}"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
-                    <i class="fas fa-plus mr-2"></i>Tambah Data
-                </a>
                 <a href="{{ route('admin.data.index') }}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
                     <i class="fas fa-arrow-left mr-1"></i>Kembali
@@ -44,12 +40,11 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis Transportasi</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama Tempat</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Provinsi</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kabupaten</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kecamatan</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kelurahan</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Route Name</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Start Location</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Transport Type</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Distance</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
@@ -58,19 +53,88 @@
                         <tr>
                             <td class="px-4 py-2">{{ $titikMasukList->firstItem() + $i }}</td>
                             <td class="px-4 py-2">
-                                <span
-                                    class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
-                            @if ($titikMasuk->jenis_transportasi == 'Darat') bg-blue-100 text-blue-800
-                            @elseif($titikMasuk->jenis_transportasi == 'Laut') bg-green-100 text-green-800
-                            @else bg-purple-100 text-purple-800 @endif">
-                                    {{ $titikMasuk->jenis_transportasi }}
-                                </span>
+                                <div class="font-medium text-gray-900">{{ $titikMasuk->route_name ?? '-' }}</div>
                             </td>
-                            <td class="px-4 py-2">{{ $titikMasuk->nama_tempat }}</td>
-                            <td class="px-4 py-2">{{ $titikMasuk->provinsi }}</td>
-                            <td class="px-4 py-2">{{ $titikMasuk->kabupaten }}</td>
-                            <td class="px-4 py-2">{{ $titikMasuk->kecamatan }}</td>
-                            <td class="px-4 py-2">{{ $titikMasuk->kelurahan }}</td>
+                            <td class="px-4 py-2">
+                                @if ($titikMasuk->is_multi_segment && $titikMasuk->waypoints)
+                                    @php
+                                        $waypoints = is_string($titikMasuk->waypoints)
+                                            ? json_decode($titikMasuk->waypoints, true)
+                                            : $titikMasuk->waypoints;
+                                        $startWp = $waypoints[0] ?? null;
+                                        $endWp = end($waypoints);
+                                    @endphp
+                                    @if ($startWp)
+                                        <div class="font-medium text-gray-900">{{ $startWp['location'] ?? 'Waypoint 1' }}
+                                        </div>
+                                        @if ($endWp && count($waypoints) > 1)
+                                            <div class="text-xs text-gray-500">→
+                                                {{ $endWp['location'] ?? 'Waypoint ' . count($waypoints) }}</div>
+                                        @endif
+                                        <div class="text-xs text-blue-600 mt-1">{{ count($waypoints) }} waypoints</div>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
+                                @else
+                                    <div class="font-medium text-gray-900">{{ $titikMasuk->start_location ?? '-' }}</div>
+                                    @if ($titikMasuk->end_location)
+                                        <div class="text-xs text-gray-500">→ {{ $titikMasuk->end_location }}</div>
+                                    @endif
+                                @endif
+                            </td>
+                            <td class="px-4 py-2">
+                                @if ($titikMasuk->is_multi_segment && $titikMasuk->waypoints)
+                                    @php
+                                        $waypoints = is_string($titikMasuk->waypoints)
+                                            ? json_decode($titikMasuk->waypoints, true)
+                                            : $titikMasuk->waypoints;
+                                        $transportTypes = array_filter(array_column($waypoints, 'transport_to_next'));
+                                        $uniqueTransports = array_unique($transportTypes);
+                                    @endphp
+                                    @if (count($uniqueTransports) > 0)
+                                        <div class="flex flex-wrap gap-1">
+                                            @foreach ($uniqueTransports as $transport)
+                                                <span class="inline-flex items-center text-xs">
+                                                    {{ \App\Models\TransportationRoute::getTransportIcon($transport) }}
+                                                    <span class="ml-1">{{ ucfirst($transport) }}</span>
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
+                                @else
+                                    @if ($titikMasuk->transport_type)
+                                        <span class="inline-flex items-center">
+                                            {{ \App\Models\TransportationRoute::getTransportIcon($titikMasuk->transport_type) }}
+                                            <span class="ml-1 text-xs">{{ ucfirst($titikMasuk->transport_type) }}</span>
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
+                                @endif
+                            </td>
+                            <td class="px-4 py-2">
+                                @if ($titikMasuk->distance_km)
+                                    <span class="text-sm text-gray-600">{{ number_format($titikMasuk->distance_km, 2) }}
+                                        km</span>
+                                @else
+                                    <span class="text-gray-400">-</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2">
+                                @if ($titikMasuk->is_active ?? true)
+                                    <span
+                                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        Aktif
+                                    </span>
+                                @else
+                                    <span
+                                        class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                        Tidak Aktif
+                                    </span>
+                                @endif
+                            </td>
                             <td class="px-1 py-2 flex gap-2 justify-center">
                                 <a href="{{ route('admin.data.titik-masuk.show', $titikMasuk->id) }}"
                                     class="text-blue-600 hover:text-blue-900 flex items-center border border-blue-600 rounded-md px-1 py-1 text-sm">
@@ -83,34 +147,11 @@
                                     </svg>
                                     Lihat
                                 </a>
-                                <a href="{{ route('admin.data.titik-masuk.edit', $titikMasuk->id) }}"
-                                    class="text-indigo-600 hover:text-indigo-900 flex items-center border border-indigo-600 rounded-md px-1 py-1 text-sm">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                        </path>
-                                    </svg>
-                                    Edit
-                                </a>
-                                <form action="{{ route('admin.data.titik-masuk.destroy', $titikMasuk->id) }}"
-                                    method="POST" class="inline-block" onsubmit="return confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="text-red-600 hover:text-red-900 flex items-center border border-red-600 rounded-md px-1 py-1 text-sm">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                            </path>
-                                        </svg>
-                                        Hapus
-                                    </button>
-                                </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data titik masuk.</td>
+                            <td colspan="7" class="px-4 py-2 text-center text-gray-500">Belum ada data titik masuk.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -120,27 +161,4 @@
             </div>
         </div>
     </div>
-    @push('scripts')
-        <script>
-            function confirmDelete(event) {
-                event.preventDefault(); // Mencegah form untuk langsung submit
-
-                // SweetAlert2 Confirmation Popup
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Data ini akan dihapus secara permanen!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Hapus',
-                    cancelButtonText: 'Batal',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Jika konfirmasi diterima, kirimkan form
-                        event.target.submit();
-                    }
-                });
-            }
-        </script>
-    @endpush
 @endsection

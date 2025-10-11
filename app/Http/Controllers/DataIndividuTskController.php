@@ -330,25 +330,8 @@ class DataIndividuTskController extends Controller
 
             $individu->update($data);
 
-            // Update kasus narkoba if status changed
-            if ($request->status === 'Napi') {
-                KasusNarkoba::updateOrCreate(
-                    ['nik' => $request->nik],
-                    [
-                        'nama_desa' => $request->kelurahan,
-                        'kecamatan' => $request->kecamatan,
-                        'kabupaten' => $request->kabupaten,
-                        'nama_tsk' => $request->nama,
-                        'jenis_narkotika' => $request->jenis_narkotika,
-                        'skala_kelas' => $request->skala_kelas,
-                        'status' => $request->status,
-                        'residivis' => $data['residivis'],
-                        'peran_jaringan' => $request->peran_jaringan,
-                        'modus_operasi' => $request->modus_operasi,
-                        'sumber_informasi' => $request->sumber_informasi
-                    ]
-                );
-            }
+            // Note: kasus_narkoba table only has basic fields (nama_desa, kecamatan, kabupaten, keterangan)
+            // Individual data is stored in data_individu_tsk and related status tables
 
             DB::commit();
 

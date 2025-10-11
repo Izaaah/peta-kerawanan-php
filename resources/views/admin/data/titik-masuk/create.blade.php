@@ -24,23 +24,42 @@
                     <div class="bg-white shadow rounded p-6 space-y-4">
                         <h6 class="text-lg font-semibold text-primary"><i class="fas fa-bus mr-2"></i>Data Tempat Titik
                             Masuk</h6>
-                        <div>
-                            <label for="jenis_transportasi" class="block text-sm font-medium text-gray-700">Jenis
-                                Transportasi <span class="text-red-500">*</span></label>
-                            <select name="jenis_transportasi" id="jenis_transportasi"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                required>
-                                <option value="">Pilih Jenis Titik Masuk</option>
-                                @foreach ($jenisTitikMasukOptions as $value => $label)
-                                    <option value="{{ $value }}"
-                                        {{ old('jenis_transportasi') == $value ? 'selected' : '' }}>
-                                        {{ $label }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('jenis_transportasi')
-                                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                            @enderror
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="jenis_transportasi" class="block text-sm font-medium text-gray-700">Jenis
+                                    Transportasi <span class="text-red-500">*</span></label>
+                                <select name="jenis_transportasi" id="jenis_transportasi"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                    required>
+                                    <option value="">Pilih Jenis Titik Masuk</option>
+                                    @foreach ($jenisTitikMasukOptions as $value => $label)
+                                        <option value="{{ $value }}"
+                                            {{ old('jenis_transportasi') == $value ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('jenis_transportasi')
+                                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="transport_type" class="block text-sm font-medium text-gray-700">Transport
+                                    Type</label>
+                                <select name="transport_type" id="transport_type"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Pilih Transport Type</option>
+                                    @foreach ($transportTypeOptions as $value => $label)
+                                        <option value="{{ $value }}"
+                                            {{ old('transport_type') == $value ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('transport_type')
+                                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
                         <div>
                             <label for="nama_tempat" class="block text-sm font-medium text-gray-700">Nama Tempat <span
@@ -87,6 +106,88 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Coordinate and Route Information -->
+                        <div class="border-t pt-4">
+                            <h6 class="text-lg font-semibold text-primary mb-4"><i
+                                    class="fas fa-map-marker-alt mr-2"></i>Koordinat & Informasi Rute</h6>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude</label>
+                                    <input type="number" name="latitude" id="latitude" value="{{ old('latitude') }}"
+                                        step="any"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="-7.250445">
+                                    @error('latitude')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude</label>
+                                    <input type="number" name="longitude" id="longitude" value="{{ old('longitude') }}"
+                                        step="any"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="112.768845">
+                                    @error('longitude')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="route_name" class="block text-sm font-medium text-gray-700">Nama
+                                        Rute</label>
+                                    <input type="text" name="route_name" id="route_name"
+                                        value="{{ old('route_name') }}"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Nama rute transportasi">
+                                    @error('route_name')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="distance_km" class="block text-sm font-medium text-gray-700">Jarak
+                                        (km)</label>
+                                    <input type="number" name="distance_km" id="distance_km"
+                                        value="{{ old('distance_km') }}" step="0.01" min="0"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="0.00">
+                                    @error('distance_km')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                                <textarea name="description" id="description" rows="3"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Deskripsi tambahan tentang titik masuk">{{ old('description') }}</textarea>
+                                @error('description')
+                                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div>
+                                    <label for="color" class="block text-sm font-medium text-gray-700">Warna
+                                        Rute</label>
+                                    <input type="color" name="color" id="color"
+                                        value="{{ old('color', '#3B82F6') }}"
+                                        class="mt-1 block w-full h-10 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    @error('color')
+                                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="is_active" id="is_active" value="1"
+                                        {{ old('is_active', true) ? 'checked' : '' }}
+                                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <label for="is_active" class="ml-2 block text-sm text-gray-700">
+                                        Aktif
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex space-x-4">
                         <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
@@ -104,6 +205,8 @@
                         <h6 class="font-semibold text-blue-700 mb-2"><i class="fas fa-info-circle mr-2"></i>Informasi</h6>
                         <ul class="list-disc list-inside text-sm text-blue-800 space-y-1">
                             <li>Pastikan semua data tempat transportasi yang diinput sudah benar</li>
+                            <li>Koordinat latitude/longitude akan digunakan untuk menampilkan di peta</li>
+                            <li>Transport Type menentukan ikon yang ditampilkan di peta</li>
                             <li>Data digunakan untuk keperluan verifikasi dan pelaporan</li>
                         </ul>
                     </div>

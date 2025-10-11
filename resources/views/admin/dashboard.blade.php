@@ -118,49 +118,53 @@
                 </div>
             </div>
 
-            <!-- Grafik Section -->
+            <!-- Grafik Section TKP (Berdasarkan Tempat Kejadian Perkara) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <!-- Grafik Kasus per Desa (Top 10) -->
+                <!-- Grafik Kasus per Kecamatan TKP -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">Kasus per Desa (Top 10)</h3>
-                            <button id="showAllDesaBtn"
-                                class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
-                                <div class="flex items-center space-x-1">
-                                    <span>Lihat Semua</span>
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7"></path>
-                                    </svg>
+                            <h3 class="text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan TKP</h3>
                                 </div>
-                            </button>
-                        </div>
-                        <canvas id="chartDesa" width="400" height="200"></canvas>
+                        <canvas id="chartKecamatanTkp" width="400" height="200"></canvas>
                     </div>
                 </div>
 
-                <!-- Grafik Kasus per Kecamatan -->
+                <!-- Grafik Kasus per Desa TKP (Top 10) -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">Kasus per Kecamatan</h3>
-                            <button id="showAllKecamatanBtn"
-                                class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
-                                <div class="flex items-center space-x-1">
-                                    <span>Lihat Semua</span>
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7"></path>
-                                    </svg>
+                            <h3 class="text-lg font-semibold text-gray-900">Kasus per Desa (Top 10) <br> Berdasarkan TKP
+                            </h3>
                                 </div>
-                            </button>
+                        <canvas id="chartDesaTkp" width="400" height="200"></canvas>
                         </div>
-                        <canvas id="chartKecamatan" width="400" height="200"></canvas>
                     </div>
+            </div>
+
+            <!-- Grafik Section NIK (Berdasarkan Domisili NIK) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Grafik Kasus per Kecamatan NIK -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan NIK</h3>
+                        </div>
+                        <canvas id="chartKecamatanNik" width="400" height="200"></canvas>
                 </div>
             </div>
 
+                <!-- Grafik Kasus per Desa NIK (Top 10) -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">Kasus per Desa (Top 10) <br> Berdasarkan NIK
+                            </h3>
+                        </div>
+                        <canvas id="chartDesaNik" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
             <!-- Grafik Trend dan Status -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <!-- Trend Bulanan -->
@@ -186,6 +190,22 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Jenis Kelamin & Umur Pie Charts -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h3 class="text-md font-semibold text-gray-900 mb-2">Jenis Kelamin</h3>
+                                <canvas id="chartJenisKelaminPie" width="180" height="180"></canvas>
+                            </div>
+                            <div>
+                                <h3 class="text-md font-semibold text-gray-900 mb-2">Kategori Umur</h3>
+                                <canvas id="chartUmurPie" width="180" height="180"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Tabel Kasus Terbaru -->
@@ -196,6 +216,9 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
+                                    <th
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        No</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Desa</th>
@@ -216,6 +239,9 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($kasusTerbaru as $kasus)
                                     <tr>
+                                        <td
+                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                                            {{ $loop->iteration }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $kasus->desa }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -229,7 +255,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada
+                                        <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada
                                             data kasus</td>
                                     </tr>
                                 @endforelse
@@ -420,138 +446,69 @@
                     <div
                         class="bg-gradient-to-br from-white to-blue-50 rounded-base shadow-lg p-8 border-t border-l border-blue-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
                         <div class="flex items-center mb-1">
-                            <h5 class="text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan</h5>
+                            <h5 class="text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan dan
+                                Intelijen</h5>
                         </div>
                         <div class="pl-5 pr-4">
-                            <p class="text-gray-700 leading-relaxed text-lg bg-white bg-opacity-50 p-4 ml-5 font-sans">
-                                <span class="font-bold">Pasal 9 Peraturan Kepala BNN Nomor 6 Tahun 2020</span>:<br>
-                                <span class="italic"><span class="font-bold">"</span>Pemberantasan dan Intelijen mempunyai
-                                    tugas melaksanakan kebijakan teknis P4GN di bidang Pemberantasan dan Intelijen dalam
-                                    wilayah Provinsi.<span class="font-bold">"</span></span>
-                            </p>
+                            <div class="text-gray-700 leading-relaxed text-lg bg-white bg-opacity-50 p-4 ml-5 font-sans">
+                                @if (isset($tugas) && $tugas->count() > 0)
+                                    @foreach ($tugas as $t)
+                                        <p class="mb-3">
+                                            <span class="font-bold">{{ $t->pasal }}</span>:<br>
+                                            <span class="italic"><span class="font-bold">"</span>{{ $t->isi }}<span
+                                                    class="font-bold">"</span></span>
+                                        </p>
+                                    @endforeach
+                                @else
+                                    <p class="text-gray-500 italic">Belum ada data tugas pokok.</p>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
                     <!-- Fungsi -->
                     <div
                         class="bg-gradient-to-br from-white to-green-50 rounded-base shadow-lg p-8 border-t border-l border-green-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden mb-8">
-                        <div class="flex items-center">
-                            <h5 class="text-2xl font-bold text-black tracking-tight">Fungsi</h5>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="items-center">
+                                <h5 class="text-2xl font-bold text-black tracking-tight whitespace-nowrap">Fungsi Bidang
+                                    Pemberantasan</h5>
+                                <p class="font-bold">Sesuai Pasal 10, Peraturan Kepala BNN Nomor 6 Tahun 2020:</p>
+                                <p class="italic">Dalam melaksanakan tugas sebagaimana dimaksud dalam Pasal 9, Bidang
+                                    Pemberantasan dan Intelijen menyelenggarakan fungsi: </p>
+                            </div>
                         </div>
                         <div class="pl-1 pr-4">
                             <div class="bg-white bg-opacity-50 p-4 rounded-xl shadow-sm">
                                 <ul class="space-y-4 list-none">
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
+                                    @if (isset($fungsi) && $fungsi->count() > 0)
+                                        @foreach ($fungsi as $index => $f)
+                                            <li
+                                                class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
                                         <div class="flex-shrink-0 mt-1">
                                             <span
                                                 class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">1</span>
+                                            <span
+                                                            class="text-white text-xs font-bold">{{ $index + 1 }}</span>
                                             </span>
                                         </div>
                                         <p
                                             class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan koordinasi penyusunan rencana strategis dan rencana kerja
-                                            tahunan P4GN di bidang pemberantasan dalam wilayah Provinsi;</p>
+                                                    {{ $f->isi }}</p>
                                     </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
+                                        @endforeach
+                                    @else
+                                        <li
+                                            class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
                                         <div class="flex-shrink-0 mt-1">
                                             <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">2</span>
+                                                    class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-gray-400 to-gray-500 group-hover:from-gray-500 group-hover:to-gray-600 transition-all duration-200 shadow-sm">
+                                                    <span class="text-white text-xs font-bold">?</span>
                                             </span>
                                         </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            penyiapan pelaksanaan pemberantasan dan pemutusan jaringan kejahatan
-                                            terorganisasi penyalahgunaan peredaran gelap narkotika dalam wilayah Provinsi;
-                                        </p>
+                                            <p class="ml-4 text-gray-500 italic">Belum ada data fungsi.</p>
                                     </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">3</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan pembangunan dan pemanfaatan intelijen teknologi dan
-                                            kegiatan intelijen taktis, operasional dan produk dalam rangka P4GN di bidang
-                                            pemberantasan dalam wilayah Provinsi;</p>
-                                    </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">4</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan administrasi penyelidikan dan penyidikan terhadap tindak
-                                            pidana narkotika, psikotropika, prekursor, dan bahan adiktif lainnya kecuali
-                                            bahan adiktif untuk tembakau dan alkohol dalam wilayah Provinsi;</p>
-                                    </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">5</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan administrasi penyidikan tindak pidana pencucian uang yang
-                                            berasal dari tindak pidana narkotika dalam wilayah Provinsi;</p>
-                                    </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">6</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan pengawasan distribusi prekursor sampai pada pengguna akhir
-                                            dalam wilayah Provinsi;</p>
-                                    </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">7</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan pengawasan tahanan dan barang bukti dalam wilayah
-                                            Provinsi;</p>
-                                    </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">8</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan pembinaan teknis dan supervisi P4GN di bidang
-                                            pemberantasan kepada BNNK/Kota dalam wilayah Provinsi; dan</p>
-                                    </li>
-                                    <li class="flex items-start group hover:bg-blue-50 p-3 transition-colors duration-200">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <span
-                                                class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-200 shadow-sm">
-                                                <span class="text-white text-xs font-bold">9</span>
-                                            </span>
-                                        </div>
-                                        <p
-                                            class="ml-4 text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
-                                            Penyiapan pelaksanaan evaluasi dan pelaporan P4GN di bidang pemberantasan dalam
-                                            wilayah Provinsi.</p>
-                                    </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -588,13 +545,13 @@
 
                         <div class="org-chart relative space-y-12">
 
-                            <!-- Kepala -->
+                            <!-- Kepala BNNP Jatim -->
                             <div class="relative flex flex-col items-center">
                                 <div
-                                    class="flex items-center bg-gradient-to-r from-red-500 to-red-700 rounded-xl shadow-lg p-5 border-2 border-red-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    class="flex items-center bg-gradient-to-r from-red-600 to-red-700 text-white shadow-xl p-6 rounded-xl border-2 border-red-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[400px]">
                                     <div
-                                        class="w-24 h-24 rounded-full bg-white mr-5 overflow-hidden border-2 border-red-300 shadow-inner flex items-center justify-center">
-                                        <svg class="w-14 h-14 text-red-500" fill="none" stroke="currentColor"
+                                        class="w-20 h-20 bg-white mr-5 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                        <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
@@ -602,46 +559,98 @@
                                         </svg>
                                     </div>
                                     <div class="text-left">
-                                        <div class="text-white font-bold text-xl mb-1">Kepala BNNP Jatim</div>
-                                        <div class="text-white text-md">Brigjen Pol. Dr. H. Slamet Hadi Tjahjanto</div>
+                                        @php $ketua = $pegawai->where('jabatan','Ketua')->first(); @endphp
+                                        <div class="text-white font-bold text-xl">Kepala BNNP Jatim</div>
+                                        <div class="text-white text-lg">{{ $ketua->nama ?? '-' }}</div>
                                     </div>
                                 </div>
-                                <!-- garis vertikal ke Sekretaris -->
-                                <div class="h-8 w-px bg-gray-500 mx-auto"></div>
+
+                                <!-- Vertical connector -->
+                                <div class="h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+
+                                <!-- Horizontal connector -->
+                                <div class="w-full h-1 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300"></div>
+
+                                <!-- Vertical connectors for subordinates -->
+                                <div class="flex w-full justify-between px-8">
+                                    <div class="h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                    <div class="h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                </div>
                             </div>
 
-                            <!-- Sekretaris -->
-                            <div class="relative flex flex-col items-center">
-                                <div
-                                    class="flex items-center bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg p-5 border-2 border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                            <!-- Level 2: Kabid Pemberantasan dan Kabag Umum -->
+                            <div
+                                class="relative flex flex-col lg:flex-row justify-between items-start lg:space-x-16 space-y-8 lg:space-y-0">
+
+                                <!-- Kabid Pemberantasan dan Intelijen -->
+                                <div class="flex flex-col items-center flex-1">
                                     <div
-                                        class="w-20 h-20 rounded-full bg-white mr-5 overflow-hidden border-2 border-blue-300 shadow-inner flex items-center justify-center">
-                                        <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        class="flex items-center bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-xl p-5 rounded-xl border-2 border-blue-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[350px]">
+                                        <div
+                                            class="w-16 h-16 bg-white mr-4 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                            <svg class="w-10 h-10 text-blue-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2"
                                                 d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
                                             </path>
                                         </svg>
                                     </div>
                                     <div class="text-left">
-                                        <div class="text-white font-bold text-lg mb-1">Sekretaris</div>
-                                        <div class="text-white text-md">AKBP Drs. Heru Pranoto, M.Si</div>
+                                            @php $kabidPemberantasan = $pegawai->where('jabatan','Kabid Pemberantasan')->first(); @endphp
+                                            <div class="text-white font-bold text-lg">Kabid Pemberantasan dan
+                                                Intelijen</div>
+                                            <div class="text-white text-base">
+                                                {{ $kabidPemberantasan->nama ?? '-' }}</div>
                                     </div>
                                 </div>
 
-                                <!-- konektor vertikal ke level Direktorat -->
-                                <div class="h-10 w-px bg-gray-500 mx-auto"></div>
+                                    <!-- Vertical connector to Kasi -->
+                                    <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-4"></div>
 
-                                <!-- Level Direktorat -->
-                                <div class="relative w-full">
-                                    <!-- garis horizontal (penghubung direktorat) -->
-                                    <div class="absolute inset-x-12 top-0 h-px bg-gray-500 z-0"></div>
-
-                                    <!-- grid direktorat -->
+                                    <!-- Horizontal connector to Kasi -->
                                     <div
-                                        class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-4 relative z-10">
+                                        class="w-full h-1 bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300">
+                                    </div>
 
-                                        <!-- Direktorat Pencegahan -->
+                                    <!-- Vertical connectors for Kasi -->
+                                    <div class="flex w-full justify-between px-12">
+                                        <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                        <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Kabag Umum -->
+                                <div class="flex flex-col items-center flex-1">
+                                    <div
+                                        class="flex items-center bg-gradient-to-r from-green-600 to-green-700 text-white shadow-xl p-5 rounded-xl border-2 border-green-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[350px]">
+                                        <div
+                                            class="w-16 h-16 bg-white mr-4 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                            <svg class="w-10 h-10 text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="text-left">
+                                            @php $kabagUmum = $pegawai->where('jabatan','Kabag Umum')->first(); @endphp
+                                            <div class="text-white font-bold text-lg">Kabag Umum</div>
+                                            <div class="text-white text-base">{{ $kabagUmum->nama ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Vertical connector to Koordinator -->
+                                    <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-4"></div>
+                                </div>
+                            </div>
+
+                            <!-- Level 3: Kasi Intelijen, Kasi Wastahti, dan Koordinator -->
+                            <div
+                                class="relative flex flex-col lg:flex-row justify-between items-start lg:space-x-8 space-y-8 lg:space-y-0">
+
+                                <!-- Kasi Intelijen -->
                                         <div class="relative flex flex-col items-center">
                                             <!-- garis vertikal dari garis horizontal ke box -->
                                             <span class="absolute -top-6 h-20 w-px bg-gray-500 z-10"></span>
@@ -990,18 +999,6 @@
                                 <div class="bg-white rounded-lg shadow">
                                     <div class="relative px-6 py-4 border-b border-gray-200">
                                         <h3 class="text-lg font-semibold text-gray-900">Rincian Komposisi</h3>
-                                        <div class="absolute right-0 top-0 mt-3 mr-4">
-                                            <a href="#" onclick="openKomposisiModal()"
-                                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                                    </path>
-                                                </svg>
-                                                Tambah Komposisi
-                                            </a>
-                                        </div>
                                     </div>
                                     <div class="overflow-x-auto">
                                         <table class="min-w-full divide-y divide-gray-200">
@@ -1122,6 +1119,21 @@
 
                             .tab-button.inactive:hover svg {
                                 color: #374151;
+                            }
+
+                            /* Line clamp utilities */
+                            .line-clamp-2 {
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                            }
+
+                            .line-clamp-3 {
+                                display: -webkit-box;
+                                -webkit-line-clamp: 3;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
                             }
 
                             /* Struktur Organisasi Chart Styles */
@@ -1342,27 +1354,246 @@
                             </div>
                         </div>
 
+                    </div>
+
+                    <!-- Galeri Foto Section -->
+                    <div
+                        class="bg-gradient-to-br from-white to-blue-50 w-full shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
+                        <div id="gallery-section" class="gallery-section">
+                            <div class="relative mb-8">
+                                <h4
+                                    class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
+                                    Galeri Foto
+                                </h4>
+                                <div
+                                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full">
+                                </div>
+                            </div>
+
+                            <!-- Gallery Container -->
+                            <div class="flex justify-center items-center">
+                                @if (isset($galeri) && count($galeri) > 0)
+                                    <div class="relative w-full max-w-6xl">
+                                        <!-- Carousel Container -->
+                                        <div class="relative overflow-hidden rounded-2xl">
+                                            <!-- Main Gallery Display -->
+                                            <div class="flex items-center justify-center space-x-4 py-8">
+
+                                                <!-- Previous Image (Left) -->
+                                                <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500"
+                                                    id="prevImageContainer">
+                                                    <div class="w-64 h-64 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
+                                                        <img id="prevImage" src="" alt="Previous"
+                                                            class="w-full h-full object-cover">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Current Image (Center) -->
+                                                <div class="flex-shrink-0 transform scale-100 opacity-100 transition-all duration-500"
+                                                    id="currentImageContainer">
+                                                    <div
+                                                        class="relative w-96 h-96 bg-gray-200 rounded-xl overflow-hidden shadow-2xl">
+                                                        <img id="galleryImage"
+                                                            src="{{ asset('storage/' . $galeri[0]->image_path) }}"
+                                                            alt="Current"
+                                                            class="w-full h-full object-cover transition-all duration-700 ease-in-out">
+                                                        <div id="imageDescription"
+                                                            class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/70 to-transparent text-white p-4 text-sm">
+                                                            <div class="font-semibold">
+                                                                {{ $galeri[0]->description ?? 'No Description' }}</div>
+                                                        </div>
+
+                                                        <!-- Navigation Buttons -->
+                                                        <button id="prevBtn"
+                                                            class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300 shadow-lg">
+                                                            <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button id="nextBtn"
+                                                            class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300 shadow-lg">
+                                                            <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Next Image (Right) -->
+                                                <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500"
+                                                    id="nextImageContainer">
+                                                    <div class="w-64 h-64 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
+                                                        <img id="nextImage" src="" alt="Next"
+                                                            class="w-full h-full object-cover">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Dots Indicator -->
+                                            <div class="flex justify-center space-x-2 mt-4" id="dotsContainer">
+                                                @foreach ($galeri as $index => $image)
+                                                    <button
+                                                        class="dot w-3 h-3 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-blue-600 scale-125' : 'bg-gray-300 hover:bg-gray-400' }}"
+                                                        data-index="{{ $index }}"></button>
+                                                @endforeach
+                                            </div>
+
+                                            <!-- Timer Display -->
+                                            <div class="text-center mt-4">
+                                                <div
+                                                    class="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    <span id="timer" class="text-lg font-bold text-blue-600">10</span>
+                                                    <span class="text-sm text-gray-600">detik</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="text-center py-12">
+                                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                        <p class="text-gray-500 text-lg">Belum ada foto galeri</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Berita Terkini Section -->
+                    <div class="mt-12" id="beritaSection">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
+                                <p class="text-gray-600">Kumpulan berita dari berbagai sumber eksternal</p>
+                            </div>
+                        </div>
+
+                        @if (isset($berita) && count($berita) > 0)
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                @foreach ($berita->take(4) as $index => $news)
+                                    <div
+                                        class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                        <!-- News Image -->
+                                        <div class="relative h-48 overflow-hidden">
+                                            <img src="{{ $news->image_url }}" alt="{{ $news->title }}"
+                                                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                                                onerror="this.src='{{ asset('images/default-news.jpg') }}'">
+                                        </div>
+
+                                        <!-- News Content -->
+                                        <div class="p-4">
+                                            <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2">
+                                                {{ $news->title }}</h3>
+                                            <p class="text-gray-600 text-sm mb-3 line-clamp-3">
+                                                {{ $news->description }}</p>
+
+                                            <!-- News Meta -->
+                                            <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
+                                                <span>{{ \Carbon\Carbon::parse($news->published_at)->format('d M Y') }}</span>
+                                                <a href="{{ $news->url }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                                                    Baca Selengkapnya
+                                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-12">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                                    </path>
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada berita</h3>
+                                <p class="mt-1 text-sm text-gray-500">Belum ada berita tersedia.</p>
+                            </div>
+                        @endif
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+                        </div>
+
                         @push('scripts')
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
                                 // Data dari controller
                                 const kasusPerDesa = @json($kasusPerDesa);
-                                const kasusPerKecamatan = @json($kasusPerKecamatan);
+                            const kasusPerKecamatanTkp = @json($kasusPerKecamatanTkp);
+                            const kasusPerDesaTkp = @json($kasusPerDesaTkp);
+                            const kasusPerKecamatanNik = @json($kasusPerKecamatanNik);
+                            const kasusPerDesaNik = @json($kasusPerDesaNik);
                                 const statusPie = @json($statusPie);
                                 const residivisPie = @json($residivisPie);
                                 const trendBulanan = @json($trendBulanan);
+                            const jenisKelaminStats = @json($jenisKelaminStats);
+                            const umurStats = @json($umurStats);
 
-                                // Grafik Kasus per Desa (Top 10)
-                                const ctxDesa = document.getElementById('chartDesa').getContext('2d');
-                                new Chart(ctxDesa, {
+                            // Grafik Kasus per Kecamatan TKP
+                            const ctxKecamatanTkp = document.getElementById('chartKecamatanTkp').getContext('2d');
+                            new Chart(ctxKecamatanTkp, {
                                     type: 'bar',
                                     data: {
-                                        labels: kasusPerDesa.map(item => item.desa),
+                                    labels: kasusPerKecamatanTkp.map(item => item.kecamatan),
                                         datasets: [{
                                             label: 'Jumlah Kasus',
-                                            data: kasusPerDesa.map(item => item.total),
+                                        data: kasusPerKecamatanTkp.map(item => item.total),
                                             backgroundColor: 'rgba(59, 130, 246, 0.8)',
                                             borderColor: 'rgba(59, 130, 246, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+
+                            // Grafik Kasus per Desa TKP (Top 10)
+                            const ctxDesaTkp = document.getElementById('chartDesaTkp').getContext('2d');
+                            new Chart(ctxDesaTkp, {
+                                type: 'bar',
+                                data: {
+                                    labels: kasusPerDesaTkp.map(item => item.desa),
+                                    datasets: [{
+                                        label: 'Jumlah Kasus',
+                                        data: kasusPerDesaTkp.map(item => item.total),
+                                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                                        borderColor: 'rgba(16, 185, 129, 1)',
                                             borderWidth: 1
                                         }]
                                     },
@@ -1373,8 +1604,8 @@
                                                 callbacks: {
                                                     title: function(context) {
                                                         const idx = context[0].dataIndex;
-                                                        const desa = kasusPerDesa[idx].desa;
-                                                        const kecamatan = kasusPerDesa[idx].kecamatan;
+                                                    const desa = kasusPerDesaTkp[idx].desa;
+                                                    const kecamatan = kasusPerDesaTkp[idx].kecamatan;
                                                         return desa + ' (Kec. ' + kecamatan + ')';
                                                     }
                                                 }
@@ -1391,22 +1622,27 @@
                                     }
                                 });
 
-                                // Grafik Kasus per Kecamatan
-                                const ctxKecamatan = document.getElementById('chartKecamatan').getContext('2d');
-                                new Chart(ctxKecamatan, {
+                            // Grafik Kasus per Kecamatan NIK
+                            const ctxKecamatanNik = document.getElementById('chartKecamatanNik').getContext('2d');
+                            new Chart(ctxKecamatanNik, {
                                     type: 'bar',
                                     data: {
-                                        labels: kasusPerKecamatan.map(item => item.kecamatan),
+                                    labels: kasusPerKecamatanNik.map(item => item.kecamatan),
                                         datasets: [{
                                             label: 'Jumlah Kasus',
-                                            data: kasusPerKecamatan.map(item => item.total),
-                                            backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                                            borderColor: 'rgba(16, 185, 129, 1)',
+                                        data: kasusPerKecamatanNik.map(item => item.total),
+                                        backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                                        borderColor: 'rgba(99, 102, 241, 1)',
                                             borderWidth: 1
                                         }]
                                     },
                                     options: {
                                         responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        }
+                                    },
                                         scales: {
                                             y: {
                                                 beginAtZero: true
@@ -1415,93 +1651,45 @@
                                     }
                                 });
 
-                                // Modal dan Tabel Desa/Kecamatan
-                                const showAllDesaBtn = document.getElementById('showAllDesaBtn');
-                                const showAllKecamatanBtn = document.getElementById('showAllKecamatanBtn');
-                                const allDesaModal = document.getElementById('allDesaModal');
-                                const allKecamatanModal = document.getElementById('allKecamatanModal');
-                                const closeDesaModal = document.getElementById('closeDesaModal');
-                                const closeKecamatanModal = document.getElementById('closeKecamatanModal');
-                                const allDesaTableBody = document.getElementById('allDesaTableBody');
-                                const allKecamatanTableBody = document.getElementById('allKecamatanTableBody');
-
-                                // Fungsi untuk menampilkan modal desa
-                                showAllDesaBtn.addEventListener('click', function() {
-                                    // Urutkan data desa berdasarkan jumlah kasus (dari tertinggi ke terendah)
-                                    const sortedDesa = [...kasusPerDesa].sort((a, b) => b.total - a.total);
-
-                                    // Bersihkan tabel
-                                    allDesaTableBody.innerHTML = '';
-
-                                    // Isi tabel dengan semua data desa
-                                    sortedDesa.forEach((item, index) => {
-                                        const row = document.createElement('tr');
-                                        row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
-                                        row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${index + 1}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.desa}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.kecamatan}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-semibold">${item.total}</td>
-        `;
-                                        allDesaTableBody.appendChild(row);
-                                    });
-
-                                    // Tampilkan modal
-                                    allDesaModal.classList.remove('hidden');
-                                    document.body.classList.add('overflow-hidden');
-                                });
-
-                                // Fungsi untuk menampilkan modal kecamatan
-                                showAllKecamatanBtn.addEventListener('click', function() {
-                                    // Urutkan data kecamatan berdasarkan jumlah kasus (dari tertinggi ke terendah)
-                                    const sortedKecamatan = [...kasusPerKecamatan].sort((a, b) => b.total - a.total);
-
-                                    // Bersihkan tabel
-                                    allKecamatanTableBody.innerHTML = '';
-
-                                    // Isi tabel dengan semua data kecamatan
-                                    sortedKecamatan.forEach((item, index) => {
-                                        const row = document.createElement('tr');
-                                        row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
-                                        row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${index + 1}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.kecamatan}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-semibold">${item.total}</td>
-        `;
-                                        allKecamatanTableBody.appendChild(row);
-                                    });
-
-                                    // Tampilkan modal
-                                    allKecamatanModal.classList.remove('hidden');
-                                    document.body.classList.add('overflow-hidden');
-                                });
-
-                                // Tutup modal desa
-                                closeDesaModal.addEventListener('click', function() {
-                                    allDesaModal.classList.add('hidden');
-                                    document.body.classList.remove('overflow-hidden');
-                                });
-
-                                // Tutup modal kecamatan
-                                closeKecamatanModal.addEventListener('click', function() {
-                                    allKecamatanModal.classList.add('hidden');
-                                    document.body.classList.remove('overflow-hidden');
-                                });
-
-                                // Tutup modal saat klik di luar modal
-                                allDesaModal.addEventListener('click', function(e) {
-                                    if (e.target === allDesaModal) {
-                                        allDesaModal.classList.add('hidden');
-                                        document.body.classList.remove('overflow-hidden');
+                            // Grafik Kasus per Desa NIK (Top 10)
+                            const ctxDesaNik = document.getElementById('chartDesaNik').getContext('2d');
+                            new Chart(ctxDesaNik, {
+                                type: 'bar',
+                                data: {
+                                    labels: kasusPerDesaNik.map(item => item.kelurahan),
+                                    datasets: [{
+                                        label: 'Jumlah Kasus',
+                                        data: kasusPerDesaNik.map(item => item.total),
+                                        backgroundColor: 'rgba(168, 85, 247, 0.8)',
+                                        borderColor: 'rgba(168, 85, 247, 1)',
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        tooltip: {
+                                            callbacks: {
+                                                title: function(context) {
+                                                    const idx = context[0].dataIndex;
+                                                    const kelurahan = kasusPerDesaNik[idx].kelurahan;
+                                                    const kecamatan = kasusPerDesaNik[idx].kecamatan;
+                                                    return kelurahan + ' (Kec. ' + kecamatan + ')';
+                                                }
+                                            }
+                                        },
+                                        legend: {
+                                            display: false
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
                                     }
-                                });
+                                }
+                            });
 
-                                allKecamatanModal.addEventListener('click', function(e) {
-                                    if (e.target === allKecamatanModal) {
-                                        allKecamatanModal.classList.add('hidden');
-                                        document.body.classList.remove('overflow-hidden');
-                                    }
-                                });
 
                                 // Grafik Trend Bulanan
                                 const bulanNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
@@ -1591,6 +1779,209 @@
                                         }
                                     }
                                 });
+
+                            // Pie Chart Jenis Kelamin
+                            const ctxJenisKelaminPie = document.getElementById('chartJenisKelaminPie').getContext('2d');
+                            new Chart(ctxJenisKelaminPie, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: Object.keys(jenisKelaminStats),
+                                    datasets: [{
+                                        data: Object.values(jenisKelaminStats),
+                                        backgroundColor: [
+                                            'rgba(147, 51, 234, 0.8)', // Laki-laki - Purple
+                                            'rgba(236, 72, 153, 0.8)' // Perempuan - Pink
+                                        ],
+                                        borderColor: [
+                                            'rgba(147, 51, 234, 1)',
+                                            'rgba(236, 72, 153, 1)'
+                                        ],
+                                        borderWidth: 2
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom'
+                                        }
+                                    }
+                                }
+                            });
+
+                            // Pie Chart Kategori Umur
+                            const ctxUmurPie = document.getElementById('chartUmurPie').getContext('2d');
+                            new Chart(ctxUmurPie, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: Object.keys(umurStats),
+                                    datasets: [{
+                                        data: Object.values(umurStats),
+                                        backgroundColor: [
+                                            'rgba(249, 115, 22, 0.8)', // Anak-anak - Orange
+                                            'rgba(99, 102, 241, 0.8)' // Dewasa - Indigo
+                                        ],
+                                        borderColor: [
+                                            'rgba(249, 115, 22, 1)',
+                                            'rgba(99, 102, 241, 1)'
+                                            ],
+                                            borderWidth: 2
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                            legend: {
+                                                position: 'bottom'
+                                            }
+                                        }
+                                    }
+                                });
+
+                            // Gallery data
+                            const gallery = @json($galeri ?? []);
+
+                            // Gallery Auto-Rotation JavaScript
+                            let activeIndex = 0;
+                            let autoRotateInterval;
+                            let countdownInterval;
+                            let currentCountdown = 10;
+
+                            // Initialize gallery when DOM is ready
+                            document.addEventListener('DOMContentLoaded', function() {
+                                if (gallery.length > 0) {
+                                    initializeGallery();
+                                    startAutoRotation();
+                                }
+                            });
+
+                            function initializeGallery() {
+                                updateGallery();
+                                setupGalleryControls();
+                            }
+
+                            function updateGallery() {
+                                if (gallery.length === 0) return;
+
+                                const currentImage = gallery[activeIndex];
+                                const prevIndex = activeIndex === 0 ? gallery.length - 1 : activeIndex - 1;
+                                const nextIndex = activeIndex === gallery.length - 1 ? 0 : activeIndex + 1;
+
+                                // Update main image
+                                const galleryImage = document.getElementById('galleryImage');
+                                const imageDescription = document.getElementById('imageDescription');
+                                if (galleryImage) {
+                                    galleryImage.src = `{{ asset('storage/') }}/${currentImage.image_path}`;
+                                }
+                                if (imageDescription) {
+                                    imageDescription.innerHTML =
+                                        `<div class="font-semibold">${currentImage.description || 'No Description'}</div>`;
+                                }
+
+                                // Update previous image
+                                const prevImage = document.getElementById('prevImage');
+                                if (prevImage) {
+                                    prevImage.src = `{{ asset('storage/') }}/${gallery[prevIndex].image_path}`;
+                                }
+
+                                // Update next image
+                                const nextImage = document.getElementById('nextImage');
+                                if (nextImage) {
+                                    nextImage.src = `{{ asset('storage/') }}/${gallery[nextIndex].image_path}`;
+                                }
+
+                                // Update dots
+                                updateDots();
+                            }
+
+                            function updateDots() {
+                                const dots = document.querySelectorAll('.dot');
+                                dots.forEach((dot, index) => {
+                                    if (index === activeIndex) {
+                                        dot.classList.add('bg-blue-600', 'scale-125');
+                                        dot.classList.remove('bg-gray-300');
+                                    } else {
+                                        dot.classList.remove('bg-blue-600', 'scale-125');
+                                        dot.classList.add('bg-gray-300');
+                                    }
+                                });
+                            }
+
+                            function setupGalleryControls() {
+                                // Previous button
+                                const prevBtn = document.getElementById('prevBtn');
+                                if (prevBtn) {
+                                    prevBtn.addEventListener('click', () => {
+                                        activeIndex = activeIndex === 0 ? gallery.length - 1 : activeIndex - 1;
+                                        updateGallery();
+                                        resetTimer();
+                                    });
+                                }
+
+                                // Next button
+                                const nextBtn = document.getElementById('nextBtn');
+                                if (nextBtn) {
+                                    nextBtn.addEventListener('click', () => {
+                                        activeIndex = activeIndex === gallery.length - 1 ? 0 : activeIndex + 1;
+                                        updateGallery();
+                                        resetTimer();
+                                    });
+                                }
+
+                                // Dot navigation
+                                const dots = document.querySelectorAll('.dot');
+                                dots.forEach((dot, index) => {
+                                    dot.addEventListener('click', () => {
+                                        activeIndex = index;
+                                        updateGallery();
+                                        resetTimer();
+                                    });
+                                });
+                            }
+
+                            function startAutoRotation() {
+                                if (gallery.length <= 1) return;
+
+                                resetTimer();
+                                autoRotateInterval = setInterval(() => {
+                                    activeIndex = activeIndex === gallery.length - 1 ? 0 : activeIndex + 1;
+                                    updateGallery();
+                                    resetTimer();
+                                }, 10000); // 10 seconds
+                            }
+
+                            function resetTimer() {
+                                clearInterval(countdownInterval);
+                                currentCountdown = 10;
+                                updateTimerDisplay();
+
+                                countdownInterval = setInterval(() => {
+                                    currentCountdown--;
+                                    updateTimerDisplay();
+                                    if (currentCountdown <= 0) {
+                                        clearInterval(countdownInterval);
+                                    }
+                                }, 1000);
+                            }
+
+                            function updateTimerDisplay() {
+                                const timerElement = document.getElementById('timer');
+                                if (timerElement) {
+                                    timerElement.textContent = currentCountdown;
+                                }
+                            }
+
+                            function stopAutoRotation() {
+                                clearInterval(autoRotateInterval);
+                                clearInterval(countdownInterval);
+                            }
+
+                            // Pause auto-rotation on hover
+                            const gallerySection = document.getElementById('gallery-section');
+                            if (gallerySection) {
+                                gallerySection.addEventListener('mouseenter', stopAutoRotation);
+                                gallerySection.addEventListener('mouseleave', startAutoRotation);
+                            }
 
                                 // JavaScript untuk toggle konten dashboard
                                 document.addEventListener('DOMContentLoaded', function() {

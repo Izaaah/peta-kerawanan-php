@@ -46,7 +46,30 @@ class DataIndividuTsk extends Model
         'file_residivis',
         'vonis_residivis',
         'lapas_akhir_residivis',
-        'created_by'
+        'created_by',
+        // New Compulsary fields
+        'no_kasus',
+        'tanggal_kasus',
+        'satuan_kerja',
+        'aph_menangani',
+        'pasal_disangkakan',
+        'tkp_lokasi',
+        // Proses Hukum Lanjut fields
+        'no_kasus_proses',
+        'tanggal_kasus_proses',
+        'satuan_kerja_proses',
+        'aph_menangani_proses',
+        'pasal_disangkakan_proses',
+        'ipwl_proses_id',
+        'rekomendasi_proses',
+        // Narapidana fields
+        'no_kasus_narapidana',
+        'tanggal_kasus_narapidana',
+        'satuan_kerja_narapidana',
+        'aph_menangani_narapidana',
+        'pasal_disangkakan_narapidana',
+        'ipwl_narapidana_id',
+        'rekomendasi_narapidana'
     ];
 
     protected $casts = [
@@ -75,6 +98,46 @@ class DataIndividuTsk extends Model
     public function ipwlCompulsaryLembaga()
     {
         return $this->belongsTo(LembagaRehabilitasi::class, 'ipwl_compulsary_id');
+    }
+
+    /**
+     * Relasi dengan lembaga rehabilitasi IPWL (Proses Hukum)
+     */
+    public function ipwlProsesLembaga()
+    {
+        return $this->belongsTo(LembagaRehabilitasi::class, 'ipwl_proses_id');
+    }
+
+    /**
+     * Relasi dengan lembaga rehabilitasi IPWL (Narapidana)
+     */
+    public function ipwlNarapidanaLembaga()
+    {
+        return $this->belongsTo(LembagaRehabilitasi::class, 'ipwl_narapidana_id');
+    }
+
+    /**
+     * Relasi dengan status Compulsary
+     */
+    public function compulsaryStatus()
+    {
+        return $this->hasOne(CompulsaryStatus::class, 'individu_id');
+    }
+
+    /**
+     * Relasi dengan status Proses Hukum Lanjut
+     */
+    public function prosesHukumStatus()
+    {
+        return $this->hasOne(ProsesHukumStatus::class, 'individu_id');
+    }
+
+    /**
+     * Relasi dengan status Narapidana
+     */
+    public function narapidanaStatus()
+    {
+        return $this->hasOne(NarapidanaStatus::class, 'individu_id');
     }
 
     /**
@@ -123,6 +186,14 @@ class DataIndividuTsk extends Model
     public function foto()
     {
         return $this->hasMany(FotoIndividu::class, 'individu_id');
+    }
+
+    /**
+     * Relasi dengan TKP residivis
+     */
+    public function tkpResidivis()
+    {
+        return $this->hasMany(TkpResidivisIndividu::class, 'individu_id');
     }
 
     /**
