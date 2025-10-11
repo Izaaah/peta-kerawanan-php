@@ -1,12 +1,12 @@
 @extends('layouts.guest')
 
 @section('content')
-    <div class="container">
+    <div class="container ">
         <!-- Kiri: Pesan Selamat Datang -->
         <div class="welcome-section">
             <div class="welcome-content text-center">
                 <h1 class="welcome-title whitespace-nowrap">Selamat Datang di</h1>
-                <img src="{{ asset('storage/img/sijagad.png') }}" alt="Logo BNN" class="welcome-logo mx-auto">
+                <img src="{{ asset('img/sijagad.png') }}" alt="Logo BNN" class="welcome-logo mx-auto">
                 <p class="welcome-description">
                     <span class="whitespace-nowrap">Sistem Informasi Jaringan Pemetaan Kawasan</span>
                     <br>Rawan Geospasial Berbasis Intelijen Dasar
@@ -15,7 +15,7 @@
         </div>
 
         <!-- Kanan: Form Login -->
-        <div class="login-section">
+        <div class="login-section w-full">
             <div class="login-form-container">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h3>
 
