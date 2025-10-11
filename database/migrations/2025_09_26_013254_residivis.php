@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Menambah tabel tkp_residivis_individu
-        Schema::create('tkp_residivis_individu', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
-            $table->string('provinsi', 100)->nullable();
-            $table->string('kabupaten', 100)->nullable();
-            $table->string('kecamatan', 100)->nullable();
-            $table->string('desa', 100)->nullable();
-            $table->string('lokasi', 255)->nullable();
-            $table->unsignedBigInteger('created_by')->nullable(); // Menambahkan kolom 'created_by'
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null'); // Membuat relasi foreign key ke tabel 'users'
-            $table->timestamps();
-        });
+        // Menambahkan kolom created_by ke tabel tkp_residivis_individu jika tabel sudah ada
+        if (Schema::hasTable('tkp_residivis_individu')) {
+            Schema::table('tkp_residivis_individu', function (Blueprint $table) {
+                // Hanya tambahkan kolom created_by jika belum ada
+                if (!Schema::hasColumn('tkp_residivis_individu', 'created_by')) {
+                    $table->unsignedBigInteger('created_by')->nullable()->after('lokasi');
+                    $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+                }
+            });
+        }
 
         // Mengubah tabel data_individu_tsk untuk memindahkan beberapa kolom ke status
         Schema::table('data_individu_tsk', function (Blueprint $table) {
@@ -47,28 +44,32 @@ return new class extends Migration
         });
 
         // Menambah tabel status_hukum untuk status lebih lanjut (Compulsory, Proses Hukum Lanjutan, Narapidana)
-        Schema::create('status_hukum', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
-            $table->string('status_hukum', 50);  // Contoh status: Compulsory, Proses Hukum Lanjutan, Narapidana
-            $table->date('tanggal_kasus')->nullable();
-            $table->string('nomor_kasus')->nullable();
-            $table->string('satuan_kerja')->nullable();
-            $table->string('aph')->nullable(); // APH yang menangani
-            $table->string('pasal_disangkakan')->nullable(); // Kolom pasal yang disangkakan
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('status_hukum')) {
+            Schema::create('status_hukum', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
+                $table->string('status_hukum', 50);  // Contoh status: Compulsory, Proses Hukum Lanjutan, Narapidana
+                $table->date('tanggal_kasus')->nullable();
+                $table->string('nomor_kasus')->nullable();
+                $table->string('satuan_kerja')->nullable();
+                $table->string('aph')->nullable(); // APH yang menangani
+                $table->string('pasal_disangkakan')->nullable(); // Kolom pasal yang disangkakan
+                $table->timestamps();
+            });
+        }
 
         // Menambah tabel residivis_detail untuk menyimpan file dokumen, pasal disangkakan, vonis, dan lapas
-        Schema::create('residivis_detail', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
-            $table->string('file_dokumen')->nullable();  // Untuk menyimpan file dokumen
-            $table->string('pasal_disangkakan')->nullable(); // Kolom pasal yang disangkakan
-            $table->string('vonis')->nullable(); // Kolom vonis
-            $table->string('lapas_akhir')->nullable(); // Kolom lapas
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('residivis_detail')) {
+            Schema::create('residivis_detail', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('individu_id')->constrained('data_individu_tsk')->onDelete('cascade');
+                $table->string('file_dokumen')->nullable();  // Untuk menyimpan file dokumen
+                $table->string('pasal_disangkakan')->nullable(); // Kolom pasal yang disangkakan
+                $table->string('vonis')->nullable(); // Kolom vonis
+                $table->string('lapas_akhir')->nullable(); // Kolom lapas
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -76,8 +77,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Menghapus tabel tkp_residivis_individu jika rollback
-        Schema::dropIfExists('tkp_residivis_individu');
+        // Menghapus kolom created_by dari tabel tkp_residivis_individu jika rollback
+        if (Schema::hasTable('tkp_residivis_individu')) {
+            Schema::table('tkp_residivis_individu', function (Blueprint $table) {
+                if (Schema::hasColumn('tkp_residivis_individu', 'created_by')) {
+                    $table->dropForeign(['created_by']);
+                    $table->dropColumn('created_by');
+                }
+            });
+        }
 
         // Menghapus tabel status_hukum jika rollback
         Schema::dropIfExists('status_hukum');

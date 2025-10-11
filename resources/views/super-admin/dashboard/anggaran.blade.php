@@ -283,8 +283,14 @@
         <!-- Pie Chart Anggaran -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Anggaran</h3>
-                <canvas id="chartAnggaranPie" width="400" height="200"></canvas>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Distribusi Anggaran per Kegiatan Utama</h3>
+                <p class="text-sm text-gray-600 mb-4">Perbandingan anggaran sebelum dan setelah blokir untuk setiap
+                    kegiatan utama</p>
+                <div class="flex justify-center">
+                    <div style="max-width: 350px; width: 100%;">
+                        <canvas id="chartAnggaranPie" width="300" height="150"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

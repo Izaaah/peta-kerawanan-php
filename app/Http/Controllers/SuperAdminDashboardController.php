@@ -192,20 +192,18 @@ class SuperAdminDashboardController extends Controller
             'Jumlah Kegiatan' => $anggaranQuery->count(),
         ];
 
-        // Data untuk pie chart anggaran berdasarkan akun (seperti gambar)
-        $anggaranByAkun = (clone $anggaranQuery)
-            ->select('akun', DB::raw('SUM(anggaran_sebelum) as total_anggaran'), DB::raw('SUM(blokir) as total_blokir'))
-            ->groupBy('akun')
+        // Data untuk pie chart anggaran: setiap kegiatan utama dengan sebelum dan setelah blokir
+        $anggaranByKegiatan = (clone $anggaranQuery)
+            ->where('is_main_activity', true)
+            ->select('kegiatan', DB::raw('SUM(anggaran_sebelum) as total_sebelum'), DB::raw('SUM(blokir) as total_blokir'))
+            ->groupBy('kegiatan')
             ->get();
 
         $anggaranPie = [];
-        foreach ($anggaranByAkun as $item) {
-            // Tambahkan anggaran normal
-            $anggaranPie[$item->akun] = $item->total_anggaran;
-            // Tambahkan anggaran blokir jika ada
-            if ($item->total_blokir > 0) {
-                $anggaranPie[$item->akun . ' (Blokir)'] = $item->total_blokir;
-            }
+        foreach ($anggaranByKegiatan as $item) {
+            $totalSetelah = $item->total_sebelum - $item->total_blokir;
+            $anggaranPie[$item->kegiatan . ' (Sebelum Blokir)'] = $item->total_sebelum;
+            $anggaranPie[$item->kegiatan . ' (Setelah Blokir)'] = $totalSetelah;
         }
 
         // Data untuk pie chart jenis kegiatan (main vs sub activities)

@@ -745,28 +745,41 @@
                     if (ctxAnggaranPie) {
                         const ctx = ctxAnggaranPie.getContext('2d');
 
-                        // Generate colors untuk setiap akun
-                        const colors = [
-                            'rgba(59, 130, 246, 0.8)', // Blue
-                            'rgba(239, 68, 68, 0.8)', // Red
-                            'rgba(34, 197, 94, 0.8)', // Green
-                            'rgba(168, 85, 247, 0.8)', // Purple
-                            'rgba(245, 158, 11, 0.8)', // Yellow
-                            'rgba(236, 72, 153, 0.8)', // Pink
-                            'rgba(14, 165, 233, 0.8)', // Sky Blue
-                            'rgba(16, 185, 129, 0.8)' // Emerald
-                        ];
+                        // Generate colors untuk setiap kegiatan (sebelum/setelah blokir)
+                        const labels = Object.keys(anggaranPie);
+                        const colors = [];
+                        const borderColors = [];
 
-                        const borderColors = [
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(239, 68, 68, 1)',
-                            'rgba(34, 197, 94, 1)',
-                            'rgba(168, 85, 247, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(236, 72, 153, 1)',
-                            'rgba(14, 165, 233, 1)',
-                            'rgba(16, 185, 129, 1)'
-                        ];
+                        for (let i = 0; i < labels.length; i++) {
+                            if (labels[i].includes('Sebelum Blokir')) {
+                                colors.push('rgba(239, 68, 68, 0.8)'); // Red untuk "Sebelum Blokir"
+                                borderColors.push('rgba(239, 68, 68, 1)');
+                            } else if (labels[i].includes('Setelah Blokir')) {
+                                colors.push('rgba(34, 197, 94, 0.8)'); // Green untuk "Setelah Blokir"
+                                borderColors.push('rgba(34, 197, 94, 1)');
+                            } else {
+                                // Fallback colors untuk item lainnya
+                                const fallbackColors = [
+                                    'rgba(59, 130, 246, 0.8)', // Blue
+                                    'rgba(168, 85, 247, 0.8)', // Purple
+                                    'rgba(245, 158, 11, 0.8)', // Yellow
+                                    'rgba(236, 72, 153, 0.8)', // Pink
+                                    'rgba(14, 165, 233, 0.8)', // Sky Blue
+                                    'rgba(16, 185, 129, 0.8)' // Emerald
+                                ];
+                                const fallbackBorders = [
+                                    'rgba(59, 130, 246, 1)',
+                                    'rgba(168, 85, 247, 1)',
+                                    'rgba(245, 158, 11, 1)',
+                                    'rgba(236, 72, 153, 1)',
+                                    'rgba(14, 165, 233, 1)',
+                                    'rgba(16, 185, 129, 1)'
+                                ];
+                                const colorIndex = i % fallbackColors.length;
+                                colors.push(fallbackColors[colorIndex]);
+                                borderColors.push(fallbackBorders[colorIndex]);
+                            }
+                        }
 
                         new Chart(ctx, {
                             type: 'pie',
@@ -774,30 +787,47 @@
                                 labels: Object.keys(anggaranPie),
                                 datasets: [{
                                     data: Object.values(anggaranPie),
-                                    backgroundColor: colors.slice(0, Object.keys(anggaranPie).length),
-                                    borderColor: borderColors.slice(0, Object.keys(anggaranPie).length),
+                                    backgroundColor: colors,
+                                    borderColor: borderColors,
                                     borderWidth: 2
                                 }]
                             },
                             options: {
                                 responsive: true,
+                                maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
                                         position: 'bottom',
                                         labels: {
                                             usePointStyle: true,
-                                            padding: 20
+                                            padding: 10,
+                                            boxWidth: 12,
+                                            fontSize: 11,
+                                            generateLabels: function(chart) {
+                                                const data = chart.data;
+                                                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+
+                                                return data.labels.map((label, index) => {
+                                                    const value = data.datasets[0].data[index];
+                                                    const percentage = ((value / total) * 100).toFixed(1);
+                                                    return {
+                                                        text: label + ': ' + percentage + '%',
+                                                        fillStyle: data.datasets[0].backgroundColor[index],
+                                                        strokeStyle: data.datasets[0].borderColor[index],
+                                                        lineWidth: 2,
+                                                        pointStyle: 'circle'
+                                                    };
+                                                });
+                                            }
                                         }
                                     },
                                     tooltip: {
                                         callbacks: {
                                             label: function(context) {
                                                 const value = context.parsed;
-                                                const total = context.dataset.data.reduce((a, b) => a + b,
-                                                    0);
+                                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                                 const percentage = ((value / total) * 100).toFixed(1);
-                                                return context.label + ': Rp ' + value.toLocaleString(
-                                                    'id-ID') + ' (' + percentage + '%)';
+                                                return context.label + ': ' + percentage + '%';
                                             }
                                         }
                                     }
