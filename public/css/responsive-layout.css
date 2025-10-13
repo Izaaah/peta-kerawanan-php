@@ -1,0 +1,230 @@
+/* Global Responsive Layout CSS for All Pages */
+
+/* Ensure body and html take full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Flexbox layout for sticky footer */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Footer should stick to bottom */
+footer {
+    flex-shrink: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Main content area should flex-grow */
+.main-content {
+    flex: 1 0 auto;
+    padding-top: 120px; /* Space for fixed navbar (35px banner + 70px navbar + padding) */
+    padding-bottom: 1rem;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Container responsive padding */
+.container-fluid {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-fluid {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* Responsive table wrapper */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+/* Tablet portrait / small desktop (768px - 1200px) */
+@media (min-width: 768px) and (max-width: 1200px) {
+    .main-content {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Adjust table padding */
+    .px-6 {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    /* Make buttons more compact */
+    .btn-sm {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+/* Vertical layouts (portrait tablets) */
+@media (min-width: 768px) and (max-width: 1100px) and (min-height: 1000px) {
+    .main-content {
+        padding-top: 130px;
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+    .main-content {
+        padding-top: 115px;
+        padding-bottom: 0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    footer {
+        padding-top: 1rem;
+        padding-bottom: 0;
+        margin-bottom: 0 !important;
+    }
+}
+
+    /* Stack flex items on mobile */
+    .flex-responsive {
+        flex-direction: column !important;
+    }
+
+    /* Full width buttons on mobile */
+    .btn-responsive {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Reduce padding on cards */
+    .card-responsive {
+        padding: 1rem !important;
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+    .main-content {
+        padding-top: 110px;
+        padding-bottom: 0.5rem;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+
+    footer {
+        padding-top: 0.75rem;
+        padding-bottom: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-bottom: 0 !important;
+    }
+}
+
+    /* Smaller text on very small screens */
+    .text-responsive {
+        font-size: 0.875rem;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+    .container-fluid {
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Utility classes */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure content doesn't overflow */
+* {
+    box-sizing: border-box;
+}
+
+/* Remove any bottom spacing that might cause white space */
+html, body {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Ensure footer has no bottom spacing */
+footer {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+/* Responsive grid utilities */
+.grid-responsive-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+    .grid-responsive-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid-responsive-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* Fix for scrolled body with navbar */
+body.scrolled .main-content {
+    padding-top: 70px; /* Adjust when banner is hidden */
+}
+
+/* Print styles */
+@media print {
+    .main-content {
+        padding-top: 0 !important;
+    }
+
+    nav, .navbar, .sidebar {
+        display: none !important;
+    }
+}
+

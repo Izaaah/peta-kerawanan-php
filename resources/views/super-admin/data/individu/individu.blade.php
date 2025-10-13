@@ -3,6 +3,8 @@
 @section('title', 'Data Individu Tersangka')
 
 @section('content')
+    <!-- Include responsive CSS -->
+    <link rel="stylesheet" href="{{ asset('css/admin-data-responsive.css') }}">
     @include('components.superadmin-navbar')
 
     <div class="container-fluid px-4 py-3">
@@ -130,29 +132,29 @@
                     <tbody id="individuTableBody" class="bg-white divide-y divide-gray-200">
                         @foreach ($sampleData as $i => $individu)
                             <tr>
-                                <td class="px-4 py-2">{{ $sampleData->firstItem() + $i }}</td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">{{ $sampleData->firstItem() + $i }}</td>
+                                 lg:px-4 py-2">
                                     <div class="font-semibold text-gray-800">{{ $individu->nama }}</div>
                                     <div class="text-xs text-gray-500">{{ $individu->nik }}</div>
                                 </td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">
                                     <div class="text-gray-800">{{ $individu->kelurahan }}, {{ $individu->kecamatan }}
                                     </div>
                                     <div class="text-xs text-gray-500">{{ $individu->kabupaten }}</div>
                                 </td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">
                                     <span
                                         class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
                                         {{ $individu->status }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">
                                     <span
                                         class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
                                         {{ $individu->peran_jaringan }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">
                                     @if ($individu->residivis)
                                         <span
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>
@@ -161,7 +163,7 @@
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">
                                     @if ($individu->telepon && $individu->telepon->count() > 0)
                                         @foreach ($individu->telepon as $telepon)
                                             <span
@@ -176,7 +178,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-2">
+                                 lg:px-4 py-2">
                                     @if ($individu->createdBy)
                                         <span
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
@@ -257,32 +259,32 @@
             pageData.forEach((individu, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-            <td class="px-4 py-2">${start + index + 1}</td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">${start + index + 1}</td>
+             lg:px-4 py-2">
                 <div class="font-semibold text-gray-800">${individu.nama}</div>
                 <div class="text-xs text-gray-500">${individu.nik}</div>
             </td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">
                 <div class="text-gray-800">${individu.kelurahan}, ${individu.kecamatan}</div>
                 <div class="text-xs text-gray-500">${individu.kabupaten}</div>
             </td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">
                 <span class="inline-block px-2 py-1 rounded text-xs font-semibold ${individu.status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">
                     ${individu.status}
                 </span>
             </td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">
                 <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
                     ${individu.peran_jaringan}
                 </span>
             </td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">
                 ${individu.residivis ?
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>' :
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>'
                 }
             </td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">
                 ${individu.telepon && individu.telepon.length > 0 ?
                     individu.telepon.map(telepon =>
                         `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">${telepon.nomor_telepon}</span>`
@@ -290,13 +292,13 @@
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
                 }
             </td>
-            <td class="px-4 py-2">
+             lg:px-4 py-2">
                 ${individu.created_by ?
                     `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">${individu.created_by.name}</span>` :
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
                 }
             </td>
-            <td class="px-4 py-2 text-center">
+             lg:px-4 py-2 text-center">
                 <div class="flex gap-1 justify-center">
                     <a href="/super-admin/data-individu/${individu.id}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
                         <i class="fas fa-eye"></i>

@@ -3,6 +3,8 @@
 @section('title', 'Data Management')
 
 @section('content')
+    <!-- Include responsive CSS -->
+    <link rel="stylesheet" href="{{ asset('css/admin-data-responsive.css') }}">
     @include('components.superadmin-navbar')
 
     <div class="mx-auto py-8 px-2">

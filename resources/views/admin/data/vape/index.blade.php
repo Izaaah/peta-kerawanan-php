@@ -3,6 +3,8 @@
 @section('title', 'Data Penjual Vape')
 
 @section('content')
+    <!-- Include responsive CSS -->
+    <link rel="stylesheet" href="{{ asset('css/admin-data-responsive.css') }}">
     <div class="mx-auto px-4 py-3">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-bold">Daftar Penjual Vape</h2>
@@ -10,18 +12,18 @@
                 <a href="{{ route('admin.data.vape.create') }}"
                     class="bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700">+ Tambah Data</a>
                 <a href="{{ route('admin.data.index') }}"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
-                    <i class="fas fa-arrow-left mr-1"></i>Kembali
+                    class="inline-flex items-center px-3 lg:px-4 py-2 text-xs lg:text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700 btn-responsive">
+                    <i class="fas fa-arrow-left mr-1"></i><span class="hidden sm:inline">Kembali</span><span class="sm:hidden">←</span>
                 </a>
             </div>
         </div>
-        <form method="GET" action="{{ route('admin.data.vape.index') }}" class="mb-4 flex gap-2">
+        <form method="GET" action="{{ route('admin.data.vape.index') }}" class="mb-4 flex gap-2 form-responsive">
             <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama toko, pemilik..."
-                class="border rounded px-3 py-2 w-full" />
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+                class="border rounded px-3 py-2 w-full text-sm lg:text-base" />
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm lg:text-base">Search</button>
         </form>
         <div class="bg-white rounded shadow p-6">
-            <table class="min-w-full divide-y divide-gray-200">
+            <div class="table-responsive">\n                <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
@@ -67,7 +69,7 @@
                         </tr>
                     @endforelse
                 </tbody>
-            </table>
+            </table>\n            </div>
             <div class="mt-4">
                 {{ $vapeList->links() }}
             </div>

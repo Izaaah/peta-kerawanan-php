@@ -1,10 +1,10 @@
 <!-- Tab Data Kabupaten NIK Content -->
 <div id="dataKabupatenNikContent" class="dashboard-content hidden">
     <div class="bg-white rounded-lg shadow-lg pb-2">
-        <div class="px-6 pb-2 border-b border-gray-200">
-            <div class="flex items-center justify-between">
+        <div class="px-4 lg:px-6 pb-2 border-b border-gray-200">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900">Data Kasus per Kabupaten/Kota (Berdasarkan NIK)</h3>
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Data Kasus per Kabupaten/Kota (Berdasarkan NIK)</h3>
                     <p class="text-sm text-gray-600 mt-1">Menampilkan 20 data teratas berdasarkan jumlah kasus</p>
                 </div>
                 <button onclick="switchToStatistikTab()"

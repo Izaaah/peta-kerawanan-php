@@ -26,28 +26,21 @@
     <script src="https://cdn.jsdelivr.net/npm/orgchart@2.1.0/dist/js/orgchart.min.js"></script>
     <!-- Additional Styles -->
     <link rel="stylesheet" href="{{ asset('css/superadmin-components.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive-layout.css') }}">
     @stack('styles')
 </head>
 
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 flex flex-col" style="padding-top: 110px;">
-        <!-- Include Superadmin Navbar -->
-        @include('components.superadmin-navbar')
+<body class="font-sans antialiased" style="display: flex; flex-direction: column; min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden;">
+    <!-- Include Superadmin Navbar -->
+    @include('components.superadmin-navbar')
 
-        <!-- Main Content Area -->
-        <div class="flex flex-1">
-            <!-- Sidebar (optional - bisa diaktifkan jika diperlukan) -->
-            {{-- @include('components.superadmin-sidebar') --}}
+    <!-- Main Content Area with responsive class -->
+    <main class="main-content bg-gray-100" style="flex: 1 0 auto;">
+        @yield('content')
+    </main>
 
-            <!-- Main Content -->
-            <main class="flex-1 py-4 px-6">
-                @yield('content')
-            </main>
-        </div>
-
-        <!-- Footer -->
-        @include('components.superadmin-footer')
-    </div>
+    <!-- Footer -->
+    @include('components.superadmin-footer')
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

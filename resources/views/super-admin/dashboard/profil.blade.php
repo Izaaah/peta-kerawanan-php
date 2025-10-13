@@ -1,11 +1,11 @@
 ﻿        <!-- Konten Profil Organisasi -->
         <div id="profilContent" class="dashboard-content hidden">
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="bg-white rounded-lg shadow-lg p-4 lg:p-6">
                 <div class="mb-6 text-center">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo BNN" class="h-16 mb-2 mx-auto">
                     <div>
-                        <h2 class="text-lg font-bold text-gray-900">BADAN NARKOTIKA NASIONAL</h2>
-                        <h3 class="text-lg font-bold text-gray-900">PROVINSI JAWA TIMUR</h3>
+                        <h2 class="text-base lg:text-lg font-bold text-gray-900">BADAN NARKOTIKA NASIONAL</h2>
+                        <h3 class="text-base lg:text-lg font-bold text-gray-900">PROVINSI JAWA TIMUR</h3>
                     </div>
                 </div>
 
@@ -13,10 +13,10 @@
                 </div>
 
                 <!-- Tugas Pokok dan Fungsi -->
-                <div class="mt-5 space-y-12 mx-auto px-4">
+                <div class="mt-5 space-y-8 lg:space-y-12 mx-auto px-2 lg:px-4">
                     <div class="relative pb-6">
                         <h4
-                            class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-red-600 pb-3">
+                            class="text-xl lg:text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-red-600 pb-3">
                             Tugas Pokok dan Fungsi (Tupoksi) Bidang Pemberantasan dan Intelijen</h4>
                         <div
                             class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full">
@@ -25,9 +25,9 @@
 
                     <!-- Tugas Pokok -->
                     <div
-                        class="bg-gradient-to-br from-white to-blue-50 rounded-base shadow-lg p-8 border-t border-l border-blue-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-                        <div class="flex items-center justify-between mb-1">
-                            <h5 class="text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan
+                        class="bg-gradient-to-br from-white to-blue-50 rounded-base shadow-lg p-4 lg:p-8 border-t border-l border-blue-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-1 gap-2">
+                            <h5 class="text-lg lg:text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan
                                 dan
                                 Intelijen</h5>
                             <button type="button" onclick="openTugasModal()"
@@ -41,8 +41,8 @@
                                 Edit Tugas Pokok
                             </button>
                         </div>
-                        <div class="pl-5 pr-4">
-                            <div class="text-gray-700 leading-relaxed text-lg bg-white bg-opacity-50 p-4 ml-5 font-sans"
+                        <div class="pl-2 lg:pl-5 pr-2 lg:pr-4">
+                            <div class="text-gray-700 leading-relaxed text-base lg:text-lg bg-white bg-opacity-50 p-2 lg:p-4 ml-2 lg:ml-5 font-sans"
                                 id="tugasContent">
                                 @if (isset($tugas) && $tugas->count() > 0)
                                     @foreach ($tugas as $t)
@@ -63,10 +63,10 @@
 
                     <!-- Fungsi -->
                     <div
-                        class="bg-gradient-to-br from-white to-green-50 rounded-base shadow-lg p-8 border-t border-l border-green-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden mb-8">
-                        <div class="flex items-center justify-between mb-4">
+                        class="bg-gradient-to-br from-white to-green-50 rounded-base shadow-lg p-4 lg:p-8 border-t border-l border-green-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden mb-8">
+                        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 gap-4">
                             <div class="items-center">
-                                <h5 class="text-2xl font-bold text-black tracking-tight whitespace-nowrap">Fungsi Bidang
+                                <h5 class="text-lg lg:text-2xl font-bold text-black tracking-tight">Fungsi Bidang
                                     Pemberantasan</h5>
                                 <p class="font-bold">Sesuai Pasal 10, Peraturan Kepala BNN Nomor 6 Tahun 2020:</p>
                                 <p class="italic">Dalam melaksanakan tugas sebagaimana dimaksud dalam Pasal 9, Bidang
@@ -83,8 +83,8 @@
                                 Edit Fungsi
                             </button>
                         </div>
-                        <div class="pl-1 pr-4">
-                            <div class="bg-white bg-opacity-50 p-4 rounded-xl shadow-sm">
+                        <div class="pl-1 lg:pr-4">
+                            <div class="bg-white bg-opacity-50 p-2 lg:p-4 rounded-xl shadow-sm">
                                 <ul class="space-y-4 list-none" id="fungsiContent">
                                     @if (isset($fungsi) && $fungsi->count() > 0)
                                         @foreach ($fungsi as $index => $f)
@@ -122,10 +122,10 @@
                     </div>
 
                     <!-- Struktur Organisasi -->
-                    <div class="mt-12 max-w-6xl mx-auto px-4">
+                    <div class="mt-8 lg:mt-12 max-w-6xl mx-auto px-2 lg:px-4">
                         <div class="relative pb-6 mb-8">
                             <h4
-                                class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
+                                class="text-xl lg:text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
                                 Struktur Organisasi</h4>
                             <div
                                 class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full">
@@ -156,7 +156,7 @@
 
                         <!-- Struktur Organisasi -->
                         <div
-                            class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl border border-blue-100 overflow-hidden relative mb-12 mt-8 p-8">
+                            class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl border border-blue-100 overflow-hidden relative mb-8 lg:mb-12 mt-4 lg:mt-8 p-4 lg:p-8">
                             <div id="orgChart" class="org-chart-container">
                                 <!-- Background decorative elements -->
                                 <div
@@ -166,15 +166,15 @@
                                     class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-red-100 to-red-50 rounded-full opacity-30 -ml-32 -mb-32 z-0">
                                 </div>
 
-                                <div class="org-chart relative space-y-8">
+                                <div class="org-chart relative space-y-4 lg:space-y-8">
 
                                     <!-- Level 1: Kepala BNNP Jatim -->
                                     <div class="relative flex flex-col items-center">
                                         <div
-                                            class="flex items-center bg-gradient-to-r from-red-600 to-red-700 text-white shadow-xl p-6 rounded-xl border-2 border-red-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[400px]">
+                                            class="flex items-center bg-gradient-to-r from-red-600 to-red-700 text-white shadow-xl p-3 lg:p-6 rounded-xl border-2 border-red-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[280px] lg:min-w-[400px]">
                                             <div
-                                                class="w-20 h-20 bg-white mr-5 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
-                                                <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor"
+                                                class="w-12 h-12 lg:w-20 lg:h-20 bg-white mr-2 lg:mr-5 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                                <svg class="w-6 h-6 lg:w-12 lg:h-12 text-red-600" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2"
@@ -184,13 +184,13 @@
                                             </div>
                                             <div class="text-left">
                                                 @php $ketua = $pegawai->where('jabatan','Ketua')->first(); @endphp
-                                                <div class="text-white font-bold text-xl">Kepala BNNP Jatim</div>
-                                                <div class="text-white text-lg">{{ $ketua->nama ?? '-' }}</div>
+                                                <div class="text-white font-bold text-sm lg:text-xl">Kepala BNNP Jatim</div>
+                                                <div class="text-white text-xs lg:text-lg">{{ $ketua->nama ?? '-' }}</div>
                                             </div>
                                         </div>
 
                                         <!-- Vertical connector -->
-                                        <div class="h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                        <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
 
                                         <!-- Horizontal connector -->
                                         <div
@@ -198,23 +198,23 @@
                                         </div>
 
                                         <!-- Vertical connectors for subordinates -->
-                                        <div class="flex w-full justify-between px-8">
-                                            <div class="h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
-                                            <div class="h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                        <div class="flex w-full justify-between px-4 lg:px-8">
+                                            <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                            <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
                                         </div>
                                     </div>
 
                                     <!-- Level 2: Kabid Pemberantasan dan Kabag Umum -->
                                     <div
-                                        class="relative flex flex-col lg:flex-row justify-between items-start lg:space-x-16 space-y-8 lg:space-y-0">
+                                        class="relative flex flex-col lg:flex-row justify-between items-start lg:space-x-16 space-y-4 lg:space-y-0">
 
                                         <!-- Kabid Pemberantasan dan Intelijen -->
                                         <div class="flex flex-col items-center flex-1">
                                             <div
-                                                class="flex items-center bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-xl p-5 rounded-xl border-2 border-blue-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[350px]">
+                                                class="flex items-center bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-xl p-3 lg:p-5 rounded-xl border-2 border-blue-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[250px] lg:min-w-[350px]">
                                                 <div
-                                                    class="w-16 h-16 bg-white mr-4 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
-                                                    <svg class="w-10 h-10 text-blue-600" fill="none"
+                                                    class="w-10 h-10 lg:w-16 lg:h-16 bg-white mr-2 lg:mr-4 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                                    <svg class="w-5 h-5 lg:w-10 lg:h-10 text-blue-600" fill="none"
                                                         stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
@@ -224,15 +224,15 @@
                                                 </div>
                                                 <div class="text-left">
                                                     @php $kabidPemberantasan = $pegawai->where('jabatan','Kabid Pemberantasan')->first(); @endphp
-                                                    <div class="text-white font-bold text-lg">Kabid Pemberantasan dan
+                                                    <div class="text-white font-bold text-sm lg:text-lg">Kabid Pemberantasan dan
                                                         Intelijen</div>
-                                                    <div class="text-white text-base">
+                                                    <div class="text-white text-xs lg:text-base">
                                                         {{ $kabidPemberantasan->nama ?? '-' }}</div>
                                                 </div>
                                             </div>
 
                                             <!-- Vertical connector to Kasi -->
-                                            <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-4">
+                                            <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-2 lg:mt-4">
                                             </div>
 
                                             <!-- Horizontal connector to Kasi -->
@@ -241,19 +241,19 @@
                                             </div>
 
                                             <!-- Vertical connectors for Kasi -->
-                                            <div class="flex w-full justify-between px-12">
-                                                <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
-                                                <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                            <div class="flex w-full justify-between px-6 lg:px-12">
+                                                <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                                <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
                                             </div>
                                         </div>
 
                                         <!-- Kabag Umum -->
                                         <div class="flex flex-col items-center flex-1">
                                             <div
-                                                class="flex items-center bg-gradient-to-r from-green-600 to-green-700 text-white shadow-xl p-5 rounded-xl border-2 border-green-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[350px]">
+                                                class="flex items-center bg-gradient-to-r from-green-600 to-green-700 text-white shadow-xl p-3 lg:p-5 rounded-xl border-2 border-green-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[250px] lg:min-w-[350px]">
                                                 <div
-                                                    class="w-16 h-16 bg-white mr-4 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
-                                                    <svg class="w-10 h-10 text-green-600" fill="none"
+                                                    class="w-10 h-10 lg:w-16 lg:h-16 bg-white mr-2 lg:mr-4 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                                    <svg class="w-5 h-5 lg:w-10 lg:h-10 text-green-600" fill="none"
                                                         stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
@@ -263,29 +263,29 @@
                                                 </div>
                                                 <div class="text-left">
                                                     @php $kabagUmum = $pegawai->where('jabatan','Kabag Umum')->first(); @endphp
-                                                    <div class="text-white font-bold text-lg">Kabag Umum</div>
-                                                    <div class="text-white text-base">{{ $kabagUmum->nama ?? '-' }}
+                                                    <div class="text-white font-bold text-sm lg:text-lg">Kabag Umum</div>
+                                                    <div class="text-white text-xs lg:text-base">{{ $kabagUmum->nama ?? '-' }}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Vertical connector to Koordinator -->
-                                            <div class="h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-4">
+                                            <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-2 lg:mt-4">
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Level 3: Kasi Intelijen, Kasi Wastahti, dan Koordinator -->
                                     <div
-                                        class="relative flex flex-col lg:flex-row justify-between items-start lg:space-x-8 space-y-8 lg:space-y-0">
+                                        class="relative flex flex-col lg:flex-row justify-between items-start lg:space-x-8 space-y-4 lg:space-y-0">
 
                                         <!-- Kasi Intelijen -->
                                         <div class="flex flex-col items-center flex-1">
                                             <div
-                                                class="flex items-center bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-xl p-4 rounded-xl border-2 border-purple-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[280px]">
+                                                class="flex items-center bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-xl p-2 lg:p-4 rounded-xl border-2 border-purple-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[200px] lg:min-w-[280px]">
                                                 <div
-                                                    class="w-14 h-14 bg-white mr-3 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
-                                                    <svg class="w-8 h-8 text-purple-600" fill="none"
+                                                    class="w-8 h-8 lg:w-14 lg:h-14 bg-white mr-2 lg:mr-3 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
+                                                    <svg class="w-4 h-4 lg:w-8 lg:h-8 text-purple-600" fill="none"
                                                         stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
@@ -295,8 +295,8 @@
                                                 </div>
                                                 <div class="text-left">
                                                     @php $kasiIntelijen = $pegawai->where('jabatan','Kasi Intelijen')->first(); @endphp
-                                                    <div class="text-white font-bold text-base">Kasi Intelijen</div>
-                                                    <div class="text-white text-sm">{{ $kasiIntelijen->nama ?? '-' }}
+                                                    <div class="text-white font-bold text-xs lg:text-base">Kasi Intelijen</div>
+                                                    <div class="text-white text-xs lg:text-sm">{{ $kasiIntelijen->nama ?? '-' }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -363,18 +363,18 @@
                             </div>
 
                             <!-- Staff Level -->
-                            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="mt-4 lg:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
 
                                 <!-- Staff di bawah Kasi Intelijen -->
                                 <div class="space-y-4">
-                                    <h5 class="text-lg font-bold text-gray-800 text-center mb-4">Staff Sie Intelijen
+                                    <h5 class="text-sm lg:text-lg font-bold text-gray-800 text-center mb-2 lg:mb-4">Staff Sie Intelijen
                                     </h5>
 
                                     <!-- Analisis Intelijen -->
                                     <div
-                                        class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg shadow-md p-4 border border-purple-200 hover:shadow-lg transition-all duration-300">
+                                        class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg shadow-md p-2 lg:p-4 border border-purple-200 hover:shadow-lg transition-all duration-300">
                                         <div class="text-left">
-                                            <div class="text-purple-800 font-bold text-base mb-2">Analisis Intelijen
+                                            <div class="text-purple-800 font-bold text-sm lg:text-base mb-2">Analisis Intelijen
                                             </div>
                                             <div class="text-gray-700">
                                                 <ul class="list-disc list-inside space-y-1">
@@ -512,12 +512,12 @@
                     </div>
 
                     <div
-                        class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
+                        class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl p-4 lg:p-8 border border-blue-100 overflow-hidden relative mb-8 lg:mb-12">
                         <div class="space-y-6">
                             <!-- Tabel Komposisi -->
                             <div class="relative pb-6 mb-8">
                                 <h4
-                                    class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
+                                    class="text-xl lg:text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
                                     Komposisi Personil Pemberantasan</h4>
                                 <div
                                     class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1.5 bg-gradient-to-r from-blue-500 to-red-500 rounded-full">
@@ -525,9 +525,9 @@
                             </div>
                         </div>
                         <div class="bg-white rounded-lg shadow">
-                            <div class="relative px-6 py-4 border-b border-gray-200">
-                                <h3 class="text-lg font-semibold text-gray-900">Rincian Komposisi</h3>
-                                <div class="absolute right-0 top-0 mt-3 mr-4">
+                            <div class="relative px-4 lg:px-6 py-4 border-b border-gray-200">
+                                <h3 class="text-base lg:text-lg font-semibold text-gray-900">Rincian Komposisi</h3>
+                                <div class="absolute right-0 top-0 mt-3 mr-2 lg:mr-4">
                                     <a href="#" onclick="openKomposisiModal()"
                                         class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
@@ -675,12 +675,12 @@
                 </div>
 
                 <div
-                    class="bg-gradient-to-br from-white to-blue-50 w-full shadow-xl p-8 border border-blue-100 overflow-hidden relative mb-12">
+                    class="bg-gradient-to-br from-white to-blue-50 w-full shadow-xl p-4 lg:p-8 border border-blue-100 overflow-hidden relative mb-8 lg:mb-12">
                     <!-- New Gallery Section Below Komposisi Personil -->
                     <div id="gallery-section" class="gallery-section">
                         <div class="relative mb-8">
                             <h4
-                                class="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
+                                class="text-xl lg:text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-red-600 pb-3">
                                 Galeri Foto
                             </h4>
                             <div
@@ -697,19 +697,19 @@
                         </div>
 
                         <!-- Gallery Container -->
-                        <div class="flex justify-center items-center">
+                        <div class="flex justify-center items-center px-2">
                             @if (isset($galeri) && count($galeri) > 0)
                                 <div class="relative w-full max-w-6xl">
                                     <!-- Carousel Container -->
                                     <div class="relative overflow-hidden rounded-2xl">
                                         <!-- Main Gallery Display -->
-                                        <div class="flex items-center justify-center space-x-4 py-8">
+                                        <div class="flex items-center justify-center space-x-2 lg:space-x-4 py-4 lg:py-8">
 
                                             <!-- Previous Image (Left) -->
-                                            <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500"
+                                            <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500 hidden sm:block"
                                                 id="prevImageContainer">
                                                 <div
-                                                    class="w-64 h-64 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
+                                                    class="w-32 h-32 lg:w-64 lg:h-64 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
                                                     <img id="prevImage" src="" alt="Previous"
                                                         class="w-full h-full object-cover">
                                                 </div>
@@ -719,7 +719,7 @@
                                             <div class="flex-shrink-0 transform scale-100 opacity-100 transition-all duration-500"
                                                 id="currentImageContainer">
                                                 <div
-                                                    class="relative w-96 h-96 bg-gray-200 rounded-xl overflow-hidden shadow-2xl">
+                                                    class="relative w-64 h-64 lg:w-96 lg:h-96 bg-gray-200 rounded-xl overflow-hidden shadow-2xl">
                                                     <img id="galleryImage"
                                                         src="{{ asset('storage/' . $galeri[0]->image_path) }}"
                                                         alt="Current"
@@ -764,10 +764,10 @@
                                             </div>
 
                                             <!-- Next Image (Right) -->
-                                            <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500"
+                                            <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500 hidden sm:block"
                                                 id="nextImageContainer">
                                                 <div
-                                                    class="w-64 h-64 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
+                                                    class="w-32 h-32 lg:w-64 lg:h-64 bg-gray-200 rounded-xl overflow-hidden shadow-lg">
                                                     <img id="nextImage" src="" alt="Next"
                                                         class="w-full h-full object-cover">
                                                 </div>
@@ -815,11 +815,11 @@
                 </div>
 
                 <!-- Berita Eksternal Section -->
-                <div class="mt-12" id="beritaSection">
-                    <div class="flex justify-between items-center mb-6">
+                <div class="mt-8 lg:mt-12" id="beritaSection">
+                    <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 gap-4">
                         <div>
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
-                            <p class="text-gray-600">Kumpulan berita dari berbagai sumber eksternal</p>
+                            <h2 class="text-lg lg:text-2xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
+                            <p class="text-sm lg:text-base text-gray-600">Kumpulan berita dari berbagai sumber eksternal</p>
                         </div>
                         <button id="addNewsBtn"
                             class="bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-800 transition-all duration-200 transform hover:-translate-y-0.5 shadow-sm">
@@ -833,7 +833,7 @@
                     </div>
 
                     @if (isset($berita) && count($berita) > 0)
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             @foreach ($berita->take(4) as $index => $news)
                                 <div
                                     class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
@@ -841,7 +841,7 @@
                                     <div class="relative h-48 overflow-hidden">
                                         <img src="{{ $news->image_url }}" alt="{{ $news->title }}"
                                             class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                                            onerror="this.src='{{ asset('images/default-news.jpg') }}'">
+                                            onerror="this.src='{{ asset('img/logo.png') }}'">
 
                                         <!-- Delete Button -->
                                         <div class="absolute top-3 right-3">
@@ -860,10 +860,10 @@
                                     </div>
 
                                     <!-- News Content -->
-                                    <div class="p-4">
-                                        <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2">
+                                    <div class="p-3 lg:p-4">
+                                        <h3 class="font-bold text-gray-900 text-sm lg:text-lg mb-2 line-clamp-2">
                                             {{ $news->title }}</h3>
-                                        <p class="text-gray-600 text-sm mb-3 line-clamp-3">
+                                        <p class="text-gray-600 text-xs lg:text-sm mb-3 line-clamp-3">
                                             {{ $news->description }}</p>
 
                                         <!-- News Meta -->

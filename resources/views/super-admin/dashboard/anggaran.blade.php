@@ -3,7 +3,7 @@
     <div class="space-y-6">
 
         <!-- Statistik Cards Anggaran -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
             <!-- Total Anggaran Sebelum -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
@@ -97,9 +97,9 @@
 
         <!-- Tabel Anggaran -->
         <div class="bg-white rounded-lg shadow">
-            <div class="relative px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Rincian Anggaran</h3>
-                <div class="absolute right-0 top-0 mt-3 mr-4">
+            <div class="relative px-4 lg:px-6 py-4 border-b border-gray-200">
+                <h3 class="text-base lg:text-lg font-semibold text-gray-900">Rincian Anggaran</h3>
+                <div class="absolute right-0 top-0 mt-3 mr-2 lg:mr-4">
                     <a href="#" id="openModalBtn"
                         class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm font-medium rounded-md shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -282,8 +282,8 @@
 
         <!-- Pie Chart Anggaran -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Anggaran</h3>
+            <div class="p-4 lg:p-6">
+                <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-4">Anggaran</h3>
                 <canvas id="chartAnggaranPie" width="400" height="200"></canvas>
             </div>
         </div>

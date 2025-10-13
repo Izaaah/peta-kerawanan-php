@@ -24,8 +24,15 @@
         <img src="{{ asset('img/sijagad.png') }}" alt="Logo Sijagad" class="sijagad-logo">
     </div>
 
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="adminMobileMenuToggle" onclick="toggleAdminMobileMenu()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
+
     <!-- Tengah: Menu Navigasi -->
-    <div class="menu-area">
+    <div class="menu-area" id="adminMenuArea">
         <div class="menu-btn"><a href="{{ route('admin.dashboard') }}">Beranda</a>
         </div>
         <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data Intelijen</a></div>
@@ -52,3 +59,88 @@
         </div>
     </div>
 </div>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu-overlay" id="adminMobileMenuOverlay"></div>
+
+<script>
+    // Global function untuk toggle admin mobile menu
+    function toggleAdminMobileMenu() {
+        console.log('Admin mobile menu toggle clicked!');
+
+        const menuArea = document.getElementById('adminMenuArea');
+        const mobileMenuOverlay = document.getElementById('adminMobileMenuOverlay');
+        const mobileMenuToggle = document.getElementById('adminMobileMenuToggle');
+
+        if (menuArea && mobileMenuOverlay && mobileMenuToggle) {
+            // Toggle classes
+            menuArea.classList.toggle('mobile-menu-open');
+            mobileMenuOverlay.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+
+            console.log('Admin menu toggled:', menuArea.classList.contains('mobile-menu-open'));
+        } else {
+            console.log('Admin elements not found:', {
+                menu: menuArea,
+                overlay: mobileMenuOverlay,
+                toggle: mobileMenuToggle
+            });
+        }
+    }
+
+    function closeAdminMobileMenu() {
+        console.log('Closing admin menu');
+        const menuArea = document.getElementById('adminMenuArea');
+        const mobileMenuOverlay = document.getElementById('adminMobileMenuOverlay');
+        const mobileMenuToggle = document.getElementById('adminMobileMenuToggle');
+
+        if (menuArea && mobileMenuOverlay && mobileMenuToggle) {
+            menuArea.classList.remove('mobile-menu-open');
+            mobileMenuOverlay.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuToggle = document.getElementById('adminMobileMenuToggle');
+        const menuArea = document.getElementById('adminMenuArea');
+        const mobileMenuOverlay = document.getElementById('adminMobileMenuOverlay');
+
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', closeAdminMobileMenu);
+        }
+
+        // Handle dropdown menu toggle on mobile
+        const dropdownParent = menuArea?.querySelector('.dropdown-parent');
+        if (dropdownParent) {
+            dropdownParent.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    dropdownParent.classList.toggle('active');
+                }
+            });
+        }
+
+        // Close menu when clicking on menu items (only on mobile)
+        if (menuArea) {
+            const menuItems = menuArea.querySelectorAll('.menu-btn a, .dropdown-menu a');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        // Don't close immediately for dropdown items
+                        if (!item.closest('.dropdown-menu')) {
+                            setTimeout(() => closeAdminMobileMenu(), 100);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeAdminMobileMenu();
+            }
+        });
+    });
+</script>

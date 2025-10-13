@@ -1,16 +1,14 @@
 @extends('layouts.superadmin-master')
 
 @section('content')
-    @include('components.superadmin-navbar')
-
-    <div class="container-fluid px-4">
+    <div class="container-fluid">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900">Manajemen Pengguna</h1>
-                    <div class="flex space-x-2">
+            <div class="p-4 md:p-6">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-900">Manajemen Pengguna</h1>
+                    <div class="flex flex-col sm:flex-row gap-2">
                         <a href="{{ route('super-admin.user-management.create') }}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center text-sm md:text-base">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -18,7 +16,7 @@
                             Tambah Pengguna
                         </a>
                         <button
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center text-sm md:text-base">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -29,9 +27,9 @@
                 </div>
 
                 <!-- Search Section -->
-                <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
-                    <div class="flex flex-col md:flex-row gap-4 items-center">
-                        <div class="flex-1">
+                <div class="bg-blue-50 p-3 md:p-4 rounded-lg mb-4 md:mb-6 border border-blue-200">
+                    <div class="flex flex-col md:flex-row gap-3 md:gap-4 md:items-end">
+                        <div class="flex-1 w-full">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Cari Pengguna</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -45,9 +43,9 @@
                                     class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto md:flex-shrink-0">
                             <button id="searchBtn"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center w-full sm:w-auto whitespace-nowrap">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -55,7 +53,7 @@
                                 Cari
                             </button>
                             <button id="clearSearchBtn"
-                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto whitespace-nowrap">
                                 Reset
                             </button>
                         </div>
@@ -100,7 +98,7 @@
                 </div> --}}
 
                 <!-- User Statistics -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
                     <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                         <h3 class="font-semibold text-blue-800">Total Users</h3>
                         <p class="text-2xl font-bold text-blue-600">{{ $users->count() ?? 0 }}</p>
@@ -129,8 +127,8 @@
 
                 <!-- Tabel User -->
                 <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                    <div class="overflow-x-auto" style="max-width: 100%;">
+                        <table class="min-w-full divide-y divide-gray-200" style="table-layout: auto;">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th
