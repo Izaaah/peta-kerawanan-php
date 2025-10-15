@@ -323,12 +323,12 @@
             </td>
             <td class="px-4 py-2 text-center">
                 <div class="flex gap-1 justify-center">
-                    <a href="{{ route('admin.data.individu.show', $individu->id) }}"
+                    <a href="/admin/data/individu/${individu.id}"
                         class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50"
                         title="Lihat Detail">
                         <i class="fas fa-eye"></i>
                     </a>
-                    <a href="{{ route('admin.data.individu.edit', $individu->id) }}"
+                    <a href="/admin/data/individu/${individu.id}/edit"
                         class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50"
                         title="Edit">
                         <i class="fas fa-edit"></i>
