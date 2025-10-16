@@ -1,6 +1,6 @@
 <!-- Tab Statistik Content -->
 <div id="statistikContent" class="dashboard-content">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <div class="flex items-center">
@@ -84,12 +84,12 @@
     </div>
 
     <!-- Grafik Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 mb-8">
         <!-- Grafik Kasus per Kabupaten -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br> Berdasarkan TKP
+            <div class="p-4 lg:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br> Berdasarkan TKP
                     </h3>
                     <button onclick="switchToDataKabupatenTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
@@ -108,9 +108,9 @@
 
         <!-- Grafik Kasus per Kecamatan -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan TKP</h3>
+            <div class="p-4 lg:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan TKP</h3>
                     <button onclick="switchToDataKecamatanTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
                         <div class="flex items-center space-x-1">
@@ -128,12 +128,12 @@
     </div>
 
     <!-- Grafik Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 mb-8">
         <!-- Grafik Kasus per Kabupaten NIK -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br> Berdasarkan NIK
+            <div class="p-4 lg:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br> Berdasarkan NIK
                     </h3>
                     <button onclick="switchToDataKabupatenNikTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
@@ -152,9 +152,9 @@
 
         <!-- Grafik Kasus per Kecamatan NIK -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan NIK</h3>
+            <div class="p-4 lg:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan NIK</h3>
                     <button onclick="switchToDataKecamatanNikTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
                         <div class="flex items-center space-x-1">
@@ -172,25 +172,25 @@
     </div>
 
     <!-- Grafik Trend dan Status -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 mb-8">
         <!-- Trend Bulanan -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Trend Kasus Bulanan</h3>
+            <div class="p-4 lg:p-6">
+                <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-4">Trend Kasus Bulanan</h3>
                 <canvas id="chartTrend" width="400" height="200"></canvas>
             </div>
         </div>
 
         <!-- Status & Residivis Pie Charts -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 lg:p-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <h3 class="text-md font-semibold text-gray-900 mb-2">Status</h3>
+                        <h3 class="text-sm lg:text-md font-semibold text-gray-900 mb-2">Status</h3>
                         <canvas id="chartStatusPie" width="180" height="180"></canvas>
                     </div>
                     <div>
-                        <h3 class="text-md font-semibold text-gray-900 mb-2">Residivis</h3>
+                        <h3 class="text-sm lg:text-md font-semibold text-gray-900 mb-2">Residivis</h3>
                         <canvas id="chartResidivisPie" width="180" height="180"></canvas>
                     </div>
                 </div>
@@ -199,14 +199,14 @@
 
         <!-- Jenis Kelamin & Umur Pie Charts -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 lg:p-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <h3 class="text-md font-semibold text-gray-900 mb-2">Jenis Kelamin</h3>
+                        <h3 class="text-sm lg:text-md font-semibold text-gray-900 mb-2">Jenis Kelamin</h3>
                         <canvas id="chartJenisKelaminPie" width="180" height="180"></canvas>
                     </div>
                     <div>
-                        <h3 class="text-md font-semibold text-gray-900 mb-2">Kategori Umur</h3>
+                        <h3 class="text-sm lg:text-md font-semibold text-gray-900 mb-2">Kategori Umur</h3>
                         <canvas id="chartUmurPie" width="180" height="180"></canvas>
                     </div>
                 </div>
@@ -216,8 +216,8 @@
 
     <!-- Tabel Kasus Terbaru -->
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Kasus Terbaru</h3>
+        <div class="p-4 lg:p-6">
+            <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-4">Kasus Terbaru</h3>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">

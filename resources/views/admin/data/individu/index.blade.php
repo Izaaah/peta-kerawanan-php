@@ -1,23 +1,21 @@
-@extends('layouts.superadmin-master')
+@extends('layouts.admin-master')
 
-@section('title', 'Data Individu Tersangka')
+@section('title', 'Data Individu TSK')
 
 @section('content')
-    <!-- Include responsive CSS -->
-    <link rel="stylesheet" href="{{ asset('css/admin-data-responsive.css') }}">
-    @include('components.superadmin-navbar')
+    @include('components.admin-navbar')
 
-    <div class="container-fluid px-4 py-3">
+    <div class="container-fluid mx-auto px-4 py-3">
         <!-- Header Section -->
         <div class="mb-5">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Individu Tersangka</h1>
-            <p class="text-sm text-gray-500 mb-4">Kelola data individu Tersangka dengan korelasi kasus narkotika</p>
+            <h1 class="text-2xl font-semibold text-gray-800 mb-1">Data Profil Individu</h1>
+            <p class="text-sm text-gray-500 mb-4">Kelola data profil individu dengan korelasi kasus narkotika</p>
             <div class="flex flex-col md:flex-row gap-2 md:gap-3 items-start md:items-center">
-                {{-- <a href="{{ route('super-admin.data.individu.create') }}"
+                <a href="{{ route('admin.data.individu.create') }}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                     <i class="fas fa-plus mr-2"></i>Tambah Data
-                </a> --}}
-                <a href="{{ route('super-admin.api.individu.export') }}"
+                </a>
+                <a href="{{ route('admin.api.individu.export') }}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700">
                     <i class="fas fa-download mr-2"></i>Export
                 </a>
@@ -66,9 +64,9 @@
                     <label for="filterStatus" class="block text-sm font-medium text-gray-700">Status</label>
                     <select class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="filterStatus">
                         <option value="">Semua Status</option>
-                        <option value="Voluntary">Voluntary (Sukarela)</option>
-                        <option value="Compulsory">Compulsory (Upaya Paksa)</option>
-                        <option value="Proses Hukum Lanjut">Proses Hukum Lanjut</option>
+                        <option value="Voluntary">Voluntary</option>
+                        <option value="Compulsary">Compulsary</option>
+                        <option value="Proses Hukum Lanjur">Proses Hukum Lanjur</option>
                         <option value="Narapidana">Narapidana</option>
                     </select>
                 </div>
@@ -98,11 +96,11 @@
                 <div class="flex items-end gap-2">
                     <button class="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         onclick="applyFilters()">
-                        <i class="fas fa-search mr-2"></i>Filter
+                        <i class="fas fa-search mr-2 text-xs"></i>Filter
                     </button>
                     <button class="flex-1 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                         onclick="resetFilters()">
-                        <i class="fas fa-redo mr-2 text-xs"></i>Reset
+                        <i class="fas fa-undo mr-2 text-xs"></i>Reset
                     </button>
                 </div>
             </div>
@@ -125,36 +123,36 @@
                             <th class="px-4 py-2">Peran</th>
                             <th class="px-4 py-2">Residivis</th>
                             <th class="px-4 py-2">Nomor Telepon</th>
-                            <th class="px-4 py-2">Dibuat Oleh</th>
+                            {{-- <th class="px-4 py-2">Created By</th> --}}
                             <th class="px-4 py-2 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="individuTableBody" class="bg-white divide-y divide-gray-200">
-                        @foreach ($sampleData as $i => $individu)
+                        @foreach ($sampleData as $index => $individu)
                             <tr>
-                                 lg:px-4 py-2">{{ $sampleData->firstItem() + $i }}</td>
-                                 lg:px-4 py-2">
-                                    <div class="font-semibold text-gray-800">{{ $individu->nama }}</div>
+                                <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                <td class="px-4 py-2">
+                                    <div class="font-semibold text-gray-800 uppercase">{{ $individu->nama }}</div>
                                     <div class="text-xs text-gray-500">{{ $individu->nik }}</div>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     <div class="text-gray-800">{{ $individu->kelurahan }}, {{ $individu->kecamatan }}
                                     </div>
                                     <div class="text-xs text-gray-500">{{ $individu->kabupaten }}</div>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     <span
-                                        class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                        class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Narapidana' || $individu->status === 'Proses Hukum Lanjut' ? 'bg-red-100 text-red-700' : ($individu->status === 'Compulsary' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700') }}">
                                         {{ $individu->status }}
                                     </span>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     <span
                                         class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
                                         {{ $individu->peran_jaringan }}
                                     </span>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     @if ($individu->residivis)
                                         <span
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>
@@ -163,7 +161,7 @@
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>
                                     @endif
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     @if ($individu->telepon && $individu->telepon->count() > 0)
                                         @foreach ($individu->telepon as $telepon)
                                             <span
@@ -178,7 +176,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                 lg:px-4 py-2">
+                                {{-- <td class="px-4 py-2">
                                     @if ($individu->createdBy)
                                         <span
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
@@ -190,9 +188,9 @@
                                             -
                                         </span>
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td class="px-1 py-2 flex gap-2 justify-center my-auto">
-                                    <a href="{{ route('super-admin.data.individu.show', $individu->id) }}"
+                                    <a href="{{ route('admin.data.individu.show', $individu->id) }}"
                                         class="text-blue-600 hover:text-blue-900 flex items-center border border-blue-600 rounded-md px-1 py-1 text-sm">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -204,7 +202,7 @@
                                         </svg>
                                         Lihat
                                     </a>
-                                    <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}"
+                                    <a href="{{ route('admin.data.individu.edit', $individu->id) }}"
                                         class="text-indigo-600 hover:text-indigo-900 flex items-center border border-indigo-600 rounded-md px-1 py-1 text-sm">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -214,7 +212,7 @@
                                         </svg>
                                         Edit
                                     </a>
-                                    <form action="{{ route('super-admin.data.individu.destroy', $individu->id) }}"
+                                    <form action="{{ route('admin.data.individu.destroy', $individu->id) }}"
                                         method="POST" class="inline-block"
                                         onsubmit="return confirm('Yakin ingin menghapus user ini?');">
                                         @csrf
@@ -237,12 +235,56 @@
                 </table>
             </div>
             <!-- Pagination -->
-            <div class="mt-4">
-                <!-- Previous and Next buttons will appear automatically with pagination -->
-                {{ $sampleData->links() }}
+            <div class="flex justify-between items-center mt-4">
+                <div class="text-sm text-gray-500">
+                    Menampilkan {{ $sampleData->count() }} dari {{ $stats['total_individu'] ?? 0 }} data
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="inline-flex -space-x-px">
+                        <li><span class="px-3 py-1 rounded-l bg-gray-200 text-gray-500">Previous</span></li>
+                        <li><span class="px-3 py-1 bg-blue-600 text-white">1</span></li>
+                        <li><span class="px-3 py-1 rounded-r bg-gray-200 text-gray-500">Next</span></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    {{-- <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 bg-danger text-white">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Konfirmasi Hapus
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-3">
+                        <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="fas fa-trash fa-2x text-danger"></i>
+                        </div>
+                        <h6 class="fw-bold text-gray-800">Hapus Data Individu TSK?</h6>
+                        <p class="text-muted mb-0">Data yang dihapus tidak dapat dikembalikan!</p>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Batal
+                    </button>
+                    <form id="deleteForm" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>Hapus
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> --}}
 
     <script>
         // Data individu dari server
@@ -259,32 +301,32 @@
             pageData.forEach((individu, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-             lg:px-4 py-2">${start + index + 1}</td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">${start + index + 1}</td>
+            <td class="px-4 py-2">
                 <div class="font-semibold text-gray-800">${individu.nama}</div>
                 <div class="text-xs text-gray-500">${individu.nik}</div>
             </td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">
                 <div class="text-gray-800">${individu.kelurahan}, ${individu.kecamatan}</div>
                 <div class="text-xs text-gray-500">${individu.kabupaten}</div>
             </td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">
                 <span class="inline-block px-2 py-1 rounded text-xs font-semibold ${individu.status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">
                     ${individu.status}
                 </span>
             </td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">
                 <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
                     ${individu.peran_jaringan}
                 </span>
             </td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">
                 ${individu.residivis ?
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>' :
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>'
                 }
             </td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">
                 ${individu.telepon && individu.telepon.length > 0 ?
                     individu.telepon.map(telepon =>
                         `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">${telepon.nomor_telepon}</span>`
@@ -292,23 +334,24 @@
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
                 }
             </td>
-             lg:px-4 py-2">
+            <td class="px-4 py-2">
                 ${individu.created_by ?
                     `<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">${individu.created_by.name}</span>` :
                     '<span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-500">-</span>'
                 }
             </td>
-             lg:px-4 py-2 text-center">
+            <td class="px-4 py-2 text-center">
                 <div class="flex gap-1 justify-center">
-                    <a href="/super-admin/data-individu/${individu.id}" class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50" title="Lihat Detail">
+                    <a href="{{ route('admin.data.individu.show', $individu->id) }}"
+                        class="inline-flex items-center px-2 py-1 text-xs text-blue-600 border border-blue-600 rounded hover:bg-blue-50"
+                        title="Lihat Detail">
                         <i class="fas fa-eye"></i>
                     </a>
-                    <a href="/super-admin/data-individu/${individu.id}/edit" class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50" title="Edit">
+                    <a href="{{ route('admin.data.individu.edit', $individu->id) }}"
+                        class="inline-flex items-center px-2 py-1 text-xs text-yellow-600 border border-yellow-600 rounded hover:bg-yellow-50"
+                        title="Edit">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <button class="inline-flex items-center px-2 py-1 text-xs text-red-600 border border-red-600 rounded hover:bg-red-50" onclick="deleteIndividu(${individu.id})" title="Hapus">
-                        <i class="fas fa-trash"></i>
-                    </button>
                 </div>
             </td>
         `;
@@ -357,7 +400,7 @@
             if (peran) params.append('peran_jaringan', peran);
             if (residivis) params.append('residivis', residivis);
 
-            fetch(`/super-admin/api/individu-data?${params}`)
+            fetch(`/admin/api/individu-data?${params}`)
                 .then(response => response.json())
                 .then(data => {
                     renderTable(data.data);
@@ -374,20 +417,69 @@
 
         // Reset filters
         function resetFilters() {
+            // Clear all filter inputs
             document.getElementById('searchIndividu').value = '';
             document.getElementById('filterKabupaten').value = '';
             document.getElementById('filterStatus').value = '';
             document.getElementById('filterPeran').value = '';
             document.getElementById('filterResidivis').value = '';
-            loadData();
+
+            // Reset to original data
+            currentPage = 1;
+            renderTable(individuList);
         }
 
         // Delete individu
         function deleteIndividu(id) {
-            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            console.log('deleteIndividu called', id);
+            const modalEl = document.getElementById('deleteModal');
+            if (!modalEl) {
+                alert('Modal not found!');
+                return;
+            }
+            const modal = new bootstrap.Modal(modalEl);
             const form = document.getElementById('deleteForm');
-            form.action = `/super-admin/data-individu/${id}`;
+            form.action = "{{ route('admin.data.individu.destroy', ':id') }}".replace(':id', id);
             modal.show();
+            $('#deleteModal').modal('show');
+        }
+
+        function confirmDelete(event) {
+            event.preventDefault(); // Mencegah form untuk langsung submit
+
+            // SweetAlert2 Confirmation Popup
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "User ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika konfirmasi diterima, kirimkan form
+                    event.target.submit();
+                }
+            });
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch kabupaten list from API
+            fetch('/api/kabupaten-list')
+                .then(response => response.json())
+                .then(data => {
+                    const kabupatenSelect = document.getElementById('filterKabupaten');
+                    kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
+                    data.forEach(kab => {
+                        const option = document.createElement('option');
+                        option.value = kab;
+                        option.textContent = kab;
+                        kabupatenSelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

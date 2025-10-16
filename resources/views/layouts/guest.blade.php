@@ -260,6 +260,78 @@
             text-decoration: underline;
         }
 
+        /* Password Toggle Styles */
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #6b7280;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-toggle-btn:hover {
+            color: #dc2626;
+        }
+
+        .eye-icon,
+        .eye-slash-icon {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+        }
+
+        @media (min-width: 640px) {
+            .eye-icon,
+            .eye-slash-icon {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .eye-icon,
+            .eye-slash-icon {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .eye-icon,
+            .eye-slash-icon {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .eye-icon,
+            .eye-slash-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .eye-icon,
+            .eye-slash-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
         /* Positioning for content between temple elements */
         @media (min-width: 1024px) {
             .container {
@@ -323,6 +395,29 @@
         <a href="https://bnn.go.id/" target="_blank">BNN RI</a> |
         <a href="https://jatim.bnn.go.id/" target="_blank">BNNP Jatim</a>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeSlashIcon = document.getElementById('eyeSlashIcon');
+
+            if (togglePassword && passwordInput && eyeIcon && eyeSlashIcon) {
+                togglePassword.addEventListener('click', function() {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        eyeIcon.classList.add('hidden');
+                        eyeSlashIcon.classList.remove('hidden');
+                    } else {
+                        passwordInput.type = 'password';
+                        eyeIcon.classList.remove('hidden');
+                        eyeSlashIcon.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -17,16 +17,20 @@
 
 .banner-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
-    padding: 0 2rem;
+    padding: 0 1rem;
+    position: relative;
+    overflow: hidden; /* hide marquee overflow */
 }
 
 .banner-left {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
 }
 
 .banner-text {
@@ -34,41 +38,43 @@
     font-weight: bold;
     color: #8B0000; /* Merah gelap yang lebih elegan */
     letter-spacing: 1px;
+    text-align: center;
+    width: 100%;
     /* text-transform: uppercase; */ /* Dihapus agar tidak CAPSLOCK */
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee-right 20s linear infinite;
 }
 
-.banner-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-right: -80px;
+/* Marquee animation moving text to the right */
+@keyframes marquee-right {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
-.banner-right .profile-label {
-    font-size: 0.9rem;
-    color: black;
-    opacity: 0.9;
+/* Banner right removed - now using profile menu on logo click */
+
+/* Responsive text sizing for banner */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .banner-text {
+        font-size: 12px;
+        animation-duration: 22s; /* slightly slower on medium */
+    }
 }
 
-.banner-right .profile-label:hover {
-    font-size: 0.9rem;
-    color: gray;
-    opacity: 0.9;
-}
-.logout-btn {
-    color: black;
-    border-left: 1px solid gray;
-    padding-left: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 0.9rem;
-}
-.banner-right .logout-btn:hover {
-    font-size: 0.9rem;
-    color: gray;
-    opacity: 0.9;
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .banner-text {
+        font-size: 13px;
+        animation-duration: 24s;
+    }
 }
 
+@media (min-width: 1441px) {
+    .banner-text {
+        font-size: 14px;
+        animation-duration: 26s;
+    }
+}
 
 /* Superadmin Navbar Styles */
 .superadmin-navbar {
@@ -195,6 +201,7 @@
 
 .dropdown-arrow {
     margin-left: 0.5rem;
+    transition: transform 0.2s ease;
 }
 
 .dropdown-menu {
@@ -212,6 +219,10 @@
     transform: translateY(-10px);
     transition: all 0.3s;
     border: 2px solid #8B0000; /* Border merah gelap */
+}
+
+.dropdown-parent.active .dropdown-arrow {
+    transform: rotate(180deg);
 }
 
 .dropdown-parent:hover .dropdown-menu {
@@ -249,6 +260,13 @@
     gap: 5px; /* Mengurangi jarak antara logo dan teks */
     flex-shrink: 0;
     justify-content: flex-end; /* Memastikan konten berada di ujung kanan */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-right: 10px; /* Memberikan ruang untuk notification badge */
+}
+
+.logo-bnn:hover {
+    transform: scale(1.05);
 }
 
 .logo-circle {
@@ -259,7 +277,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
+    z-index: 10020; /* above top-banner (1001) */
     /* margin-right: 5px; Menambahkan margin kanan pada logo */
 }
 
@@ -267,6 +287,75 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* Notification Badge Styles */
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: #FF4444;
+    border: 3px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999999;
+    animation: bounce 2s infinite;
+    box-shadow: 0 3px 12px rgba(255, 68, 68, 0.6);
+}
+
+.notification-count {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Pulse animation for extra attention */
+.notification-badge::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: #FF4444;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
 }
 
 .logo-text {
@@ -298,42 +387,254 @@
     gap: 1rem;
 }
 
-.profile-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-.logout-btn {
-    /* background: #ef4444; */
-    color: black;
-    border-left: 1px solid gray;
-    /* padding: 0.5rem 1rem; */
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-/* .logout-btn:hover {
-    background: #dc2626;
-} */
+/* Old profile and logout styles removed */
 
 /* Responsive Design */
-@media (max-width: 768px) {
+/* iPhone SE and smaller screens (375px and below) */
+@media (max-width: 375px) {
+    .top-banner {
+        height: 30px;
+        margin-left: 0;
+    }
+
+    .banner-text {
+        font-size: 8px;
+        line-height: 1.1;
+        letter-spacing: 0.2px;
+    }
+
+    /* Navbar adjustments for iPhone SE */
+    .superadmin-navbar {
+        top: 30px;
+        height: 60px;
+        padding: 0.5rem;
+        overflow: visible; /* allow logo and badge to extend without clipping */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Logo adjustments for iPhone SE */
+    .logo-sijagad {
+        max-width: 45px;
+        flex-shrink: 0;
+        margin-right: 0;
+    }
+
+    .logo-bnn {
+        max-width: 86px; /* tighten container to prevent overlap with hamburger */
+        flex-shrink: 0;
+        margin-left: auto;
+        margin-right: 0.25rem;
+    }
+
+    .sijagad-logo {
+        height: 30px; /* slightly smaller to fit narrow height */
+    }
+
+    .logo-circle {
+        height: 36px; /* reduce to avoid cut on small height */
+    }
+
+    /* Notification badge responsive untuk iPhone SE */
+    .notification-badge {
+        width: 20px;
+        height: 20px;
+        top: -6px;
+        right: -6px;
+    }
+
+    .notification-count {
+        font-size: 10px;
+    }
+
+    .logo-text .bnn {
+        font-size: 0.7rem;
+    }
+
+    .logo-text .prov {
+        font-size: 0.5rem;
+    }
+
+    /* Mobile menu button for iPhone SE */
+    .mobile-menu-toggle {
+        width: 24px;
+        height: 18px;
+        margin-left: 0.25rem;
+    }
+
+    .hamburger-line {
+        width: 24px;
+        height: 2px;
+    }
+
+    /* Mobile menu positioning for iPhone SE */
+    .menu-area {
+        top: 90px;
+        width: 280px;
+        height: calc(100vh - 90px);
+        padding: 1.5rem 1rem;
+        background: rgba(139, 0, 0, 0.98);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        overflow-y: auto;              /* enable vertical scrolling */
+        -webkit-overflow-scrolling: touch; /* smooth iOS momentum scroll */
+        overflow-x: hidden;            /* prevent horizontal scroll */
+    }
+
+    /* Menu buttons in mobile - improved layout */
+    .menu-btn {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 1rem;
+        margin: 0;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: none;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        margin-bottom: 0.5rem;
+    }
+
+    .menu-btn-peta {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 1rem;
+        margin: 0;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 0.95rem;
+        line-height: 1.4;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        margin-bottom: 0.5rem;
+    }
+
+    .menu-btn:hover,
+    .menu-btn-peta:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateX(5px);
+    }
+
+    .menu-btn a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        display: block;
+        width: 100%;
+    }
+
+    /* Dropdown menu for iPhone SE - improved styling */
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        margin-top: 0.75rem;
+        margin-left: 1rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        border-left: 3px solid #FFD700;
+        padding: 0;
+    }
+
+    .dropdown-parent:hover .dropdown-menu,
+    .dropdown-parent.active .dropdown-menu {
+        max-height: 300px;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-menu li {
+        padding: 0.75rem 1rem 0.75rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 0.25rem 0.5rem;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+    }
+
+    .dropdown-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-menu li a {
+        color: white;
+        font-size: 0.9rem;
+        line-height: 1.3;
+        display: block;
+        width: 100%;
+    }
+
+    .dropdown-menu li:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Extra Small Mobile */
+@media (min-width: 376px) and (max-width: 480px) {
     .top-banner {
         height: 35px;
     }
 
     .banner-content {
-        padding: 0 1rem;
+        padding: 0 0.25rem;
+        justify-content: center;
+    }
+
+    .banner-left {
+        padding: 0;
+        justify-content: center;
+        width: 100%;
     }
 
     .banner-text {
-        font-size: 12px;
+        font-size: 9px;
+        text-align: center;
+        width: 100%;
+        line-height: 1.2;
+        letter-spacing: 0.3px;
+    }
+}
+
+/* Small Mobile to Tablet */
+@media (min-width: 481px) and (max-width: 768px) {
+    .top-banner {
+        height: 35px;
     }
 
-    .banner-right .logout-btn {
-        padding: 0.2rem 0.6rem;
-        font-size: 0.7rem;
+    .banner-content {
+        padding: 0 0.5rem;
+        justify-content: center;
     }
+
+    .banner-left {
+        padding: 0 0.25rem;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .banner-text {
+        font-size: 10px;
+        text-align: center;
+        width: 100%;
+        line-height: 1.3;
+    }
+}
+
+/* General Mobile Styles (Fallback) */
+@media (max-width: 768px) {
 
     .superadmin-navbar {
         top: 35px;
@@ -391,3 +692,785 @@ body.scrolled .top-banner {
     padding: 0.45rem 1rem;
     background: rgba(255,255,255,0.12);
   }
+
+/* Profile Menu Styles - Desktop Only, No Overlay */
+.profile-menu {
+    position: fixed;
+    top: 105px;
+    right: -350px;
+    width: 320px;
+    background: white;
+    box-shadow: -2px 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+    transition: right 0.3s ease;
+    border-radius: 10px 0 0 10px;
+    overflow: hidden;
+}
+
+.profile-menu.active {
+    right: 0;
+}
+
+.profile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #8B0000, #a30000);
+    color: white;
+    border-bottom: 2px solid #FFD700;
+}
+
+.profile-menu-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.profile-menu-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.profile-menu-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.profile-menu-content {
+    padding: 1rem;
+}
+
+.profile-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+    border: 2px solid transparent;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.profile-menu-item:hover {
+    background: #f5f5f5;
+    border-color: #8B0000;
+    transform: translateX(-5px);
+}
+
+.profile-menu-icon {
+    width: 24px;
+    height: 24px;
+    color: #8B0000;
+}
+
+.profile-menu-logout {
+    color: #dc2626;
+}
+
+.profile-menu-logout .profile-menu-icon {
+    color: #dc2626;
+}
+
+.profile-menu-logout:hover {
+    background: #fee2e2;
+    border-color: #dc2626;
+}
+
+/* Notification Menu Item Styles */
+.notification-menu-item {
+    position: relative;
+}
+
+.notification-menu-badge {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    background: #FF4444;
+    border: 1px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: pulse 1.5s infinite;
+    box-shadow: 0 2px 6px rgba(255, 68, 68, 0.4);
+}
+
+.notification-menu-count {
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.notification-menu-item:hover .notification-menu-badge {
+    animation: bounce 0.8s infinite;
+    transform: scale(1.1);
+}
+
+/* Notification Popup Styles */
+.notification-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.notification-popup-overlay.active {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.notification-popup {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 480px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.notification-popup-overlay.active .notification-popup {
+    transform: scale(1) translateY(0);
+}
+
+.notification-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #8B0000, #a30000);
+    color: white;
+    border-bottom: 2px solid #FFD700;
+}
+
+.notification-popup-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.notification-popup-icon {
+    width: 24px;
+    height: 24px;
+    color: #FFD700;
+    overflow: visible;
+    display: block;
+    flex-shrink: 0;
+}
+
+.notification-popup-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.notification-popup-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.notification-popup-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s ease;
+    position: relative;
+}
+
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-item.unread {
+    background: #fff8f0;
+    border-left: 4px solid #FF4444;
+}
+
+.notification-item.unread:hover {
+    background: #fff0e6;
+}
+
+.notification-item-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+    overflow: visible;
+    position: relative;
+}
+
+.notification-item.unread .notification-item-icon {
+    background: #FF4444;
+    color: white;
+}
+
+.notification-item-icon svg {
+    width: 22px;
+    height: 22px;
+    overflow: visible;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.notification-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-item-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.notification-item.unread .notification-item-title {
+    color: #8B0000;
+    font-weight: 700;
+}
+
+.notification-item-message {
+    color: #666;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.notification-item-time {
+    color: #999;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.notification-item-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-top: 0.5rem;
+    flex-shrink: 0;
+}
+
+.notification-item.unread .notification-item-status {
+    background: #FF4444;
+    box-shadow: 0 0 8px rgba(255, 68, 68, 0.4);
+}
+
+.notification-popup-footer {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.notification-mark-all-btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    background: #8B0000;
+    color: white;
+    min-width: 180px;
+}
+
+.notification-mark-all-btn:hover {
+    background: #7a0000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+}
+
+/* Mobile Responsive for Notification Popup */
+@media (max-width: 768px) {
+    .notification-popup-overlay.active {
+        padding: 1rem;
+        align-items: flex-start;
+        padding-top: 4rem;
+    }
+
+    .notification-popup {
+        max-height: 85vh;
+        border-radius: 12px;
+    }
+
+    .notification-popup-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .notification-popup-title {
+        font-size: 1.1rem;
+    }
+
+    .notification-item {
+        padding: 1rem 1.5rem;
+    }
+
+    .notification-popup-footer {
+        padding: 1rem 1.5rem;
+    }
+
+    .notification-mark-all-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Mobile Menu Toggle Button (Hamburger) */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 9999;
+    flex-shrink: 0;
+}
+
+.hamburger-line {
+    width: 30px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+/* Hamburger Animation when Active */
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Mobile Profile Section - Hidden on Desktop */
+.mobile-profile-section {
+    display: none;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    /* Show hamburger button on mobile */
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    /* Show mobile profile section - enhanced styling */
+    .mobile-profile-section {
+        display: block;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .profile-divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .divider-line {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+    }
+
+    .divider-text {
+        color: rgba(255, 215, 0, 0.9);
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .mobile-profile-btn,
+    .mobile-logout-btn {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.75rem;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-profile-btn:hover,
+    .mobile-logout-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 215, 0, 0.5);
+        transform: translateX(8px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .mobile-profile-icon {
+        width: 22px;
+        height: 22px;
+        stroke-width: 2;
+        color: rgba(255, 215, 0, 0.8);
+    }
+
+    .mobile-logout-btn {
+        background: rgba(220, 38, 38, 0.15);
+        border-color: rgba(220, 38, 38, 0.3);
+    }
+
+    .mobile-logout-btn:hover {
+        background: rgba(220, 38, 38, 0.25);
+        border-color: rgba(220, 38, 38, 0.6);
+    }
+
+    .mobile-logout-btn .mobile-profile-icon {
+        color: rgba(220, 38, 38, 0.8);
+    }
+
+    /* Hide profile menu on mobile - use hamburger menu instead */
+    .profile-menu {
+        display: none !important;
+    }
+
+    /* Hide logo BNN pointer cursor on mobile */
+    .logo-bnn {
+        cursor: default;
+    }
+
+    /* Hide desktop menu items by default */
+    .menu-area {
+        position: fixed;
+        top: 105px;
+        right: -100%;
+        width: 300px;
+        height: calc(100vh - 105px);
+        background: rgba(139, 0, 0, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 1.5rem 1rem;
+        gap: 0.5rem;
+        overflow-y: auto;               /* enable vertical scrolling */
+        -webkit-overflow-scrolling: touch; /* smooth iOS momentum scroll */
+        overflow-x: hidden;             /* prevent horizontal scroll */
+        transition: right 0.3s ease;
+        z-index: 999;
+        box-shadow: -2px 0 15px rgba(0, 0, 0, 0.4);
+        border-left: 2px solid rgba(255, 215, 0, 0.3);
+    }
+
+    /* Show mobile menu when active */
+    .menu-area.mobile-menu-open {
+        right: 0;
+    }
+
+    /* Custom scrollbar (mobile/webkit) */
+    .menu-area::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .menu-area::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.15);
+        border-radius: 10px;
+    }
+
+    .menu-area::-webkit-scrollbar-thumb {
+        background: rgba(255, 215, 0, 0.6);
+        border-radius: 10px;
+    }
+
+    .menu-area::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 215, 0, 0.8);
+    }
+
+    /* Menu buttons in mobile - improved styling */
+    .menu-btn {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 1rem;
+        margin: 0;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: none;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        margin-bottom: 0.5rem;
+    }
+
+    .menu-btn-peta {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 1rem 1rem;
+        margin: 0;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 0.95rem;
+        line-height: 1.4;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        margin-bottom: 0.5rem;
+    }
+
+    .menu-btn a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        display: block;
+        width: 100%;
+    }
+
+    .menu-btn:hover,
+    .menu-btn-peta:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateX(5px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-btn::after {
+        display: none;
+    }
+
+    /* Dropdown in mobile - improved styling */
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        margin-top: 0.75rem;
+        margin-left: 1rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        border-left: 3px solid #FFD700;
+        padding: 0;
+    }
+
+    .dropdown-parent:hover .dropdown-menu,
+    .dropdown-parent.active .dropdown-menu {
+        max-height: 300px;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-menu li {
+        padding: 0.75rem 1rem 0.75rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 0.25rem 0.5rem;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+    }
+
+    .dropdown-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-menu li a {
+        color: white;
+        font-size: 0.9rem;
+        line-height: 1.3;
+        display: block;
+        width: 100%;
+    }
+
+    .dropdown-menu li:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Adjust navbar layout for mobile */
+    .superadmin-navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        height: 70px;
+        padding: 1rem;
+    }
+
+    /* Logo adjustments */
+    .logo-sijagad {
+        order: 1;
+        margin-right: 0;
+    }
+
+    .logo-bnn {
+        order: 2;
+        margin-left: auto;
+        margin-right: 1rem;
+    }
+
+    .mobile-menu-toggle {
+        order: 3;
+    }
+
+    .sijagad-logo {
+        height: 40px;
+    }
+
+    .logo-circle {
+        height: 45px;
+    }
+
+    /* Notification badge responsive untuk mobile */
+    .notification-badge {
+        width: 22px;
+        height: 22px;
+        top: -7px;
+        right: -7px;
+    }
+
+    .notification-count {
+        font-size: 11px;
+    }
+
+    .logo-text .bnn {
+        font-size: 0.9rem;
+    }
+
+    .logo-text .prov {
+        font-size: 0.7rem;
+    }
+
+    /* Profile Menu Responsive */
+    .profile-menu {
+        top: 105px;
+        width: 90%;
+        max-width: 320px;
+    }
+}
+
+/* Profile Menu saat body scrolled */
+body.scrolled .profile-menu {
+    top: 56px;
+}
+
+/* Ultra-small devices (≤375px): make admin/operator menus dropdown and scroll */
+@media (max-width: 375px) {
+    #adminMenuArea,
+    #operatorMenuArea {
+        position: fixed !important;
+        top: 90px !important;        /* below banner + navbar */
+        left: 0 !important;
+        right: 0 !important;         /* cancel slide panel positioning */
+        width: 100% !important;
+        height: auto !important;
+        max-height: 0;               /* collapsed by default */
+        padding: 0 1rem;             /* no vertical padding when collapsed */
+        overflow-y: auto;            /* enable vertical scroll */
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;          /* prevent horizontal scroll */
+        transition: max-height 0.3s ease, padding 0.2s ease;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+        border-top: 2px solid rgba(255, 215, 0, 0.3);
+        border-left: none !important;
+        z-index: 1002;               /* above navbar and overlay */
+    }
+
+    #adminMenuArea.mobile-menu-open,
+    #operatorMenuArea.mobile-menu-open {
+        max-height: calc(100vh - 90px);
+        padding: 1.5rem 1rem;        /* restore padding when opened */
+    }
+}

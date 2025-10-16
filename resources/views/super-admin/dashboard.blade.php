@@ -1,7 +1,7 @@
 @extends('layouts.superadmin-master')
 
 @section('content')
-    <div class="mx-auto px-2 pt-1">
+    <div class="container-fluid" style="padding-bottom: 1rem;">
         <!-- Tab Navigation -->
         <div class="mb-2">
             <div class="border-b border-gray-200">
