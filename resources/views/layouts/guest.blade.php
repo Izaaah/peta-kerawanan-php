@@ -98,7 +98,7 @@
         @media (min-width: 640px) {
             .login-form-container {
                 padding: 1.5rem;
-                
+
             }
         }
 
@@ -285,7 +285,7 @@
                 top: 50%;
                 transform: translateY(-50%);
                 z-index: 10;
-                max-width: 25%;
+                max-width: 30%;
                 padding-left: 4px;
                 padding-right: 4px;
             }

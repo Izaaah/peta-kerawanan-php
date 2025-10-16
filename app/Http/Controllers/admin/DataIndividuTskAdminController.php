@@ -72,7 +72,7 @@ class DataIndividuTskAdminController extends Controller
         $kabupatenList = DesaGeojson::getKabupatenList();
         $kecamatanList = DesaGeojson::getKecamatanList();
 
-        return view('admin.data.individu', compact('stats', 'sampleData', 'kabupatenList', 'kecamatanList'));
+        return view('admin.data.individu.individu', compact('stats', 'sampleData', 'kabupatenList', 'kecamatanList'));
     }
 
     public function getIndividuCount(Request $request)
@@ -98,7 +98,7 @@ class DataIndividuTskAdminController extends Controller
         // Get lembaga rehabilitasi with IPWL certification
         $ipwlList = LembagaRehabilitasi::whereJsonContains('sertifikasi', 'IPWL')->get();
 
-        return view('admin.data.individu-create', compact('kabupatenList', 'kecamatanList', 'desaList', 'ipwlList'));
+        return view('admin.data.individu.individu-create', compact('kabupatenList', 'kecamatanList', 'desaList', 'ipwlList'));
     }
 
 
@@ -393,7 +393,7 @@ class DataIndividuTskAdminController extends Controller
             ->where('kabupaten', $individu->kabupaten)
             ->count();
 
-        return view('admin.data.individu-show', compact('individu', 'kasusCount'));
+        return view('admin.data.individu.individu-show', compact('individu', 'kasusCount'));
     }
 
     public function edit($id)
@@ -415,7 +415,7 @@ class DataIndividuTskAdminController extends Controller
         // Get IPWL list for dropdowns
         $ipwlList = \App\Models\LembagaRehabilitasi::all();
 
-        return view('admin.data.individu-edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList', 'ipwlList'));
+        return view('admin.data.individu.individu-edit', compact('individu', 'kabupatenList', 'kecamatanList', 'desaList', 'ipwlList'));
     }
 
     public function update(Request $request, $id)
