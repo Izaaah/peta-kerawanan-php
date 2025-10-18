@@ -13,14 +13,14 @@ class DuplicateDetectionService
     public static function checkAndCreateVerification($tableName, $newData, $adminId, $existingId = null)
     {
         $duplicateFields = self::getDuplicateFields($tableName);
-        
+
         if (empty($duplicateFields)) {
             return false; // No duplicate check needed
         }
 
         // Build query to check for duplicates
         $query = DB::table($tableName);
-        
+
         foreach ($duplicateFields as $field) {
             if (isset($newData[$field]) && !empty($newData[$field])) {
                 $query->where($field, $newData[$field]);
@@ -38,7 +38,7 @@ class DuplicateDetectionService
             // Create verification record
             DataVerification::create([
                 'table_name' => $tableName,
-                'data_id' => $existingId ?? 0, // 0 for new records
+                'data_id' => $existingRecord->id ?? 0, // Use the found existing record ID
                 'old_data' => json_encode((array) $existingRecord),
                 'new_data' => json_encode($newData),
                 'status' => 'pending',
@@ -49,6 +49,28 @@ class DuplicateDetectionService
         }
 
         return false; // No duplicate
+    }
+
+    /**
+     * Create verification record for existing data (for edit requests)
+     */
+    public static function createVerificationForExisting($tableName, $newData, $adminId, $existingData)
+    {
+        try {
+            DataVerification::create([
+                'table_name' => $tableName,
+                'data_id' => $existingData['id'] ?? 0,
+                'old_data' => json_encode($existingData),
+                'new_data' => json_encode($newData),
+                'status' => 'pending',
+                'admin_id' => $adminId,
+            ]);
+
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Failed to create verification record: ' . $e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -160,4 +182,4 @@ class DuplicateDetectionService
 
         return $tableNames[$tableName] ?? $tableName;
     }
-} 
+}

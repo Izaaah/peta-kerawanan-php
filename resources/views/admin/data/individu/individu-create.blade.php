@@ -1300,7 +1300,6 @@
             const submitForVerificationBtn = document.getElementById('submit-for-verification');
             const closeAvailableBtn = document.getElementById('close-available-notification');
             const form = document.getElementById('individuForm');
-            const clearNikBtn = document.getElementById('clear-nik');
             const nikCounter = document.getElementById('nik-counter');
             const nkkInput = document.getElementById('nkk');
             const nkkCounter = document.getElementById('nkk-counter');
@@ -1716,13 +1715,7 @@
                 hideAvailableNotification();
             });
 
-            // Menangani tombol hapus NIK
-            clearNikBtn.addEventListener('click', function() {
-                nikInput.value = '';
-                updateNikCounter(0);
-                hideAllNotifications();
-                nikInput.focus();
-            });
+            // Note: clearNikBtn functionality removed as element doesn't exist
 
 
             // Initialize provinsi selection on page load

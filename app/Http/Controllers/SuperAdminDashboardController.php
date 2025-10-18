@@ -264,13 +264,7 @@ class SuperAdminDashboardController extends Controller
             'Pengolahan Data',
         ];
 
-        // Data untuk notifikasi verifikasi
-        $pendingVerifications = DataVerification::where('status', 'pending')
-            ->with('admin')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $pendingVerificationCount = $pendingVerifications->count();
+        // Notification data is now handled globally by View Composer in AppServiceProvider
 
         return view('super-admin.dashboard', compact(
             'totalKasus',
@@ -306,8 +300,6 @@ class SuperAdminDashboardController extends Controller
             'allKecamatanTkpList',
             'galeri',
             'jabatanList',
-            'pendingVerifications',
-            'pendingVerificationCount',
             'pegawai',
             'tugas',
             'fungsi',

@@ -23,24 +23,24 @@
         @endif
 
         <!-- Warning Box -->
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                    <i class="fas fa-info-circle text-blue-400"></i>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-yellow-800">
-                        Perhatian
+                    <h3 class="text-sm font-medium text-blue-800">
+                        Informasi Verifikasi
                     </h3>
-                    <div class="mt-2 text-sm text-yellow-700">
+                    <div class="mt-2 text-sm text-blue-700">
                         <p>
                             @if ($verification->data_id == 0)
-                                Data ini akan ditambahkan sebagai data baru ke sistem.
+                                Data ini akan ditambahkan sebagai data baru ke sistem setelah disetujui.
                             @else
                                 <strong>Ketika Anda approve data ini:</strong><br>
-                                • Data lama akan <strong>dihapus</strong> dari sistem<br>
-                                • Data baru akan <strong>disimpan</strong> sebagai penggantinya<br>
-                                • Proses ini tidak dapat dibatalkan
+                                • Data akan <strong>disetujui</strong> dan tersimpan di sistem<br>
+                                • Data lama akan <strong>diganti</strong> dengan data baru<br>
+                                • Proses ini <strong>tidak dapat dibatalkan</strong>
                             @endif
                         </p>
                     </div>
@@ -48,80 +48,92 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Data Lama -->
-            <div class="bg-white shadow rounded p-6">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-database text-blue-500 mr-2"></i>
-                    Data Lama
-                    @if ($verification->data_id != 0)
-                        <span class="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Akan Dihapus</span>
-                    @endif
-                </h2>
+        <!-- Data Lengkap -->
+        <div class="bg-white shadow rounded p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-database text-blue-500 mr-2"></i>
+                Data Lengkap
+                <span class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Data Verifikasi</span>
+            </h2>
 
+            <div class="space-y-4">
                 @if ($verification->data_id == 0)
-                    <div class="text-gray-500 text-center py-8">
-                        <i class="fas fa-plus-circle text-4xl mb-2"></i>
-                        <p>Data Baru</p>
+                    <!-- Data Baru -->
+                    @php $dataToShow = $verification->new_data_array; @endphp
+                    <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-plus-circle text-green-500 mr-2"></i>
+                            <span class="text-sm font-medium text-green-800">Data Baru yang akan ditambahkan</span>
+                        </div>
                     </div>
                 @else
-                    <div class="space-y-3">
-                        @php
-                            $oldData = $verification->old_data_array;
-                        @endphp
-                        @if (is_array($oldData))
-                            @foreach ($oldData as $key => $value)
-                                @if (!in_array($key, ['id', 'created_at', 'updated_at', 'created_by']))
-                                    <div class="border-b border-gray-100 pb-2">
-                                        <div class="text-sm font-medium text-gray-600">
-                                            {{ $fieldLabels[$key] ?? ucfirst(str_replace('_', ' ', $key)) }}
-                                        </div>
-                                        <div class="text-sm text-gray-800 mt-1">
-                                            {{ $value ?: '-' }}
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @else
-                            <div class="text-gray-500 text-center py-4">
-                                <p>Data tidak tersedia</p>
-                            </div>
-                        @endif
+                    <!-- Data Lama -->
+                    @php $dataToShow = $verification->old_data_array; @endphp
+                    <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-database text-yellow-500 mr-2"></i>
+                            <span class="text-sm font-medium text-yellow-800">Data Lama yang akan diganti</span>
+                        </div>
                     </div>
                 @endif
-            </div>
 
-            <!-- Data Baru -->
-            <div class="bg-white shadow rounded p-6">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-plus text-green-500 mr-2"></i>
-                    Data Baru
-                    <span class="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Akan Disimpan</span>
-                </h2>
-
-                <div class="space-y-3">
-                    @php
-                        $newData = $verification->new_data_array;
-                    @endphp
-                    @if (is_array($newData))
-                        @foreach ($newData as $key => $value)
+                @if (is_array($dataToShow) && count($dataToShow) > 0)
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @foreach ($dataToShow as $key => $value)
                             @if (!in_array($key, ['id', 'created_at', 'updated_at', 'created_by']))
-                                <div class="border-b border-gray-100 pb-2">
-                                    <div class="text-sm font-medium text-gray-600">
+                                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                    <div class="text-sm font-medium text-gray-600 mb-2">
                                         {{ $fieldLabels[$key] ?? ucfirst(str_replace('_', ' ', $key)) }}
                                     </div>
-                                    <div class="text-sm text-gray-800 mt-1">
-                                        {{ $value ?: '-' }}
+                                    <div class="text-sm text-gray-800 break-words">
+                                        @if (is_array($value))
+                                            {{ json_encode($value) }}
+                                        @elseif (is_bool($value))
+                                            {{ $value ? 'Ya' : 'Tidak' }}
+                                        @elseif (is_null($value) || $value === '' || $value === '0')
+                                            <span class="text-gray-400 italic">Belum diisi</span>
+                                        @else
+                                            {{ $value }}
+                                        @endif
                                     </div>
                                 </div>
                             @endif
                         @endforeach
-                    @else
-                        <div class="text-gray-500 text-center py-4">
-                            <p>Data tidak tersedia</p>
+                    </div>
+
+                    <!-- Summary Information -->
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                <span class="text-sm text-blue-700">
+                                    Total {{ count($dataToShow) }} field data ditampilkan
+                                </span>
+                            </div>
+                            <div class="text-sm text-blue-600">
+                                @php
+                                    $filledFields = 0;
+                                    foreach ($dataToShow as $key => $value) {
+                                        if (
+                                            !in_array($key, ['id', 'created_at', 'updated_at', 'created_by']) &&
+                                            !is_null($value) &&
+                                            $value !== '' &&
+                                            $value !== '0'
+                                        ) {
+                                            $filledFields++;
+                                        }
+                                    }
+                                @endphp
+                                {{ $filledFields }} field terisi
+                            </div>
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @else
+                    <div class="text-gray-500 text-center py-8">
+                        <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
+                        <p>Data tidak tersedia</p>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -157,7 +169,7 @@
 
             <div class="flex gap-4">
                 <form action="{{ route('super-admin.verification.approve', $verification->id) }}" method="POST"
-                    onsubmit="return confirm('{{ $verification->data_id == 0 ? 'Yakin approve data baru ini?' : 'PERHATIAN! Data lama akan dihapus dan diganti dengan data baru. Yakin ingin melanjutkan?' }}')"
+                    onsubmit="return confirm('{{ $verification->data_id == 0 ? 'Yakin approve data baru ini? Data akan tersimpan di sistem.' : 'Yakin approve data ini? Data lama akan diganti dengan data baru dan tidak dapat dibatalkan.' }}')"
                     class="flex-1">
                     @csrf
                     <button type="submit"

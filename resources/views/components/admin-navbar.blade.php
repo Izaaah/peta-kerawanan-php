@@ -3,10 +3,10 @@
 
 <style>
     .notification-section-header {
-        padding: 8px 16px;
+        padding: 1.25rem 2rem;
         background-color: #f8f9fa;
         border-bottom: 1px solid #e9ecef;
-        margin: 0 -16px 8px -16px;
+        margin: 0 -2rem 8px -2rem;
     }
 
     .notification-section-title {
@@ -30,6 +30,14 @@
 
     .notification-item.pending .notification-item-message {
         color: #856404;
+    }
+
+    /* Mobile responsive untuk notification section header */
+    @media (max-width: 768px) {
+        .notification-section-header {
+            padding: 1rem 1.5rem;
+            margin: 0 -1.5rem 8px -1.5rem;
+        }
     }
 </style>
 

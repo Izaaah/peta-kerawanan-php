@@ -125,6 +125,13 @@ class DataIndividuTskAdminController extends Controller
 
             $existingData = json_decode($request->existing_data, true);
 
+            if (!$existingData || !isset($existingData['id'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data yang ada tidak valid.'
+                ]);
+            }
+
             // Create minimal data for verification
             $data = [
                 'nama' => $request->nama ?? '',
@@ -154,14 +161,15 @@ class DataIndividuTskAdminController extends Controller
                 'created_by' => request()->user()->id,
             ];
 
-            $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
+            // Use the new method for creating verification for existing data
+            $verificationCreated = \App\Services\DuplicateDetectionService::createVerificationForExisting(
                 'data_individu_tsk',
                 $data,
                 $request->user()->id,
-                $existingData['id'] ?? null
+                $existingData
             );
 
-            if ($isDuplicate) {
+            if ($verificationCreated) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Permintaan verifikasi edit telah dikirim ke Super Admin. Data akan ditinjau dan diproses.',

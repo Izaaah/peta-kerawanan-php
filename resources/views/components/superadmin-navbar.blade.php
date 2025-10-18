@@ -1,6 +1,68 @@
 <!-- Include CSS khusus navbar superadmin -->
 <link rel="stylesheet" href="{{ asset('css/superadmin-navbar.css') }}">
 
+<style>
+    .notification-section-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem 2rem;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        margin: 0 -2rem 0 -2rem;
+    }
+
+    .notification-section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+        flex-shrink: 0;
+        overflow: visible;
+    }
+
+    .notification-section-icon svg {
+        width: 22px;
+        height: 22px;
+        overflow: visible;
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .notification-section-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c757d;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex: 1;
+    }
+
+    /* Mobile responsive untuk notification section header */
+    @media (max-width: 768px) {
+        .notification-section-header {
+            padding: 1rem 1.5rem;
+            margin: 0 -1.5rem 0 -1.5rem;
+        }
+    }
+
+    /* Hover effect untuk clickable notification items */
+    .notification-item[onclick] {
+        transition: all 0.2s ease;
+    }
+
+    .notification-item[onclick]:hover {
+        background: #f0f8ff !important;
+        transform: translateX(2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
 <!-- Garis putih tebal di atas navbar -->
 <div class="top-banner">
     <div class="banner-content">
@@ -104,8 +166,21 @@
         </div>
         <div class="notification-popup-content">
             @if (isset($pendingVerifications) && $pendingVerifications->count() > 0)
+                <!-- Header Section untuk Pending Verifications -->
+                <div class="notification-section-header">
+                    <div class="notification-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="notification-section-title">⏳ Menunggu Verifikasi</h3>
+                </div>
+
                 @foreach ($pendingVerifications->take(8) as $verification)
-                    <div class="notification-item unread">
+                    <div class="notification-item unread" onclick="redirectToVerification({{ $verification->id }})"
+                        style="cursor: pointer;">
                         <div class="notification-item-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -131,6 +206,18 @@
                     </div>
                 @endforeach
             @else
+                <!-- Header Section untuk No Notifications -->
+                <div class="notification-section-header">
+                    <div class="notification-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="notification-section-title">📭 Tidak Ada Notifikasi</h3>
+                </div>
+
                 <div class="notification-item">
                     <div class="notification-item-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -149,7 +236,8 @@
             @endif
         </div>
         <div class="notification-popup-footer">
-            <button class="notification-mark-all-btn" id="markAllBtn" onclick="markAllAsRead()">
+            <button class="notification-mark-all-btn" id="markAllBtn" onclick="markAllAsRead()"
+                style="display: block;">
                 Tandai Semua Dibaca
             </button>
         </div>
@@ -472,9 +560,11 @@
 
     function markAllAsRead() {
         console.log('📖 Marking all notifications as read');
+        console.log('Button clicked - function executed');
 
         // Remove unread class from all notification items
         const unreadItems = document.querySelectorAll('.notification-item.unread');
+        console.log('Found unread items:', unreadItems.length);
         unreadItems.forEach(item => {
             item.classList.remove('unread');
         });
@@ -484,15 +574,30 @@
 
         // Update button text and style
         const markAllBtn = document.getElementById('markAllBtn');
+        console.log('Mark all button element:', markAllBtn);
         if (markAllBtn) {
             markAllBtn.textContent = 'Semua Sudah Dibaca';
             markAllBtn.style.background = '#28a745'; // Green color
             markAllBtn.style.cursor = 'default';
             markAllBtn.onclick = null; // Remove click functionality
+            console.log('✅ Button updated successfully');
+        } else {
+            console.error('❌ Mark all button not found!');
         }
 
         // Don't close popup - let user see the changes
         // closeNotificationPopup();
+    }
+
+    // Function to redirect to verification page
+    function redirectToVerification(verificationId) {
+        console.log('🔗 Redirecting to verification:', verificationId);
+
+        // Close notification popup first
+        closeNotificationPopup();
+
+        // Redirect to verification show page
+        window.location.href = `/super-admin/verification/${verificationId}`;
     }
 
 

@@ -65,11 +65,8 @@ class VerificationController extends Controller
 
             DB::commit();
 
-            // Determine redirect based on table type
-            $redirectRoute = $this->getEditRouteForTable($verification->table_name, $verification->data_id);
-
-            return redirect($redirectRoute)
-                ->with('success', 'Data berhasil disetujui. Data telah diperbarui dan Anda akan diarahkan ke halaman edit.');
+            return redirect()->route('super-admin.verification.index')
+                ->with('success', 'Data berhasil disetujui dan tersimpan di sistem.');
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('Approve verifikasi gagal: ' . $e->getMessage(), [
@@ -114,19 +111,19 @@ class VerificationController extends Controller
     private function getEditRouteForTable($tableName, $dataId)
     {
         $routeMap = [
-            'data_individu_tsk' => 'admin.data.individu.edit',
-            'thm' => 'admin.data.thm.edit',
-            'lsm_narkotika' => 'admin.data.lsm.edit',
-            'media_sosial' => 'admin.data.medsos.edit',
-            'penjual_vape' => 'admin.data.vape.edit',
-            'perusahaan_farmasi_prekursor' => 'admin.data.farmasi.edit',
-            'objek_vital' => 'admin.data.objek.edit',
-            'penggiat_narkotika' => 'admin.data.penggiat.edit',
-            'penginapan' => 'admin.data.penginapan.edit',
-            'rutan_lapas' => 'admin.data.rutan.edit',
-            'transportasi' => 'admin.data.transportasi.edit',
-            'ekspedisi' => 'admin.data.ekspedisi.edit',
-            'lembaga_rehabilitasi' => 'admin.data.rehabilitasi.edit',
+            'data_individu_tsk' => 'super-admin.data.individu.edit',
+            'thm' => 'super-admin.data.thm.edit',
+            'lsm_narkotika' => 'super-admin.data.lsm.edit',
+            'media_sosial' => 'super-admin.data.medsos.edit',
+            'penjual_vape' => 'super-admin.data.vape.edit',
+            'perusahaan_farmasi_prekursor' => 'super-admin.data.farmasi.edit',
+            'objek_vital' => 'super-admin.data.objekvital.edit',
+            'penggiat_narkotika' => 'super-admin.data.penggiat.edit',
+            'penginapan' => 'super-admin.data.penginapan.edit',
+            'rutan_lapas' => 'super-admin.data.rutanlapas.edit',
+            'transportasi' => 'super-admin.data.transportasi.edit',
+            'ekspedisi' => 'super-admin.data.ekspedisi.edit',
+            'lembaga_rehabilitasi' => 'super-admin.data.lrehab.edit',
         ];
 
         $routeName = $routeMap[$tableName] ?? 'super-admin.verification.index';
