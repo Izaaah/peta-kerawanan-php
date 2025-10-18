@@ -306,7 +306,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     z-index: 10020;
     flex-shrink: 0;
@@ -332,7 +332,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999999999;
+    z-index: 9999999999;
     animation: bounce 2s infinite;
     box-shadow: 0 3px 12px rgba(255, 68, 68, 0.6);
 }
@@ -1129,6 +1129,7 @@ body.scrolled .profile-menu {
     .logo-circle {
         height: 45px;
         width: 45px;
+        overflow: visible;
     }
 
     /* Notification badge responsive */
@@ -1137,6 +1138,7 @@ body.scrolled .profile-menu {
         height: 22px;
         top: -7px;
         right: -7px;
+        z-index: 9999999999;
     }
 
     .notification-count {
@@ -1398,7 +1400,7 @@ body.scrolled .profile-menu {
         margin-left: 0 !important;
         margin-right: 0 !important;
         max-height: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         transition: max-height 0.3s ease, padding 0.3s ease !important;
         padding: 0 !important;
         display: flex !important;
@@ -1539,7 +1541,7 @@ body.scrolled .profile-menu {
         margin-left: 0 !important;
         margin-right: 0 !important;
         max-height: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         transition: max-height 0.3s ease, padding 0.3s ease !important;
         padding: 0 !important;
         display: flex !important;
@@ -1766,7 +1768,7 @@ body.scrolled .profile-menu {
         margin-left: 0 !important;
         margin-right: 0 !important;
         max-height: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         transition: max-height 0.3s ease, padding 0.3s ease !important;
         padding: 0 !important;
         display: flex !important;
@@ -2140,6 +2142,7 @@ body.scrolled .profile-menu {
     height: 24px;
         top: -8px;
         right: -8px;
+        z-index: 9999999999;
 }
 
 .notification-count {
@@ -2245,7 +2248,7 @@ body.scrolled .profile-menu {
         height: 40px !important;
         width: 40px !important;
         border-radius: 50% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2266,6 +2269,7 @@ body.scrolled .profile-menu {
         height: 20px;
         top: -6px;
         right: -6px;
+        z-index: 9999999999;
     }
 
     .notification-count {
@@ -2372,7 +2376,7 @@ body.scrolled .profile-menu {
         height: 40px !important;
         width: 40px !important;
         border-radius: 50% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2393,6 +2397,7 @@ body.scrolled .profile-menu {
         height: 20px;
         top: -6px;
         right: -6px;
+        z-index: 9999999999;
     }
 
     .notification-count {
@@ -2498,7 +2503,7 @@ body.scrolled .profile-menu {
         height: 45px !important;
         width: 45px !important;
         border-radius: 50% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2519,6 +2524,7 @@ body.scrolled .profile-menu {
         height: 22px;
         top: -7px;
         right: -7px;
+        z-index: 9999999999;
     }
 
     .notification-count {
@@ -2625,7 +2631,7 @@ body.scrolled .profile-menu {
         height: 50px !important;
         width: 50px !important;
         border-radius: 50% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2646,6 +2652,7 @@ body.scrolled .profile-menu {
         height: 24px;
         top: -8px;
         right: -8px;
+        z-index: 9999999999;
     }
 
     .notification-count {
