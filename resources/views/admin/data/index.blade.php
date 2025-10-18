@@ -3,8 +3,6 @@
 @section('title', 'Data Management')
 
 @section('content')
-    @include('components.admin-navbar')
-
     <div class="mx-auto py-8 px-2">
         <!-- Search Input -->
         <div class="flex justify-center mb-6">

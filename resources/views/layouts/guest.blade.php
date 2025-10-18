@@ -20,6 +20,32 @@
             background-image: url('{{ asset('img/bg-candi.png') }}');
             background-size: cover;
             background-position: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Mobile body adjustments */
+        @media (max-width: 1023px) {
+            body {
+                padding: 0.5rem;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.25rem;
+            }
+        }
+
+        @media (max-width: 375px) {
+            body {
+                padding: 0.125rem;
+            }
         }
 
         /* Welcome Section Styling */
@@ -32,8 +58,36 @@
 
         .welcome-logo {
             height: auto;
-            margin: 0.5rem 0;
+            margin: 0.5rem auto;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Mobile welcome logo adjustments */
+        @media (max-width: 1023px) {
+            .welcome-logo {
+                max-width: 200px;
+                height: auto;
+                margin: 0.5rem auto;
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-logo {
+                max-width: 150px;
+                margin: 0.5rem auto;
+                display: block;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .welcome-logo {
+                max-width: 120px;
+                margin: 0.5rem auto;
+                display: block;
+            }
         }
 
         .welcome-description {
@@ -93,6 +147,32 @@
             padding: 1rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* Mobile form container adjustments */
+        @media (max-width: 1023px) {
+            .login-form-container {
+                margin: 0.5rem;
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form-container {
+                margin: 0.25rem;
+                padding: 1rem;
+                border-radius: 12px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .login-form-container {
+                margin: 0.125rem;
+                padding: 0.875rem;
+                border-radius: 10px;
+            }
         }
 
         @media (min-width: 640px) {
@@ -363,13 +443,71 @@
             }
         }
 
-        /* Mobile and tablet - keep centered layout */
+        /* Mobile and tablet - keep centered layout with proper padding */
         @media (max-width: 1023px) {
+            .container {
+                padding: 1rem;
+                width: 100%;
+                max-width: 100%;
+            }
+
             .welcome-section,
             .login-section {
                 position: static;
                 transform: none;
                 max-width: none;
+                padding: 0.5rem;
+            }
+
+            .welcome-content {
+                padding: 1rem 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .login-section {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Extra mobile padding for very small screens */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+            }
+
+            .welcome-section,
+            .login-section {
+                padding: 0.25rem;
+            }
+
+            .welcome-content {
+                padding: 0.75rem 0.25rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .login-section {
+                padding: 0.25rem;
+            }
+        }
+
+        /* iPhone SE and smaller screens */
+        @media (max-width: 375px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .welcome-section,
+            .login-section {
+                padding: 0.125rem;
+            }
+
+            .welcome-content {
+                padding: 0.5rem 0.125rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .login-section {
+                padding: 0.125rem;
             }
         }
 
@@ -390,7 +528,7 @@
 
 <body class="flex flex-col items-center justify-center h-screen">
     @yield('content')
-    <div class="login-footer">
+    <div class="login-footer text-center text-white">
         &copy; {{ date('Y') }} SIJAGAD. All rights reserved.<br>
         <a href="https://bnn.go.id/" target="_blank">BNN RI</a> |
         <a href="https://jatim.bnn.go.id/" target="_blank">BNNP Jatim</a>

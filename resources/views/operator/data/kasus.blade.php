@@ -3,8 +3,6 @@
 @section('title', 'Data Kasus Narkoba')
 
 @section('content')
-@include('components.superadmin-navbar')
-
 <div class="container-fluid px-4">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6">

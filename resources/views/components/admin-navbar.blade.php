@@ -45,7 +45,8 @@
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis
+                Intelijen
                 Dasar</span>
         </div>
     </div>
@@ -71,7 +72,7 @@
         <div class="menu-btn"><a href="{{ route('admin.data.index') }}">Data Intelijen</a></div>
         <div class="menu-btn"><a href="{{ route('admin.chart-jaringan') }}">Diagram</a></div>
         <div class="menu-btn-peta dropdown-parent">
-            Peta <span class="dropdown-arrow">&#9662;</span>
+            Peta <span class="dropdown-arrow"><i class="fas fa-chevron-right"></i></span>
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
                 <li><a href="{{ route('peta-penyalahgunaan.tkp') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
@@ -652,16 +653,57 @@
             mobileMenuOverlay.addEventListener('click', closeAdminMobileMenu);
         }
 
-        // Handle dropdown menu toggle on mobile
-        const dropdownParent = menuArea?.querySelector('.dropdown-parent');
-        if (dropdownParent) {
-            dropdownParent.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    e.preventDefault();
-                    dropdownParent.classList.toggle('active');
+        // Handle dropdown menu toggle on mobile/iPad/tablet/1200px range
+        function bindAdminMobileDropdownToggle() {
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent) {
+                // Remove existing event listener if bound
+                if (dropdownParent.dataset.bound === 'true') {
+                    dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
                 }
-            });
+
+                if (window.innerWidth <= 1366) {
+                    // Create new click handler for mobile/iPad/tablet/1200px range
+                    dropdownParent._mobileClickHandler = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Toggle active class
+                        dropdownParent.classList.toggle('active');
+
+                        // Update arrow direction
+                        const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                        if (arrow) {
+                            if (dropdownParent.classList.contains('active')) {
+                                arrow.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Down arrow when open
+                            } else {
+                                arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Right arrow when closed
+                            }
+                        }
+
+                        // Force reflow to ensure CSS transition works
+                        const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                        if (dropdownMenu) {
+                            dropdownMenu.style.maxHeight = dropdownParent.classList.contains('active') ? '200px' : '0px';
+                            dropdownMenu.style.padding = dropdownParent.classList.contains('active') ? '0.5rem 0' : '0';
+                        }
+
+                        console.log('Admin Mobile/Tablet/1200px dropdown toggled:', dropdownParent.classList.contains('active'));
+                    };
+
+                    // Add event listener
+                    dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
+                    dropdownParent.dataset.bound = 'true';
+                    console.log('Admin Mobile/Tablet/1200px dropdown toggle bound for width:', window.innerWidth);
+                } else {
+                    // Remove mobile functionality for desktop
+                    dropdownParent.dataset.bound = 'false';
+                    console.log('Admin Mobile dropdown toggle unbound for desktop');
+                }
+            }
         }
+
+        bindAdminMobileDropdownToggle();
 
         // Close menu when clicking on menu items (only on mobile)
         if (menuArea) {
@@ -680,10 +722,30 @@
 
         // Handle window resize
         window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 1366) {
                 closeAdminMobileMenu();
                 closeProfileMenu();
+
+                // Reset dropdown state for desktop
+                const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+                if (dropdownParent) {
+                    dropdownParent.classList.remove('active');
+                    // Reset arrow to right direction
+                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                    if (arrow) {
+                        arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                    }
+                    // Reset dropdown menu styles
+                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.style.maxHeight = '';
+                        dropdownMenu.style.padding = '';
+                    }
+                }
             }
+
+            // Rebind mobile dropdown toggle as viewport changes (mobile/iPad/tablet/1200px range)
+            bindAdminMobileDropdownToggle();
         });
 
         // Start periodic notification refresh

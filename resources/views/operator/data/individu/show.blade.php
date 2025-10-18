@@ -3,7 +3,5 @@
 @section('title', 'Detail Data Individu TSK')
 
 @section('content')
-@include('components.superadmin-navbar')
-
 <div class="container-fluid px-4">
 // ... existing code ...

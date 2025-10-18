@@ -3,8 +3,6 @@
 @section('title', 'Data Individu TSK')
 
 @section('content')
-    @include('components.admin-navbar')
-
     <div class="container-fluid mx-auto px-4 py-3">
         <!-- Header Section -->
         <div class="mb-5">

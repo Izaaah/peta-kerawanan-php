@@ -3,8 +3,6 @@
 @section('title', 'Diagram')
 
 @section('content')
-    @include('components.superadmin-navbar')
-
     <div class="px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
         <div class="flex flex-col md:flex-row gap-8">
 

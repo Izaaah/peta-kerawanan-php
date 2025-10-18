@@ -3,8 +3,6 @@
 @section('title', 'Data Individu TSK')
 
 @section('content')
-    @include('components.operator-navbar')
-
     <div class="container-fluid px-4 py-5">
         <!-- Header Section -->
         <div class="mb-5">

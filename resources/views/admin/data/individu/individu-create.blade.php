@@ -2,8 +2,6 @@
 
 @section('title', 'Tambah Data Individu TSK')
 @section('content')
-    @include('components.admin-navbar')
-
     <div class="mx-auto px-4 py-3">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">

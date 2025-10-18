@@ -3,8 +3,6 @@
 @section('title', 'Data Desa Geojson')
 
 @section('content')
-@include('components.superadmin-navbar')
-
 <div class="max-w-7xl mx-auto px-4 py-6">
     <div class="flex flex-col md:flex-row justify-between items-center mb-6">
         <div class="mb-4 md:mb-0">

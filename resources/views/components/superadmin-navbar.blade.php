@@ -96,7 +96,7 @@
         <div class="menu-btn"><a href="{{ route('super-admin.verification.index') }}">Verifikasi</a></div>
         <div class="menu-btn"><a href="{{ route('super-admin.user-management.index') }}">Pengguna</a></div>
         <div class="menu-btn-peta dropdown-parent">
-            Peta <span class="dropdown-arrow">&#9662;</span>
+            Peta <span class="dropdown-arrow"><i class="fas fa-chevron-right"></i></span>
             <ul class="dropdown-menu">
                 <li><a href="{{ route('peta-penyalahgunaan.domisili') }}">Peta Kerawanan<br>Berdasarkan NIK</a></li>
                 <li><a href="{{ route('peta-penyalahgunaan.tkp') }}">Peta Kerawanan<br>Berdasarkan TKP</a></li>
@@ -428,6 +428,21 @@
             mobileMenuToggle.classList.remove('active');
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
+
+            // Close any open dropdown menus
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent && dropdownParent.classList.contains('active')) {
+                dropdownParent.classList.remove('active');
+                const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Reset to right arrow
+                }
+                const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.maxHeight = '0px';
+                    dropdownMenu.style.padding = '0';
+                }
+            }
         }
     }
 
@@ -667,18 +682,52 @@
             console.log('Event listeners added to', menuItems.length, 'menu items');
         }
 
-        // Mobile dropdown toggle for "Peta"
+        // Mobile dropdown toggle for "Peta" - IMPROVED VERSION
         function bindMobileDropdownToggle() {
-            if (window.innerWidth <= 768) {
-                const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-                if (dropdownParent && !dropdownParent.dataset.bound) {
-                    dropdownParent.addEventListener('click', function(e) {
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent) {
+                // Remove existing event listener if bound
+                if (dropdownParent.dataset.bound === 'true') {
+                    dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
+                }
+
+                if (window.innerWidth <= 1366) {
+                    // Create new click handler for mobile/iPad/tablet/1200px range
+                    dropdownParent._mobileClickHandler = function(e) {
                         e.preventDefault();
                         e.stopPropagation();
+
+                        // Toggle active class
                         dropdownParent.classList.toggle('active');
-                    });
+
+                        // Update arrow direction
+                        const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                        if (arrow) {
+                            if (dropdownParent.classList.contains('active')) {
+                                arrow.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Down arrow when open
+                            } else {
+                                arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Right arrow when closed
+                            }
+                        }
+
+                        // Force reflow to ensure CSS transition works
+                        const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                        if (dropdownMenu) {
+                            dropdownMenu.style.maxHeight = dropdownParent.classList.contains('active') ? '200px' : '0px';
+                            dropdownMenu.style.padding = dropdownParent.classList.contains('active') ? '0.5rem 0' : '0';
+                        }
+
+                        console.log('Mobile/Tablet/1200px dropdown toggled:', dropdownParent.classList.contains('active'));
+                    };
+
+                    // Add event listener
+                    dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
                     dropdownParent.dataset.bound = 'true';
-                    console.log('Mobile dropdown toggle bound');
+                    console.log('Mobile/Tablet/1200px dropdown toggle bound for width:', window.innerWidth);
+                } else {
+                    // Remove mobile functionality for desktop
+                    dropdownParent.dataset.bound = 'false';
+                    console.log('Mobile dropdown toggle unbound for desktop');
                 }
             }
         }
@@ -687,16 +736,30 @@
 
         // Handle window resize
         window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
+            if (window.innerWidth > 1366) {
                 closeMobileMenu();
                 closeProfileMenu();
-            }
-            // Rebind mobile dropdown toggle as viewport changes
-            bindMobileDropdownToggle();
-            if (window.innerWidth > 768) {
+
+                // Reset dropdown state for desktop
                 const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-                if (dropdownParent) dropdownParent.classList.remove('active');
+                if (dropdownParent) {
+                    dropdownParent.classList.remove('active');
+                    // Reset arrow to right direction
+                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                    if (arrow) {
+                        arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                    }
+                    // Reset dropdown menu styles
+                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.style.maxHeight = '';
+                        dropdownMenu.style.padding = '';
+                    }
+                }
             }
+
+            // Rebind mobile dropdown toggle as viewport changes (mobile/iPad/tablet/1200px range)
+            bindMobileDropdownToggle();
         });
 
         // Start periodic notification refresh

@@ -3,9 +3,7 @@
 @section('title', 'Diagram')
 
 @section('content')
-@include('components.operator-navbar')
-
-<div class="container-fluid px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
+    <div class="container-fluid px-4 py-8 min-h-screen bg-gray-50 light:bg-gray-900">
     <div class="flex flex-col md:flex-row gap-8">
 
         <!-- Main Content -->
