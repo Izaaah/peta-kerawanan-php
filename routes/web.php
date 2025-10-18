@@ -221,6 +221,9 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('super-admin')-
     Route::post('/verification/{id}/approve', [VerificationController::class, 'approve'])->name('verification.approve');
     Route::post('/verification/{id}/reject', [VerificationController::class, 'reject'])->name('verification.reject');
 
+    // AJAX route for notification count
+    Route::get('/notifications/count', [VerificationController::class, 'getNotificationCount'])->name('notifications.count');
+
     Route::post('/anggaran', [AnggaranController::class, 'store'])->name('anggaran.store');
     Route::get('/anggaran/{anggaran}', [AnggaranController::class, 'show'])->name('anggaran.show');
     Route::put('/anggaran/{anggaran}', [AnggaranController::class, 'update'])->name('anggaran.update');
@@ -273,6 +276,9 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('super-admin')-
 
 Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // AJAX route for admin notification count
+    Route::get('/notifications/count', [AdminDashboardController::class, 'getNotificationCount'])->name('notifications.count');
 
     Route::get('/chart-jaringan', function () {
         return view('admin.chart-jaringan');

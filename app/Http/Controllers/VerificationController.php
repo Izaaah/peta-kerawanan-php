@@ -137,4 +137,17 @@ class VerificationController extends Controller
 
         return route('super-admin.verification.index');
     }
+
+    /**
+     * Get notification count for AJAX requests
+     */
+    public function getNotificationCount()
+    {
+        $count = DataVerification::where('status', 'pending')->count();
+
+        return response()->json([
+            'count' => $count,
+            'success' => true
+        ]);
+    }
 }

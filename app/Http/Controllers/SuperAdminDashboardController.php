@@ -13,6 +13,7 @@ use App\Models\Pegawai;
 use App\Models\Tugas;
 use App\Models\Fungsi;
 use App\Models\Berita;
+use App\Models\DataVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -263,6 +264,14 @@ class SuperAdminDashboardController extends Controller
             'Pengolahan Data',
         ];
 
+        // Data untuk notifikasi verifikasi
+        $pendingVerifications = DataVerification::where('status', 'pending')
+            ->with('admin')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pendingVerificationCount = $pendingVerifications->count();
+
         return view('super-admin.dashboard', compact(
             'totalKasus',
             'totalDesa',
@@ -297,6 +306,8 @@ class SuperAdminDashboardController extends Controller
             'allKecamatanTkpList',
             'galeri',
             'jabatanList',
+            'pendingVerifications',
+            'pendingVerificationCount',
             'pegawai',
             'tugas',
             'fungsi',

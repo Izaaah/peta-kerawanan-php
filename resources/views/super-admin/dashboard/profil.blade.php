@@ -27,7 +27,8 @@
                     <div
                         class="bg-gradient-to-br from-white to-blue-50 rounded-base shadow-lg p-4 lg:p-8 border-t border-l border-blue-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
                         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-1 gap-2">
-                            <h5 class="text-lg lg:text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang Pemberantasan
+                            <h5 class="text-lg lg:text-2xl font-bold text-black tracking-tight">Tugas Pokok Bidang
+                                Pemberantasan
                                 dan
                                 Intelijen</h5>
                             <button type="button" onclick="openTugasModal()"
@@ -174,8 +175,8 @@
                                             class="flex items-center bg-gradient-to-r from-red-600 to-red-700 text-white shadow-xl p-3 lg:p-6 rounded-xl border-2 border-red-800 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 min-w-[280px] lg:min-w-[400px]">
                                             <div
                                                 class="w-12 h-12 lg:w-20 lg:h-20 bg-white mr-2 lg:mr-5 overflow-hidden border-2 border-white shadow-inner flex items-center justify-center rounded-full">
-                                                <svg class="w-6 h-6 lg:w-12 lg:h-12 text-red-600" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
+                                                <svg class="w-6 h-6 lg:w-12 lg:h-12 text-red-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2"
                                                         d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z">
@@ -184,8 +185,10 @@
                                             </div>
                                             <div class="text-left">
                                                 @php $ketua = $pegawai->where('jabatan','Ketua')->first(); @endphp
-                                                <div class="text-white font-bold text-sm lg:text-xl">Kepala BNNP Jatim</div>
-                                                <div class="text-white text-xs lg:text-lg">{{ $ketua->nama ?? '-' }}</div>
+                                                <div class="text-white font-bold text-sm lg:text-xl">Kepala BNNP Jatim
+                                                </div>
+                                                <div class="text-white text-xs lg:text-lg">{{ $ketua->nama ?? '-' }}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -199,8 +202,10 @@
 
                                         <!-- Vertical connectors for subordinates -->
                                         <div class="flex w-full justify-between px-4 lg:px-8">
-                                            <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
-                                            <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                            <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300">
+                                            </div>
+                                            <div class="h-6 lg:h-12 w-1 bg-gradient-to-b from-gray-400 to-gray-300">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -224,7 +229,8 @@
                                                 </div>
                                                 <div class="text-left">
                                                     @php $kabidPemberantasan = $pegawai->where('jabatan','Kabid Pemberantasan')->first(); @endphp
-                                                    <div class="text-white font-bold text-sm lg:text-lg">Kabid Pemberantasan dan
+                                                    <div class="text-white font-bold text-sm lg:text-lg">Kabid
+                                                        Pemberantasan dan
                                                         Intelijen</div>
                                                     <div class="text-white text-xs lg:text-base">
                                                         {{ $kabidPemberantasan->nama ?? '-' }}</div>
@@ -232,7 +238,8 @@
                                             </div>
 
                                             <!-- Vertical connector to Kasi -->
-                                            <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-2 lg:mt-4">
+                                            <div
+                                                class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-2 lg:mt-4">
                                             </div>
 
                                             <!-- Horizontal connector to Kasi -->
@@ -242,8 +249,12 @@
 
                                             <!-- Vertical connectors for Kasi -->
                                             <div class="flex w-full justify-between px-6 lg:px-12">
-                                                <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
-                                                <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300"></div>
+                                                <div
+                                                    class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300">
+                                                </div>
+                                                <div
+                                                    class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300">
+                                                </div>
                                             </div>
                                         </div>
 
@@ -263,14 +274,17 @@
                                                 </div>
                                                 <div class="text-left">
                                                     @php $kabagUmum = $pegawai->where('jabatan','Kabag Umum')->first(); @endphp
-                                                    <div class="text-white font-bold text-sm lg:text-lg">Kabag Umum</div>
-                                                    <div class="text-white text-xs lg:text-base">{{ $kabagUmum->nama ?? '-' }}
+                                                    <div class="text-white font-bold text-sm lg:text-lg">Kabag Umum
+                                                    </div>
+                                                    <div class="text-white text-xs lg:text-base">
+                                                        {{ $kabagUmum->nama ?? '-' }}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Vertical connector to Koordinator -->
-                                            <div class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-2 lg:mt-4">
+                                            <div
+                                                class="h-8 lg:h-16 w-1 bg-gradient-to-b from-gray-400 to-gray-300 mt-2 lg:mt-4">
                                             </div>
                                         </div>
                                     </div>
@@ -295,8 +309,10 @@
                                                 </div>
                                                 <div class="text-left">
                                                     @php $kasiIntelijen = $pegawai->where('jabatan','Kasi Intelijen')->first(); @endphp
-                                                    <div class="text-white font-bold text-xs lg:text-base">Kasi Intelijen</div>
-                                                    <div class="text-white text-xs lg:text-sm">{{ $kasiIntelijen->nama ?? '-' }}
+                                                    <div class="text-white font-bold text-xs lg:text-base">Kasi
+                                                        Intelijen</div>
+                                                    <div class="text-white text-xs lg:text-sm">
+                                                        {{ $kasiIntelijen->nama ?? '-' }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,14 +383,16 @@
 
                                 <!-- Staff di bawah Kasi Intelijen -->
                                 <div class="space-y-4">
-                                    <h5 class="text-sm lg:text-lg font-bold text-gray-800 text-center mb-2 lg:mb-4">Staff Sie Intelijen
+                                    <h5 class="text-sm lg:text-lg font-bold text-gray-800 text-center mb-2 lg:mb-4">
+                                        Staff Sie Intelijen
                                     </h5>
 
                                     <!-- Analisis Intelijen -->
                                     <div
                                         class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg shadow-md p-2 lg:p-4 border border-purple-200 hover:shadow-lg transition-all duration-300">
                                         <div class="text-left">
-                                            <div class="text-purple-800 font-bold text-sm lg:text-base mb-2">Analisis Intelijen
+                                            <div class="text-purple-800 font-bold text-sm lg:text-base mb-2">Analisis
+                                                Intelijen
                                             </div>
                                             <div class="text-gray-700">
                                                 <ul class="list-disc list-inside space-y-1">
@@ -674,8 +692,7 @@
                     </div>
                 </div>
 
-                <div
-                    class="bg-gradient-to-br from-white to-blue-50 w-full shadow-xl p-4 lg:p-8 border border-blue-100 overflow-hidden relative mb-8 lg:mb-12">
+                <div class="w-full p-4 lg:p-8 overflow-hidden relative mb-8 lg:mb-12">
                     <!-- New Gallery Section Below Komposisi Personil -->
                     <div id="gallery-section" class="gallery-section">
                         <div class="relative mb-8">
@@ -703,7 +720,8 @@
                                     <!-- Carousel Container -->
                                     <div class="relative overflow-hidden rounded-2xl">
                                         <!-- Main Gallery Display -->
-                                        <div class="flex items-center justify-center space-x-2 lg:space-x-4 py-4 lg:py-8">
+                                        <div
+                                            class="flex items-center justify-center space-x-2 lg:space-x-4 py-4 lg:py-8">
 
                                             <!-- Previous Image (Left) -->
                                             <div class="flex-shrink-0 transform scale-75 opacity-50 blur-sm transition-all duration-500 hidden sm:block"
@@ -819,7 +837,8 @@
                     <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 gap-4">
                         <div>
                             <h2 class="text-lg lg:text-2xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
-                            <p class="text-sm lg:text-base text-gray-600">Kumpulan berita dari berbagai sumber eksternal</p>
+                            <p class="text-sm lg:text-base text-gray-600">Kumpulan berita dari berbagai sumber
+                                eksternal</p>
                         </div>
                         <button id="addNewsBtn"
                             class="bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-800 transition-all duration-200 transform hover:-translate-y-0.5 shadow-sm">

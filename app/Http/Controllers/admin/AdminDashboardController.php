@@ -12,6 +12,7 @@ use App\Models\Tugas;
 use App\Models\Fungsi;
 use App\Models\Galeri;
 use App\Models\Berita;
+use App\Models\DataVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -284,6 +285,26 @@ class AdminDashboardController extends Controller
             'Pengadministrasian Umum',
         ];
 
+        // Data untuk notifikasi verifikasi yang sudah disetujui untuk admin ini
+        $approvedVerifications = DataVerification::where('admin_id', $userId)
+            ->where('status', 'approved')
+            ->with('superAdmin')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $approvedVerificationCount = $approvedVerifications->count();
+
+        // Data untuk notifikasi verifikasi yang sedang pending untuk admin ini
+        $pendingVerifications = DataVerification::where('admin_id', $userId)
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pendingVerificationCount = $pendingVerifications->count();
+
+        // Total notification count (approved + pending)
+        $totalNotificationCount = $approvedVerificationCount + $pendingVerificationCount;
+
         return view('admin.dashboard', compact(
             'totalKasus',
             'totalDesa',
@@ -314,7 +335,12 @@ class AdminDashboardController extends Controller
             'fungsi',
             'galeri',
             'berita',
-            'jabatanList'
+            'jabatanList',
+            'approvedVerifications',
+            'approvedVerificationCount',
+            'pendingVerifications',
+            'pendingVerificationCount',
+            'totalNotificationCount'
         ));
     }
 
@@ -330,5 +356,29 @@ class AdminDashboardController extends Controller
             ->count();
 
         return response()->json(['count' => $count]);
+    }
+
+    /**
+     * Get notification count for AJAX requests
+     */
+    public function getNotificationCount()
+    {
+        $user = request()->user();
+        $approvedCount = DataVerification::where('admin_id', $user->id)
+            ->where('status', 'approved')
+            ->count();
+
+        $pendingCount = DataVerification::where('admin_id', $user->id)
+            ->where('status', 'pending')
+            ->count();
+
+        $totalCount = $approvedCount + $pendingCount;
+
+        return response()->json([
+            'count' => $totalCount,
+            'approved' => $approvedCount,
+            'pending' => $pendingCount,
+            'success' => true
+        ]);
     }
 }

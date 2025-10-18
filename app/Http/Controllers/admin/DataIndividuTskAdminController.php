@@ -14,6 +14,7 @@ use App\Models\ProsesHukumStatus;
 use App\Models\NarapidanaStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class DataIndividuTskAdminController extends Controller
@@ -104,6 +105,77 @@ class DataIndividuTskAdminController extends Controller
 
     public function store(Request $request)
     {
+        // Check if this is a verification submission first
+        if ($request->has('submit_for_verification')) {
+            // Minimal validation for verification submission
+            $verificationValidationRules = [
+                'nik' => 'required|string|max:20',
+                'existing_data' => 'required|string',
+                'submit_for_verification' => 'required|string',
+            ];
+
+            $request->validate($verificationValidationRules);
+
+            Log::info('Verification submission received', [
+                'user_id' => $request->user()->id,
+                'csrf_token' => $request->input('_token'),
+                'session_token' => session()->token(),
+                'existing_data' => $request->input('existing_data')
+            ]);
+
+            $existingData = json_decode($request->existing_data, true);
+
+            // Create minimal data for verification
+            $data = [
+                'nama' => $request->nama ?? '',
+                'nik' => $request->nik,
+                'nkk' => $request->nkk ?? '',
+                'jenis_kelamin' => $request->jenis_kelamin ?? '',
+                'tempat_lahir' => $request->tempat_lahir ?? '',
+                'tgl_lahir' => $request->tgl_lahir ?? '',
+                'provinsi' => $request->provinsi ?? '',
+                'kabupaten' => $request->kabupaten ?? '',
+                'kecamatan' => $request->kecamatan ?? '',
+                'kelurahan' => $request->kelurahan ?? '',
+                'alamat' => $request->alamat ?? '',
+                'nama_ayah' => $request->nama_ayah ?? '',
+                'nik_ayah' => $request->nik_ayah ?? '',
+                'nama_ibu' => $request->nama_ibu ?? '',
+                'nik_ibu' => $request->nik_ibu ?? '',
+                'peran_jaringan' => $request->peran_jaringan ?? '',
+                'modus_operasi' => $request->modus_operasi ?? '',
+                'jenis_narkotika' => is_array($request->jenis_narkotika) ? implode(',', $request->jenis_narkotika) : ($request->jenis_narkotika ?? ''),
+                'jumlah_barang_bukti' => $request->angka ?? '',
+                'satuan_barang_bukti' => $request->satuan ?? '',
+                'status' => $request->status ?? '',
+                'residivis' => $request->has('residivis'),
+                'sumber_informasi' => $request->sumber_informasi ?? '',
+                'ipwl_id' => $request->ipwl_id ?? '',
+                'created_by' => request()->user()->id,
+            ];
+
+            $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
+                'data_individu_tsk',
+                $data,
+                $request->user()->id,
+                $existingData['id'] ?? null
+            );
+
+            if ($isDuplicate) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Permintaan verifikasi edit telah dikirim ke Super Admin. Data akan ditinjau dan diproses.',
+                    'redirect' => route('admin.data.individu')
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal membuat permintaan verifikasi.'
+            ]);
+        }
+
+        // Full validation for normal submission
         $validationRules = [
             'nik' => 'required|string|max:20',
             'nkk' => 'required|string|max:16',
@@ -192,36 +264,17 @@ class DataIndividuTskAdminController extends Controller
             'created_by' => request()->user()->id,
         ];
 
-        // Check for duplicates if this is a verification submission
-        if ($request->has('submit_for_verification')) {
-            $existingData = json_decode($request->existing_data, true);
-            $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
-                'data_individu_tsk',
-                $data,
-                $request->user()->id,
-                $existingData['id'] ?? null
-            );
+        // Check for duplicates for normal submission
+        $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
+            'data_individu_tsk',
+            $data,
+            $request->user()->id
+        );
 
-            if ($isDuplicate) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Permintaan verifikasi edit telah dikirim ke Super Admin. Data akan ditinjau dan diproses.',
-                    'redirect' => route('admin.data.individu')
-                ]);
-            }
-        } else {
-            // Check for duplicates for normal submission
-            $isDuplicate = \App\Services\DuplicateDetectionService::checkAndCreateVerification(
-                'data_individu_tsk',
-                $data,
-                $request->user()->id
-            );
-
-            if ($isDuplicate) {
-                return redirect()->back()
-                    ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
-                    ->withInput();
-            }
+        if ($isDuplicate) {
+            return redirect()->back()
+                ->with('warning', 'Data terdeteksi duplikat. Data akan diverifikasi oleh Super Admin terlebih dahulu.')
+                ->withInput();
         }
 
         DB::beginTransaction();

@@ -1420,8 +1420,9 @@
 
                 // Menghapus required fields jika NIK terduplikasi
                 const fieldsToUnrequire = [
-                    'nama', 'nkk', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'alamat',
-                    'peran_jaringan', 'status'
+                    'nama', 'nkk', 'jenis_kelamin', 'tempat_lahir', 'tgl_lahir', 'provinsi',
+                    'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'peran_jaringan', 'status',
+                    'angka', 'satuan'
                 ];
 
                 fieldsToUnrequire.forEach(function(fieldId) {
@@ -1449,6 +1450,8 @@
             function showAvailableNotification() {
                 hideAllNotifications();
                 availableNotification.classList.remove('hidden');
+                // Pastikan field tetap required untuk NIK yang tidak duplikat
+                restoreRequiredFields();
             }
 
             function hideAvailableNotification() {
@@ -1460,6 +1463,24 @@
                 duplicateNotification.classList.add('hidden');
                 availableNotification.classList.add('hidden');
                 delete duplicateNotification.dataset.existingData;
+
+                // Mengembalikan required fields jika NIK tidak duplikat
+                restoreRequiredFields();
+            }
+
+            function restoreRequiredFields() {
+                const fieldsToRequire = [
+                    'nama', 'nkk', 'jenis_kelamin', 'tempat_lahir', 'tgl_lahir', 'provinsi',
+                    'kabupaten', 'kecamatan', 'kelurahan', 'alamat', 'peran_jaringan', 'status',
+                    'angka', 'satuan'
+                ];
+
+                fieldsToRequire.forEach(function(fieldId) {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.setAttribute('required', 'required');
+                    }
+                });
             }
 
             // Update NIK counter
@@ -1638,6 +1659,11 @@
                 formData.append('existing_data', JSON.stringify(existingData));
                 formData.append('submit_for_verification', '1');
 
+                // Menambahkan CSRF token
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                console.log('CSRF Token:', csrfToken); // Debug log
+                formData.append('_token', csrfToken);
+
                 // Show loading state
                 submitForVerificationBtn.disabled = true;
                 submitForVerificationBtn.innerHTML =
@@ -1649,10 +1675,18 @@
                         body: formData,
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': csrfToken,
                         }
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log('Response status:', response.status);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log('Response data:', data);
                         if (data.success) {
                             // Show success message and redirect
                             alert(
@@ -1666,8 +1700,8 @@
                         }
                     })
                     .catch(error => {
-                        console.error('Error:', error);
-                        alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
+                        console.error('Error details:', error);
+                        alert('Terjadi kesalahan: ' + error.message + '. Silakan coba lagi.');
                     })
                     .finally(() => {
                         // Restore button state

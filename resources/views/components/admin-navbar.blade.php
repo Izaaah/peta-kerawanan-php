@@ -1,6 +1,38 @@
 <!-- Include CSS khusus navbar superadmin -->
 <link rel="stylesheet" href="{{ asset('css/superadmin-navbar.css') }}">
 
+<style>
+    .notification-section-header {
+        padding: 8px 16px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        margin: 0 -16px 8px -16px;
+    }
+
+    .notification-section-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c757d;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .notification-item.pending {
+        opacity: 0.8;
+        background-color: #fff3cd;
+        border-left: 3px solid #ffc107;
+    }
+
+    .notification-item.pending .notification-item-title {
+        color: #856404;
+    }
+
+    .notification-item.pending .notification-item-message {
+        color: #856404;
+    }
+</style>
+
 <!-- Garis putih tebal di atas navbar -->
 <div class="top-banner">
     <div class="banner-content">
@@ -48,16 +80,20 @@
                 <div class="divider-line"></div>
             </div>
             <a href="{{ route('profile.edit') }}" class="mobile-profile-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mobile-profile-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="mobile-profile-icon" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span>Profil</span>
             </a>
             <form method="POST" action="{{ route('logout') }}" style="display: block; width: 100%;">
                 @csrf
                 <button type="submit" class="mobile-logout-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mobile-profile-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mobile-profile-icon" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
                     <span>Keluar</span>
                 </button>
@@ -74,8 +110,9 @@
         <div class="logo-circle">
             <img src="{{ asset('img/logo-bnn.png') }}" alt="Logo BNN">
             <!-- Notification Badge -->
-            <div class="notification-badge" id="notificationBadge">
-                <span class="notification-count">3</span>
+            <div class="notification-badge" id="notificationBadge"
+                @if (isset($totalNotificationCount) && $totalNotificationCount > 0) style="display: flex;" @else style="display: none;" @endif>
+                <span class="notification-count">{{ $totalNotificationCount ?? 0 }}</span>
             </div>
         </div>
     </div>
@@ -86,55 +123,104 @@
     <div class="notification-popup" id="notificationPopup">
         <div class="notification-popup-header">
             <div class="notification-popup-title">
-                <svg xmlns="http://www.w3.org/2000/svg" class="notification-popup-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-5a7.5 7.5 0 0 0-15 0v5h5l-5 5-5-5h5v-5a7.5 7.5 0 0 1 15 0v5z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="notification-popup-icon" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-5 5-5-5h5v-5a7.5 7.5 0 0 0-15 0v5h5l-5 5-5-5h5v-5a7.5 7.5 0 0 1 15 0v5z" />
                 </svg>
                 <span>Notifikasi Terbaru</span>
             </div>
             <button class="notification-popup-close" onclick="closeNotificationPopup()">✕</button>
         </div>
         <div class="notification-popup-content">
-            <div class="notification-item unread">
-                <div class="notification-item-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
+            @if (isset($approvedVerifications) && $approvedVerifications->count() > 0)
+                <!-- Approved Verifications Section -->
+                <div class="notification-section-header">
+                    <h3 class="notification-section-title">✅ Verifikasi Disetujui</h3>
                 </div>
-                <div class="notification-item-content">
-                    <div class="notification-item-title">Laporan Admin Baru</div>
-                    <div class="notification-item-message">Ada laporan kerawanan baru yang perlu ditinjau oleh admin</div>
-                    <div class="notification-item-time">2 menit lalu</div>
-                </div>
-                <div class="notification-item-status"></div>
-            </div>
+                @foreach ($approvedVerifications->take(4) as $verification)
+                    <div class="notification-item unread"
+                        onclick="handleVerificationClick({{ $verification->id }}, '{{ $verification->table_name }}', {{ $verification->data_id }})"
+                        style="cursor: pointer;">
+                        <div class="notification-item-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="notification-item-content">
+                            <div class="notification-item-title">Verifikasi Disetujui -
+                                {{ $verification->table_display_name }}</div>
+                            <div class="notification-item-message">
+                                @if ($verification->data_id == 0)
+                                    Data baru Anda telah disetujui oleh
+                                    {{ $verification->superAdmin->name ?? 'Super Admin' }}. Klik untuk melanjutkan
+                                    input data.
+                                @else
+                                    Perubahan data Anda telah disetujui oleh
+                                    {{ $verification->superAdmin->name ?? 'Super Admin' }}. Klik untuk melanjutkan edit
+                                    data.
+                                @endif
+                            </div>
+                            <div class="notification-item-time">{{ $verification->updated_at->diffForHumans() }}</div>
+                        </div>
+                        <div class="notification-item-status"></div>
+                    </div>
+                @endforeach
+            @endif
 
-            <div class="notification-item unread">
-                <div class="notification-item-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                    </svg>
+            @if (isset($pendingVerifications) && $pendingVerifications->count() > 0)
+                <!-- Pending Verifications Section -->
+                <div class="notification-section-header">
+                    <h3 class="notification-section-title">⏳ Menunggu Verifikasi</h3>
                 </div>
-                <div class="notification-item-content">
-                    <div class="notification-item-title">Pesan dari Super Admin</div>
-                    <div class="notification-item-message">Instruksi baru untuk update data wilayah admin</div>
-                    <div class="notification-item-time">5 menit lalu</div>
-                </div>
-                <div class="notification-item-status"></div>
-            </div>
+                @foreach ($pendingVerifications->take(4) as $verification)
+                    <div class="notification-item pending">
+                        <div class="notification-item-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="notification-item-content">
+                            <div class="notification-item-title">Menunggu Verifikasi -
+                                {{ $verification->table_display_name }}</div>
+                            <div class="notification-item-message">
+                                @if ($verification->data_id == 0)
+                                    Data baru Anda sedang menunggu verifikasi dari Super Admin
+                                @else
+                                    Perubahan data Anda sedang menunggu verifikasi dari Super Admin
+                                @endif
+                            </div>
+                            <div class="notification-item-time">{{ $verification->created_at->diffForHumans() }}</div>
+                        </div>
+                        <div class="notification-item-status"></div>
+                    </div>
+                @endforeach
+            @endif
 
-            <div class="notification-item">
-                <div class="notification-item-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+            @if (
+                (!isset($approvedVerifications) || $approvedVerifications->count() == 0) &&
+                    (!isset($pendingVerifications) || $pendingVerifications->count() == 0))
+                <div class="notification-item">
+                    <div class="notification-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="notification-item-content">
+                        <div class="notification-item-title">Tidak Ada Notifikasi</div>
+                        <div class="notification-item-message">Tidak ada verifikasi yang perlu ditindaklanjuti saat ini
+                        </div>
+                        <div class="notification-item-time">Sekarang</div>
+                    </div>
+                    <div class="notification-item-status"></div>
                 </div>
-                <div class="notification-item-content">
-                    <div class="notification-item-title">Verifikasi Data Selesai</div>
-                    <div class="notification-item-message">Proses verifikasi data admin telah berhasil diselesaikan</div>
-                    <div class="notification-item-time">10 menit lalu</div>
-                </div>
-                <div class="notification-item-status"></div>
-            </div>
+            @endif
         </div>
         <div class="notification-popup-footer">
             <button class="notification-mark-all-btn" id="markAllBtn" onclick="markAllAsRead()">
@@ -152,25 +238,32 @@
     </div>
     <div class="profile-menu-content">
         <a href="{{ route('profile.edit') }}" class="profile-menu-item">
-            <svg xmlns="http://www.w3.org/2000/svg" class="profile-menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="profile-menu-icon" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
             <span>Profil</span>
         </a>
         <a href="#" class="profile-menu-item notification-menu-item" onclick="showNotificationPanel(event)">
-            <svg xmlns="http://www.w3.org/2000/svg" class="profile-menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-5a7.5 7.5 0 0 0-15 0v5h5l-5 5-5-5h5v-5a7.5 7.5 0 0 1 15 0v5z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="profile-menu-icon" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 17h5l-5 5-5-5h5v-5a7.5 7.5 0 0 0-15 0v5h5l-5 5-5-5h5v-5a7.5 7.5 0 0 1 15 0v5z" />
             </svg>
             <span>Notifikasi</span>
-            <div class="notification-menu-badge" id="notificationMenuBadge">
-                <span class="notification-menu-count">3</span>
+            <div class="notification-menu-badge" id="notificationMenuBadge"
+                @if (isset($totalNotificationCount) && $totalNotificationCount > 0) style="display: flex;" @else style="display: none;" @endif>
+                <span class="notification-menu-count">{{ $totalNotificationCount ?? 0 }}</span>
             </div>
         </a>
         <form method="POST" action="{{ route('logout') }}" style="display: block;">
             @csrf
             <button type="submit" class="profile-menu-item profile-menu-logout">
-                <svg xmlns="http://www.w3.org/2000/svg" class="profile-menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="profile-menu-icon" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
                 <span>Keluar</span>
             </button>
@@ -245,6 +338,76 @@
 
         if (profileMenu) {
             profileMenu.classList.remove('active');
+        }
+    }
+
+    // Function to fetch verification count via AJAX
+    function fetchVerificationCount() {
+        fetch('{{ route('admin.notifications.count') }}', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateNotificationCount(data.count);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching verification count:', error);
+            });
+    }
+
+    // Function to refresh notifications periodically
+    function startNotificationRefresh() {
+        // Refresh every 30 seconds
+        setInterval(fetchVerificationCount, 30000);
+    }
+
+    // Function to handle verification click
+    function handleVerificationClick(verificationId, tableName, dataId) {
+        console.log('Verification clicked:', {
+            verificationId,
+            tableName,
+            dataId
+        });
+
+        // Close notification popup
+        closeNotificationPopup();
+
+        // Determine the route based on table name
+        const routeMap = {
+            'data_individu_tsk': 'data-individu',
+            'thm': 'thm',
+            'lsm_narkotika': 'lsm',
+            'media_sosial': 'medsos',
+            'penjual_vape': 'vape',
+            'perusahaan_farmasi_prekursor': 'farmasi',
+            'objek_vital': 'objek',
+            'penggiat_narkotika': 'penggiat',
+            'penginapan': 'penginapan',
+            'rutan_lapas': 'rutan',
+            'transportasi': 'transportasi',
+            'ekspedisi': 'ekspedisi',
+            'lembaga_rehabilitasi': 'rehabilitasi',
+        };
+
+        const routePath = routeMap[tableName];
+
+        if (routePath) {
+            if (dataId && dataId > 0) {
+                // Redirect to edit page with data ID
+                window.location.href = `/admin/${routePath}/${dataId}/edit`;
+            } else {
+                // Redirect to create page for new data
+                window.location.href = `/admin/${routePath}/create`;
+            }
+        } else {
+            console.error('Unknown table name:', tableName);
+            alert('Tidak dapat menentukan halaman tujuan untuk tabel: ' + tableName);
         }
     }
 
@@ -419,8 +582,13 @@
             overlay: mobileMenuOverlay
         });
 
-        // Initialize notification badge
-        showNotificationBadge(3); // Default count of 3 unread notifications
+        // Initialize notification badge with real verification count
+        const verificationCount = {{ $totalNotificationCount ?? 0 }};
+        if (verificationCount > 0) {
+            showNotificationBadge(verificationCount);
+        } else {
+            hideNotificationBadge();
+        }
 
         // Add click event to notification badge
         const notificationBadge = document.getElementById('notificationBadge');
@@ -509,5 +677,8 @@
                 closeProfileMenu();
             }
         });
+
+        // Start periodic notification refresh
+        startNotificationRefresh();
     });
 </script>

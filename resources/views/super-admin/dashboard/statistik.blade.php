@@ -84,12 +84,13 @@
     </div>
 
     <!-- Grafik Section -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
         <!-- Grafik Kasus per Kabupaten -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 lg:p-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
-                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br> Berdasarkan TKP
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br>
+                        Berdasarkan TKP
                     </h3>
                     <button onclick="switchToDataKabupatenTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
@@ -110,7 +111,8 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 lg:p-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
-                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan TKP</h3>
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan
+                        TKP</h3>
                     <button onclick="switchToDataKecamatanTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
                         <div class="flex items-center space-x-1">
@@ -128,12 +130,13 @@
     </div>
 
     <!-- Grafik Section -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
         <!-- Grafik Kasus per Kabupaten NIK -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 lg:p-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
-                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br> Berdasarkan NIK
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kabupaten/Kota <br>
+                        Berdasarkan NIK
                     </h3>
                     <button onclick="switchToDataKabupatenNikTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
@@ -154,7 +157,8 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 lg:p-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
-                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan NIK</h3>
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900">Kasus per Kecamatan <br> Berdasarkan
+                        NIK</h3>
                     <button onclick="switchToDataKecamatanNikTab()"
                         class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors">
                         <div class="flex items-center space-x-1">
@@ -172,7 +176,7 @@
     </div>
 
     <!-- Grafik Trend dan Status -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
         <!-- Trend Bulanan -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 lg:p-6">

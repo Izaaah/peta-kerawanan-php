@@ -107,7 +107,7 @@
                                 <!-- Options will be populated dynamically -->
                             </select>
                         </div>
-                        <div>
+                        {{-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Tahun</label>
                             <select
                                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -115,8 +115,8 @@
                                 <option value="2023">2023</option>
                                 <option value="2022">2022</option>
                             </select>
-                        </div>
-                        <div>
+                        </div> --}}
+                        {{-- <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                             <select
                                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -125,13 +125,13 @@
                                 <option value="selesai">Selesai</option>
                                 <option value="proses">Dalam Proses</option>
                             </select>
+                        </div> --}}
+                        <div class="mt-4 flex">
+                            <button id="resetFilterBtn"
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                Reset Filter
+                            </button>
                         </div>
-                    </div>
-                    <div class="mt-4 flex justify-end">
-                        <button id="resetFilterBtn"
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                            Reset Filter
-                        </button>
                     </div>
                 </div>
 
