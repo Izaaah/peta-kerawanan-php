@@ -173,6 +173,14 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('super-admin')-
     Route::put('/penginapan/{id}', [PenginapanController::class, 'update'])->name('data.penginapan.update');
     Route::delete('/penginapan/{id}', [PenginapanController::class, 'destroy'])->name('data.penginapan.destroy');
 
+    Route::get('/thm', [ThmController::class, 'index'])->name('data.thm.index');
+    Route::get('/thm/create', [ThmController::class, 'create'])->name('data.thm.create');
+    Route::post('/thm', [ThmController::class, 'store'])->name('data.thm.store');
+    Route::get('/thm/{id}', [ThmController::class, 'show'])->name('data.thm.show');
+    Route::get('/thm/{id}/edit', [ThmController::class, 'edit'])->name('data.thm.edit');
+    Route::put('/thm/{id}', [ThmController::class, 'update'])->name('data.thm.update');
+    Route::delete('/thm/{id}', [ThmController::class, 'destroy'])->name('data.thm.destroy');
+
     Route::get('/ekspedisi', [EkspedisiController::class, 'index'])->name('data.ekspedisi.index');
     Route::post('/ekspedisi', [EkspedisiController::class, 'store'])->name('data.ekspedisi.store');
     Route::get('/ekspedisi/{id}', [EkspedisiController::class, 'show'])->name('data.ekspedisi.show');
@@ -208,12 +216,6 @@ Route::middleware(['auth', 'verified', 'role.redirect'])->prefix('super-admin')-
     Route::put('penggiat/{id}', [PenggiatNarkotikaController::class, 'update'])->name('data.penggiat.update');
     Route::delete('/penggiat/{id}', [PenggiatNarkotikaController::class, 'destroy'])->name('data.penggiat.destroy');
 
-    Route::get('thm/', [ThmController::class, 'index'])->name('data.thm.index');
-    Route::post('thm/', [ThmController::class, 'store'])->name('data.thm.store');
-    Route::get('thm/{id}', [ThmController::class, 'show'])->name('data.thm.show');
-    Route::get('thm/{id}/edit', [ThmController::class, 'edit'])->name('data.thm.edit');
-    Route::put('thm/{id}', [ThmController::class, 'update'])->name('data.thm.update');
-    Route::delete('/thm/{id}', [ThmController::class, 'destroy'])->name('data.thm.destroy');
 
     // Route untuk verifikasi perubahan data
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification.index');

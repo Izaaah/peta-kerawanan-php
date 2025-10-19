@@ -1,6 +1,6 @@
 ﻿        <!-- Konten Profil Organisasi -->
         <div id="profilContent" class="dashboard-content hidden">
-            <div class="bg-white rounded-lg shadow-lg p-4 lg:p-6">
+            <div class="bg-white rounded-lg shadow-lg p-4 lg:p-6 mt-4">
                 <div class="mb-6 text-center">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo BNN" class="h-16 mb-2 mx-auto">
                     <div>

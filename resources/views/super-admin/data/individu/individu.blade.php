@@ -132,29 +132,29 @@
                     <tbody id="individuTableBody" class="bg-white divide-y divide-gray-200">
                         @foreach ($sampleData as $i => $individu)
                             <tr>
-                                 lg:px-4 py-2">{{ $sampleData->firstItem() + $i }}</td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">{{ $sampleData->firstItem() + $i }}</td>
+                                <td class="px-4 py-2">
                                     <div class="font-semibold text-gray-800">{{ $individu->nama }}</div>
                                     <div class="text-xs text-gray-500">{{ $individu->nik }}</div>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     <div class="text-gray-800">{{ $individu->kelurahan }}, {{ $individu->kecamatan }}
                                     </div>
                                     <div class="text-xs text-gray-500">{{ $individu->kabupaten }}</div>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     <span
                                         class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $individu->status === 'Napi' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
                                         {{ $individu->status }}
                                     </span>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     <span
                                         class="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
                                         {{ $individu->peran_jaringan }}
                                     </span>
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     @if ($individu->residivis)
                                         <span
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">Ya</span>
@@ -163,7 +163,7 @@
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-gray-700">Tidak</span>
                                     @endif
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     @if ($individu->telepon && $individu->telepon->count() > 0)
                                         @foreach ($individu->telepon as $telepon)
                                             <span
@@ -178,7 +178,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                 lg:px-4 py-2">
+                                <td class="px-4 py-2">
                                     @if ($individu->createdBy)
                                         <span
                                             class="inline-block px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
@@ -202,7 +202,7 @@
                                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
                                             </path>
                                         </svg>
-                                        Lihat
+                                        {{-- Lihat --}}
                                     </a>
                                     <a href="{{ route('super-admin.data.individu.edit', $individu->id) }}"
                                         class="text-indigo-600 hover:text-indigo-900 flex items-center border border-indigo-600 rounded-md px-1 py-1 text-sm">
@@ -212,7 +212,7 @@
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                             </path>
                                         </svg>
-                                        Edit
+                                        {{-- Edit --}}
                                     </a>
                                     <form action="{{ route('super-admin.data.individu.destroy', $individu->id) }}"
                                         method="POST" class="inline-block"
@@ -227,7 +227,7 @@
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                                 </path>
                                             </svg>
-                                            Hapus
+                                            {{-- Hapus --}}
                                         </button>
                                     </form>
                                 </td>

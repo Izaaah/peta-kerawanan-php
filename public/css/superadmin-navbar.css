@@ -332,7 +332,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999999999;
+    z-index: 9999;
     animation: bounce 2s infinite;
     box-shadow: 0 3px 12px rgba(255, 68, 68, 0.6);
 }
@@ -1138,7 +1138,7 @@ body.scrolled .profile-menu {
         height: 22px;
         top: -7px;
         right: -7px;
-        z-index: 9999999999;
+        z-index: 9999;
     }
 
     .notification-count {
@@ -2142,7 +2142,7 @@ body.scrolled .profile-menu {
     height: 24px;
         top: -8px;
         right: -8px;
-        z-index: 9999999999;
+        z-index: 9999;
 }
 
 .notification-count {
@@ -2269,7 +2269,7 @@ body.scrolled .profile-menu {
         height: 20px;
         top: -6px;
         right: -6px;
-        z-index: 9999999999;
+        z-index: 9999;
     }
 
     .notification-count {
@@ -2397,7 +2397,7 @@ body.scrolled .profile-menu {
         height: 20px;
         top: -6px;
         right: -6px;
-        z-index: 9999999999;
+        z-index: 9999;
     }
 
     .notification-count {
@@ -2524,7 +2524,7 @@ body.scrolled .profile-menu {
         height: 22px;
         top: -7px;
         right: -7px;
-        z-index: 9999999999;
+        z-index: 9999;
     }
 
     .notification-count {
@@ -2652,7 +2652,7 @@ body.scrolled .profile-menu {
         height: 24px;
         top: -8px;
         right: -8px;
-        z-index: 9999999999;
+        z-index: 9999;
     }
 
     .notification-count {
