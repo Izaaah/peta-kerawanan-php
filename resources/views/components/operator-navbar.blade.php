@@ -5,9 +5,7 @@
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis
-                Intelijen
-                Dasar</span>
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
         </div>
     </div>
 </div>
@@ -107,59 +105,37 @@
 <div class="mobile-menu-overlay" id="operatorMobileMenuOverlay"></div>
 
 <script>
-    // Prevent immediate close when opening
-    let isTogglingProfileMenu = false;
+    let isTogglingOperatorProfileMenu = false;
 
-    // Global function untuk toggle profile menu
     function toggleProfileMenu(event) {
-        console.log('=== Toggle Profile Menu ===');
-        console.log('Window width:', window.innerWidth);
-        console.log('Event:', event);
+        isTogglingOperatorProfileMenu = true;
 
-        // Set flag to prevent immediate close
-        isTogglingProfileMenu = true;
-
-        // Disable on mobile
         if (window.innerWidth <= 768) {
-            console.log('❌ Mobile detected (width ≤ 768px), toggle disabled');
-            isTogglingProfileMenu = false;
+            isTogglingOperatorProfileMenu = false;
             return;
         }
 
-        // Close mobile menu if open
         closeOperatorMobileMenu();
 
         const profileMenu = document.getElementById('profileMenu');
-        console.log('Profile menu element:', profileMenu);
 
         if (profileMenu) {
             const isActive = profileMenu.classList.contains('active');
-            const computedStyle = window.getComputedStyle(profileMenu);
-
-            console.log('Current active status:', isActive);
-            console.log('Current display:', computedStyle.display);
-            console.log('Current right:', computedStyle.right);
 
             if (isActive) {
                 profileMenu.classList.remove('active');
-                console.log('✅ Menu CLOSED');
-                isTogglingProfileMenu = false;
+                isTogglingOperatorProfileMenu = false;
             } else {
                 profileMenu.classList.add('active');
-                console.log('✅ Menu OPENED');
-
-                // Check again after adding class
-                setTimeout(() => {
-                    const newStyle = window.getComputedStyle(profileMenu);
-                    console.log('After opening - display:', newStyle.display, 'right:', newStyle.right);
+                // Reset flag after a short delay to ensure click event is fully processed
+                setTimeout(function() {
+                    isTogglingOperatorProfileMenu = false;
                 }, 100);
             }
         } else {
-            console.error('❌ Profile menu element not found!');
-            isTogglingProfileMenu = false;
+            isTogglingOperatorProfileMenu = false;
         }
 
-        // Stop event propagation to prevent immediate close
         if (event) {
             event.stopPropagation();
         }
@@ -167,30 +143,23 @@
 
     function closeProfileMenu() {
         const profileMenu = document.getElementById('profileMenu');
-
         if (profileMenu) {
             profileMenu.classList.remove('active');
         }
     }
 
-    // Global function untuk toggle operator mobile menu
     function toggleOperatorMobileMenu() {
-        console.log('Operator mobile menu toggle clicked!');
-
         const menuArea = document.getElementById('operatorMenuArea');
         const mobileMenuOverlay = document.getElementById('operatorMobileMenuOverlay');
         const mobileMenuToggle = document.getElementById('operatorMobileMenuToggle');
 
         if (menuArea && mobileMenuOverlay && mobileMenuToggle) {
-            // Close profile menu if open
             closeProfileMenu();
 
-            // Toggle classes
             menuArea.classList.toggle('mobile-menu-open');
             mobileMenuOverlay.classList.toggle('active');
             mobileMenuToggle.classList.toggle('active');
 
-            // Lock/unlock background scroll when menu is open
             if (menuArea.classList.contains('mobile-menu-open')) {
                 document.body.style.overflow = 'hidden';
                 document.documentElement.style.overflow = 'hidden';
@@ -198,19 +167,10 @@
                 document.body.style.overflow = '';
                 document.documentElement.style.overflow = '';
             }
-
-            console.log('Operator menu toggled:', menuArea.classList.contains('mobile-menu-open'));
-        } else {
-            console.log('Operator elements not found:', {
-                menu: menuArea,
-                overlay: mobileMenuOverlay,
-                toggle: mobileMenuToggle
-            });
         }
     }
 
     function closeOperatorMobileMenu() {
-        console.log('Closing operator menu');
         const menuArea = document.getElementById('operatorMenuArea');
         const mobileMenuOverlay = document.getElementById('operatorMobileMenuOverlay');
         const mobileMenuToggle = document.getElementById('operatorMobileMenuToggle');
@@ -219,16 +179,13 @@
             menuArea.classList.remove('mobile-menu-open');
             mobileMenuOverlay.classList.remove('active');
             mobileMenuToggle.classList.remove('active');
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
 
-            // Close any open dropdown menus
             const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
             if (dropdownParent && dropdownParent.classList.contains('active')) {
                 dropdownParent.classList.remove('active');
                 const arrow = dropdownParent.querySelector('.dropdown-arrow');
                 if (arrow) {
-                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Reset to right arrow
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
                 }
                 const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
                 if (dropdownMenu) {
@@ -237,27 +194,26 @@
                 }
             }
         }
+
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Operator navbar script loaded');
-
         const mobileMenuToggle = document.getElementById('operatorMobileMenuToggle');
         const menuArea = document.getElementById('operatorMenuArea');
         const mobileMenuOverlay = document.getElementById('operatorMobileMenuOverlay');
 
-        console.log('Elements found:', {
-            toggle: mobileMenuToggle,
-            menu: menuArea,
-            overlay: mobileMenuOverlay
-        });
+        // Debug viewport info (comment out in production)
+        if (console && console.log) {
+            console.log('🖥️ Operator Viewport:', window.innerWidth + 'x' + window.innerHeight,
+                       '| Screen:', window.screen.width + 'x' + window.screen.height,
+                       '| Zoom:', Math.round(window.devicePixelRatio * 100) + '%');
+        }
 
-        // Close profile menu when clicking outside
         document.addEventListener('click', function(event) {
-            // Skip if currently toggling
-            if (isTogglingProfileMenu) {
-                console.log('Skipping outside click check - currently toggling');
-                isTogglingProfileMenu = false;
+            if (isTogglingOperatorProfileMenu) {
+                isTogglingOperatorProfileMenu = false;
                 return;
             }
 
@@ -265,129 +221,92 @@
             const logoBNN = document.getElementById('logoBNN');
 
             if (profileMenu && logoBNN) {
-                // Check if click is outside both menu and logo
                 if (!profileMenu.contains(event.target) && !logoBNN.contains(event.target)) {
                     if (profileMenu.classList.contains('active')) {
-                        console.log('Closing menu from outside click');
                         closeProfileMenu();
                     }
                 }
             }
         });
 
-        // Handle dropdown menu toggle on mobile/iPad/tablet/1200px range
         function bindOperatorMobileDropdownToggle() {
             const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-            if (dropdownParent) {
-                // Remove existing event listener if bound
-                if (dropdownParent.dataset.bound === 'true') {
-                    dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
-                }
+            if (!dropdownParent) return;
 
-                if (window.innerWidth <= 1366) {
-                    // Create new click handler for mobile/iPad/tablet/1200px range
-                    dropdownParent._mobileClickHandler = function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
+            if (dropdownParent.dataset.bound === 'true') {
+                dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
+            }
 
-                        // Toggle active class
-                        dropdownParent.classList.toggle('active');
+            if (window.innerWidth <= 1366) {
+                dropdownParent._mobileClickHandler = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                        // Update arrow direction
-                        const arrow = dropdownParent.querySelector('.dropdown-arrow');
-                        if (arrow) {
-                            if (dropdownParent.classList.contains('active')) {
-                                arrow.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Down arrow when open
-                            } else {
-                                arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Right arrow when closed
-                            }
-                        }
+                    dropdownParent.classList.toggle('active');
 
-                        // Force reflow to ensure CSS transition works
-                        const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
-                        if (dropdownMenu) {
-                            dropdownMenu.style.maxHeight = dropdownParent.classList.contains('active') ? '200px' : '0px';
-                            dropdownMenu.style.padding = dropdownParent.classList.contains('active') ? '0.5rem 0' : '0';
-                        }
+                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                    if (arrow) {
+                        arrow.innerHTML = dropdownParent.classList.contains('active') ?
+                            '<i class="fas fa-chevron-down"></i>' :
+                            '<i class="fas fa-chevron-right"></i>';
+                    }
 
-                        console.log('Operator Mobile/Tablet/1200px dropdown toggled:', dropdownParent.classList.contains('active'));
-                    };
+                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        const isActive = dropdownParent.classList.contains('active');
+                        dropdownMenu.style.maxHeight = isActive ? '200px' : '0px';
+                        dropdownMenu.style.padding = isActive ? '0.5rem 0' : '0';
+                    }
+                };
 
-                    // Add event listener
-                    dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
-                    dropdownParent.dataset.bound = 'true';
-                    console.log('Operator Mobile/Tablet/1200px dropdown toggle bound for width:', window.innerWidth);
-                } else {
-                    // Remove mobile functionality for desktop
-                    dropdownParent.dataset.bound = 'false';
-                    console.log('Operator Mobile dropdown toggle unbound for desktop');
-                }
+                dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
+                dropdownParent.dataset.bound = 'true';
+            } else {
+                dropdownParent.dataset.bound = 'false';
             }
         }
 
         bindOperatorMobileDropdownToggle();
 
-        // Debug: Check if elements exist
-        console.log('Operator mobile menu toggle:', mobileMenuToggle);
-        console.log('Operator menu area:', menuArea);
-        console.log('Operator mobile menu overlay:', mobileMenuOverlay);
-
-        if (!mobileMenuToggle || !menuArea || !mobileMenuOverlay) {
-            console.error('Required operator elements not found');
-            return;
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', closeOperatorMobileMenu);
         }
 
-        // Close mobile menu when clicking overlay
-        mobileMenuOverlay.addEventListener('click', closeOperatorMobileMenu);
-
-        // Close mobile menu when clicking on menu items (only on mobile)
         if (menuArea) {
             const menuItems = menuArea.querySelectorAll('.menu-btn a, .dropdown-menu a');
             menuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    // Only close menu on mobile, don't prevent navigation
+                item.addEventListener('click', function() {
                     if (window.innerWidth <= 768) {
                         setTimeout(() => closeOperatorMobileMenu(), 100);
                     }
-                    // Don't prevent default - allow navigation to happen
                 });
             });
-            console.log('Event listeners added to', menuItems.length, 'menu items');
         }
 
-        // Handle window resize
         window.addEventListener('resize', function() {
-            // Close mobile menu on resize to desktop
-            if (window.innerWidth > 1366) {
-                menuArea.classList.remove('mobile-menu-open');
-                mobileMenuOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                closeProfileMenu();
+            closeOperatorMobileMenu();
+            closeProfileMenu();
 
-                // Reset dropdown state for desktop
-                const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-                if (dropdownParent) {
-                    dropdownParent.classList.remove('active');
-                    // Reset arrow to right direction
-                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
-                    if (arrow) {
-                        arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
-                    }
-                    // Reset dropdown menu styles
-                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
-                    if (dropdownMenu) {
-                        dropdownMenu.style.maxHeight = '';
-                        dropdownMenu.style.padding = '';
-                    }
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent) {
+                dropdownParent.classList.remove('active');
+
+                const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                }
+
+                const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.maxHeight = '';
+                    dropdownMenu.style.padding = '';
                 }
             }
 
-            // Rebind mobile dropdown toggle as viewport changes (mobile/iPad/tablet/1200px range)
             bindOperatorMobileDropdownToggle();
         });
-
-        // Debug: Log current screen width
-        console.log('Operator current screen width:', window.innerWidth);
-        console.log('Operator mobile menu toggle display:', window.getComputedStyle(mobileMenuToggle).display);
     });
 </script>

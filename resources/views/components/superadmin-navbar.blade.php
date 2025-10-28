@@ -6,10 +6,8 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 1.25rem 2rem;
         background-color: #f8f9fa;
         border-bottom: 1px solid #e9ecef;
-        margin: 0 -2rem 0 -2rem;
     }
 
     .notification-section-icon {
@@ -43,14 +41,6 @@
         flex: 1;
     }
 
-    /* Mobile responsive untuk notification section header */
-    @media (max-width: 768px) {
-        .notification-section-header {
-            padding: 1rem 1.5rem;
-            margin: 0 -1.5rem 0 -1.5rem;
-        }
-    }
-
     /* Hover effect untuk clickable notification items */
     .notification-item[onclick] {
         transition: all 0.2s ease;
@@ -67,9 +57,7 @@
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis
-                Intelijen
-                Dasar</span>
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
         </div>
     </div>
 </div>
@@ -167,7 +155,7 @@
         <div class="notification-popup-content">
             @if (isset($pendingVerifications) && $pendingVerifications->count() > 0)
                 <!-- Header Section untuk Pending Verifications -->
-                <div class="notification-section-header">
+                <div class="notification-section-header py-4 px-6 md:py-5 md:px-8 -mx-6 md:-mx-8">
                     <div class="notification-section-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -207,7 +195,7 @@
                 @endforeach
             @else
                 <!-- Header Section untuk No Notifications -->
-                <div class="notification-section-header">
+                <div class="notification-section-header py-4 px-6 md:py-5 md:px-8 -mx-6 md:-mx-8">
                     <div class="notification-section-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -289,59 +277,37 @@
 <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
 <script>
-    // Prevent immediate close when opening
-    let isTogglingProfileMenu = false;
+    let isTogglingSuperadminProfileMenu = false;
 
-    // Global function untuk toggle profile menu
     function toggleProfileMenu(event) {
-        console.log('=== Toggle Profile Menu ===');
-        console.log('Window width:', window.innerWidth);
-        console.log('Event:', event);
+        isTogglingSuperadminProfileMenu = true;
 
-        // Set flag to prevent immediate close
-        isTogglingProfileMenu = true;
-
-        // Disable on mobile
         if (window.innerWidth <= 768) {
-            console.log('❌ Mobile detected (width ≤ 768px), toggle disabled');
-            isTogglingProfileMenu = false;
+            isTogglingSuperadminProfileMenu = false;
             return;
         }
 
-        // Close mobile menu if open
         closeMobileMenu();
 
         const profileMenu = document.getElementById('profileMenu');
-        console.log('Profile menu element:', profileMenu);
 
         if (profileMenu) {
             const isActive = profileMenu.classList.contains('active');
-            const computedStyle = window.getComputedStyle(profileMenu);
-
-            console.log('Current active status:', isActive);
-            console.log('Current display:', computedStyle.display);
-            console.log('Current right:', computedStyle.right);
 
             if (isActive) {
                 profileMenu.classList.remove('active');
-                console.log('✅ Menu CLOSED');
-                isTogglingProfileMenu = false;
+                isTogglingSuperadminProfileMenu = false;
             } else {
                 profileMenu.classList.add('active');
-                console.log('✅ Menu OPENED');
-
-                // Check again after adding class
-                setTimeout(() => {
-                    const newStyle = window.getComputedStyle(profileMenu);
-                    console.log('After opening - display:', newStyle.display, 'right:', newStyle.right);
+                // Reset flag after a short delay to ensure click event is fully processed
+                setTimeout(function() {
+                    isTogglingSuperadminProfileMenu = false;
                 }, 100);
             }
         } else {
-            console.error('❌ Profile menu element not found!');
-            isTogglingProfileMenu = false;
+            isTogglingSuperadminProfileMenu = false;
         }
 
-        // Stop event propagation to prevent immediate close
         if (event) {
             event.stopPropagation();
         }
@@ -349,19 +315,15 @@
 
     function closeProfileMenu() {
         const profileMenu = document.getElementById('profileMenu');
-
         if (profileMenu) {
             profileMenu.classList.remove('active');
         }
     }
 
-    // Close profile menu when clicking outside
     document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('click', function(event) {
-            // Skip if currently toggling
-            if (isTogglingProfileMenu) {
-                console.log('Skipping outside click check - currently toggling');
-                isTogglingProfileMenu = false;
+            if (isTogglingSuperadminProfileMenu) {
+                isTogglingSuperadminProfileMenu = false;
                 return;
             }
 
@@ -369,10 +331,8 @@
             const logoBNN = document.getElementById('logoBNN');
 
             if (profileMenu && logoBNN) {
-                // Check if click is outside both menu and logo
                 if (!profileMenu.contains(event.target) && !logoBNN.contains(event.target)) {
                     if (profileMenu.classList.contains('active')) {
-                        console.log('Closing menu from outside click');
                         closeProfileMenu();
                     }
                 }
@@ -380,24 +340,18 @@
         });
     });
 
-    // Global function untuk toggle mobile menu
     function toggleMobileMenu() {
-        console.log('Toggle clicked via onclick!');
-
         const menuArea = document.getElementById('menuArea');
         const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
 
         if (menuArea && mobileMenuOverlay && mobileMenuToggle) {
-            // Close profile menu if open
             closeProfileMenu();
 
-            // Toggle classes
             menuArea.classList.toggle('mobile-menu-open');
             mobileMenuOverlay.classList.toggle('active');
             mobileMenuToggle.classList.toggle('active');
 
-            // Lock/unlock background scroll when menu is open
             if (menuArea.classList.contains('mobile-menu-open')) {
                 document.body.style.overflow = 'hidden';
                 document.documentElement.style.overflow = 'hidden';
@@ -405,19 +359,10 @@
                 document.body.style.overflow = '';
                 document.documentElement.style.overflow = '';
             }
-
-            console.log('Menu toggled:', menuArea.classList.contains('mobile-menu-open'));
-        } else {
-            console.log('Elements not found:', {
-                menu: menuArea,
-                overlay: mobileMenuOverlay,
-                toggle: mobileMenuToggle
-            });
         }
     }
 
     function closeMobileMenu() {
-        console.log('Closing menu');
         const menuArea = document.getElementById('menuArea');
         const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -426,16 +371,13 @@
             menuArea.classList.remove('mobile-menu-open');
             mobileMenuOverlay.classList.remove('active');
             mobileMenuToggle.classList.remove('active');
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
 
-            // Close any open dropdown menus
             const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
             if (dropdownParent && dropdownParent.classList.contains('active')) {
                 dropdownParent.classList.remove('active');
                 const arrow = dropdownParent.querySelector('.dropdown-arrow');
                 if (arrow) {
-                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Reset to right arrow
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
                 }
                 const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
                 if (dropdownMenu) {
@@ -444,35 +386,32 @@
                 }
             }
         }
+
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     }
 
-    // Function to fetch verification count via AJAX
     function fetchVerificationCount() {
         fetch('{{ route('super-admin.notifications.count') }}', {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateNotificationCount(data.count);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching verification count:', error);
-            });
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateNotificationCount(data.count);
+            }
+        })
+        .catch(error => console.error('Error fetching verification count:', error));
     }
 
-    // Function to refresh notifications periodically
     function startNotificationRefresh() {
-        // Refresh every 30 seconds
         setInterval(fetchVerificationCount, 30000);
     }
 
-    // Notification Badge Functions
     function showNotificationBadge(count = 3) {
         const badge = document.getElementById('notificationBadge');
         const menuBadge = document.getElementById('notificationMenuBadge');
@@ -492,23 +431,14 @@
             }
             menuBadge.style.display = 'flex';
         }
-
-        console.log('✅ Notification badges shown with count:', count);
     }
 
     function hideNotificationBadge() {
         const badge = document.getElementById('notificationBadge');
         const menuBadge = document.getElementById('notificationMenuBadge');
 
-        if (badge) {
-            badge.style.display = 'none';
-        }
-
-        if (menuBadge) {
-            menuBadge.style.display = 'none';
-        }
-
-        console.log('❌ Notification badges hidden');
+        if (badge) badge.style.display = 'none';
+        if (menuBadge) menuBadge.style.display = 'none';
     }
 
     function updateNotificationCount(count) {
@@ -520,11 +450,7 @@
             if (countElement) {
                 countElement.textContent = count;
             }
-            if (count > 0) {
-                badge.style.display = 'flex';
-            } else {
-                badge.style.display = 'none';
-            }
+            badge.style.display = count > 0 ? 'flex' : 'none';
         }
 
         if (menuBadge) {
@@ -532,26 +458,14 @@
             if (menuCountElement) {
                 menuCountElement.textContent = count;
             }
-            if (count > 0) {
-                menuBadge.style.display = 'flex';
-            } else {
-                menuBadge.style.display = 'none';
-            }
+            menuBadge.style.display = count > 0 ? 'flex' : 'none';
         }
-
-        console.log('📊 Notification count updated to:', count);
     }
 
-    // Notification Panel Functions
     function showNotificationPanel(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('🔔 Notification panel clicked');
-
-        // Close profile menu
         closeProfileMenu();
-
-        // Show notification popup
         showNotificationPopup();
     }
 
@@ -559,8 +473,7 @@
         const overlay = document.getElementById('notificationPopupOverlay');
         if (overlay) {
             overlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-            console.log('✅ Notification popup opened');
+            document.body.style.overflow = 'hidden';
         }
     }
 
@@ -568,50 +481,27 @@
         const overlay = document.getElementById('notificationPopupOverlay');
         if (overlay) {
             overlay.classList.remove('active');
-            document.body.style.overflow = ''; // Restore background scroll
-            console.log('❌ Notification popup closed');
+            document.body.style.overflow = '';
         }
     }
 
     function markAllAsRead() {
-        console.log('📖 Marking all notifications as read');
-        console.log('Button clicked - function executed');
-
-        // Remove unread class from all notification items
         const unreadItems = document.querySelectorAll('.notification-item.unread');
-        console.log('Found unread items:', unreadItems.length);
-        unreadItems.forEach(item => {
-            item.classList.remove('unread');
-        });
+        unreadItems.forEach(item => item.classList.remove('unread'));
 
-        // Update notification count to 0
         updateNotificationCount(0);
 
-        // Update button text and style
         const markAllBtn = document.getElementById('markAllBtn');
-        console.log('Mark all button element:', markAllBtn);
         if (markAllBtn) {
             markAllBtn.textContent = 'Semua Sudah Dibaca';
-            markAllBtn.style.background = '#28a745'; // Green color
+            markAllBtn.style.background = '#28a745';
             markAllBtn.style.cursor = 'default';
-            markAllBtn.onclick = null; // Remove click functionality
-            console.log('✅ Button updated successfully');
-        } else {
-            console.error('❌ Mark all button not found!');
+            markAllBtn.onclick = null;
         }
-
-        // Don't close popup - let user see the changes
-        // closeNotificationPopup();
     }
 
-    // Function to redirect to verification page
     function redirectToVerification(verificationId) {
-        console.log('🔗 Redirecting to verification:', verificationId);
-
-        // Close notification popup first
         closeNotificationPopup();
-
-        // Redirect to verification show page
         window.location.href = `/super-admin/verification/${verificationId}`;
     }
 
@@ -621,13 +511,13 @@
         const menuArea = document.getElementById('menuArea');
         const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
 
-        console.log('Elements found:', {
-            toggle: mobileMenuToggle,
-            menu: menuArea,
-            overlay: mobileMenuOverlay
-        });
+        // Debug viewport info (comment out in production)
+        if (console && console.log) {
+            console.log('🖥️ Viewport:', window.innerWidth + 'x' + window.innerHeight,
+                       '| Screen:', window.screen.width + 'x' + window.screen.height,
+                       '| Zoom:', Math.round(window.devicePixelRatio * 100) + '%');
+        }
 
-        // Initialize notification badge with real verification count
         const verificationCount = {{ $pendingVerificationCount ?? 0 }};
         if (verificationCount > 0) {
             showNotificationBadge(verificationCount);
@@ -635,17 +525,14 @@
             hideNotificationBadge();
         }
 
-        // Add click event to notification badge
         const notificationBadge = document.getElementById('notificationBadge');
         if (notificationBadge) {
             notificationBadge.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent triggering profile menu
-                console.log('🔔 Notification badge clicked');
+                e.stopPropagation();
                 showNotificationPopup();
             });
         }
 
-        // Close notification popup when clicking outside
         const notificationPopupOverlay = document.getElementById('notificationPopupOverlay');
         if (notificationPopupOverlay) {
             notificationPopupOverlay.addEventListener('click', function(e) {
@@ -655,7 +542,6 @@
             });
         }
 
-        // Close notification popup with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeNotificationPopup();
@@ -664,110 +550,84 @@
 
         if (mobileMenuOverlay) {
             mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-            console.log('Event listener added to overlay');
         }
 
-        // Close menu when clicking on menu items (only on mobile)
         if (menuArea) {
             const menuItems = menuArea.querySelectorAll('.menu-btn a, .dropdown-menu a');
             menuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    // Only close menu on mobile, don't prevent navigation
+                item.addEventListener('click', function() {
                     if (window.innerWidth <= 768) {
                         setTimeout(() => closeMobileMenu(), 100);
                     }
-                    // Don't prevent default - allow navigation to happen
                 });
             });
-            console.log('Event listeners added to', menuItems.length, 'menu items');
         }
 
-        // Mobile dropdown toggle for "Peta" - IMPROVED VERSION
         function bindMobileDropdownToggle() {
             const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-            if (dropdownParent) {
-                // Remove existing event listener if bound
-                if (dropdownParent.dataset.bound === 'true') {
-                    dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
-                }
+            if (!dropdownParent) return;
 
-                if (window.innerWidth <= 1366) {
-                    // Create new click handler for mobile/iPad/tablet/1200px range
-                    dropdownParent._mobileClickHandler = function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
+            if (dropdownParent.dataset.bound === 'true') {
+                dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
+            }
 
-                        // Toggle active class
-                        dropdownParent.classList.toggle('active');
+            if (window.innerWidth <= 1366) {
+                dropdownParent._mobileClickHandler = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                        // Update arrow direction
-                        const arrow = dropdownParent.querySelector('.dropdown-arrow');
-                        if (arrow) {
-                            if (dropdownParent.classList.contains('active')) {
-                                arrow.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Down arrow when open
-                            } else {
-                                arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Right arrow when closed
-                            }
-                        }
+                    dropdownParent.classList.toggle('active');
 
-                        // Force reflow to ensure CSS transition works
-                        const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
-                        if (dropdownMenu) {
-                            dropdownMenu.style.maxHeight = dropdownParent.classList.contains('active') ? '200px' : '0px';
-                            dropdownMenu.style.padding = dropdownParent.classList.contains('active') ? '0.5rem 0' : '0';
-                        }
+                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                    if (arrow) {
+                        arrow.innerHTML = dropdownParent.classList.contains('active') ?
+                            '<i class="fas fa-chevron-down"></i>' :
+                            '<i class="fas fa-chevron-right"></i>';
+                    }
 
-                        console.log('Mobile/Tablet/1200px dropdown toggled:', dropdownParent.classList.contains('active'));
-                    };
+                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        const isActive = dropdownParent.classList.contains('active');
+                        dropdownMenu.style.maxHeight = isActive ? '200px' : '0px';
+                        dropdownMenu.style.padding = isActive ? '0.5rem 0' : '0';
+                    }
+                };
 
-                    // Add event listener
-                    dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
-                    dropdownParent.dataset.bound = 'true';
-                    console.log('Mobile/Tablet/1200px dropdown toggle bound for width:', window.innerWidth);
-                } else {
-                    // Remove mobile functionality for desktop
-                    dropdownParent.dataset.bound = 'false';
-                    console.log('Mobile dropdown toggle unbound for desktop');
-                }
+                dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
+                dropdownParent.dataset.bound = 'true';
+            } else {
+                dropdownParent.dataset.bound = 'false';
             }
         }
 
         bindMobileDropdownToggle();
 
-        // Handle window resize
         window.addEventListener('resize', function() {
-            if (window.innerWidth > 1366) {
-                closeMobileMenu();
-                closeProfileMenu();
+            closeMobileMenu();
+            closeProfileMenu();
 
-                // Reset dropdown state for desktop
-                const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-                if (dropdownParent) {
-                    dropdownParent.classList.remove('active');
-                    // Reset arrow to right direction
-                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
-                    if (arrow) {
-                        arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
-                    }
-                    // Reset dropdown menu styles
-                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
-                    if (dropdownMenu) {
-                        dropdownMenu.style.maxHeight = '';
-                        dropdownMenu.style.padding = '';
-                    }
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent) {
+                dropdownParent.classList.remove('active');
+
+                const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                }
+
+                const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.maxHeight = '';
+                    dropdownMenu.style.padding = '';
                 }
             }
 
-            // Rebind mobile dropdown toggle as viewport changes (mobile/iPad/tablet/1200px range)
             bindMobileDropdownToggle();
         });
 
-        // Start periodic notification refresh
         startNotificationRefresh();
-
-        // Example: Hide notification badge after 10 seconds (for demo)
-        // setTimeout(() => {
-        //     hideNotificationBadge();
-        // }, 10000);
     });
 </script>

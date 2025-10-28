@@ -42,8 +42,10 @@
     width: 100%;
     display: inline-block;
     white-space: nowrap;
-    /* Animation hanya aktif di mobile */
+    line-height: 1.2;
     animation: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @keyframes marquee-right {
@@ -55,6 +57,8 @@
 @media (min-width: 769px) and (max-width: 1024px) {
     .banner-text {
         font-size: 12px;
+        line-height: 1.2;
+        letter-spacing: 0.8px;
         /* Tidak ada animasi di tablet */
         animation: none;
     }
@@ -63,6 +67,8 @@
 @media (min-width: 1025px) and (max-width: 1440px) {
     .banner-text {
         font-size: 13px;
+        line-height: 1.2;
+        letter-spacing: 0.9px;
         /* Tidak ada animasi di desktop */
         animation: none;
     }
@@ -71,6 +77,8 @@
 @media (min-width: 1441px) {
     .banner-text {
         font-size: 14px;
+        line-height: 1.2;
+        letter-spacing: 1px;
         /* Tidak ada animasi di desktop besar */
         animation: none;
     }
@@ -1930,6 +1938,90 @@ body.scrolled .profile-menu {
 
     .mobile-logout-btn .mobile-profile-icon {
         color: rgba(220, 38, 38, 0.8) !important;
+    }
+}
+
+/* Desktop - Zoom Optimized (1367px - 1600px) - Handle zoom 125%-150% */
+@media (min-width: 1367px) and (max-width: 1600px) {
+    .top-banner {
+        height: 32px !important;
+    }
+
+    .banner-text {
+        font-size: 12px !important;
+        letter-spacing: 0.8px !important;
+    }
+
+    .superadmin-navbar {
+        padding: 0.75rem 1rem !important;
+        height: 65px !important;
+        top: 32px !important;
+    }
+
+    .logo-sijagad {
+        margin-right: 10px !important;
+    }
+
+    .sijagad-logo {
+        height: 45px !important;
+    }
+
+    .menu-btn {
+        padding-left: 0.8rem !important;
+        padding-right: 0.8rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .menu-btn-peta {
+        padding-left: 0.8rem !important;
+        padding-right: 0.8rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .logo-bnn {
+        margin-right: 5px !important;
+        gap: 4px !important;
+        max-width: 180px !important;
+    }
+
+    .logo-text {
+        margin-right: 8px !important;
+    }
+
+    .logo-text .bnn {
+        font-size: 1rem !important;
+    }
+
+    .logo-text .prov {
+        font-size: 0.75rem !important;
+        line-height: 1.1 !important;
+    }
+
+    .logo-circle {
+        height: 50px !important;
+        width: 50px !important;
+    }
+
+    /* Profile menu adjustment for zoom */
+    .profile-menu {
+        top: 97px !important;
+    }
+}
+
+/* Desktop - Large Screen (>1600px) - Optimal for zoom 100% */
+@media (min-width: 1601px) {
+    .superadmin-navbar {
+        padding: 1rem 2rem;
+    }
+
+    .menu-btn {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+    }
+
+    .menu-btn-peta {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
     }
 }
 

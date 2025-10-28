@@ -3,10 +3,8 @@
 
 <style>
     .notification-section-header {
-        padding: 1.25rem 2rem;
         background-color: #f8f9fa;
         border-bottom: 1px solid #e9ecef;
-        margin: 0 -2rem 8px -2rem;
     }
 
     .notification-section-title {
@@ -31,23 +29,13 @@
     .notification-item.pending .notification-item-message {
         color: #856404;
     }
-
-    /* Mobile responsive untuk notification section header */
-    @media (max-width: 768px) {
-        .notification-section-header {
-            padding: 1rem 1.5rem;
-            margin: 0 -1.5rem 8px -1.5rem;
-        }
-    }
 </style>
 
 <!-- Garis putih tebal di atas navbar -->
 <div class="top-banner">
     <div class="banner-content">
         <div class="banner-left">
-            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis
-                Intelijen
-                Dasar</span>
+            <span class="banner-text">Sistem Informasi Jaringan Pemetaan Kawasan Rawan Geospasial Berbasis Intelijen Dasar</span>
         </div>
     </div>
 </div>
@@ -144,7 +132,7 @@
         <div class="notification-popup-content">
             @if (isset($approvedVerifications) && $approvedVerifications->count() > 0)
                 <!-- Approved Verifications Section -->
-                <div class="notification-section-header">
+                <div class="notification-section-header py-4 px-6 md:py-5 md:px-8 -mx-6 md:-mx-8 mb-2">
                     <h3 class="notification-section-title">✅ Verifikasi Disetujui</h3>
                 </div>
                 @foreach ($approvedVerifications->take(4) as $verification)
@@ -181,7 +169,7 @@
 
             @if (isset($pendingVerifications) && $pendingVerifications->count() > 0)
                 <!-- Pending Verifications Section -->
-                <div class="notification-section-header">
+                <div class="notification-section-header py-4 px-6 md:py-5 md:px-8 -mx-6 md:-mx-8 mb-2">
                     <h3 class="notification-section-title">⏳ Menunggu Verifikasi</h3>
                 </div>
                 @foreach ($pendingVerifications->take(4) as $verification)
@@ -284,59 +272,37 @@
 <div class="mobile-menu-overlay" id="adminMobileMenuOverlay"></div>
 
 <script>
-    // Prevent immediate close when opening
-    let isTogglingProfileMenu = false;
+    let isTogglingAdminProfileMenu = false;
 
-    // Global function untuk toggle profile menu
     function toggleProfileMenu(event) {
-        console.log('=== Toggle Profile Menu ===');
-        console.log('Window width:', window.innerWidth);
-        console.log('Event:', event);
+        isTogglingAdminProfileMenu = true;
 
-        // Set flag to prevent immediate close
-        isTogglingProfileMenu = true;
-
-        // Disable on mobile
         if (window.innerWidth <= 768) {
-            console.log('❌ Mobile detected (width ≤ 768px), toggle disabled');
-            isTogglingProfileMenu = false;
+            isTogglingAdminProfileMenu = false;
             return;
         }
 
-        // Close mobile menu if open
         closeAdminMobileMenu();
 
         const profileMenu = document.getElementById('profileMenu');
-        console.log('Profile menu element:', profileMenu);
 
         if (profileMenu) {
             const isActive = profileMenu.classList.contains('active');
-            const computedStyle = window.getComputedStyle(profileMenu);
-
-            console.log('Current active status:', isActive);
-            console.log('Current display:', computedStyle.display);
-            console.log('Current right:', computedStyle.right);
 
             if (isActive) {
                 profileMenu.classList.remove('active');
-                console.log('✅ Menu CLOSED');
-                isTogglingProfileMenu = false;
+                isTogglingAdminProfileMenu = false;
             } else {
                 profileMenu.classList.add('active');
-                console.log('✅ Menu OPENED');
-
-                // Check again after adding class
-                setTimeout(() => {
-                    const newStyle = window.getComputedStyle(profileMenu);
-                    console.log('After opening - display:', newStyle.display, 'right:', newStyle.right);
+                // Reset flag after a short delay to ensure click event is fully processed
+                setTimeout(function() {
+                    isTogglingAdminProfileMenu = false;
                 }, 100);
             }
         } else {
-            console.error('❌ Profile menu element not found!');
-            isTogglingProfileMenu = false;
+            isTogglingAdminProfileMenu = false;
         }
 
-        // Stop event propagation to prevent immediate close
         if (event) {
             event.stopPropagation();
         }
@@ -344,50 +310,35 @@
 
     function closeProfileMenu() {
         const profileMenu = document.getElementById('profileMenu');
-
         if (profileMenu) {
             profileMenu.classList.remove('active');
         }
     }
 
-    // Function to fetch verification count via AJAX
     function fetchVerificationCount() {
         fetch('{{ route('admin.notifications.count') }}', {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateNotificationCount(data.count);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching verification count:', error);
-            });
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateNotificationCount(data.count);
+            }
+        })
+        .catch(error => console.error('Error fetching verification count:', error));
     }
 
-    // Function to refresh notifications periodically
     function startNotificationRefresh() {
-        // Refresh every 30 seconds
         setInterval(fetchVerificationCount, 30000);
     }
 
-    // Function to handle verification click
     function handleVerificationClick(verificationId, tableName, dataId) {
-        console.log('Verification clicked:', {
-            verificationId,
-            tableName,
-            dataId
-        });
-
-        // Close notification popup
         closeNotificationPopup();
 
-        // Determine the route based on table name
         const routeMap = {
             'data_individu_tsk': 'data-individu',
             'thm': 'thm',
@@ -408,19 +359,15 @@
 
         if (routePath) {
             if (dataId && dataId > 0) {
-                // Redirect to edit page with data ID
                 window.location.href = `/admin/${routePath}/${dataId}/edit`;
             } else {
-                // Redirect to create page for new data
                 window.location.href = `/admin/${routePath}/create`;
             }
         } else {
-            console.error('Unknown table name:', tableName);
             alert('Tidak dapat menentukan halaman tujuan untuk tabel: ' + tableName);
         }
     }
 
-    // Notification Badge Functions
     function showNotificationBadge(count = 3) {
         const badge = document.getElementById('notificationBadge');
         const menuBadge = document.getElementById('notificationMenuBadge');
@@ -440,23 +387,14 @@
             }
             menuBadge.style.display = 'flex';
         }
-
-        console.log('✅ Notification badges shown with count:', count);
     }
 
     function hideNotificationBadge() {
         const badge = document.getElementById('notificationBadge');
         const menuBadge = document.getElementById('notificationMenuBadge');
 
-        if (badge) {
-            badge.style.display = 'none';
-        }
-
-        if (menuBadge) {
-            menuBadge.style.display = 'none';
-        }
-
-        console.log('❌ Notification badges hidden');
+        if (badge) badge.style.display = 'none';
+        if (menuBadge) menuBadge.style.display = 'none';
     }
 
     function updateNotificationCount(count) {
@@ -468,11 +406,7 @@
             if (countElement) {
                 countElement.textContent = count;
             }
-            if (count > 0) {
-                badge.style.display = 'flex';
-            } else {
-                badge.style.display = 'none';
-            }
+            badge.style.display = count > 0 ? 'flex' : 'none';
         }
 
         if (menuBadge) {
@@ -480,26 +414,14 @@
             if (menuCountElement) {
                 menuCountElement.textContent = count;
             }
-            if (count > 0) {
-                menuBadge.style.display = 'flex';
-            } else {
-                menuBadge.style.display = 'none';
-            }
+            menuBadge.style.display = count > 0 ? 'flex' : 'none';
         }
-
-        console.log('📊 Notification count updated to:', count);
     }
 
-    // Notification Panel Functions
     function showNotificationPanel(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('🔔 Notification panel clicked');
-
-        // Close profile menu
         closeProfileMenu();
-
-        // Show notification popup
         showNotificationPopup();
     }
 
@@ -507,8 +429,7 @@
         const overlay = document.getElementById('notificationPopupOverlay');
         if (overlay) {
             overlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-            console.log('✅ Notification popup opened');
+            document.body.style.overflow = 'hidden';
         }
     }
 
@@ -516,59 +437,48 @@
         const overlay = document.getElementById('notificationPopupOverlay');
         if (overlay) {
             overlay.classList.remove('active');
-            document.body.style.overflow = ''; // Restore background scroll
-            console.log('❌ Notification popup closed');
+            document.body.style.overflow = '';
         }
     }
 
     function markAllAsRead() {
-        console.log('📖 Marking all notifications as read');
-
-        // Remove unread class from all notification items
         const unreadItems = document.querySelectorAll('.notification-item.unread');
-        unreadItems.forEach(item => {
-            item.classList.remove('unread');
-        });
+        unreadItems.forEach(item => item.classList.remove('unread'));
 
-        // Update notification count to 0
         updateNotificationCount(0);
 
-        // Update button text and style
         const markAllBtn = document.getElementById('markAllBtn');
         if (markAllBtn) {
             markAllBtn.textContent = 'Semua Sudah Dibaca';
-            markAllBtn.style.background = '#28a745'; // Green color
+            markAllBtn.style.background = '#28a745';
             markAllBtn.style.cursor = 'default';
-            markAllBtn.onclick = null; // Remove click functionality
+            markAllBtn.onclick = null;
         }
     }
 
-    // Global function untuk toggle admin mobile menu
     function toggleAdminMobileMenu() {
-        console.log('Admin mobile menu toggle clicked!');
-
         const menuArea = document.getElementById('adminMenuArea');
         const mobileMenuOverlay = document.getElementById('adminMobileMenuOverlay');
         const mobileMenuToggle = document.getElementById('adminMobileMenuToggle');
 
         if (menuArea && mobileMenuOverlay && mobileMenuToggle) {
-            // Toggle classes
+            closeProfileMenu();
+
             menuArea.classList.toggle('mobile-menu-open');
             mobileMenuOverlay.classList.toggle('active');
             mobileMenuToggle.classList.toggle('active');
 
-            console.log('Admin menu toggled:', menuArea.classList.contains('mobile-menu-open'));
-        } else {
-            console.log('Admin elements not found:', {
-                menu: menuArea,
-                overlay: mobileMenuOverlay,
-                toggle: mobileMenuToggle
-            });
+            if (menuArea.classList.contains('mobile-menu-open')) {
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            }
         }
     }
 
     function closeAdminMobileMenu() {
-        console.log('Closing admin menu');
         const menuArea = document.getElementById('adminMenuArea');
         const mobileMenuOverlay = document.getElementById('adminMobileMenuOverlay');
         const mobileMenuToggle = document.getElementById('adminMobileMenuToggle');
@@ -577,7 +487,24 @@
             menuArea.classList.remove('mobile-menu-open');
             mobileMenuOverlay.classList.remove('active');
             mobileMenuToggle.classList.remove('active');
+
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent && dropdownParent.classList.contains('active')) {
+                dropdownParent.classList.remove('active');
+                const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                }
+                const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.maxHeight = '0px';
+                    dropdownMenu.style.padding = '0';
+                }
+            }
         }
+
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -585,13 +512,13 @@
         const menuArea = document.getElementById('adminMenuArea');
         const mobileMenuOverlay = document.getElementById('adminMobileMenuOverlay');
 
-        console.log('Elements found:', {
-            toggle: mobileMenuToggle,
-            menu: menuArea,
-            overlay: mobileMenuOverlay
-        });
+        // Debug viewport info (comment out in production)
+        if (console && console.log) {
+            console.log('🖥️ Admin Viewport:', window.innerWidth + 'x' + window.innerHeight,
+                       '| Screen:', window.screen.width + 'x' + window.screen.height,
+                       '| Zoom:', Math.round(window.devicePixelRatio * 100) + '%');
+        }
 
-        // Initialize notification badge with real verification count
         const verificationCount = {{ $totalNotificationCount ?? 0 }};
         if (verificationCount > 0) {
             showNotificationBadge(verificationCount);
@@ -599,17 +526,14 @@
             hideNotificationBadge();
         }
 
-        // Add click event to notification badge
         const notificationBadge = document.getElementById('notificationBadge');
         if (notificationBadge) {
             notificationBadge.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent triggering profile menu
-                console.log('🔔 Notification badge clicked');
+                e.stopPropagation();
                 showNotificationPopup();
             });
         }
 
-        // Close notification popup when clicking outside
         const notificationPopupOverlay = document.getElementById('notificationPopupOverlay');
         if (notificationPopupOverlay) {
             notificationPopupOverlay.addEventListener('click', function(e) {
@@ -619,19 +543,15 @@
             });
         }
 
-        // Close notification popup with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeNotificationPopup();
             }
         });
 
-        // Close profile menu when clicking outside
         document.addEventListener('click', function(event) {
-            // Skip if currently toggling
-            if (isTogglingProfileMenu) {
-                console.log('Skipping outside click check - currently toggling');
-                isTogglingProfileMenu = false;
+            if (isTogglingAdminProfileMenu) {
+                isTogglingAdminProfileMenu = false;
                 return;
             }
 
@@ -639,10 +559,8 @@
             const logoBNN = document.getElementById('logoBNN');
 
             if (profileMenu && logoBNN) {
-                // Check if click is outside both menu and logo
                 if (!profileMenu.contains(event.target) && !logoBNN.contains(event.target)) {
                     if (profileMenu.classList.contains('active')) {
-                        console.log('Closing menu from outside click');
                         closeProfileMenu();
                     }
                 }
@@ -653,65 +571,50 @@
             mobileMenuOverlay.addEventListener('click', closeAdminMobileMenu);
         }
 
-        // Handle dropdown menu toggle on mobile/iPad/tablet/1200px range
         function bindAdminMobileDropdownToggle() {
             const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-            if (dropdownParent) {
-                // Remove existing event listener if bound
-                if (dropdownParent.dataset.bound === 'true') {
-                    dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
-                }
+            if (!dropdownParent) return;
 
-                if (window.innerWidth <= 1366) {
-                    // Create new click handler for mobile/iPad/tablet/1200px range
-                    dropdownParent._mobileClickHandler = function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
+            if (dropdownParent.dataset.bound === 'true') {
+                dropdownParent.removeEventListener('click', dropdownParent._mobileClickHandler);
+            }
 
-                        // Toggle active class
-                        dropdownParent.classList.toggle('active');
+            if (window.innerWidth <= 1366) {
+                dropdownParent._mobileClickHandler = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                        // Update arrow direction
-                        const arrow = dropdownParent.querySelector('.dropdown-arrow');
-                        if (arrow) {
-                            if (dropdownParent.classList.contains('active')) {
-                                arrow.innerHTML = '<i class="fas fa-chevron-down"></i>'; // Down arrow when open
-                            } else {
-                                arrow.innerHTML = '<i class="fas fa-chevron-right"></i>'; // Right arrow when closed
-                            }
-                        }
+                    dropdownParent.classList.toggle('active');
 
-                        // Force reflow to ensure CSS transition works
-                        const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
-                        if (dropdownMenu) {
-                            dropdownMenu.style.maxHeight = dropdownParent.classList.contains('active') ? '200px' : '0px';
-                            dropdownMenu.style.padding = dropdownParent.classList.contains('active') ? '0.5rem 0' : '0';
-                        }
+                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                    if (arrow) {
+                        arrow.innerHTML = dropdownParent.classList.contains('active') ?
+                            '<i class="fas fa-chevron-down"></i>' :
+                            '<i class="fas fa-chevron-right"></i>';
+                    }
 
-                        console.log('Admin Mobile/Tablet/1200px dropdown toggled:', dropdownParent.classList.contains('active'));
-                    };
+                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                    if (dropdownMenu) {
+                        const isActive = dropdownParent.classList.contains('active');
+                        dropdownMenu.style.maxHeight = isActive ? '200px' : '0px';
+                        dropdownMenu.style.padding = isActive ? '0.5rem 0' : '0';
+                    }
+                };
 
-                    // Add event listener
-                    dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
-                    dropdownParent.dataset.bound = 'true';
-                    console.log('Admin Mobile/Tablet/1200px dropdown toggle bound for width:', window.innerWidth);
-                } else {
-                    // Remove mobile functionality for desktop
-                    dropdownParent.dataset.bound = 'false';
-                    console.log('Admin Mobile dropdown toggle unbound for desktop');
-                }
+                dropdownParent.addEventListener('click', dropdownParent._mobileClickHandler);
+                dropdownParent.dataset.bound = 'true';
+            } else {
+                dropdownParent.dataset.bound = 'false';
             }
         }
 
         bindAdminMobileDropdownToggle();
 
-        // Close menu when clicking on menu items (only on mobile)
         if (menuArea) {
             const menuItems = menuArea.querySelectorAll('.menu-btn a, .dropdown-menu a');
             menuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
+                item.addEventListener('click', function() {
                     if (window.innerWidth <= 768) {
-                        // Don't close immediately for dropdown items
                         if (!item.closest('.dropdown-menu')) {
                             setTimeout(() => closeAdminMobileMenu(), 100);
                         }
@@ -720,35 +623,32 @@
             });
         }
 
-        // Handle window resize
         window.addEventListener('resize', function() {
-            if (window.innerWidth > 1366) {
-                closeAdminMobileMenu();
-                closeProfileMenu();
+            closeAdminMobileMenu();
+            closeProfileMenu();
 
-                // Reset dropdown state for desktop
-                const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
-                if (dropdownParent) {
-                    dropdownParent.classList.remove('active');
-                    // Reset arrow to right direction
-                    const arrow = dropdownParent.querySelector('.dropdown-arrow');
-                    if (arrow) {
-                        arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
-                    }
-                    // Reset dropdown menu styles
-                    const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
-                    if (dropdownMenu) {
-                        dropdownMenu.style.maxHeight = '';
-                        dropdownMenu.style.padding = '';
-                    }
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+
+            const dropdownParent = document.querySelector('.menu-btn-peta.dropdown-parent');
+            if (dropdownParent) {
+                dropdownParent.classList.remove('active');
+
+                const arrow = dropdownParent.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                }
+
+                const dropdownMenu = dropdownParent.querySelector('.dropdown-menu');
+                if (dropdownMenu) {
+                    dropdownMenu.style.maxHeight = '';
+                    dropdownMenu.style.padding = '';
                 }
             }
 
-            // Rebind mobile dropdown toggle as viewport changes (mobile/iPad/tablet/1200px range)
             bindAdminMobileDropdownToggle();
         });
 
-        // Start periodic notification refresh
         startNotificationRefresh();
     });
 </script>
