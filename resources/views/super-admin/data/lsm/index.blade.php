@@ -5,6 +5,8 @@
 @section('content')
     <!-- Include responsive CSS -->
     <link rel="stylesheet" href="{{ asset('css/admin-data-responsive.css') }}">
+    @include('components.superadmin-navbar')
+
     <div class="mx-auto px-2 lg:px-4 py-3">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-6 gap-3">
             <div>
@@ -30,8 +32,8 @@
         </form>
 
         <div class="bg-white shadow rounded p-3 lg:p-6 card-responsive">
-            <div class="table-responsive overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+            <div class="overflow-x-auto">
+                <table class="w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-2 lg:px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">No</th>
@@ -51,8 +53,9 @@
                             <tr>
                                 <td class="px-2 lg:px-4 py-2 text-center text-xs lg:text-sm">
                                     {{ ($lsmList->currentPage() - 1) * $lsmList->perPage() + $loop->iteration }}</td>
-                                <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm">{{ $lsm->nama_lsm }}</td>
-                                <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm">{{ $lsm->ketua }}</td>
+                                <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm capitalize">{{ $lsm->nama_lsm }}</td>
+                                <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm capitalize">{{ $lsm->ketua_lsm ?? '-' }}
+                                </td>
                                 <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm">{{ $lsm->no_hp_ketua }}</td>
                                 <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm">{{ $lsm->alamat }}</td>
                                 <td class="px-2 lg:px-4 py-2 text-xs lg:text-sm">{{ $lsm->user->name ?? 'N/A' }}</td>

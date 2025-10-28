@@ -664,8 +664,8 @@
     </div>
 
     <!-- Modal Edit Tugas Pokok -->
-    <div id="tugasModal"
-        class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div id="tugasModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4"
+        style="z-index: 1002;">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between px-6 py-4 border-b">
                 <h3 class="text-lg font-semibold text-gray-900" id="tugasModalTitle">Edit Tugas Pokok</h3>
@@ -715,8 +715,8 @@
     </div>
 
     <!-- Modal Edit Fungsi -->
-    <div id="fungsiModal"
-        class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div id="fungsiModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center p-4"
+        style="z-index: 1002;">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between px-6 py-4 border-b">
                 <h3 class="text-lg font-semibold text-gray-900" id="fungsiModalTitle">Edit Fungsi</h3>
